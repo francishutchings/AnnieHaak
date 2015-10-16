@@ -1,0 +1,22 @@
+<?php
+$title = 'Edit Product Type';
+$this->headTitle($title);
+?>
+<h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<?php
+$form = $this->form;
+$form->setAttribute('action', $this->url(
+                'productTypes', array(
+            'action' => 'edit',
+            'id' => $this->id,
+                )
+));
+$form->prepare();
+
+echo $this->form()->openTag($form);
+echo $this->formHidden($form->get('ProductTypeId'));
+echo $this->formRow($form->get('ProductTypeName'));
+echo $this->formSubmit($form->get('submit'));
+echo $this->form()->closeTag();
+

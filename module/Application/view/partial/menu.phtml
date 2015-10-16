@@ -1,0 +1,28 @@
+<ul class="dropdown-menu">
+    <?php
+    foreach ($this->container as $page) {
+        $hasChildren = $page->hasPages();
+        if (!$hasChildren) {
+            ?>
+            <li><a tabindex="0" href="<?php echo $page->getHref(); ?>"><?php echo $page->getLabel(); ?></a></li>
+            <?php
+        } else {
+            ?>
+            <li>
+                <a href="<?php echo $page->getHref(); ?>"><?php echo $page->getLabel(); ?></a>
+                <ul class="dropdown-menu">
+            <?php
+            foreach ($page->getPages() as $child) {
+                ?>
+                        <li><a href="<?php echo $child->getHref(); ?>"><?php echo $child->getLabel(); ?></a></li>
+                        <?php
+                    }
+                    ?>
+                </ul>
+            </li>
+                    <?php
+                }
+            }
+            ?>
+</ul>
+
