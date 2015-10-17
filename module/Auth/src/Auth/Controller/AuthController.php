@@ -1,11 +1,11 @@
 <?php
 
-namespace SanAuth\Controller;
+namespace Auth\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Form\Annotation\AnnotationBuilder;
 
-use SanAuth\Model\User;
+use Auth\Model\User;
 
 class AuthController extends AbstractActionController
 {
@@ -27,7 +27,7 @@ class AuthController extends AbstractActionController
     {
         if (! $this->storage) {
             $this->storage = $this->getServiceLocator()
-                                  ->get('SanAuth\Model\MyAuthStorage');
+                                  ->get('Auth\Model\MyAuthStorage');
         }
 
         return $this->storage;

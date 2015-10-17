@@ -1,6 +1,6 @@
 <?php
 
-namespace SanAuth;
+namespace Auth;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Authentication\AuthenticationService;
@@ -43,8 +43,8 @@ class Module implements AutoloaderProviderInterface {
 //		 'Zend\Db\Adapter\Adapter'
                 //                  => 'Zend\Db\Adapter\AdapterServiceFactory',
 
-                'SanAuth\Model\MyAuthStorage' => function ($sm) {
-                    return new \SanAuth\Model\MyAuthStorage('zf_tutorial');
+                'Auth\Model\MyAuthStorage' => function ($sm) {
+                    return new \Auth\Model\MyAuthStorage('AnnieHaak');
                 },
                 'AuthService' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
@@ -52,7 +52,7 @@ class Module implements AutoloaderProviderInterface {
 
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbTableAuthAdapter);
-                    $authService->setStorage($sm->get('SanAuth\Model\MyAuthStorage'));
+                    $authService->setStorage($sm->get('Auth\Model\MyAuthStorage'));
 
                     return $authService;
                 },

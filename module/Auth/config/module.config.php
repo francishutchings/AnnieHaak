@@ -3,32 +3,31 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'SanAuth\Controller\Auth' => 'SanAuth\Controller\AuthController',
-            'SanAuth\Controller\Success' => 'SanAuth\Controller\SuccessController'
+            'Auth\Controller\Auth' => 'Auth\Controller\AuthController',
+            'Auth\Controller\Success' => 'Auth\Controller\SuccessController'
         ),
     ),
     'router' => array(
         'routes' => array(
-
             'login' => array(
-                'type'    => 'Literal',
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/auth',
+                    'route' => '/auth',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'SanAuth\Controller',
-                        'controller'    => 'Auth',
-                        'action'        => 'login',
+                        '__NAMESPACE__' => 'Auth\Controller',
+                        'controller' => 'Auth',
+                        'action' => 'login',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'process' => array(
-                        'type'    => 'Segment',
+                        'type' => 'Segment',
                         'options' => array(
-                            'route'    => '/[:action]',
+                            'route' => '/[:action]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
                             ),
@@ -36,26 +35,25 @@ return array(
                     ),
                 ),
             ),
-
             'success' => array(
-                'type'    => 'Literal',
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/success',
+                    'route' => '/success',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'SanAuth\Controller',
-                        'controller'    => 'Success',
-                        'action'        => 'index',
+                        '__NAMESPACE__' => 'Auth\Controller',
+                        'controller' => 'Success',
+                        'action' => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type'    => 'Segment',
+                        'type' => 'Segment',
                         'options' => array(
-                            'route'    => '/[:action]',
+                            'route' => '/[:action]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
                             ),
@@ -63,26 +61,25 @@ return array(
                     ),
                 ),
             ),
-
             'home' => array(
-                'type'    => 'Literal',
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/home',
+                    'route' => '/home',
                     'defaults' => array(
-                        '__NAMESPACE__' => 'Application\Controller',
-                        'controller'    => 'index',
-                        'action'        => 'index',
+                        '__NAMESPACE__' => 'AnnieHaak\Controller',
+                        'controller' => 'index',
+                        'action' => 'index',
                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type'    => 'Segment',
+                        'type' => 'Segment',
                         'options' => array(
-                            'route'    => '/[:action]',
+                            'route' => '/[:action]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
                             ),
@@ -90,12 +87,11 @@ return array(
                     ),
                 ),
             ),
-            
         ),
     ),
     'view_manager' => array(
         'template_path_stack' => array(
-            'SanAuth' => __DIR__ . '/../view',
+            'Auth' => __DIR__ . '/../view',
         ),
     ),
 );

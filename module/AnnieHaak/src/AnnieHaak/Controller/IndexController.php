@@ -8,11 +8,11 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Application\Controller;
+namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use SanAuth\Controller\AuthController;
+use Auth\Controller\AuthController;
 
 class IndexController extends AbstractActionController {
 

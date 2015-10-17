@@ -8,12 +8,12 @@
  * @license   http://framework.zend.com/license/new-bsd New BSD License
  */
 
-namespace Application;
+namespace AnnieHaak;
 
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Application\Model\ProductTypes;
-use Application\Model\ProductTypesTable;
+use AnnieHaak\Model\ProductTypes;
+use AnnieHaak\Model\ProductTypesTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -43,7 +43,7 @@ class Module {
     public function getServiceConfig() {
         return array(
             'factories' => array(
-                'Application\Model\ProductTypesTable' => function($sm) {
+                'AnnieHaak\Model\ProductTypesTable' => function($sm) {
                     $tableGateway = $sm->get('ProductTypesGateway');
                     $table = new ProductTypesTable($tableGateway);
                     return $table;
