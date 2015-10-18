@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model;
+namespace AnnieHaak\Model;
 
 use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;

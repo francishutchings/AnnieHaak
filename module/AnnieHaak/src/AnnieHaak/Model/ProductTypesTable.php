@@ -1,6 +1,6 @@
 <?php
 
-namespace Application\Model;
+namespace AnnieHaak\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 

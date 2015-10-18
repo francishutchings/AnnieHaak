@@ -12,7 +12,7 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use SanAuth\Controller\AuthController;
+use Auth\Controller\AuthController;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Form\ProductTypesForm;
 
@@ -122,7 +122,7 @@ class ProductTypesController extends AbstractActionController {
     public function getProductTypesTable() {
         if (!$this->productTypesTable) {
             $sm = $this->getServiceLocator();
-            $this->productTypesTable = $sm->get('Application\Model\ProductTypesTable');
+            $this->productTypesTable = $sm->get('AnnieHaak\Model\ProductTypesTable');
         }
         return $this->productTypesTable;
     }

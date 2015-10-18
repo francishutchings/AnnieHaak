@@ -25,34 +25,4 @@ return array(
             => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
     ),
-    'navigation' => array(
-        'default' => array(
-            array(
-                'label' => 'Home',
-                'route' => 'home',
-            ),
-            array(
-                'label' => 'Product Types',
-                'route' => 'productTypes',
-                'pages' => array(
-                    array(
-                        'label' => 'List',
-                        'route' => 'home',
-                    ),
-                    array(
-                        'label' => 'Add',
-                        'route' => 'home',
-                    ),
-                    array(
-                        'label' => 'Edit',
-                        'route' => 'home',
-                    ),
-                ),
-            ),
-            array(
-                'label' => 'Options',
-                'route' => 'home',
-            ),
-        )
-    )
 );

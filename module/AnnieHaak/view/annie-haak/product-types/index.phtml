@@ -7,20 +7,26 @@ $this->headTitle($title);
     <a href="<?php echo $this->url('productTypes', array('action' => 'add')); ?>">Add new product type</a>
 </p>
 
-<table class="table">
-    <tr>
-        <th>Product Name</th>
-        <th>&nbsp;</th>
-    </tr>
+<table class="table table-striped table-hover ">
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th colspan="2">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
     <?php foreach ($productTypes as $productType) : ?>
         <tr>
             <td><?php echo $this->escapeHtml($productType->ProductTypeName); ?></td>
             <td>
                 <a href="<?php echo $this->url('productTypes', array('action' => 'edit', 'id' => $productType->ProductTypeId));
         ?>">Edit</a>
+            </td>
+            <td>
                 <a href="<?php echo $this->url('productTypes', array('action' => 'delete', 'id' => $productType->ProductTypeId));
         ?>">Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>
+    </tbody>
 </table>

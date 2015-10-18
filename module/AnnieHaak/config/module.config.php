@@ -33,6 +33,16 @@ return array(
                     ),
                 ),
             ),
+            'auth' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/auth',
+                    'defaults' => array(
+                        'controller' => 'Auth\Controller\Auth',
+                        'action' => 'login',
+                    ),
+                ),
+            ),
             'productTypes' => array(
                 'type' => 'segment',
                 'options' => array(
@@ -47,16 +57,7 @@ return array(
                     ),
                 ),
             ),
-            'auth' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/auth',
-                    'defaults' => array(
-                        'controller' => 'SanAuth\Controller\Auth',
-                        'action' => 'login',
-                    ),
-                ),
-            ),
+
             // The following is a route to simplify getting started creating
             // new controllers and actions without needing to create a new
             // module. Simply drop new controllers in, and you can access them
