@@ -30,8 +30,7 @@ return array(
         //    
         //),
         'config_glob_paths' => array(
-            'F:\Ampps\www\AnnieHaak\config\autoload\{,*.}{global,local}.php',
-            
+            'config/autoload/{{,*.}global,{,*.}local}.php',
         ),
         //
         // Whether or not to enable a configuration cache.

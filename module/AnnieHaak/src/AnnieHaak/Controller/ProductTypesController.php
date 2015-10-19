@@ -22,12 +22,6 @@ class ProductTypesController extends AbstractActionController {
 
     public function indexAction() {
 
-        $auth = AuthController::getAuthService()->hasIdentity();
-
-        if (!$auth) {
-            $this->redirect()->toRoute('auth');
-        }
-
         return new ViewModel(array(
             'productTypes' => $this->getProductTypesTable()->fetchAll(),
         ));
