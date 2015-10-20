@@ -17,16 +17,29 @@
 
             <ul class="nav navbar-nav navbar-left">
 
-<!-- View and Edit -->
+<!-- Admin Users -->
 <!-- //////////// -->
                 <?php
-                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/view-edit') {
+                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/admin-users') {
                     echo '<li class="dropdown active">';
                 } else {
                     echo '<li class="dropdown">';
                 }
                 ?>
-                    <a href="/view-edit">View &amp; Edit</a>
+                    <a href="/view-edit">Admin Users</a>
+                </li>
+
+
+<!-- Create / Add -->
+<!-- //////////// -->
+                <?php
+                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/new-products') {
+                    echo '<li class="dropdown active">';
+                } else {
+                    echo '<li class="dropdown">';
+                }
+                ?>
+                    <a href="/create-add">Create &amp; Add</a>
                 </li>
 
 
@@ -43,19 +56,19 @@
                 </li>
 
                 
-<!-- Create / Add -->
+<!-- View and Edit -->
 <!-- //////////// -->
                 <?php
-                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/new-products') {
+                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/view-edit') {
                     echo '<li class="dropdown active">';
                 } else {
                     echo '<li class="dropdown">';
                 }
                 ?>
-                    <a href="/create-add">Create &amp; Add</a>
+                    <a href="/view-edit">View &amp; Edit</a>
                 </li>
-
                 
+
 <!-- Search -->
 <!-- //////////// -->
                 <form class="navbar-form navbar-left" role="search">
