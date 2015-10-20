@@ -26,6 +26,14 @@ echo $this->form()->openTag($form);
 
 echo '<fieldset><legend>Login</legend>';
 
+echo    '<div class="form-group"><label class="col-lg-2 control-label" for="firstname">Firstname:</label><div class="col-lg-10">';
+echo    $this->formRow($form->get('firstname'));
+echo    '</div></div>';
+
+echo    '<div class="form-group"><label class="col-lg-2 control-label" for="lastname">Lastname:</label><div class="col-lg-10">';
+echo    $this->formRow($form->get('lastname'));
+echo    '</div></div>';
+
 echo    '<div class="form-group"><label class="col-lg-2 control-label" for="username">Username:</label><div class="col-lg-10">';
 echo    $this->formRow($form->get('username'));
 echo    '</div></div>';
@@ -34,15 +42,12 @@ echo    '<div class="form-group"><label class="col-lg-2 control-label" for="pass
 echo    $this->formRow($form->get('password'));
 echo    '</div></div>';
 
-echo    '<div class="form-group"><label class="col-lg-2 control-label" for="rememberme">Remember me?</label><div class="col-lg-10">';
-echo    $this->formRow($form->get('rememberme'));
-echo    '</div></div>';
-
 echo    '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">';
 echo    $this->formSubmit($form->get('submit'));
 echo    '</div></div>';
 
 echo '</fieldset>';
+
 
 echo $this->form()->closeTag();
 

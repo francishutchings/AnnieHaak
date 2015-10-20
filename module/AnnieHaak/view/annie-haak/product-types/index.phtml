@@ -3,9 +3,8 @@ $title = 'Product Types';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
-<p>
-    <a href="<?php echo $this->url('productTypes', array('action' => 'add')); ?>">Add new product type</a>
-</p>
+
+<a class="btn btn-success" href="<?php echo $this->url('view-edit/product-types', array('action' => 'add')); ?>"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add new product type</a>
 
 <table class="table table-striped table-hover ">
     <thead>
@@ -17,14 +16,18 @@ $this->headTitle($title);
     <tbody>
     <?php foreach ($productTypes as $productType) : ?>
         <tr>
-            <td><?php echo $this->escapeHtml($productType->ProductTypeName); ?></td>
             <td>
-                <a href="<?php echo $this->url('productTypes', array('action' => 'edit', 'id' => $productType->ProductTypeId));
-        ?>">Edit</a>
+                <h4>
+                <?php echo $this->escapeHtml($productType->ProductTypeName); ?>
+                </h4>
             </td>
             <td>
-                <a href="<?php echo $this->url('productTypes', array('action' => 'delete', 'id' => $productType->ProductTypeId));
-        ?>">Delete</a>
+                <a class="btn btn-warning" href="<?php echo $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $productType->ProductTypeId));
+                ?>"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
+            </td>
+            <td>
+                <a class="btn btn-danger" href="<?php echo $this->url('view-edit/product-types', array('action' => 'delete', 'id' => $productType->ProductTypeId));
+                ?>"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>
             </td>
         </tr>
     <?php endforeach; ?>

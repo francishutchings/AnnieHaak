@@ -1,14 +1,31 @@
 <?php
-$title = 'Add new Product Type';
-$this->headTitle($title);
-?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
-<?php
-$form->setAttribute('action', $this->url('productTypes', array('action' => 'add')));
+
+$form->setAttribute('action', $this->url('view-edit/product-types', array('action' => 'add')));
+$form->setAttributes(array('class'  => 'form-horizontal'));
 $form->prepare();
 
+echo '<div class="well bs-component">';
+
 echo $this->form()->openTag($form);
+
+echo '<fieldset><legend>Add Product Type</legend>';
+
 echo $this->formHidden($form->get('ProductTypeId'));
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="ProductTypeName">Product Type Name:</label><div class="col-lg-10">';
 echo $this->formRow($form->get('ProductTypeName'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/view-edit/product-types" type="reset" class="btn btn-default">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-success');
 echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
+
+echo '</fieldset>';
+
 echo $this->form()->closeTag();
+
+echo '</div>';

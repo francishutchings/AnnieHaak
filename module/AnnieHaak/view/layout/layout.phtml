@@ -31,60 +31,18 @@
     </head>
     <body>
 
-        <nav class="navbar navbar-default " role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
-                        <?php echo $this->translate('Annie Haak Admin') ?>
-                    </a>
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                </div>
-                <div class="collapse navbar-collapse navbar-menubuilder">
-                    <ul class="nav navbar-nav navbar-left">
-                        <?php
-                        if ($_SERVER['REQUEST_URI'] == '/' or $_SERVER['REQUEST_URI'] == '/home') {
-                            echo '<li class="active">';
-                        } else {
-                            echo '<li class="">';
-                        }
-                        ?>
-                        <a href="/">Home</a>
-                        </li>
-                        <?php
-                        if ($_SERVER['REQUEST_URI'] == '/productTypes') {
-                            echo '<li class="active">';
-                        } else {
-                            echo '<li class = "">';
-                        }
-                        ?>
-                        <a href="/productTypes">Products</a>
-                        </li>
-                        <?php
-                        if ($_SERVER['REQUEST_URI'] == '/auth') {
-                            echo '<li class="active">';
-                        } else {
-                            echo '<li class="">';
-                        }
-                        ?>
-                        <?php
-                            if(!(isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))){
-                                echo '<a href="/auth">Login</a>';
-                            }
-                            else
-                            {
-                                echo '<a href="/auth/logout">Logout</a>';
-                            }
-                        ?>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>           
+        <!-- Navigation -->
+        <?php 
+            echo $this->partial('annie-haak/partial/menu.phtml');
+        ?>
+        <!--/ Navigation -->
+
+        <!-- Breadcrumbs
+        <?php 
+            echo $this->partial('annie-haak/partial/breadcrumbs.phtml');
+        ?> -->
+        
+        <!--/ Breadcrumbs -->
 
         <div class="container" id="container">
             <?php echo $this->content; ?>
@@ -92,7 +50,7 @@
             
         <footer class="footer">
             <div class="container">
-                <p class="text-muted">&copy; 2005 - <?php echo date('Y') ?> by Annie Haak. <?php echo $this->translate('All rights reserved.') ?></p>
+                <p class="text-muted">&copy; 2015 - <?php echo date('Y') ?> by Annie Haak. <?php echo $this->translate('All rights reserved.') ?></p>
             </div>
         </footer>
 

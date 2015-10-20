@@ -15,19 +15,23 @@ class ProductTypesForm extends Form {
             'name' => 'ProductTypeId',
             'type' => 'Hidden',
         ));
+        
         $this->add(array(
             'name' => 'ProductTypeName',
             'type' => 'Text',
-            'options' => array(
-                'label' => 'Product Type Name: ',
+            'attributes' => array(
+                'id' => 'ProductTypeName',
+                'class' => 'form-control',
             ),
         ));
+        
         $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'submitbutton',
+                'class' => 'btn btn-default',
             ),
         ));
     }

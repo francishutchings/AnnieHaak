@@ -1,0 +1,89 @@
+<nav class="navbar navbar-default " role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
+                <?php echo $this->translate('Annie Haak Admin') ?>
+            </a>
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse navbar-menubuilder">
+
+        <?php if((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))): ?>
+
+            <ul class="nav navbar-nav navbar-left">
+
+<!-- View and Edit -->
+<!-- //////////// -->
+                <?php
+                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/view-edit') {
+                    echo '<li class="dropdown active">';
+                } else {
+                    echo '<li class="dropdown">';
+                }
+                ?>
+                    <a href="/view-edit">View &amp; Edit</a>
+                </li>
+
+
+<!-- Produce Reports -->
+<!-- //////////// -->
+                <?php
+                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/reports') {
+                    echo '<li class="dropdown active">';
+                } else {
+                    echo '<li class="dropdown">';
+                }
+                ?>
+                    <a href="/reports">Reports</a>
+                </li>
+
+                
+<!-- Create / Add -->
+<!-- //////////// -->
+                <?php
+                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/new-products') {
+                    echo '<li class="dropdown active">';
+                } else {
+                    echo '<li class="dropdown">';
+                }
+                ?>
+                    <a href="/create-add">Create &amp; Add</a>
+                </li>
+
+                
+<!-- Search -->
+<!-- //////////// -->
+                <form class="navbar-form navbar-left" role="search">
+                  <div class="form-group">
+                    <input class="form-control" placeholder="Search" type="text">
+                  </div>
+                  <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+
+
+            </ul>
+
+            <!-- Login/Logout -->
+            <ul class="nav navbar-nav navbar-right">
+                <?php
+                if ($_SERVER['REQUEST_URI'] == '/auth') {
+                    echo '<li class="active">';
+                } else {
+                    echo '<li class="">';
+                }
+                ?>
+                    <a href="/auth/logout"><span class="glyphicon glyphicon-off"></span> Logout</a>
+                </li>
+            </ul>
+            <!--/ Login/Logout -->
+
+<?php endif; ?>
+
+        </div>
+    </div>
+</nav>

@@ -1,13 +1,5 @@
 <?php
 
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace AnnieHaak;
 
 return array(
@@ -17,16 +9,6 @@ return array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
                     'route' => '/',
-                    'defaults' => array(
-                        'controller' => 'AnnieHaak\Controller\Index',
-                        'action' => 'index',
-                    ),
-                ),
-            ),
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
-                'options' => array(
-                    'route' => '/home',
                     'defaults' => array(
                         'controller' => 'AnnieHaak\Controller\Index',
                         'action' => 'index',
@@ -43,16 +25,69 @@ return array(
                     ),
                 ),
             ),
-            'productTypes' => array(
+            'view-edit' => array(
+                'type' => 'literal',
+                'options' => array(
+                    'route' => '/view-edit',
+                    'defaults' => array(
+                        'controller' => 'AnnieHaak\Controller\ViewEdit',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'product-types' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                        'route' => '/product-types[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\ProductTypes',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                             )
+                         ),
+                    ),
+                ),                   
+            ),
+            'reports' => array(
+                'type' => 'literal',
+                'options' => array(
+                    'route' => '/reports',
+                    'defaults' => array(
+                        'controller' => 'AnnieHaak\Controller\Reports',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'dynamic-reports' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                        'route' => '/dynamic-reports[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\DynamicReports',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                             )
+                         ),
+                    ),
+                ),                   
+                
+            ),
+            'create-add' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/productTypes[/:action][/:id]',
+                    'route' => '/create-add[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'AnnieHaak\Controller\ProductTypes',
+                        'controller' => 'AnnieHaak\Controller\CreateAdd',
                         'action' => 'index',
                     ),
                 ),
@@ -116,7 +151,11 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'AnnieHaak\Controller\Index' => Controller\IndexController::class,
-            'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class
+            'AnnieHaak\Controller\ViewEdit' => Controller\ViewEditController::class,
+            'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
+            'AnnieHaak\Controller\CreateAdd' => Controller\CreateAddController::class,
+            'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
+            'AnnieHaak\Controller\DynamicReports' => Controller\DynamicReportsController::class
         ),
     ),
     'view_manager' => array(

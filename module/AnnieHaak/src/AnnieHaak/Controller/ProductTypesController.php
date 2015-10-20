@@ -1,18 +1,10 @@
 <?php
 
-/**
- * Zend Framework (http://framework.zend.com/)
- *
- * @link      http://github.com/zendframework/ZendSkeletonApplication for the canonical source repository
- * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
- * @license   http://framework.zend.com/license/new-bsd New BSD License
- */
-
 namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Auth\Controller\AuthController;
+use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Form\ProductTypesForm;
 
@@ -42,7 +34,7 @@ class ProductTypesController extends AbstractActionController {
                 $this->getProductTypesTable()->saveProductTypes($productTypes);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('productTypes');
+                return $this->redirect()->toRoute('view-edit/product-types');
             }
         }
         return array('form' => $form);
@@ -51,7 +43,7 @@ class ProductTypesController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('productTypes', array(
+            return $this->redirect()->toRoute('view-edit/product-types', array(
                         'action' => 'add'
             ));
         }
@@ -60,7 +52,7 @@ class ProductTypesController extends AbstractActionController {
         try {
             $productTypes = $this->getProductTypesTable()->getProductTypes($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('productTypes', array(
+            return $this->redirect()->toRoute('view-edit/product-types', array(
                         'action' => 'index'
             ));
         }
@@ -78,7 +70,7 @@ class ProductTypesController extends AbstractActionController {
                 $this->getProductTypesTable()->saveProductTypes($productTypes);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('productTypes');
+                return $this->redirect()->toRoute('view-edit/product-types');
             }
         }
 
@@ -91,7 +83,7 @@ class ProductTypesController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('productTypes');
+            return $this->redirect()->toRoute('view-edit/product-types');
         }
 
         $request = $this->getRequest();
@@ -104,7 +96,7 @@ class ProductTypesController extends AbstractActionController {
             }
 
             // Redirect to list of productTypes
-            return $this->redirect()->toRoute('productTypes');
+            return $this->redirect()->toRoute('view-edit/product-types');
         }
 
         return array(

@@ -8,7 +8,7 @@ use Zend\Form\Annotation;
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ObjectProperty")
  * @Annotation\Name("LoginForm")
  */
-class User
+class UserLogin
 {
     /**
      * @Annotation\Exclude()

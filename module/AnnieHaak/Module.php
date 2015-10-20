@@ -22,7 +22,15 @@ class Module {
                     $routeMatch = $e->getRouteMatch();
                     $sm = $app->getServiceManager();
                     $auth = $sm->get('AuthService');
-                    if (!$auth->hasIdentity() && $routeMatch->getMatchedRouteName() != 'login') {
+
+#var_dump($routeMatch->getMatchedRouteName());
+#echo '<hr>';
+#var_dump(strpos($routeMatch->getMatchedRouteName(),'login'));
+#exit();
+
+                    if (!$auth->hasIdentity() && strpos($routeMatch->getMatchedRouteName(),'login') === FALSE) {
+#var_dump(strpos($routeMatch->getMatchedRouteName(),'login') === FALSE);
+#exit();
                         $response = $e->getResponse();
                         $response->getHeaders()->addHeaderLine(
                                 'Location', $e->getRouter()->assemble(
@@ -56,7 +64,7 @@ class Module {
             'factories' => array(
                 'AuthService' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'users', 'user_name', 'pass_word', 'MD5(?)');
+                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'users', 'username', 'password', 'MD5(?)');
 
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbTableAuthAdapter);
