@@ -21,9 +21,9 @@
 <!-- //////////// -->
                 <?php
                 if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/admin-users') {
-                    echo '<li class="dropdown active">';
+                    echo '<li class="active">';
                 } else {
-                    echo '<li class="dropdown">';
+                    echo '<li class="">';
                 }
                 ?>
                     <a href="/view-edit">Admin Users</a>
@@ -34,9 +34,9 @@
 <!-- //////////// -->
                 <?php
                 if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/new-products') {
-                    echo '<li class="dropdown active">';
+                    echo '<li class="active">';
                 } else {
-                    echo '<li class="dropdown">';
+                    echo '<li class="">';
                 }
                 ?>
                     <a href="/create-add">Create &amp; Add</a>
@@ -47,9 +47,9 @@
 <!-- //////////// -->
                 <?php
                 if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/reports') {
-                    echo '<li class="dropdown active">';
+                    echo '<li class="active">';
                 } else {
-                    echo '<li class="dropdown">';
+                    echo '<li class="">';
                 }
                 ?>
                     <a href="/reports">Reports</a>
@@ -60,9 +60,9 @@
 <!-- //////////// -->
                 <?php
                 if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/view-edit') {
-                    echo '<li class="dropdown active">';
+                    echo '<li class="active">';
                 } else {
-                    echo '<li class="dropdown">';
+                    echo '<li class="">';
                 }
                 ?>
                     <a href="/view-edit">View &amp; Edit</a>
@@ -70,14 +70,14 @@
                 
 
 <!-- Search -->
-<!-- //////////// -->
+<!-- ////////////
                 <form class="navbar-form navbar-left" role="search">
                   <div class="form-group">
                     <input class="form-control" placeholder="Search" type="text">
                   </div>
                   <button type="submit" class="btn btn-default">Submit</button>
                 </form>
-
+ -->
 
             </ul>
 
