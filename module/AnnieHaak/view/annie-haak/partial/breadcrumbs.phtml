@@ -1,23 +1,36 @@
-<?php $container = $this->navigation()->breadcrumbs()  ?>
-<?php /* @var $container \Zend\View\Helper\Navigation\Breadcrumbs */ ?>
-<?php $navigation = $container->getContainer() ?>
-<?php /* @var $navigation \Zend\Navigation\Navigation */ ?>
-<ul class="breadcrumb">
-    <li><a href="<?php echo $this->url('home') ?>">Home</a> <span class="divider">/</span></li>
-    <?php $active = $container->findActive($navigation) ?>
-    <?php foreach($this->pages as $page): ?>
-        <?php /* @var $page \Zend\Navigation\Page\Mvc */ ?>
-        <?php if( ! $page->isActive()): ?>
-            <li>
-                <a href="<?php echo $page->getHref() ?>"><?php echo $page->getLabel() ?></a>
-                <span class="divider">/</span>
-            </li>
-        <?php else: ?>
-            <li class="active">
-                <?php if($container->getLinkLast()): ?><a href="<?php echo $page->getHref() ?>"><?php endif ?>
-                <?php echo $page->getLabel() ?>
-                <?php if($container->getLinkLast()): ?><a href="<?php echo $page->getHref() ?>"><?php endif ?>
-            </li>
-        <?php endif ?>
-    <?php endforeach ?>
-</ul>
+<?php
+
+function breadcrumbs() {
+
+    $bc = '<ul class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">';
+    $site = 'http://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
+    $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
+    $count = count($crumbs);
+
+    if($count == 0) {
+        $bc .= '<li class="active" typeof="v:Breadcrumb">Home</li>';
+    } else {
+        $bc .= '<li typeof="v:Breadcrumb"><a title="Home" href="' . $site . '" rel="v:url" property="v:title">Home</a></li>';
+    }
+
+    if ($count > 3) {
+        $count = 3;
+    }
+
+    for ($i = 1; $i <= $count; $i++) {
+        $link = ucwords(str_replace(array(".php", "-", "_"), array("", " ", " "), $crumbs[$i]));
+
+        $site .= '/' . $crumbs[$i];
+
+        if ($i == $count) {
+            $bc .= '<li class=""active typeof="v:Breadcrumb">' . $link . '</li>';
+        } else {
+            $bc .= '<li typeof="v:Breadcrumb"><a title="' . $link . '" href="' . $site . '" rel="v:url" property="v:title">' . $link . '</a></li>';
+        }
+    }
+    $bc .= '</ul>';
+
+    return $bc;
+}
+
+echo breadcrumbs();
