@@ -4,7 +4,7 @@ $form->setAttribute('action', $this->url('view-edit/product-types', array('actio
 $form->setAttributes(array('class'  => 'form-horizontal'));
 $form->prepare();
 
-echo '<div class="well bs-component">';
+echo '<div class="col-lg-10"><div class="well bs-component">';
 
 echo $this->form()->openTag($form);
 
@@ -28,4 +28,4 @@ echo '</fieldset>';
 
 echo $this->form()->closeTag();
 
-echo '</div>';
+echo '</div></div>';

@@ -13,58 +13,62 @@
         </div>
         <div class="collapse navbar-collapse navbar-menubuilder">
 
-        <?php if((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))): ?>
+        <?php 
+            $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
 
-            <ul class="nav navbar-nav navbar-left">
+            if((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))): 
+        ?>
+
+            <ul class="nav nav-pills">
 
 <!-- Admin Users -->
 <!-- //////////// -->
-                <?php
-                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/admin-users') {
+            <?php
+                if(array_search('admin-users', $crumbs)) {
                     echo '<li class="active">';
                 } else {
                     echo '<li class="">';
                 }
-                ?>
-                    <a href="/view-edit">Admin Users</a>
+            ?>
+                    <a href="/admin-users">Admin Users</a>
                 </li>
 
 
 <!-- Create / Add -->
 <!-- //////////// -->
-                <?php
-                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/new-products') {
+            <?php
+                if(array_search('create-add', $crumbs)) {
                     echo '<li class="active">';
                 } else {
                     echo '<li class="">';
                 }
-                ?>
+            ?>
                     <a href="/create-add">Create &amp; Add</a>
                 </li>
 
 
 <!-- Produce Reports -->
 <!-- //////////// -->
-                <?php
-                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/reports') {
+            <?php
+                if(array_search('reports', $crumbs)) {
                     echo '<li class="active">';
                 } else {
                     echo '<li class="">';
                 }
-                ?>
+            ?>
                     <a href="/reports">Reports</a>
                 </li>
 
                 
 <!-- View and Edit -->
 <!-- //////////// -->
-                <?php
-                if(filter_input(INPUT_SERVER, 'REQUEST_URI', FILTER_SANITIZE_STRING) == '/view-edit') {
+            <?php
+                if(array_search('view-edit', $crumbs)) {
                     echo '<li class="active">';
                 } else {
                     echo '<li class="">';
                 }
-                ?>
+            ?>
                     <a href="/view-edit">View &amp; Edit</a>
                 </li>
                 

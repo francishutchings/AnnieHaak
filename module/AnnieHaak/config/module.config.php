@@ -16,7 +16,7 @@ return array(
                 ),
             ),
             'auth' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'literal',
                 'options' => array(
                     'route' => '/auth',
                     'defaults' => array(
@@ -25,6 +25,34 @@ return array(
                     ),
                 ),
             ),
+            
+            'admin-users' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/admin-users',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Auth\Controller',
+                        'controller' => 'Users',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'process' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/[:action]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+            
             'view-edit' => array(
                 'type' => 'literal',
                 'options' => array(

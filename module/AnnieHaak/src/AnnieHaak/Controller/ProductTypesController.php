@@ -48,7 +48,6 @@ class ProductTypesController extends AbstractActionController {
             ));
         }
 
-
         try {
             $productTypes = $this->getProductTypesTable()->getProductTypes($id);
         } catch (\Exception $ex) {

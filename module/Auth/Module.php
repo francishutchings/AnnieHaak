@@ -5,6 +5,11 @@ namespace Auth;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Authentication\Adapter\DbTable as DbTableAuthAdapter;
+use Auth\Model\Users;
+use Auth\Model\UsersTable;
+use Zend\Db\ResultSet\ResultSet;
+use Zend\Db\TableGateway\TableGateway;
+
 
 class Module implements AutoloaderProviderInterface {
 
@@ -56,6 +61,19 @@ class Module implements AutoloaderProviderInterface {
 
                     return $authService;
                 },
+                        
+                 'Auth\Model\UsersTable' =>  function($sm) {
+                     $tableGateway = $sm->get('UsersTableGateway');
+                     $table = new UsersTable($tableGateway);
+                     return $table;
+                 },
+                 'UsersTableGateway' => function ($sm) {
+                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                     $resultSetPrototype = new ResultSet();
+                     $resultSetPrototype->setArrayObjectPrototype(new Users());
+                     return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
+                 },
+
             ),
         );
     }

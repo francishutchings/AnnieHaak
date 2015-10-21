@@ -111,14 +111,4 @@ class AuthController extends AbstractActionController {
         return $this->redirect()->toRoute('login');
     }
 
-    public function newuserForm() {
-        $form = $this->getForm();
-        $messages = $this->flashmessenger()->setNamespace('info')->addMessage("Please fill out all fields.");
-
-        return array(
-            'form' => $form,
-            'messages' => $messages
-        );
-    }
-
 }

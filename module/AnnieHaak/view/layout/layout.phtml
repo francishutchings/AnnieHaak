@@ -38,10 +38,11 @@
         <!--/ Navigation -->
 
         <!-- Breadcrumbs -->
-        <?php 
-            echo $this->partial('annie-haak/partial/breadcrumbs.phtml');
+        <?php if((isset($_SESSION["AnnieHaak"]['storage']['loggedIn'])))
+        {
+                echo $this->partial('annie-haak/partial/breadcrumbs.phtml');
+        }
         ?>
-        
         <!--/ Breadcrumbs -->
 
         <div class="container" id="container">

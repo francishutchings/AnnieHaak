@@ -6,7 +6,7 @@ function breadcrumbs() {
     $site = 'http://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
     $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
     $count = count($crumbs);
-
+    
     if($count == 0) {
         $bc .= '<li class="active" typeof="v:Breadcrumb">Home</li>';
     } else {
