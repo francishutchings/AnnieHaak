@@ -27,14 +27,19 @@ return array(
             ),
             
             'admin-users' => array(
-                'type' => 'Literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin-users',
+                    'route' => '/admin-users[/:action][/:id]',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Auth\Controller',
                         'controller' => 'Users',
                         'action' => 'index',
                     ),
+                    'constraints' => array(
+                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[1-9]\d*',
+                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(

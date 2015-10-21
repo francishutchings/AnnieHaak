@@ -4,7 +4,7 @@
 
 <div class="col-lg-8">
 
-    <a class="btn btn-success" href="admin-users/add">
+    <a class="btn btn-success" href="/admin-users/add">
         <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add new user
     </a>
 
@@ -27,12 +27,14 @@
                     </h4>
                 </td>
                 <td>
-                    <a class="btn btn-warning" href="<?php echo $this->url('admin-users', array('action' => 'edit', 'id' => $user->id));
-                    ?>"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
+                    <a class="btn btn-warning" href="/admin-users/edit/<?php echo $user->id; ?>">
+                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+                    </a>
                 </td>
                 <td>
-                    <a class="btn btn-danger" href="<?php echo $this->url('admin-users', array('action' => 'delete', 'id' => $user->id));
-                    ?>"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>
+                    <a class="btn btn-danger" href="/admin-users/delete/<?php echo $user->id;?>">
+                        <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete
+                    </a>
                 </td>
             </tr>
         <?php endforeach; ?>

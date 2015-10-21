@@ -19,7 +19,7 @@
             if((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))): 
         ?>
 
-            <ul class="nav nav-pills">
+            <ul class="nav nav-pills navbar-left">
 
 <!-- Admin Users -->
 <!-- //////////// -->
@@ -86,14 +86,8 @@
             </ul>
 
             <!-- Login/Logout -->
-            <ul class="nav navbar-nav navbar-right">
-                <?php
-                if ($_SERVER['REQUEST_URI'] == '/auth') {
-                    echo '<li class="active">';
-                } else {
-                    echo '<li class="">';
-                }
-                ?>
+            <ul class="nav nav-pills navbar-right">
+                <li class="">
                     <a href="/auth/logout"><span class="glyphicon glyphicon-off"></span> Logout</a>
                 </li>
             </ul>

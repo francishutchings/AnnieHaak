@@ -25,6 +25,10 @@ class Users {
         $this->deleted = (!empty($data['deleted'])) ? $data['deleted'] : null;
     }
 
+    public function getArrayCopy() {
+        return get_object_vars($this);
+    }
+
     public function setInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception("Not used");
     }

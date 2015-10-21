@@ -10,11 +10,14 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-
             'admin-users' => array(
-                'type' => 'Literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin-users',
+                    'route' => '/admin-users[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Auth\Controller',
                         'controller' => 'Users',
@@ -24,7 +27,7 @@ return array(
                 'may_terminate' => true,
                 'child_routes' => array(
                     'process' => array(
-                        'type' => 'Segment',
+                        'type' => 'segment',
                         'options' => array(
                             'route' => '/[:action]',
                             'constraints' => array(
@@ -37,7 +40,6 @@ return array(
                     ),
                 ),
             ),
-
             'login' => array(
                 'type' => 'Literal',
                 'options' => array(

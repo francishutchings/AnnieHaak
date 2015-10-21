@@ -20,18 +20,18 @@ class UsersController extends AbstractActionController {
     public function addAction() {
         $form = new UsersForm();
         $form->get('submit')->setValue('Add');
-/*        
-echo '<pre>';
-var_dump($form);
-echo '</pre>';
-exit();
-*/
+        /*
+          echo '<pre>';
+          var_dump($form);
+          echo '</pre>';
+          exit();
+         */
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $user = new Users();
             $form->setInputFilter($user->getInputFilter());
-            
+
             $form->get('username')->getValidatorChain()->attach(new Validator\EmailAddress());
 
             $form->setData($request->getPost());
@@ -48,11 +48,67 @@ exit();
     }
 
     public function editAction() {
-        
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('admin-users', array(
+                        'action' => 'add'
+            ));
+        }
+
+        try {
+            $album = $this->getAlbumTable()->getUsers($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('admin-users', array(
+                        'action' => 'index'
+            ));
+        }
+
+        $form = new UsersForm();
+        $form->bind($user);
+        $form->get('submit')->setAttribute('value', 'Edit');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($user->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $this->getUsersTable()->saveUsers($user);
+
+                // Redirect to list of albums
+                return $this->redirect()->toRoute('admin-users');
+            }
+        }
+
+        return array(
+            'id' => $id,
+            'form' => $form,
+        );
     }
 
     public function deleteAction() {
-        
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('admin-users');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->getUsersTable()->deleteUsers($id);
+            }
+
+            // Redirect to list of albums
+            return $this->redirect()->toRoute('admin-users');
+        }
+
+        return array(
+            'id' => $id,
+            'album' => $this->getUsersTable()->getUsers($id)
+        );
     }
 
     public function getUsersTable() {

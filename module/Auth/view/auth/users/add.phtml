@@ -1,6 +1,10 @@
+<div class="page-header">
+    <h1>Admin Users</h1>
+</div>
+
 <?php
 
-$form->setAttribute('action', $this->url('admin-users', array('action' => 'add')));
+$form->setAttribute('action', $this->url('admin-users', array('action' => 'edit')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
 
@@ -8,7 +12,7 @@ echo '<div class="col-lg-10"><div class="well bs-component">';
 
 echo $this->form()->openTag($form);
 
-echo '<fieldset><legend>Add New User</legend>';
+echo '<fieldset><legend>Edit User</legend>';
 
 echo $this->formHidden($form->get('id'));
 
@@ -34,7 +38,7 @@ echo '</div></div>';
 
 echo '<div class="form-group">';
 echo '<div class="col-lg-10 col-lg-offset-2">';
-echo '<a href="/view-edit/product-types" type="reset" class="btn btn-default">Cancel</a>';
+echo '<a href="/admin-users" type="reset" class="btn btn-default">Cancel</a>';
 $form->get('submit')->setAttribute('class', 'btn btn-success');
 echo $this->formSubmit($form->get('submit'));
 echo '</div></div>';
@@ -44,13 +48,3 @@ echo '</fieldset>';
 echo $this->form()->closeTag();
 
 echo '</div></div>';
-
-/*
-<div class="form-group">
-    <label for="inputEmail" class="col-lg-2 control-label">Email</label>
-    <div class="col-lg-10">
-        <input class="form-control" id="inputEmail" placeholder="Email" type="text">
-    </div>
-</div>
- * 
- */

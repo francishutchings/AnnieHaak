@@ -2,7 +2,7 @@
     <h1>Product Types</h1>
 </div>
 
-<div class="col-lg-8">
+<div class="col-lg-10">
 
     <a class="btn btn-success" href="<?php echo $this->url('view-edit/product-types', array('action' => 'add')); ?>">
         <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add new product type
@@ -19,9 +19,9 @@
         <?php foreach ($productTypes as $productType) : ?>
             <tr>
                 <td>
-                    <h4>
+                    <h5>
                     <?php echo $this->escapeHtml($productType->ProductTypeName); ?>
-                    </h4>
+                    </h5>
                 </td>
                 <td>
                     <a class="btn btn-warning" href="<?php echo $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $productType->ProductTypeId));
