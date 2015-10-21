@@ -92,6 +92,10 @@ class Users {
                 ),
                 'validators' => array(
                     array(
+                        "name" => "Regex",
+                        "options" => array("pattern" => "([a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$)")
+                    ),
+                    array(
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
@@ -101,6 +105,8 @@ class Users {
                     ),
                 ),
             ));
+            
+
 
             $inputFilter->add(array(
                 'name' => 'password',

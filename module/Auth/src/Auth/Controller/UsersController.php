@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Auth\Model\Users;
 use Auth\Form\UsersForm;
+use Zend\Validator\EmailAddress;
 
 class UsersController extends AbstractActionController {
 
@@ -30,13 +31,19 @@ class UsersController extends AbstractActionController {
         $request = $this->getRequest();
         if ($request->isPost()) {
             $user = new Users();
+            $validator = new EmailAddress();
+            
             $form->setInputFilter($user->getInputFilter());
-
-            $form->get('username')->getValidatorChain()->attach(new Validator\EmailAddress());
-
             $form->setData($request->getPost());
 
-            if ($form->isValid()) {
+            if(!$validator->isValid($form->get('username')->getValue())){
+                foreach ($validator->getMessages() as $message) {
+                    var_dump($message);
+                    $this->flashmessenger()->addMessage($message);
+                }
+                exit();
+            }
+            else if ($form->isValid()) {
                 $user->exchangeArray($form->getData());
                 $this->getUsersTable()->saveUsers($user);
 
@@ -50,13 +57,18 @@ class UsersController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
+            
+            echo '<pre>';
+            print_r($id);
+            echo '</pre>';
+            exit(); 
             return $this->redirect()->toRoute('admin-users', array(
                         'action' => 'add'
             ));
         }
 
         try {
-            $album = $this->getAlbumTable()->getUsers($id);
+            $user = $this->getUsersTable()->getUsers($id);
         } catch (\Exception $ex) {
             return $this->redirect()->toRoute('admin-users', array(
                         'action' => 'index'
@@ -75,7 +87,6 @@ class UsersController extends AbstractActionController {
             if ($form->isValid()) {
                 $this->getUsersTable()->saveUsers($user);
 
-                // Redirect to list of albums
                 return $this->redirect()->toRoute('admin-users');
             }
         }

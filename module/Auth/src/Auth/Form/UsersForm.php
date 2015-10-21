@@ -35,6 +35,7 @@ class UsersForm extends Form {
             'attributes' => array(
                 'id' => 'username',
                 'class' => 'form-control',
+                'placeholder' => 'email address',
             ),
         ));
         $this->add(array(

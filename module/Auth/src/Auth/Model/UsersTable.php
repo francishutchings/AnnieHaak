@@ -34,8 +34,8 @@ namespace Auth\Model;
      {
          $data = array(
              'username' => $user->username,
-             'password' => $user->password,
-             'firtsname' => $user->firtsname,
+             'password' => md5($user->password),
+             'firstname' => $user->firstname,
              'lastname' => $user->lastname,
          );
 

@@ -4,5 +4,50 @@
 
 <?php
 
+$form = $this->form;
+$form->setAttribute('action', $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $this->id,)));
+$form->setAttributes(array('class'  => 'form-horizontal'));
+$form->prepare();
 
+
+echo '<div class="col-lg-10"><div class="well bs-component">';
+
+echo $this->form()->openTag($form);
+
+echo '<fieldset><legend>Edit New User</legend>';
+
+echo $this->formHidden($form->get('id'));
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="firstname">Firstname:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('firstname'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="lastname">Lastname:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('lastname'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="username">Username:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('username'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="password">Password:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('password'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/admin-users" type="reset" class="btn btn-default">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-success');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
+
+echo '</fieldset>';
+
+echo $this->form()->closeTag();
+
+echo '</div></div>';
 

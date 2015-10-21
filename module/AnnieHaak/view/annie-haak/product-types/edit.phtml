@@ -5,15 +5,8 @@
 <?php
 
 $form = $this->form;
-$form->setAttribute('action', $this->url('view-edit/product-types',
-                    array(
-                        'action' => 'edit',
-                        'id' => $this->id,
-                    )
-));
-$form->setAttributes(array(
-    'class'  => 'form-horizontal'
-));
+$form->setAttribute('action', $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $this->id,)));
+$form->setAttributes(array('class'  => 'form-horizontal'));
 $form->prepare();
 
 echo '<div class="col-lg-10"><div class="well bs-component">';
