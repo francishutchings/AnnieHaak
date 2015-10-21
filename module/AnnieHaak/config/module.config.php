@@ -25,26 +25,24 @@ return array(
                     ),
                 ),
             ),
-            
             'admin-users' => array(
                 'type' => 'segment',
                 'options' => array(
                     'route' => '/admin-users[/:action][/:id]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                        'id' => '[0-9]+',
+                    ),
                     'defaults' => array(
                         '__NAMESPACE__' => 'Auth\Controller',
                         'controller' => 'Users',
                         'action' => 'index',
                     ),
-                    'constraints' => array(
-                        'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[1-9]\d*',
-                     ),
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
                     'process' => array(
-                        'type' => 'Segment',
+                        'type' => 'segment',
                         'options' => array(
                             'route' => '/[:action]',
                             'constraints' => array(
@@ -57,7 +55,6 @@ return array(
                     ),
                 ),
             ),
-            
             'view-edit' => array(
                 'type' => 'literal',
                 'options' => array(
@@ -72,17 +69,17 @@ return array(
                     'product-types' => array(
                         'type' => 'segment',
                         'options' => array(
-                        'route' => '/product-types[/:action][/:id]',
+                            'route' => '/product-types[/:action][/:id]',
                             'defaults' => array(
                                 'controller' => 'AnnieHaak\Controller\ProductTypes',
                                 'action' => 'index'
                             ),
                             'constraints' => array(
                                 'id' => '[1-9]\d*'
-                             )
-                         ),
+                            )
+                        ),
                     ),
-                ),                   
+                ),
             ),
             'reports' => array(
                 'type' => 'literal',
@@ -98,18 +95,17 @@ return array(
                     'dynamic-reports' => array(
                         'type' => 'segment',
                         'options' => array(
-                        'route' => '/dynamic-reports[/:action][/:id]',
+                            'route' => '/dynamic-reports[/:action][/:id]',
                             'defaults' => array(
                                 'controller' => 'AnnieHaak\Controller\DynamicReports',
                                 'action' => 'index'
                             ),
                             'constraints' => array(
                                 'id' => '[1-9]\d*'
-                             )
-                         ),
+                            )
+                        ),
                     ),
-                ),                   
-                
+                ),
             ),
             'create-add' => array(
                 'type' => 'segment',
