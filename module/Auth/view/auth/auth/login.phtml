@@ -12,7 +12,8 @@ $form->setAttribute('action', $this->url(
 ));
 $form->prepare();
 
-echo '<div class="well bs-component">';
+
+echo '<div class="col-lg-10"><div class="well bs-component">';
 
 echo $this->form()->openTag($form);
 
@@ -38,4 +39,4 @@ echo '</fieldset>';
 
 echo $this->form()->closeTag();
 
-echo '</div>';
+echo '</div></div>';
