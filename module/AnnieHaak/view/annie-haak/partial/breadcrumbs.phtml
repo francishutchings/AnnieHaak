@@ -8,9 +8,9 @@ function breadcrumbs() {
     $count = count($crumbs);
 
     if ($count == 0) {
-        $bc .= '<li class="active" typeof="v:Breadcrumb">Home</li>';
+        $bc .= '<li class="active" typeof="v:Breadcrumb"><span class="glyphicon glyphicon-home"></span> Home</li>';
     } else {
-        $bc .= '<li typeof="v:Breadcrumb"><a title="Home" href="' . $site . '" rel="v:url" property="v:title">Home</a></li>';
+        $bc .= '<li typeof="v:Breadcrumb"><a title="Home" href="' . $site . '" rel="v:url" property="v:title"><span class="glyphicon glyphicon-home"></span> Home</a></li>';
     }
 
     if (isset($crumbs[1]) && $crumbs[1] == 'admin-users' && $count > 2) {
