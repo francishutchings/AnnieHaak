@@ -1,4 +1,4 @@
-/*  
+/*
     https://bootswatch.com/superhero/
     http://www.w3schools.com/bootstrap/bootstrap_ref_comp_glyphs.asp
 */
@@ -28,4 +28,11 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: 4px 4px;
+}
+
+
+@media (max-width: 767px) {
+    .nav-pills>li {
+        float: none;
+    }
 }
