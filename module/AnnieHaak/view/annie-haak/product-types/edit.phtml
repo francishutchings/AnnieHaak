@@ -1,36 +1,40 @@
-<div class="page-header">
-    <h1>Product Types</h1>
+<div class="col-lg-10">
+
+    <div class="page-header">
+        <h1>Product Types</h1>
+    </div>
+
+    <?php
+    $form = $this->form;
+    $form->setAttribute('action', $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $this->id,)));
+    $form->setAttributes(array('class' => 'form-horizontal'));
+    $form->prepare();
+
+    echo '<div class="well bs-component">';
+
+    echo $this->form()->openTag($form);
+
+    echo '<fieldset><legend>Edit Product type</legend>';
+
+    echo $this->formHidden($form->get('ProductTypeId'));
+
+    echo '<div class="form-group">';
+    echo '<label class="col-lg-2 control-label" for="ProductTypeName">Product Type Name:</label><div class="col-lg-10">';
+    echo $this->formRow($form->get('ProductTypeName'));
+    echo '</div></div>';
+
+    echo '<div class="form-group">';
+    echo '<div class="col-lg-10 col-lg-offset-2">';
+    echo '<a href="/view-edit/product-types" type="reset" class="btn btn-default">Cancel</a>';
+    $form->get('submit')->setAttribute('class', 'btn btn-warning');
+    echo $this->formSubmit($form->get('submit'));
+    echo '</div></div>';
+
+    echo '</fieldset>';
+
+    echo $this->form()->closeTag();
+
+    echo '</div>';
+    ?>
+
 </div>
-
-<?php
-
-$form = $this->form;
-$form->setAttribute('action', $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $this->id,)));
-$form->setAttributes(array('class'  => 'form-horizontal'));
-$form->prepare();
-
-echo '<div class="col-lg-10"><div class="well bs-component">';
-
-echo $this->form()->openTag($form);
-
-echo '<fieldset><legend>Edit Product type</legend>';
-
-echo $this->formHidden($form->get('ProductTypeId'));
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="ProductTypeName">Product Type Name:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('ProductTypeName'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<div class="col-lg-10 col-lg-offset-2">';
-echo '<a href="/view-edit/product-types" type="reset" class="btn btn-default">Cancel</a>';
-$form->get('submit')->setAttribute('class', 'btn btn-warning');
-echo $this->formSubmit($form->get('submit'));
-echo '</div></div>';
-
-echo '</fieldset>';
-
-echo $this->form()->closeTag();
-
-echo '</div></div>';

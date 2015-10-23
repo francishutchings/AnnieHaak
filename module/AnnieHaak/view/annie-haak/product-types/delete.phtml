@@ -1,13 +1,13 @@
-<div class="page-header">
-    <h1>Product Types</h1>
-</div>
-
-<?php
-
-    $url = $this->url('view-edit/product-types', array('action' => 'delete', 'id' => $this->id,));
-?>
-
 <div class="col-lg-10">
+
+    <div class="page-header">
+        <h1>Product Types</h1>
+    </div>
+
+    <?php
+    $url = $this->url('view-edit/product-types', array('action' => 'delete', 'id' => $this->id,));
+    ?>
+
     <div class="well bs-component">
         <form action="<?php echo $url; ?>" method="post">
 
@@ -38,4 +38,5 @@
 
         </form>
     </div>
+
 </div>
