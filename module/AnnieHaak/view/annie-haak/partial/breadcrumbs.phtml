@@ -2,18 +2,20 @@
 
 function breadcrumbs() {
 
-    $bc = '<ul class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">';
+    $bc = '<ul class="breadcrumb col-lg-10" xmlns:v="http://rdf.data-vocabulary.org/#">';
     $site = 'http://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
     $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
     $count = count($crumbs);
-    
-    if($count == 0) {
+
+    if ($count == 0) {
         $bc .= '<li class="active" typeof="v:Breadcrumb">Home</li>';
     } else {
         $bc .= '<li typeof="v:Breadcrumb"><a title="Home" href="' . $site . '" rel="v:url" property="v:title">Home</a></li>';
     }
 
-    if ($count > 3) {
+    if (isset($crumbs[1]) && $crumbs[1] == 'admin-users' && $count > 2) {
+        $count = 2;
+    } else if ($count > 3) {
         $count = 3;
     }
 

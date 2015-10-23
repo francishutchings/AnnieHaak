@@ -1,7 +1,7 @@
 <nav class="navbar navbar-default " role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a class="navbar-brand" href="<?php echo $this->url('home') ?>">
+            <a class="navbar-brand" href="/">
                 <?php echo $this->translate('Annie Haak Admin') ?>
             </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
@@ -13,87 +13,87 @@
         </div>
         <div class="collapse navbar-collapse navbar-menubuilder">
 
-        <?php 
+            <?php
             $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
 
-            if((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))): 
-        ?>
+            if ((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))):
+                ?>
 
-            <ul class="nav nav-pills navbar-left">
+                <ul class="nav nav-pills navbar-left">
 
-<!-- Admin Users -->
-<!-- //////////// -->
-            <?php
-                if(array_search('admin-users', $crumbs)) {
-                    echo '<li class="active">';
-                } else {
-                    echo '<li class="">';
-                }
-            ?>
+                    <!-- Admin Users -->
+                    <!-- //////////// -->
+                    <?php
+                    if (array_search('admin-users', $crumbs)) {
+                        echo '<li class="active">';
+                    } else {
+                        echo '<li class="">';
+                    }
+                    ?>
                     <a href="/admin-users">Admin Users</a>
-                </li>
+                    </li>
 
 
-<!-- Create / Add -->
-<!-- //////////// -->
-            <?php
-                if(array_search('create-add', $crumbs)) {
-                    echo '<li class="active">';
-                } else {
-                    echo '<li class="">';
-                }
-            ?>
+                    <!-- Create / Add -->
+                    <!-- //////////// -->
+                    <?php
+                    if (array_search('create-add', $crumbs)) {
+                        echo '<li class="active">';
+                    } else {
+                        echo '<li class="">';
+                    }
+                    ?>
                     <a href="/create-add">Create &amp; Add</a>
-                </li>
+                    </li>
 
 
-<!-- Produce Reports -->
-<!-- //////////// -->
-            <?php
-                if(array_search('reports', $crumbs)) {
-                    echo '<li class="active">';
-                } else {
-                    echo '<li class="">';
-                }
-            ?>
+                    <!-- Produce Reports -->
+                    <!-- //////////// -->
+                    <?php
+                    if (array_search('reports', $crumbs)) {
+                        echo '<li class="active">';
+                    } else {
+                        echo '<li class="">';
+                    }
+                    ?>
                     <a href="/reports">Reports</a>
-                </li>
+                    </li>
 
-                
-<!-- View and Edit -->
-<!-- //////////// -->
-            <?php
-                if(array_search('view-edit', $crumbs)) {
-                    echo '<li class="active">';
-                } else {
-                    echo '<li class="">';
-                }
-            ?>
+
+                    <!-- View and Edit -->
+                    <!-- //////////// -->
+                    <?php
+                    if (array_search('view-edit', $crumbs)) {
+                        echo '<li class="active">';
+                    } else {
+                        echo '<li class="">';
+                    }
+                    ?>
                     <a href="/view-edit">View &amp; Edit</a>
-                </li>
-                
+                    </li>
 
-<!-- Search -->
-<!-- ////////////
-                <form class="navbar-form navbar-left" role="search">
-                  <div class="form-group">
-                    <input class="form-control" placeholder="Search" type="text">
-                  </div>
-                  <button type="submit" class="btn btn-default">Submit</button>
-                </form>
- -->
 
-            </ul>
+                    <!-- Search -->
+                    <!-- ////////////
+                                    <form class="navbar-form navbar-left" role="search">
+                                      <div class="form-group">
+                                        <input class="form-control" placeholder="Search" type="text">
+                                      </div>
+                                      <button type="submit" class="btn btn-default">Submit</button>
+                                    </form>
+                    -->
 
-            <!-- Login/Logout -->
-            <ul class="nav nav-pills navbar-right">
-                <li class="">
-                    <a href="/auth/logout"><span class="glyphicon glyphicon-off"></span> Logout</a>
-                </li>
-            </ul>
-            <!--/ Login/Logout -->
+                </ul>
 
-<?php endif; ?>
+                <!-- Login/Logout -->
+                <ul class="nav nav-pills navbar-right">
+                    <li class="">
+                        <a href="/auth/logout"><span class="glyphicon glyphicon-off"></span> Logout</a>
+                    </li>
+                </ul>
+                <!--/ Login/Logout -->
+
+            <?php endif; ?>
 
         </div>
     </div>

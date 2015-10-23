@@ -19,31 +19,42 @@ class UsersForm extends Form {
             'attributes' => array(
                 'id' => 'firstname',
                 'class' => 'form-control',
+                'placeholder' => 'Maximum length 30',
+                'maxlength' => '30',
             ),
         ));
         $this->add(array(
             'name' => 'lastname',
-            'type' => 'Text',
+            'type' => 'text',
             'attributes' => array(
                 'id' => 'lastname',
                 'class' => 'form-control',
+                'placeholder' => 'Maximum length 30',
+                'maxlength' => '30',
             ),
         ));
         $this->add(array(
             'name' => 'username',
-            'type' => 'Text',
+            'type' => 'text',
             'attributes' => array(
                 'id' => 'username',
                 'class' => 'form-control',
-                'placeholder' => 'email address',
+                'placeholder' => 'Email address',
+                'autocomplete' => 'off',
+                'pattern' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
+                'maxlength' => '255',
             ),
         ));
         $this->add(array(
             'name' => 'password',
-            'type' => 'Password',
+            'type' => 'password',
             'attributes' => array(
                 'id' => 'password',
                 'class' => 'form-control',
+                'placeholder' => 'Password length minimum 8 maximum 25',
+                'autocomplete' => 'off',
+                'pattern' => '.{5,25}',
+                'maxlength' => '25',
             ),
         ));
         $this->add(array(

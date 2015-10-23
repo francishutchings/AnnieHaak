@@ -21,33 +21,29 @@ class UsersController extends AbstractActionController {
     public function addAction() {
         $form = new UsersForm();
         $form->get('submit')->setValue('Add');
-        /*
-          echo '<pre>';
-          var_dump($form);
-          echo '</pre>';
-          exit();
-         */
 
         $request = $this->getRequest();
         if ($request->isPost()) {
             $user = new Users();
             $validator = new EmailAddress();
-            
+
             $form->setInputFilter($user->getInputFilter());
             $form->setData($request->getPost());
 
-            if(!$validator->isValid($form->get('username')->getValue())){
+            if (!$validator->isValid($form->get('username')->getValue())) {
                 foreach ($validator->getMessages() as $message) {
-                    var_dump($message);
                     $this->flashmessenger()->addMessage($message);
                 }
-                exit();
-            }
-            else if ($form->isValid()) {
+            } else if ($form->isValid()) {
                 $user->exchangeArray($form->getData());
-                $this->getUsersTable()->saveUsers($user);
+                $result = $this->getUsersTable()->saveUsers($user);
 
-                return $this->redirect()->toRoute('admin-users');
+                if ($result['error']) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($result['message']);
+                } else {
+                    $this->flashmessenger()->setNamespace('error')->addMessage('User details saved');
+                    return $this->redirect()->toRoute('admin-users');
+                }
             }
         }
 
@@ -57,11 +53,7 @@ class UsersController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            
-            echo '<pre>';
-            print_r($id);
-            echo '</pre>';
-            exit(); 
+
             return $this->redirect()->toRoute('admin-users', array(
                         'action' => 'add'
             ));
@@ -77,7 +69,7 @@ class UsersController extends AbstractActionController {
 
         $form = new UsersForm();
         $form->bind($user);
-        $form->get('submit')->setAttribute('value', 'Edit');
+        $form->get('submit')->setAttribute('value', 'Update');
 
         $request = $this->getRequest();
         if ($request->isPost()) {

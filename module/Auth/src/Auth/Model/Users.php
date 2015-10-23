@@ -105,8 +105,6 @@ class Users {
                     ),
                 ),
             ));
-            
-
 
             $inputFilter->add(array(
                 'name' => 'password',
@@ -121,7 +119,7 @@ class Users {
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 8,
-                            'max' => 100,
+                            'max' => 25,
                         ),
                     ),
                 ),

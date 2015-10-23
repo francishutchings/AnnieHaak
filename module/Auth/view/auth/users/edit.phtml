@@ -3,10 +3,9 @@
 </div>
 
 <?php
-
 $form = $this->form;
-$form->setAttribute('action', $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $this->id,)));
-$form->setAttributes(array('class'  => 'form-horizontal'));
+$form->setAttribute('action', $this->url('admin-users', array('action' => 'edit', 'id' => $this->id,)));
+$form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
 
 
@@ -33,10 +32,12 @@ echo '<label class="col-lg-2 control-label" for="username">Username:</label><div
 echo $this->formRow($form->get('username'));
 echo '</div></div>';
 
-echo '<div class="form-group">';
+echo '<div id="pwd-container"><div class="form-group">';
 echo '<label class="col-lg-2 control-label" for="password">Password:</label><div class="col-lg-10">';
 echo $this->formRow($form->get('password'));
 echo '</div></div>';
+echo '<div class="col-sm-6 col-sm-offset-2">';
+echo '<div class="pwstrength_viewport_progress"></div></div></div>';
 
 echo '<div class="form-group">';
 echo '<div class="col-lg-10 col-lg-offset-2">';
@@ -51,3 +52,33 @@ echo $this->form()->closeTag();
 
 echo '</div></div>';
 
+echo $this->inlineScript()->appendFile('/js/pwstrength-bootstrap.min.js');
+?>
+
+<script>
+    jQuery(document).ready(function () {
+        "use strict";
+        var options = {
+        };
+        options.ui = {
+            container: "#pwd-container",
+            verdicts: [
+                "<span class='fa fa-exclamation-triangle'></span> Weak",
+                "<span class='fa fa-exclamation-triangle'></span> Normal",
+                "Medium",
+                "<span class='fa fa-thumbs-up'></span> Strong",
+                "<span class='fa fa-thumbs-up'></span> Very Strong"],
+            showVerdictsInsideProgressBar: true,
+            viewports: {
+                progress: ".pwstrength_viewport_progress"
+            }
+        };
+        options.common = {
+            debug: true,
+            onLoad: function () {
+                $('#messages').text('Start typing password');
+            }
+        };
+        $(':password').pwstrength(options);
+    });
+</script>
