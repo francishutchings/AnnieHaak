@@ -71,18 +71,19 @@ class AuthController extends AbstractActionController {
                         ->setCredential($request->getPost('password'));
 
                 $result = $this->getAuthService()->authenticate();
-//                foreach ($result->getMessages() as $message) {
-                //save message temporary into flashmessenger
-//                    $this->flashmessenger()->addMessage($message);
-//                }
 
                 if ($result->isValid()) {
+
+                    foreach ($result->getMessages() as $message) {
+                        $this->flashmessenger()->setNamespace('info')->addMessage($message);
+                    }
+
                     $redirect = 'home';
-                    //check if it has rememberMe :
+
                     if ($request->getPost('rememberme') == 1) {
                         $this->getSessionStorage()->setRememberMe(1);
                         $this->getAuthService()->getStorage()->write($result->id);
-                        //set storage again
+
                         $this->getAuthService()->setStorage($this->getSessionStorage());
                     }
                     $this->getAuthService()->setStorage($this->getSessionStorage());
@@ -93,7 +94,9 @@ class AuthController extends AbstractActionController {
                     ];
                     $this->getAuthService()->getStorage()->write($sessionInfo);
                 } else {
-                    $this->flashmessenger()->setNamespace('error')->addMessage("Details not valid.");
+                    foreach ($result->getMessages() as $message) {
+                        $this->flashmessenger()->setNamespace('error')->addMessage($message);
+                    }
                 }
             }
         }

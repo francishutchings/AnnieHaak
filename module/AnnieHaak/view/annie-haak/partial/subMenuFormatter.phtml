@@ -1,0 +1,22 @@
+<?php
+
+$currRoute = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
+$subPages = $this->navigation('navigation')->findOneBy('route', $currRoute[1])->getPages();
+
+echo '<div class = "col-lg-10"><div class = "page-header"><h1>';
+echo $this->navigation('navigation')->current()->get('label');
+echo '</h1></div></div>';
+
+echo '<div class = "col-lg-6">';
+echo '<div class = "panel panel-info">';
+echo '<div class = "panel-heading">';
+echo '<h3 class = "panel-title">Choose a sub-action:</h3>';
+echo '</div>';
+echo '<div class = "panel-body">';
+echo '<div class = "list-group table-of-contents">';
+
+foreach ($subPages as $page) {
+    echo '<a class = "list-group-item" href = "' . $page->get('route') . '"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;' . $page->get('label') . '</a>';
+}
+
+echo '</div></div></div></div>';

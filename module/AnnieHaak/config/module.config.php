@@ -16,12 +16,49 @@ return array(
                 ),
             ),
             'auth' => array(
-                'type' => 'literal',
+                'type' => 'segment',
                 'options' => array(
-                    'route' => '/auth',
+                    'route' => '/auth[/:action]',
+                    'constraints' => array(
+                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                    ),
                     'defaults' => array(
-                        'controller' => 'Auth\Controller\Auth',
-                        'action' => 'login',
+                        '__NAMESPACE__' => 'Auth\Controller',
+                        'controller' => 'Auth',
+                        'action' => 'logout',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'process' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/[:action]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Auth',
+                                'action' => 'process',
+                            ),
+                        ),
+                    ),
+                    'logout' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/[:action]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ),
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Auth',
+                                'action' => 'logout',
+                            ),
+                        ),
                     ),
                 ),
             ),
@@ -160,11 +197,7 @@ return array(
         ),
         'factories' => array(
             'translator' => 'Zend\Mvc\Service\TranslatorServiceFactory',
-            'navigation' => function($sm) {
-                $navigation = new \Zend\Navigation\Service\DefaultNavigationFactory;
-                $navigation = $navigation->createService($sm);
-                return $navigation;
-            }
+            'navigation' => 'Zend\Navigation\Service\DefaultNavigationFactory',
         ),
     ),
     'translator' => array(
@@ -207,6 +240,208 @@ return array(
     'console' => array(
         'router' => array(
             'routes' => array(
+            ),
+        ),
+    ),
+    'navigation' => array(
+        // use 'default' by default... if you'd wish to use something else, consider extending the Zend\Navigation\Service\DefaultNavigationFactory service who's shipped in ZF2 library.
+        'default' => array(
+            array(
+                'label' => 'Home',
+                'route' => 'home',
+                'order' => 100,
+            ),
+            array(
+                'label' => 'Admin Users',
+                'route' => 'admin-users',
+                'order' => 200,
+            ),
+            array(
+                'label' => 'Create and Add',
+                'route' => 'create-add',
+                'order' => 300,
+                'pages' => array(
+                    array(
+                        'label' => 'Collection',
+                        'route' => 'create-add/collection',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 10,
+                    ),
+                    array(
+                        'label' => 'Labour Time',
+                        'route' => 'create-add/labour-time',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 20,
+                    ),
+                    array(
+                        'label' => 'Packaging',
+                        'route' => 'create-add/packaging',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 30,
+                    ),
+                    array(
+                        'label' => 'Product',
+                        'route' => 'create-add/product',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 40,
+                    ),
+                    array(
+                        'label' => 'Product Type',
+                        'route' => 'create-add/product-type',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 50,
+                    ),
+                    array(
+                        'label' => 'Raw Material',
+                        'route' => 'create-add/raw-material',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 60,
+                    ),
+                    array(
+                        'label' => 'Raw Material Type',
+                        'route' => 'create-add/raw-material-type',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 70,
+                    ),
+                    array(
+                        'label' => 'Supplier',
+                        'route' => 'create-add/supplier',
+                        'contoller' => 'CreateAddController',
+                        'action' => 'index',
+                        'order' => 80,
+                    ),
+                ),
+            ),
+            array(
+                'label' => 'Reports',
+                'route' => 'reports',
+                'order' => 400,
+                'pages' => array(
+                    array(
+                        'label' => 'All Dynamic Reports',
+                        'route' => 'reports/dynamic-reports',
+                        'contoller' => 'ReportsController',
+                        'action' => 'index',
+                        'order' => 10,
+                    ),
+                    array(
+                        'label' => 'Collections & Occasions',
+                        'route' => 'reports/collections-occasions',
+                        'contoller' => 'ReportsController',
+                        'action' => 'index',
+                        'order' => 20,
+                    ),
+                    array(
+                        'label' => 'Margins',
+                        'route' => 'reports/margins',
+                        'contoller' => 'ReportsController',
+                        'action' => 'index',
+                        'order' => 30,
+                    ),
+                    array(
+                        'label' => 'Products By Occasions',
+                        'route' => 'reports/products-by-occasions',
+                        'contoller' => 'ReportsController',
+                        'action' => 'index',
+                        'order' => 40,
+                    ),
+                    array(
+                        'label' => 'RRP & RMs',
+                        'route' => 'reports/rrp-rms',
+                        'contoller' => 'ReportsController',
+                        'action' => 'index',
+                        'order' => 50,
+                    ),
+                    array(
+                        'label' => 'Trade Pack RMs + Time',
+                        'route' => 'reports/trade-pack-rms-time',
+                        'contoller' => 'ReportsController',
+                        'action' => 'index',
+                        'order' => 60,
+                    ),
+                ),
+            ),
+            array(
+                'label' => 'View and Edit',
+                'route' => 'view-edit',
+                'order' => 500,
+                'pages' => array(
+                    array(
+                        'label' => 'Collections',
+                        'route' => 'view-edit/collections',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 10,
+                    ),
+                    array(
+                        'label' => 'Labour Time',
+                        'route' => 'view-edit/labour-time',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 20,
+                    ),
+                    array(
+                        'label' => 'Packaging',
+                        'route' => 'view-edit/packaging',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 30,
+                    ),
+                    array(
+                        'label' => 'Products',
+                        'route' => 'view-edit/products',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 40,
+                    ),
+                    array(
+                        'label' => 'Product Types',
+                        'route' => 'view-edit/product-types',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 50,
+                    ),
+                    array(
+                        'label' => 'Rates Percentages',
+                        'route' => 'view-edit/rates-percentages',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 60,
+                    ),
+                    array(
+                        'label' => 'Raw Materials',
+                        'route' => 'view-edit/raw-materials',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 70,
+                    ),
+                    array(
+                        'label' => 'Raw Materials Types',
+                        'route' => 'view-edit/raw-materials-types',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 80,
+                    ),
+                    array(
+                        'label' => 'Suppliers',
+                        'route' => 'view-edit/suppliers',
+                        'contoller' => 'ViewEditController',
+                        'action' => 'index',
+                        'order' => 90,
+                    ),
+                ),
+            ),
+            array(
+                'label' => 'Logout',
+                'route' => 'auth/logout',
+                'order' => 600,
             ),
         ),
     ),

@@ -21,56 +21,45 @@
 
                 <ul class="nav nav-pills">
 
-                    <!-- Admin Users -->
-                    <!-- //////////// -->
+<!-- Admin Users -->
+<!-- //////////// -->
                     <?php
                     if (array_search('admin-users', $crumbs)) {
-                        echo '<li class="active">';
+                        echo '<li class="active"><a href="/admin-users"><span class="glyphicon glyphicon-user"></span> Admin Users</a></li>';
                     } else {
-                        echo '<li class="">';
+                        echo '<li class=""><a href="/admin-users"><span class="glyphicon glyphicon-user"></span> Admin Users</a></li>';
                     }
                     ?>
-                    <a href="/admin-users"><span class="glyphicon glyphicon-user"></span> Admin Users</a>
-                    </li>
 
-
-                    <!-- Create / Add -->
-                    <!-- //////////// -->
+<!-- Create / Add -->
+<!-- //////////// -->
                     <?php
                     if (array_search('create-add', $crumbs)) {
-                        echo '<li class="active">';
+                        echo '<li class="active"><a href="/create-add"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Create &amp; Add</a></li>';
                     } else {
-                        echo '<li class="">';
+                        echo '<li class=""><a href="/create-add"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;Create &amp; Add</a></li>';
                     }
                     ?>
-                    <a href="/create-add">Create &amp; Add</a>
-                    </li>
 
-
-                    <!-- Produce Reports -->
-                    <!-- //////////// -->
+<!-- Produce Reports -->
+<!-- //////////// -->
                     <?php
                     if (array_search('reports', $crumbs)) {
-                        echo '<li class="active">';
+                        echo '<li class="active"><a href="/reports"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Reports</a></li>';
                     } else {
-                        echo '<li class="">';
+                        echo '<li class=""><a href="/reports"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;Reports</a></li>';
                     }
                     ?>
-                    <a href="/reports">Reports</a>
-                    </li>
 
-
-                    <!-- View and Edit -->
-                    <!-- //////////// -->
+<!-- View and Edit -->
+<!-- //////////// -->
                     <?php
                     if (array_search('view-edit', $crumbs)) {
-                        echo '<li class="active">';
+                        echo    '<li class="active"><a href="/view-edit"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;View &amp; Edit</a></li>';
                     } else {
-                        echo '<li class="">';
+                        echo '<li class=""><a href="/view-edit"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;View &amp; Edit</a></li>';
                     }
                     ?>
-                    <a href="/view-edit">View &amp; Edit</a>
-                    </li>
 
 
                     <!-- Search -->
@@ -83,13 +72,10 @@
                                     </form>
                     -->
 
-                </ul>
-
-                <!-- Login/Logout -->
-                <ul class="nav nav-pills navbar-right">
                     <li class="">
                         <a href="/auth/logout"><span class="glyphicon glyphicon-off"></span> Logout</a>
                     </li>
+                    
                 </ul>
                 <!--/ Login/Logout -->
 
