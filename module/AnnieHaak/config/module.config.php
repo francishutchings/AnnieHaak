@@ -249,17 +249,20 @@ return array(
             array(
                 'label' => 'Home',
                 'route' => 'home',
-                'order' => 100,
+                'order' => -100,
+                'class' => 'top-level',
             ),
             array(
                 'label' => 'Admin Users',
                 'route' => 'admin-users',
                 'order' => 200,
+                'class' => 'top-level',
             ),
             array(
                 'label' => 'Create and Add',
                 'route' => 'create-add',
                 'order' => 300,
+                'class' => 'top-level',
                 'pages' => array(
                     array(
                         'label' => 'Collection',
@@ -323,6 +326,7 @@ return array(
                 'label' => 'Reports',
                 'route' => 'reports',
                 'order' => 400,
+                'class' => 'top-level',
                 'pages' => array(
                     array(
                         'label' => 'All Dynamic Reports',
@@ -372,6 +376,7 @@ return array(
                 'label' => 'View and Edit',
                 'route' => 'view-edit',
                 'order' => 500,
+                'class' => 'top-level',
                 'pages' => array(
                     array(
                         'label' => 'Collections',
@@ -395,8 +400,8 @@ return array(
                         'order' => 30,
                     ),
                     array(
-                        'label' => 'Products',
-                        'route' => 'view-edit/products',
+                        'label' => 'Product',
+                        'route' => 'view-edit/product',
                         'contoller' => 'ViewEditController',
                         'action' => 'index',
                         'order' => 40,
@@ -442,6 +447,7 @@ return array(
                 'label' => 'Logout',
                 'route' => 'auth/logout',
                 'order' => 600,
+                'class' => 'top-level',
             ),
         ),
     ),

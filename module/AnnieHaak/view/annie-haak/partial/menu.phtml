@@ -1,8 +1,16 @@
+<?php
+$topLevel = $this->navigation('navigation')->findAllBy('class', 'top-level');
+$crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
+if (count($crumbs) == 0) {
+    $crumbs = array('1' => 'home');
+}
+?>
+
 <nav class="navbar navbar-default " role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/">
-                <?php echo $this->translate('Annie Haak Admin') ?>
+                <?php echo $this->translate('Edith') ?>
             </a>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-menubuilder">
                 <span class="sr-only">Toggle navigation</span>
@@ -14,50 +22,39 @@
         <div class="collapse navbar-collapse navbar-menubuilder">
 
             <?php
-            $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
-
             if ((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))):
                 ?>
 
                 <ul class="nav nav-pills">
 
-<!-- Admin Users -->
-<!-- //////////// -->
                     <?php
-                    if (array_search('admin-users', $crumbs)) {
-                        echo '<li class="active"><a href="/admin-users"><span class="glyphicon glyphicon-user"></span> Admin Users</a></li>';
-                    } else {
-                        echo '<li class=""><a href="/admin-users"><span class="glyphicon glyphicon-user"></span> Admin Users</a></li>';
-                    }
-                    ?>
+                    foreach ($topLevel as $level) {
 
-<!-- Create / Add -->
-<!-- //////////// -->
-                    <?php
-                    if (array_search('create-add', $crumbs)) {
-                        echo '<li class="active"><a href="/create-add"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Create &amp; Add</a></li>';
-                    } else {
-                        echo '<li class=""><a href="/create-add"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;Create &amp; Add</a></li>';
-                    }
-                    ?>
+                        switch ($level->get('route')) {
+                            case 'home':
+                                $glyphicon = 'glyphicon glyphicon-home';
+                                $glyphicon_alt = 'glyphicon glyphicon-home';
+                                break;
+                            case 'admin-users':
+                                $glyphicon = 'glyphicon glyphicon-user';
+                                $glyphicon_alt = 'glyphicon glyphicon-user';
+                                break;
+                            case 'auth/logout':
+                                $glyphicon = 'glyphicon glyphicon-off';
+                                $glyphicon_alt = 'glyphicon glyphicon-off';
+                                break;
 
-<!-- Produce Reports -->
-<!-- //////////// -->
-                    <?php
-                    if (array_search('reports', $crumbs)) {
-                        echo '<li class="active"><a href="/reports"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;Reports</a></li>';
-                    } else {
-                        echo '<li class=""><a href="/reports"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;Reports</a></li>';
-                    }
-                    ?>
+                            default:
+                                $glyphicon = 'glyphicon glyphicon-folder-open';
+                                $glyphicon_alt = 'glyphicon glyphicon-folder-close';
+                                break;
+                        }
 
-<!-- View and Edit -->
-<!-- //////////// -->
-                    <?php
-                    if (array_search('view-edit', $crumbs)) {
-                        echo    '<li class="active"><a href="/view-edit"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;&nbsp;View &amp; Edit</a></li>';
-                    } else {
-                        echo '<li class=""><a href="/view-edit"><span class="glyphicon glyphicon-folder-close"></span>&nbsp;&nbsp;View &amp; Edit</a></li>';
+                        if (array_search($level->get('route'), $crumbs)) {
+                            echo '<li class="active"><a href="/' . $level->get('route') . '"><span class="' . $glyphicon . '"></span>&nbsp;&nbsp;' . $level->get('label') . '</a></li>';
+                        } else {
+                            echo '<li class=""><a href="/' . $level->get('route') . '"><span class="' . $glyphicon_alt . '"></span>&nbsp;&nbsp;' . $level->get('label') . '</a></li>';
+                        }
                     }
                     ?>
 
@@ -72,10 +69,6 @@
                                     </form>
                     -->
 
-                    <li class="">
-                        <a href="/auth/logout"><span class="glyphicon glyphicon-off"></span> Logout</a>
-                    </li>
-                    
                 </ul>
                 <!--/ Login/Logout -->
 
