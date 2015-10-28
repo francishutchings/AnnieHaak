@@ -116,12 +116,25 @@ return array(
                             )
                         ),
                     ),
+                    'collections' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/collections[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Collections',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
                 ),
             ),
-            'reports' => array(
+            'business-reports' => array(
                 'type' => 'literal',
                 'options' => array(
-                    'route' => '/reports',
+                    'route' => '/business-reports',
                     'defaults' => array(
                         'controller' => 'AnnieHaak\Controller\Reports',
                         'action' => 'index',
@@ -217,6 +230,7 @@ return array(
             'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
             'AnnieHaak\Controller\CreateAdd' => Controller\CreateAddController::class,
             'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
+            'AnnieHaak\Controller\Collections' => Controller\CollectionsController::class,
             'AnnieHaak\Controller\DynamicReports' => Controller\DynamicReportsController::class
         ),
     ),
@@ -324,48 +338,48 @@ return array(
             ),
             array(
                 'label' => 'Business Reports',
-                'route' => 'reports',
+                'route' => 'business-reports',
                 'order' => 300,
                 'class' => 'top-level',
                 'pages' => array(
                     array(
                         'label' => 'All Dynamic Reports',
-                        'route' => 'reports/dynamic-reports',
+                        'route' => 'business-reports/dynamic-reports',
                         'contoller' => 'ReportsController',
                         'action' => 'index',
                         'order' => 10,
                     ),
                     array(
                         'label' => 'Collections & Occasions',
-                        'route' => 'reports/collections-occasions',
+                        'route' => 'business-reports/collections-occasions',
                         'contoller' => 'ReportsController',
                         'action' => 'index',
                         'order' => 20,
                     ),
                     array(
                         'label' => 'Margins',
-                        'route' => 'reports/margins',
+                        'route' => 'business-reports/margins',
                         'contoller' => 'ReportsController',
                         'action' => 'index',
                         'order' => 30,
                     ),
                     array(
                         'label' => 'Products By Occasions',
-                        'route' => 'reports/products-by-occasions',
+                        'route' => 'business-reports/products-by-occasions',
                         'contoller' => 'ReportsController',
                         'action' => 'index',
                         'order' => 40,
                     ),
                     array(
                         'label' => 'RRP & RMs',
-                        'route' => 'reports/rrp-rms',
+                        'route' => 'business-reports/rrp-rms',
                         'contoller' => 'ReportsController',
                         'action' => 'index',
                         'order' => 50,
                     ),
                     array(
                         'label' => 'Trade Pack RMs + Time',
-                        'route' => 'reports/trade-pack-rms-time',
+                        'route' => 'business-reports/trade-pack-rms-time',
                         'contoller' => 'ReportsController',
                         'action' => 'index',
                         'order' => 60,

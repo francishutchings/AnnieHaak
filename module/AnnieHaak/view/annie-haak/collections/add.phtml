@@ -1,0 +1,49 @@
+<div class="col-lg-10">
+
+    <div class="page-header">
+        <h1>Collections</h1>
+    </div>
+
+    <?php
+    $form->setAttribute('action', $this->url('business-admin/collections', array('action' => 'add')));
+    $form->setAttributes(array('class' => 'form-horizontal'));
+    $form->prepare();
+
+    echo '<div class="well bs-component">';
+
+    echo $this->form()->openTag($form);
+
+    echo '<fieldset><legend>Add Collection</legend>';
+
+    echo $this->formHidden($form->get('ProductCollectionID'));
+
+    echo '<div class="form-group">';
+    echo '<label class="col-lg-2 control-label" for="ProductTypeName">Collection Name:</label><div class="col-lg-10">';
+    echo $this->formRow($form->get('ProductCollectionName'));
+    echo '</div></div>';
+
+    echo '<div class="form-group">';
+    echo '<label class="col-lg-2 control-label" for="ProductCollectionCode">Collection Code:</label><div class="col-lg-10">';
+    echo $this->formRow($form->get('ProductCollectionCode'));
+    echo '</div></div>';
+
+    echo '<div class="form-group">';
+    echo '<label class="col-lg-2 control-label" for="Current">Current:</label><div class="col-lg-10">';
+    echo $this->formRow($form->get('Current'));
+    echo '</div></div>';
+
+    echo '<div class="form-group">';
+    echo '<div class="col-lg-10 col-lg-offset-2">';
+    echo '<a href="/business-admin/collections" type="reset" class="btn btn-default">Cancel</a>';
+    $form->get('submit')->setAttribute('class', 'btn btn-success');
+    echo $this->formSubmit($form->get('submit'));
+    echo '</div></div>';
+
+    echo '</fieldset>';
+
+    echo $this->form()->closeTag();
+
+    echo '</div>';
+    ?>
+
+</div>
