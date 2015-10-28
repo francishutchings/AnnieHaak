@@ -13,7 +13,7 @@ function breadcrumbs() {
         $bc .= '<li typeof="v:Breadcrumb"><a title="Home" href="' . $site . '" rel="v:url" property="v:title"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a></li>';
     }
 
-    if (isset($crumbs[1]) && $crumbs[1] == 'admin-users' && $count > 2) {
+    if (isset($crumbs[1]) && $crumbs[1] == 'user-admin' && $count > 2) {
         $count = 2;
     } else if ($count > 3) {
         $count = 3;

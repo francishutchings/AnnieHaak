@@ -4,7 +4,7 @@
 
 <div class="col-lg-8">
 
-    <a class="btn btn-success" href="/admin-users/add">
+    <a class="btn btn-success" href="/user-admin/add">
         <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add new user
     </a>
 
@@ -16,28 +16,28 @@
             </tr>
         </thead>
         <tbody>
-        <?php foreach ($users as $user) : ?>
-            <tr>
-                <td>
-                    <h4>
-                    <?php 
-                        $fullname = $this->escapeHtml($user->firstname) . ' ' . $this->escapeHtml($user->lastname);
-                        echo $fullname;
-                    ?>
-                    </h4>
-                </td>
-                <td>
-                    <a class="btn btn-warning" href="/admin-users/edit/<?php echo $user->id; ?>">
-                        <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
-                    </a>
-                </td>
-                <td>
-                    <a class="btn btn-danger" href="/admin-users/delete/<?php echo $user->id;?>">
-                        <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete
-                    </a>
-                </td>
-            </tr>
-        <?php endforeach; ?>
+            <?php foreach ($users as $user) : ?>
+                <tr>
+                    <td>
+                        <h4>
+                            <?php
+                            $fullname = $this->escapeHtml($user->firstname) . ' ' . $this->escapeHtml($user->lastname);
+                            echo $fullname;
+                            ?>
+                        </h4>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" href="/user-admin/edit/<?php echo $user->id; ?>">
+                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" href="/user-admin/delete/<?php echo $user->id; ?>">
+                            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete
+                        </a>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
         </tbody>
     </table>
 

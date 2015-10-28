@@ -4,7 +4,7 @@
         <h1>Product Types</h1>
     </div>
 
-    <a class="btn btn-success" href="<?php echo $this->url('view-edit/product-types', array('action' => 'add')); ?>">
+    <a class="btn btn-success" href="<?php echo $this->url('business-admin/product-types', array('action' => 'add')); ?>">
         <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add new product type
     </a>
 
@@ -24,11 +24,11 @@
                         </h5>
                     </td>
                     <td>
-                        <a class="btn btn-warning" href="<?php echo $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $productType->ProductTypeId));
+                        <a class="btn btn-warning" href="<?php echo $this->url('business-admin/product-types', array('action' => 'edit', 'id' => $productType->ProductTypeId));
                             ?>"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit</a>
                     </td>
                     <td>
-                        <a class="btn btn-danger" href="<?php echo $this->url('view-edit/product-types', array('action' => 'delete', 'id' => $productType->ProductTypeId));
+                        <a class="btn btn-danger" href="<?php echo $this->url('business-admin/product-types', array('action' => 'delete', 'id' => $productType->ProductTypeId));
                             ?>"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete</a>
                     </td>
                 </tr>

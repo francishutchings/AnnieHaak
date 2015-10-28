@@ -6,7 +6,7 @@
 
     <?php
     $form = $this->form;
-    $form->setAttribute('action', $this->url('view-edit/product-types', array('action' => 'edit', 'id' => $this->id,)));
+    $form->setAttribute('action', $this->url('business-admin/product-types', array('action' => 'edit', 'id' => $this->id,)));
     $form->setAttributes(array('class' => 'form-horizontal'));
     $form->prepare();
 
@@ -25,7 +25,7 @@
 
     echo '<div class="form-group">';
     echo '<div class="col-lg-10 col-lg-offset-2">';
-    echo '<a href="/view-edit/product-types" type="reset" class="btn btn-default">Cancel</a>';
+    echo '<a href="/business-admin/product-types" type="reset" class="btn btn-default">Cancel</a>';
     $form->get('submit')->setAttribute('class', 'btn btn-warning');
     echo $this->formSubmit($form->get('submit'));
     echo '</div></div>';

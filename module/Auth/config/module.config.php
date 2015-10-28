@@ -10,10 +10,10 @@ return array(
     ),
     'router' => array(
         'routes' => array(
-            'admin-users' => array(
+            'user-admin' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin-users[/:action][/:id]',
+                    'route' => '/user-admin[/:action][/:id]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id' => '[0-9]+',

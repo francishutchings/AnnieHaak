@@ -42,7 +42,7 @@ class UsersController extends AbstractActionController {
                     $this->flashmessenger()->setNamespace('error')->addMessage($result['message']);
                 } else {
                     $this->flashmessenger()->setNamespace('error')->addMessage('User details saved');
-                    return $this->redirect()->toRoute('admin-users');
+                    return $this->redirect()->toRoute('user-admin');
                 }
             }
         }
@@ -54,7 +54,7 @@ class UsersController extends AbstractActionController {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
 
-            return $this->redirect()->toRoute('admin-users', array(
+            return $this->redirect()->toRoute('user-admin', array(
                         'action' => 'add'
             ));
         }
@@ -62,7 +62,7 @@ class UsersController extends AbstractActionController {
         try {
             $user = $this->getUsersTable()->getUsers($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('admin-users', array(
+            return $this->redirect()->toRoute('user-admin', array(
                         'action' => 'index'
             ));
         }
@@ -79,7 +79,7 @@ class UsersController extends AbstractActionController {
             if ($form->isValid()) {
                 $this->getUsersTable()->saveUsers($user);
 
-                return $this->redirect()->toRoute('admin-users');
+                return $this->redirect()->toRoute('user-admin');
             }
         }
 
@@ -92,7 +92,7 @@ class UsersController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('admin-users');
+            return $this->redirect()->toRoute('user-admin');
         }
 
         $request = $this->getRequest();
@@ -105,7 +105,7 @@ class UsersController extends AbstractActionController {
             }
 
             // Redirect to list of albums
-            return $this->redirect()->toRoute('admin-users');
+            return $this->redirect()->toRoute('user-admin');
         }
 
         return array(

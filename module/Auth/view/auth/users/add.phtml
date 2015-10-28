@@ -3,7 +3,7 @@
 </div>
 
 <?php
-$form->setAttribute('action', $this->url('admin-users', array('action' => 'add')));
+$form->setAttribute('action', $this->url('user-admin', array('action' => 'add')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
 
@@ -39,7 +39,7 @@ echo '<div class="pwstrength_viewport_progress"></div></div></div>';
 
 echo '<div class="form-group">';
 echo '<div class="col-lg-10 col-lg-offset-2">';
-echo '<a href="/admin-users" type="reset" class="btn btn-default">Cancel</a>';
+echo '<a href="/user-admin" type="reset" class="btn btn-default">Cancel</a>';
 $form->get('submit')->setAttribute('class', 'btn btn-success');
 echo $this->formSubmit($form->get('submit'));
 echo '</div></div>';

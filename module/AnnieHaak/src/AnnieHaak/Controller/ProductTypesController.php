@@ -34,7 +34,7 @@ class ProductTypesController extends AbstractActionController {
                 $this->getProductTypesTable()->saveProductTypes($productTypes);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('view-edit/product-types');
+                return $this->redirect()->toRoute('business-admin/product-types');
             }
         }
         return array('form' => $form);
@@ -43,7 +43,7 @@ class ProductTypesController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('view-edit/product-types', array(
+            return $this->redirect()->toRoute('business-admin/product-types', array(
                         'action' => 'add'
             ));
         }
@@ -51,7 +51,7 @@ class ProductTypesController extends AbstractActionController {
         try {
             $productTypes = $this->getProductTypesTable()->getProductTypes($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('view-edit/product-types', array(
+            return $this->redirect()->toRoute('business-admin/product-types', array(
                         'action' => 'index'
             ));
         }
@@ -69,7 +69,7 @@ class ProductTypesController extends AbstractActionController {
                 $this->getProductTypesTable()->saveProductTypes($productTypes);
 
                 // Redirect to list of albums
-                return $this->redirect()->toRoute('view-edit/product-types');
+                return $this->redirect()->toRoute('business-admin/product-types');
             }
         }
 
@@ -82,7 +82,7 @@ class ProductTypesController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('view-edit/product-types');
+            return $this->redirect()->toRoute('business-admin/product-types');
         }
 
         $request = $this->getRequest();
@@ -95,7 +95,7 @@ class ProductTypesController extends AbstractActionController {
             }
 
             // Redirect to list of productTypes
-            return $this->redirect()->toRoute('view-edit/product-types');
+            return $this->redirect()->toRoute('business-admin/product-types');
         }
 
         return array(
