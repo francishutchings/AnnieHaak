@@ -266,7 +266,7 @@ return array(
                 'class' => 'top-level',
             ),
             array(
-                'label' => 'Business Administration',
+                'label' => 'Business Admin',
                 'route' => 'business-admin',
                 'order' => 200,
                 'class' => 'top-level',
@@ -387,7 +387,7 @@ return array(
                 ),
             ),
             array(
-                'label' => 'User Administration',
+                'label' => 'User Admin',
                 'route' => 'user-admin',
                 'order' => 400,
                 'class' => 'top-level',
