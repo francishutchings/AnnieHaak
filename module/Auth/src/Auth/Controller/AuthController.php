@@ -42,7 +42,7 @@ class AuthController extends AbstractActionController {
     }
 
     public function loginAction() {
-        //if already login, redirect to success page
+//if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute('home');
         }
@@ -63,6 +63,22 @@ class AuthController extends AbstractActionController {
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setData($request->getPost());
+
+            // Security token check
+            if (!isset($_SESSION['Zend_Validator_Csrf_salt_security']['hash']) || $_SESSION['Zend_Validator_Csrf_salt_security']['hash'] !== filter_input(INPUT_POST, 'security')) {
+                return $this->redirect()->toRoute('login');
+            }
+
+            // Captcha check
+            $captchaData = $request->getPost('captcha');
+            $image = getcwd() . '/public/img/captcha/' . $captchaData['id'] . '.png';
+
+            if (file_exists($image) == true) {
+                unlink($image);
+            }
+            if (!isset($_SESSION['Zend_Form_Captcha_' . $captchaData['id']]) || $_SESSION['Zend_Form_Captcha_' . $captchaData['id']]['word'] !== $captchaData['input']) {
+                return $this->redirect()->toRoute('login');
+            }
 
             if ($form->isValid()) {
                 //check authentication...
@@ -108,6 +124,12 @@ class AuthController extends AbstractActionController {
         if ($this->getAuthService()->hasIdentity()) {
             $this->getSessionStorage()->forgetMe();
             $this->getAuthService()->clearIdentity();
+            session_start();
+            session_unset();
+            session_destroy();
+            session_write_close();
+            setcookie(session_name(), '', 0, '/');
+            session_regenerate_id(true);
             $this->flashmessenger()->setNamespace('warning')->addMessage("You've been logged out.");
         }
 

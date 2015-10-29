@@ -58,6 +58,14 @@ class UsersForm extends Form {
             ),
         ));
         $this->add(array(
+            'name' => 'role_level',
+            'type' => 'select',
+            'attributes' => array(
+                'id' => 'role_level',
+                'class' => 'form-control',
+            ),
+        ));
+        $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(

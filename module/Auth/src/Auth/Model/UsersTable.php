@@ -34,6 +34,7 @@ class UsersTable {
             'password' => md5($user->password),
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
+            'role_level' => $user->role_level,
         );
 
         // Check if email already exists?

@@ -23,6 +23,7 @@ class Users {
         $this->firstname = (!empty($data['firstname'])) ? $data['firstname'] : null;
         $this->lastname = (!empty($data['lastname'])) ? $data['lastname'] : null;
         $this->deleted = (!empty($data['deleted'])) ? $data['deleted'] : null;
+        $this->role_level = (!empty($data['deleted'])) ? $data['deleted'] : null;
     }
 
     public function getArrayCopy() {
@@ -122,6 +123,14 @@ class Users {
                             'max' => 25,
                         ),
                     ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'role_level',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
                 ),
             ));
 
