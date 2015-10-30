@@ -40,7 +40,7 @@
         <div class="container" id="container">
             <!-- Breadcrumbs -->
             <?php
-            if ((isset($_SESSION["AnnieHaak"]['storage']['loggedIn']))) {
+            if ((isset($_SESSION["AnnieHaak"]['storage']['userInfo']['loggedIn']))) {
                 echo $this->partial('annie-haak/partial/breadcrumbs.phtml');
             }
             ?>

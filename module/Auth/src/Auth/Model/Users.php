@@ -3,7 +3,6 @@
 namespace Auth\Model;
 
 use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
 class Users {
@@ -23,7 +22,7 @@ class Users {
         $this->firstname = (!empty($data['firstname'])) ? $data['firstname'] : null;
         $this->lastname = (!empty($data['lastname'])) ? $data['lastname'] : null;
         $this->deleted = (!empty($data['deleted'])) ? $data['deleted'] : null;
-        $this->role_level = (!empty($data['deleted'])) ? $data['deleted'] : null;
+        $this->role_level = (!empty($data['role_level'])) ? $data['role_level'] : null;
     }
 
     public function getArrayCopy() {

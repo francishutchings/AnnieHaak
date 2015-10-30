@@ -27,6 +27,16 @@ class UsersTable {
         return $row;
     }
 
+    public function getUsersByUsername($un) {
+        $un = (string) $un;
+        $rowset = $this->tableGateway->select(array('username' => $un));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find use $un");
+        }
+        return $row;
+    }
+
     public function saveUsers(Users $user) {
 
         $data = array(

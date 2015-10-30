@@ -110,7 +110,7 @@ class UsersController extends AbstractActionController {
 
         return array(
             'id' => $id,
-            'album' => $this->getUsersTable()->getUsers($id)
+            'users' => $this->getUsersTable()->getUsers($id)
         );
     }
 

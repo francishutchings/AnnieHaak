@@ -42,7 +42,8 @@ class AuthController extends AbstractActionController {
     }
 
     public function loginAction() {
-//if already login, redirect to success page
+
+        //if already login, redirect to success page
         if ($this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute('home');
         }
@@ -57,11 +58,13 @@ class AuthController extends AbstractActionController {
     }
 
     public function authenticateAction() {
+
         $form = $this->getForm();
         $redirect = 'login';
 
         $request = $this->getRequest();
         if ($request->isPost()) {
+
             $form->setData($request->getPost());
 
             // Security token check
@@ -81,6 +84,7 @@ class AuthController extends AbstractActionController {
             }
 
             if ($form->isValid()) {
+
                 //check authentication...
                 $this->getAuthService()
                         ->getAdapter()->setIdentity($request->getPost('username'))
@@ -104,9 +108,16 @@ class AuthController extends AbstractActionController {
                     }
                     $this->getAuthService()->setStorage($this->getSessionStorage());
 
+                    $sm = $this->getServiceLocator();
+                    $this->usersTable = $sm->get('Auth\Model\UsersTable');
+                    $currUser = $this->usersTable->getUsersByUsername($request->getPost('username'));
+
                     $sessionInfo = [
-                        'loggedIn' => TRUE,
-                        'username' => $request->getPost('username'),
+                        'userInfo' => array(
+                            'loggedIn' => TRUE,
+                            'username' => $request->getPost('username'),
+                            'roleLevel' => $currUser->role_level,
+                        ),
                     ];
                     $this->getAuthService()->getStorage()->write($sessionInfo);
                 } else {
