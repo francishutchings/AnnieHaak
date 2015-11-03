@@ -30,6 +30,11 @@ echo '<label class="col-lg-2 control-label" for="username">Username:</label><div
 echo $this->formRow($form->get('username'));
 echo '</div></div>';
 
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="role_level">Role Level:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('role_level'));
+echo '</div></div>';
+
 echo '<div id="pwd-container"><div class="form-group">';
 echo '<label class="col-lg-2 control-label" for="password">Password:</label><div class="col-lg-10">';
 echo $this->formRow($form->get('password'));

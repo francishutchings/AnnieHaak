@@ -4,14 +4,12 @@
 
 <div class="col-lg-8">
 
-    <a class="btn btn-success" href="/user-admin/add">
-        <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add new user
-    </a>
+    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/user-admin/add', 'Add new user'); ?>
 
     <table class="table table-striped table-hover ">
         <thead>
             <tr>
-                <th>User Name</th>
+                <th>Full Name</th>
                 <th colspan="2">Actions</th>
             </tr>
         </thead>
@@ -21,20 +19,15 @@
                     <td>
                         <h4>
                             <?php
-                            $fullname = $this->escapeHtml($user->firstname) . ' ' . $this->escapeHtml($user->lastname);
-                            echo $fullname;
+                            echo $this->escapeHtml($user->firstname . ' ' . $user->firstname);
                             ?>
                         </h4>
                     </td>
                     <td>
-                        <a class="btn btn-warning" href="/user-admin/edit/<?php echo $user->id; ?>">
-                            <span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;Edit
-                        </a>
+                        <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/user-admin/edit/' . $user->id, 'Edit'); ?>
                     </td>
                     <td>
-                        <a class="btn btn-danger" href="/user-admin/delete/<?php echo $user->id; ?>">
-                            <span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;Delete
-                        </a>
+                        <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/user-admin/delete/' . $user->id, 'Delete'); ?>
                     </td>
                 </tr>
             <?php endforeach; ?>

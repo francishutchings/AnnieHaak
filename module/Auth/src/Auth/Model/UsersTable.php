@@ -47,18 +47,19 @@ class UsersTable {
             'role_level' => $user->role_level,
         );
 
-        // Check if email already exists?
-        $rowset = $this->tableGateway->select(array('username' => $user->username, 'deleted' => '0'));
-        if (!empty($rowset->current())) {
-            return $saveResult = array(
-                'error' => true,
-                'message' => 'Email [' . $user->username . '] already exists'
-            );
-        }
-
         $id = (int) $user->id;
         if ($id == 0) {
-            $this->tableGateway->insert($data);
+
+            // Check if email already exists?
+            $rowset = $this->tableGateway->select(array('username' => $user->username, 'deleted' => '0'));
+            if (!empty($rowset->current())) {
+                return $saveResult = array(
+                    'error' => true,
+                    'message' => 'Email [' . $user->username . '] already exists'
+                );
+            } else {
+                $this->tableGateway->insert($data);
+            }
         } else {
 
             if ($this->getUsers($id)) {
@@ -70,7 +71,12 @@ class UsersTable {
     }
 
     public function deleteUsers($id) {
-        $this->tableGateway->delete(array('id' => (int) $id));
+        #$this->tableGateway->delete(array('id' => (int) $id));
+        $data = array(
+            'deleted' => '1',
+            'activity_date' => date("Y-m-d H:i:s")
+        );
+        $this->tableGateway->update($data, array('id' => $id));
     }
 
 }

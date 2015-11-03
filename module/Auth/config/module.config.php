@@ -125,4 +125,9 @@ return array(
             'Auth' => __DIR__ . '/../view',
         ),
     ),
+    'view_helpers' => array(
+        'invokables' => array(
+            'UIAccessControlButtons' => 'AnnieHaak\View\Helpers\UIAccessControlButtons'
+        )
+    ),
 );

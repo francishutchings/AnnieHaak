@@ -88,7 +88,8 @@ class AuthController extends AbstractActionController {
                 //check authentication...
                 $this->getAuthService()
                         ->getAdapter()->setIdentity($request->getPost('username'))
-                        ->setCredential($request->getPost('password'));
+                        ->setCredential($request->getPost('password'))
+                        ->getDbSelect()->where('deleted = 0');
 
                 $result = $this->getAuthService()->authenticate();
 

@@ -21,6 +21,7 @@ class UsersForm extends Form {
                 'class' => 'form-control',
                 'placeholder' => 'Maximum length 30',
                 'maxlength' => '30',
+                'required' => true,
             ),
         ));
         $this->add(array(
@@ -31,6 +32,7 @@ class UsersForm extends Form {
                 'class' => 'form-control',
                 'placeholder' => 'Maximum length 30',
                 'maxlength' => '30',
+                'required' => true,
             ),
         ));
         $this->add(array(
@@ -43,6 +45,24 @@ class UsersForm extends Form {
                 'autocomplete' => 'off',
                 'pattern' => '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$',
                 'maxlength' => '255',
+                'required' => true,
+            ),
+        ));
+        $this->add(array(
+            'name' => 'role_level',
+            'type' => 'select',
+            'options' => array(
+                'empty_option' => 'Please choose user level',
+                'value_options' => array(
+                    '1' => 'Admin User - full control',
+                    '2' => 'Standard User - alter only',
+                    '3' => 'Guest User - view only',
+                ),
+            ),
+            'attributes' => array(
+                'id' => 'role_level',
+                'class' => 'form-control',
+                'required' => true,
             ),
         ));
         $this->add(array(
@@ -55,14 +75,7 @@ class UsersForm extends Form {
                 'autocomplete' => 'off',
                 'pattern' => '.{5,25}',
                 'maxlength' => '25',
-            ),
-        ));
-        $this->add(array(
-            'name' => 'role_level',
-            'type' => 'select',
-            'attributes' => array(
-                'id' => 'role_level',
-                'class' => 'form-control',
+                'required' => true,
             ),
         ));
         $this->add(array(

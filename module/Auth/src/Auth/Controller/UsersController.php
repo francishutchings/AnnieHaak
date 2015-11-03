@@ -40,9 +40,10 @@ class UsersController extends AbstractActionController {
 
                 if ($result['error']) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($result['message']);
+                    $this->redirect()->toRoute('user-admin');
                 } else {
-                    $this->flashmessenger()->setNamespace('error')->addMessage('User details saved');
-                    return $this->redirect()->toRoute('user-admin');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('User details saved');
+                    $this->redirect()->toRoute('user-admin');
                 }
             }
         }
