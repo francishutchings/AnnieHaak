@@ -1,40 +1,34 @@
-<div class="col-lg-10">
+<?php
 
-    <div class="page-header">
-        <h1>Product Types</h1>
-    </div>
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
-    <?php
-    $form = $this->form;
-    $form->setAttribute('action', $this->url('business-admin/product-types', array('action' => 'edit', 'id' => $this->id,)));
-    $form->setAttributes(array('class' => 'form-horizontal'));
-    $form->prepare();
+$form = $this->form;
+$form->setAttribute('action', $this->url('business-admin/product-types', array('action' => 'edit', 'id' => $this->id,)));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->prepare();
 
-    echo '<div class="well bs-component">';
+echo '<div class="well bs-component">';
 
-    echo $this->form()->openTag($form);
+echo $this->form()->openTag($form);
 
-    echo '<fieldset><legend>Edit Product Type</legend>';
+echo '<fieldset><legend>Edit Product Type</legend>';
 
-    echo $this->formHidden($form->get('ProductTypeId'));
+echo $this->formHidden($form->get('ProductTypeId'));
 
-    echo '<div class="form-group">';
-    echo '<label class="col-lg-2 control-label" for="ProductTypeName">Product Type Name:</label><div class="col-lg-10">';
-    echo $this->formRow($form->get('ProductTypeName'));
-    echo '</div></div>';
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="ProductTypeName">Product Type Name:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('ProductTypeName'));
+echo '</div></div>';
 
-    echo '<div class="form-group">';
-    echo '<div class="col-lg-10 col-lg-offset-2">';
-    echo '<a href="/business-admin/product-types" type="reset" class="btn btn-default">Cancel</a>';
-    $form->get('submit')->setAttribute('class', 'btn btn-warning');
-    echo $this->formSubmit($form->get('submit'));
-    echo '</div></div>';
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/business-admin/product-types" type="reset" class="btn btn-default btn-sm">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-warning btn-sm');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
 
-    echo '</fieldset>';
+echo '</fieldset>';
 
-    echo $this->form()->closeTag();
+echo $this->form()->closeTag();
 
-    echo '</div>';
-    ?>
-
-</div>
+echo '</div>';

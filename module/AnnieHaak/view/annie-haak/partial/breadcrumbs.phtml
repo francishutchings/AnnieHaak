@@ -2,16 +2,16 @@
 
 function breadcrumbs() {
 
-    $bc = '<ul class="breadcrumb col-lg-10" xmlns:v="http://rdf.data-vocabulary.org/#">';
+    $bc = '<ul class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">';
     $site = 'http://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
     $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
     $count = count($crumbs);
     $link = ucwords(str_replace(array(".php", "-", "_"), array("", " ", " "), $crumbs[1]));
 
     if ($link == 'Home') {
-        $bc .= '<li class="active" typeof="v:Breadcrumb"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</li>';
+        $bc .= '<li class="active" typeof="v:Breadcrumb"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Main Menu</li>';
     } else {
-        $bc .= '<li typeof="v:Breadcrumb"><a title="Home" href="/home" rel="v:url" property="v:title"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a></li>';
+        $bc .= '<li typeof="v:Breadcrumb"><a title="Home" href="/home" rel="v:url" property="v:title"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Main Menu</a></li>';
     }
 
     if (isset($crumbs[1]) && $crumbs[1] == 'user-admin' && $count > 2) {

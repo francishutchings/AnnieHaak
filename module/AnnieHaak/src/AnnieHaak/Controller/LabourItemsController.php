@@ -5,35 +5,35 @@ namespace AnnieHaak\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Form\Annotation\AnnotationBuilder;
-use AnnieHaak\Model\ProductTypes;
-use AnnieHaak\Form\ProductTypesForm;
+use AnnieHaak\Model\LabourItems;
+use AnnieHaak\Form\LabourItemsForm;
 
-class ProductTypesController extends AbstractActionController {
+class LabourItemsController extends AbstractActionController {
 
-    protected $productTypesTable;
+    protected $labourItemsTable;
 
     public function indexAction() {
 
         return new ViewModel(array(
-            'productTypes' => $this->getProductTypesTable()->fetchAll(),
+            'labourItems' => $this->getLabourItemsTable()->fetchAll(),
         ));
     }
 
     public function addAction() {
-        $form = new ProductTypesForm();
+        $form = new LabourItemsForm();
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $productTypes = new ProductTypes();
-            $form->setInputFilter($productTypes->getInputFilter());
+            $labourItems = new ProductTypes();
+            $form->setInputFilter($labourItems->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $productTypes->exchangeArray($form->getData());
-                $this->getProductTypesTable()->saveProductTypes($productTypes);
+                $labourItems->exchangeArray($form->getData());
+                $this->getProductTypesTable()->saveProductTypes($labourItems);
 
-                return $this->redirect()->toRoute('business-admin/product-types');
+                return $this->redirect()->toRoute('business-admin/labour-item');
             }
         }
         return array('form' => $form);
@@ -42,32 +42,32 @@ class ProductTypesController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/product-types', array(
+            return $this->redirect()->toRoute('business-admin/labour-items', array(
                         'action' => 'add'
             ));
         }
 
         try {
-            $productTypes = $this->getProductTypesTable()->getProductTypes($id);
+            $labourItems = $this->getLabourItemsTable()->getLabourItems($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/product-types', array(
+            return $this->redirect()->toRoute('business-admin/labour-items', array(
                         'action' => 'index'
             ));
         }
 
-        $form = new ProductTypesForm();
-        $form->bind($productTypes);
+        $form = new LabourItemsForm();
+        $form->bind($labourItems);
         $form->get('submit')->setAttribute('value', 'Update');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($productTypes->getInputFilter());
+            $form->setInputFilter($labourItems->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getProductTypesTable()->saveProductTypes($productTypes);
+                $this->getLabourItemsTable()->saveLabourItems($labourItems);
 
-                return $this->redirect()->toRoute('business-admin/product-types');
+                return $this->redirect()->toRoute('business-admin/labour-items');
             }
         }
 
@@ -80,7 +80,7 @@ class ProductTypesController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/product-types');
+            return $this->redirect()->toRoute('business-admin/labour-items');
         }
 
         $request = $this->getRequest();
@@ -89,24 +89,24 @@ class ProductTypesController extends AbstractActionController {
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getProductTypesTable()->deleteProductTypes($id);
+                $this->getLabourItemsTable()->deleteLabourItems($id);
             }
 
-            return $this->redirect()->toRoute('business-admin/product-types');
+            return $this->redirect()->toRoute('business-admin/labour-items');
         }
 
         return array(
             'id' => $id,
-            'productTypes' => $this->getProductTypesTable()->getProductTypes($id)
+            'labourItems' => $this->getLabourItemsTable()->getLabourItems($id)
         );
     }
 
-    public function getProductTypesTable() {
-        if (!$this->productTypesTable) {
+    public function getLabourItemsTable() {
+        if (!$this->labourItemsTable) {
             $sm = $this->getServiceLocator();
-            $this->productTypesTable = $sm->get('AnnieHaak\Model\ProductTypesTable');
+            $this->labourItemsTable = $sm->get('AnnieHaak\Model\LabourItemsTable');
         }
-        return $this->productTypesTable;
+        return $this->labourItemsTable;
     }
 
 }

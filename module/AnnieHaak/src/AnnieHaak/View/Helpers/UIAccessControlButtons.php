@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Controlls button interaction governed by access level of a user
+ */
+
 namespace AnnieHaak\View\Helpers;
 
 use Zend\View\Helper\AbstractHelper;
@@ -8,7 +12,7 @@ class UIAccessControlButtons extends AbstractHelper {
 
     public function __invoke($roleLevel, $buttonType, $buttonAction, $buttonLabel) {
 
-        $returnHTML = '';
+        $returnHTML = '&nbsp;';
         $proccess = true;
 
         if (!gettype($roleLevel) == 'integer' || !($roleLevel > 0 && $roleLevel < 4)) {
@@ -32,23 +36,19 @@ class UIAccessControlButtons extends AbstractHelper {
             switch ($buttonType) {
                 case 'add':
                     if ($roleLevel == 1) {
-                        $returnHTML = '<a class="btn btn-success" href="' . $buttonAction . '"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . $buttonLabel . '</a>';
-                    } else {
-                        $returnHTML = '<a class="btn btn-info" href="#"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Not enough permissions to add</a>';
+                        $returnHTML = '<a class="btn btn-success btn-sm pull-right" href="' . $buttonAction . '"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;' . $buttonLabel . '</a>';
                     }
                     break;
                 case 'edit':
                     if ($roleLevel < 3) {
-                        $returnHTML = '<a class="btn btn-warning" href="' . $buttonAction . '"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;' . $buttonLabel . '</a>';
+                        $returnHTML = '<a class="btn btn-warning btn-sm" href="' . $buttonAction . '"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;' . $buttonLabel . '</a>';
                     } else {
-                        $returnHTML = '<a class="btn btn-info" href="' . $buttonAction . '"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;View details only</a>';
+                        $returnHTML = '<a class="btn btn-info btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span>&nbsp;&nbsp;None applicable</a>';
                     }
                     break;
                 case 'delete':
                     if ($roleLevel == 1) {
-                        $returnHTML = '<a class="btn btn-danger" href="' . $buttonAction . '"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;' . $buttonLabel . '</a>';
-                    } else {
-                        $returnHTML = '&nbsp;';
+                        $returnHTML = '<a class="btn btn-danger btn-sm" href="' . $buttonAction . '"><span class="glyphicon glyphicon-trash"></span>&nbsp;&nbsp;' . $buttonLabel . '</a>';
                     }
                     break;
                 default:

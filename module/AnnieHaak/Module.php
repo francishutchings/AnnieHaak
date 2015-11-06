@@ -6,6 +6,8 @@ use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
 use AnnieHaak\Model\Collections;
 use AnnieHaak\Model\CollectionsTable;
+use AnnieHaak\Model\LabourItems;
+use AnnieHaak\Model\LabourItemsTable;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Model\ProductTypesTable;
 use Zend\Db\ResultSet\ResultSet;
@@ -18,8 +20,7 @@ class Module {
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $eventManager->attach(
-                'route', function($e) {
+        $eventManager->attach('route', function($e) {
             $app = $e->getApplication();
             $routeMatch = $e->getRouteMatch();
             $sm = $app->getServiceManager();
@@ -35,8 +36,7 @@ class Module {
                 $response->setStatusCode(302);
                 return $response;
             }
-        }, -100
-        );
+        }, -100);
     }
 
     public function getConfig() {
@@ -76,6 +76,17 @@ class Module {
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Collections());
                     return new TableGateway('productcollections', $dbAdapter, null, $resultSetPrototype);
+                },
+                'AnnieHaak\Model\LabourItemsTable' => function($sm) {
+                    $tableGateway = $sm->get('LabourItemsGateway');
+                    $table = new LabourItemsTable($tableGateway);
+                    return $table;
+                },
+                'LabourItemsGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new LabourItems());
+                    return new TableGateway('labourlookup', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\ProductTypesTable' => function($sm) {
                     $tableGateway = $sm->get('ProductTypesGateway');

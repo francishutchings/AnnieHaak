@@ -1,13 +1,11 @@
-<div class="page-header">
-    <h1>Admin Users</h1>
-</div>
-
 <?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
 $form->setAttribute('action', $this->url('user-admin', array('action' => 'add')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
 
-echo '<div class="col-lg-10"><div class="well bs-component">';
+echo '<div class="well bs-component">';
 
 echo $this->form()->openTag($form);
 
@@ -44,8 +42,8 @@ echo '<div class="pwstrength_viewport_progress"></div></div></div>';
 
 echo '<div class="form-group">';
 echo '<div class="col-lg-10 col-lg-offset-2">';
-echo '<a href="/user-admin" type="reset" class="btn btn-default">Cancel</a>';
-$form->get('submit')->setAttribute('class', 'btn btn-success');
+echo '<a href="/user-admin" type="reset" class="btn btn-default btn-sm margin-right-10">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
 echo $this->formSubmit($form->get('submit'));
 echo '</div></div>';
 
@@ -53,7 +51,7 @@ echo '</fieldset>';
 
 echo $this->form()->closeTag();
 
-echo '</div></div>';
+echo '</div>';
 
 echo $this->inlineScript()->appendFile('/js/pwstrength-bootstrap.min.js');
 ?>

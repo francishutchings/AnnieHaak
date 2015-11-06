@@ -6,19 +6,19 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class Collections {
+class LabourItems {
 
-    public $ProductCollectionID;
-    public $ProductCollectionName;
-    public $ProductCollectionCode;
-    public $Current;
+    public $LabourID;
+    public $LabourName;
+    public $LabourUnitCost;
+    public $LabourCode;
     protected $inputFilter;
 
     public function exchangeArray($data) {
-        $this->ProductCollectionID = (!empty($data['ProductCollectionID'])) ? $data['ProductCollectionID'] : null;
-        $this->ProductCollectionName = (!empty($data['ProductCollectionName'])) ? $data['ProductCollectionName'] : null;
-        $this->ProductCollectionCode = (!empty($data['ProductCollectionCode'])) ? $data['ProductCollectionCode'] : null;
-        $this->Current = (!empty($data['Current'])) ? $data['Current'] : null;
+        $this->LabourID = (!empty($data['LabourID'])) ? $data['LabourID'] : null;
+        $this->LabourName = (!empty($data['LabourName'])) ? $data['LabourName'] : null;
+        $this->LabourUnitCost = (!empty($data['LabourUnitCost'])) ? $data['LabourUnitCost'] : null;
+        $this->LabourCode = (!empty($data['LabourCode'])) ? $data['LabourCode'] : null;
     }
 
     public function getArrayCopy() {
@@ -34,7 +34,7 @@ class Collections {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'ProductCollectionID',
+                'name' => 'LabourID',
                 'required' => true,
                 'validators' => array(
                     array('name' => 'Int'),
@@ -42,7 +42,7 @@ class Collections {
             ));
 
             $inputFilter->add(array(
-                'name' => 'ProductCollectionName',
+                'name' => 'LabourName',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'),
@@ -61,7 +61,21 @@ class Collections {
             ));
 
             $inputFilter->add(array(
-                'name' => 'ProductCollectionCode',
+                'name' => 'LabourUnitCost',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'Float',
+                        'options' => array(
+                            'min' => 0,
+                            'locale' => '<my_locale>'
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'LabourCode',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'),
@@ -76,14 +90,6 @@ class Collections {
                             'max' => 255,
                         ),
                     ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'Current',
-                'required' => false,
-                'filters' => array(
-                    array('name' => 'Boolean'),
                 ),
             ));
 

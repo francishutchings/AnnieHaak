@@ -4,42 +4,42 @@ namespace AnnieHaak\Form;
 
 use Zend\Form\Form;
 
-class CollectionsForm extends Form {
+class LabourItemsForm extends Form {
 
     public function __construct($name = null) {
 
         // we want to ignore the name passed
-        parent::__construct('collections');
+        parent::__construct('labourItemsForm');
 
         $this->add(array(
-            'name' => 'ProductCollectionID',
+            'name' => 'LabourID',
             'type' => 'Hidden',
         ));
 
         $this->add(array(
-            'name' => 'ProductCollectionName',
+            'name' => 'LabourName',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'ProductCollectionName',
+                'id' => 'LabourName',
                 'class' => 'form-control',
             ),
         ));
 
         $this->add(array(
-            'name' => 'ProductCollectionCode',
+            'name' => 'LabourUnitCost',
             'type' => 'Text',
             'attributes' => array(
-                'id' => 'ProductCollectionCode',
+                'id' => 'LabourUnitCost',
                 'class' => 'form-control',
             ),
         ));
 
         $this->add(array(
-            'name' => 'Current',
-            'type' => 'checkbox',
+            'name' => 'LabourCode',
+            'type' => 'Text',
             'attributes' => array(
-                'id' => 'Current',
-                'class' => 'pull-left',
+                'id' => 'LabourCode',
+                'class' => 'form-control',
             ),
         ));
 

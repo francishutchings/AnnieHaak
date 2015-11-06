@@ -1,49 +1,44 @@
-<div class="col-lg-10">
+<?php
 
-    <div class="page-header">
-        <h1>Collections</h1>
-    </div>
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
-    <?php
-    $form->setAttribute('action', $this->url('business-admin/collections', array('action' => 'add')));
-    $form->setAttributes(array('class' => 'form-horizontal'));
-    $form->prepare();
 
-    echo '<div class="well bs-component">';
+$form->setAttribute('action', $this->url('business-admin/collections', array('action' => 'add')));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->prepare();
 
-    echo $this->form()->openTag($form);
+echo '<div class="well bs-component">';
 
-    echo '<fieldset><legend>Add Collection</legend>';
+echo $this->form()->openTag($form);
 
-    echo $this->formHidden($form->get('ProductCollectionID'));
+echo '<fieldset><legend>Add Collection</legend>';
 
-    echo '<div class="form-group">';
-    echo '<label class="col-lg-2 control-label" for="ProductTypeName">Collection Name:</label><div class="col-lg-10">';
-    echo $this->formRow($form->get('ProductCollectionName'));
-    echo '</div></div>';
+echo $this->formHidden($form->get('ProductCollectionID'));
 
-    echo '<div class="form-group">';
-    echo '<label class="col-lg-2 control-label" for="ProductCollectionCode">Collection Code:</label><div class="col-lg-10">';
-    echo $this->formRow($form->get('ProductCollectionCode'));
-    echo '</div></div>';
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="ProductTypeName">Collection Name:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('ProductCollectionName'));
+echo '</div></div>';
 
-    echo '<div class="form-group">';
-    echo '<label class="col-lg-2 control-label" for="Current">Current:</label><div class="col-lg-10">';
-    echo $this->formRow($form->get('Current'));
-    echo '</div></div>';
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="ProductCollectionCode">Collection Code:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('ProductCollectionCode'));
+echo '</div></div>';
 
-    echo '<div class="form-group">';
-    echo '<div class="col-lg-10 col-lg-offset-2">';
-    echo '<a href="/business-admin/collections" type="reset" class="btn btn-default">Cancel</a>';
-    $form->get('submit')->setAttribute('class', 'btn btn-success');
-    echo $this->formSubmit($form->get('submit'));
-    echo '</div></div>';
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="Current">Current:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('Current'));
+echo '</div></div>';
 
-    echo '</fieldset>';
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/business-admin/collections" type="reset" class="btn btn-default btn-sm margin-right-10">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
 
-    echo $this->form()->closeTag();
+echo '</fieldset>';
 
-    echo '</div>';
-    ?>
+echo $this->form()->closeTag();
 
-</div>
+echo '</div>';

@@ -20,6 +20,11 @@ class CollectionsController extends AbstractActionController {
     }
 
     public function addAction() {
+
+        if ($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'] != 1) {
+            return $this->redirect()->toRoute('business-admin/collections');
+        }
+
         $form = new CollectionsForm();
         $form->get('submit')->setValue('Add');
 
@@ -33,7 +38,6 @@ class CollectionsController extends AbstractActionController {
                 $collections->exchangeArray($form->getData());
                 $this->getCollectionsTable()->saveCollections($collections);
 
-                // Redirect to list of albums
                 return $this->redirect()->toRoute('business-admin/collections');
             }
         }
@@ -68,7 +72,6 @@ class CollectionsController extends AbstractActionController {
             if ($form->isValid()) {
                 $this->getCollectionsTable()->saveCollections($collections);
 
-                // Redirect to list of albums
                 return $this->redirect()->toRoute('business-admin/collections');
             }
         }
@@ -94,7 +97,6 @@ class CollectionsController extends AbstractActionController {
                 $this->getCollectionsTable()->deleteCollections($id);
             }
 
-            // Redirect to list of collections
             return $this->redirect()->toRoute('business-admin/collections');
         }
 

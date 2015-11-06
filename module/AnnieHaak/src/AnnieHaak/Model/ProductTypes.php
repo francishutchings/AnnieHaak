@@ -32,7 +32,7 @@ class ProductTypes {
             $inputFilter->add(array(
                 'name' => 'ProductTypeId',
                 'required' => true,
-                'filters' => array(
+                'validators' => array(
                     array('name' => 'Int'),
                 ),
             ));

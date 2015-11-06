@@ -86,8 +86,7 @@ return array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
-                            'defaults' => array(
-                            ),
+                            'defaults' => array(),
                         ),
                     ),
                 ),
@@ -97,7 +96,7 @@ return array(
                 'options' => array(
                     'route' => '/business-admin',
                     'defaults' => array(
-                        'controller' => 'AnnieHaak\Controller\ViewEdit',
+                        'controller' => 'AnnieHaak\Controller\BusinessAdmin',
                         'action' => 'index',
                     ),
                 ),
@@ -122,6 +121,19 @@ return array(
                             'route' => '/collections[/:action][/:id]',
                             'defaults' => array(
                                 'controller' => 'AnnieHaak\Controller\Collections',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
+                    'labour-items' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/labour-items[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\LabourItems',
                                 'action' => 'index'
                             ),
                             'constraints' => array(
@@ -157,24 +169,10 @@ return array(
                     ),
                 ),
             ),
-            'create-add' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/create-add[/:action][/:id]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'AnnieHaak\Controller\CreateAdd',
-                        'action' => 'index',
-                    ),
-                ),
-            ),
             // The following is a route to simplify getting started creating
-            // new controllers and actions without needing to create a new
-            // module. Simply drop new controllers in, and you can access them
-            // using the path /application/:controller/:action
+// new controllers and actions without needing to create a new
+// module. Simply drop new controllers in, and you can access them
+// using the path /application/:controller/:action
             'application' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -195,8 +193,7 @@ return array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
-                            'defaults' => array(
-                            ),
+                            'defaults' => array(),
                         ),
                     ),
                 ),
@@ -214,7 +211,7 @@ return array(
         ),
     ),
     'translator' => array(
-        'locale' => 'en_US',
+        'locale' => 'en_UK',
         'translation_file_patterns' => array(
             array(
                 'type' => 'gettext',
@@ -226,11 +223,11 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'AnnieHaak\Controller\Index' => Controller\IndexController::class,
-            'AnnieHaak\Controller\ViewEdit' => Controller\ViewEditController::class,
-            'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
-            'AnnieHaak\Controller\CreateAdd' => Controller\CreateAddController::class,
-            'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
+            'AnnieHaak\Controller\BusinessAdmin' => Controller\BusinessAdminController::class,
             'AnnieHaak\Controller\Collections' => Controller\CollectionsController::class,
+            'AnnieHaak\Controller\LabourItems' => Controller\LabourItemsController::class,
+            'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
+            'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
             'AnnieHaak\Controller\DynamicReports' => Controller\DynamicReportsController::class
         ),
     ),
@@ -253,14 +250,13 @@ return array(
     // Placeholder for console routes
     'console' => array(
         'router' => array(
-            'routes' => array(
-            ),
+            'routes' => array(),
         ),
     ),
     'navigation' => array(
         'default' => array(
             array(
-                'label' => 'Home',
+                'label' => 'Main Menu',
                 'route' => 'home',
                 'order' => -100,
                 'class' => 'top-level',
@@ -274,63 +270,132 @@ return array(
                     array(
                         'label' => 'Collections',
                         'route' => 'business-admin/collections',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'CollectionsController',
                         'action' => 'index',
                         'order' => 10,
+                        'pages' => array(
+                            array(
+                                'label' => 'Collections',
+                                'route' => 'business-admin/collections',
+                                'contoller' => 'CollectionsController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Collections',
+                                'route' => 'business-admin/collections',
+                                'contoller' => 'CollectionsController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Collections',
+                                'route' => 'business-admin/collections',
+                                'contoller' => 'CollectionsController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                     array(
-                        'label' => 'Labour Time',
-                        'route' => 'business-admin/labour-time',
-                        'contoller' => 'ViewEditController',
+                        'label' => 'Labour Items',
+                        'route' => 'business-admin/labour-items',
+                        'contoller' => 'LabourItemsController',
                         'action' => 'index',
                         'order' => 20,
+                        'pages' => array(
+                            array(
+                                'label' => 'Labour Items',
+                                'route' => 'business-admin/labour-items',
+                                'contoller' => 'LabourItemsController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Labour Items',
+                                'route' => 'business-admin/labour-items',
+                                'contoller' => 'LabourItemsController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Labour Items',
+                                'route' => 'business-admin/labour-items',
+                                'contoller' => 'LabourItemsController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                     array(
                         'label' => 'Packaging',
                         'route' => 'business-admin/packaging',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 30,
                     ),
                     array(
                         'label' => 'Product',
                         'route' => 'business-admin/product',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 40,
                     ),
                     array(
                         'label' => 'Product Types',
                         'route' => 'business-admin/product-types',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'ProductTypesController',
                         'action' => 'index',
                         'order' => 50,
+                        'pages' => array(
+                            array(
+                                'label' => 'Product Types',
+                                'route' => 'business-admin/product-types',
+                                'contoller' => 'ProductTypesController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Product Types',
+                                'route' => 'business-admin/product-types',
+                                'contoller' => 'ProductTypesController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Product Types',
+                                'route' => 'business-admin/product-types',
+                                'contoller' => 'ProductTypesController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                     array(
                         'label' => 'Rates Percentages',
                         'route' => 'business-admin/rates-percentages',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 60,
                     ),
                     array(
                         'label' => 'Raw Materials',
                         'route' => 'business-admin/raw-materials',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 70,
                     ),
                     array(
                         'label' => 'Raw Materials Types',
                         'route' => 'business-admin/raw-materials-types',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 80,
                     ),
                     array(
                         'label' => 'Suppliers',
                         'route' => 'business-admin/suppliers',
-                        'contoller' => 'ViewEditController',
+                        'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 90,
                     ),
