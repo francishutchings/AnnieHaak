@@ -20,6 +20,8 @@ class Module {
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
+        $this->initAcl($e); //Initialise the ACL
+
         $eventManager->attach('route', function($e) {
             $app = $e->getApplication();
             $routeMatch = $e->getRouteMatch();
@@ -37,6 +39,7 @@ class Module {
                 return $response;
             }
         }, -100);
+        $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl')); //Acl check
     }
 
     public function getConfig() {
@@ -101,6 +104,77 @@ class Module {
                 },
             ),
         );
+    }
+
+    /**
+     * @description Initialise ACL for all modules/controllers/actions
+     * @param MvcEvent $e
+     */
+    public function initAcl(MvcEvent $e) {
+
+        $acl = new \Zend\Permissions\Acl\Acl();
+        $roles = include __DIR__ . '/config/module.acl.roles.php';
+        $allResources = array();
+        foreach ($roles as $role => $resources) {
+
+            $role = new \Zend\Permissions\Acl\Role\GenericRole($role);
+            $acl->addRole($role);
+
+            $allResources = array_merge($resources, $allResources);
+
+            //Resources
+            foreach ($resources as $resource) {
+                if (!$acl->hasResource($resource)) {
+                    $acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource));
+                }
+            }
+            //Restrictions
+            foreach ($resources as $resource) {
+                $acl->allow($role, $resource);
+            }
+        }
+
+        //setting to view
+        $e->getViewModel()->acl = $acl;
+    }
+
+    /**
+     * @description Check User has the correct permissions to view this page
+     * @param MvcEvent $e
+     */
+    public function checkAcl(MvcEvent $e) {
+        $matches = $e->getRouteMatch();
+        $action = $matches->getParam('action');
+        $controller = explode("\\", $matches->getParam('controller'));
+
+        $route = $controller[2] . '/' . $action;
+
+        $sessData = $e->getApplication()->getServiceManager()->get('AuthService')->getStorage()->read();
+
+        if (isset($sessData["userInfo"]["role"])) {
+            switch ($sessData["userInfo"]["role"]) {
+                case 1:
+                    $userRole = 'admin';
+                    break;
+                case 2:
+                    $userRole = 'member';
+                    break;
+                case 2:
+                    $userRole = 'member';
+                    break;
+                default:
+                    $userRole = 'guest';
+                    break;
+            }
+        }
+
+        if (!$e->getViewModel()->acl->hasResource($route) || !$e->getViewModel()->acl->isAllowed($userRole, $route)) {
+            //Naughty trying to get somewhere they shouldn't (Clear there identity force them to login again)
+            $response = $e->getResponse();
+            //location to page or what ever
+            $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/404');
+            $response->setStatusCode(401);
+        }
     }
 
 }

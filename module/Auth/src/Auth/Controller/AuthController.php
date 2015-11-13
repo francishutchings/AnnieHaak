@@ -13,21 +13,16 @@ class AuthController extends AbstractActionController {
     protected $authservice;
 
     public function getAuthService() {
-
         if (!$this->authservice) {
-            $this->authservice = $this->getServiceLocator()
-                    ->get('AuthService');
+            $this->authservice = $this->getServiceLocator()->get('AuthService');
         }
-
         return $this->authservice;
     }
 
     public function getSessionStorage() {
         if (!$this->storage) {
-            $this->storage = $this->getServiceLocator()
-                    ->get('Auth\Model\MyAuthStorage');
+            $this->storage = $this->getServiceLocator()->get('Auth\Model\MyAuthStorage');
         }
-
         return $this->storage;
     }
 
@@ -117,7 +112,7 @@ class AuthController extends AbstractActionController {
                         'userInfo' => array(
                             'loggedIn' => TRUE,
                             'username' => $request->getPost('username'),
-                            'roleLevel' => $currUser->role_level,
+                            'role' => $currUser->role_level,
                         ),
                     ];
                     $this->getAuthService()->getStorage()->write($sessionInfo);
