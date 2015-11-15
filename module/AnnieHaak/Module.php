@@ -159,14 +159,18 @@ class Module {
                 case 2:
                     $userRole = 'member';
                     break;
-                case 2:
-                    $userRole = 'member';
+                case 3:
+                    $userRole = 'guest';
                     break;
                 default:
                     $userRole = 'guest';
                     break;
             }
         }
+
+        dump($e->getViewModel());
+        dump($e->getViewModel()->acl->hasResource($route));
+        dump($e->getViewModel()->acl);
 
         if (!$e->getViewModel()->acl->hasResource($route) || !$e->getViewModel()->acl->isAllowed($userRole, $route)) {
             //Naughty trying to get somewhere they shouldn't (Clear there identity force them to login again)
