@@ -16,11 +16,11 @@ use Zend\Db\TableGateway\TableGateway;
 class Module {
 
     public function onBootstrap(MvcEvent $e) {
+
         $eventManager = $e->getApplication()->getEventManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-        $this->initAcl($e); //Initialise the ACL
 
         $eventManager->attach('route', function($e) {
             $app = $e->getApplication();
@@ -39,6 +39,11 @@ class Module {
                 return $response;
             }
         }, -100);
+
+        #dump($response);
+        #exit();
+
+        $this->initAcl($e); //Initialise the ACL
         $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl')); //Acl check
     }
 
@@ -151,8 +156,8 @@ class Module {
 
         $sessData = $e->getApplication()->getServiceManager()->get('AuthService')->getStorage()->read();
 
-        if (isset($sessData["userInfo"]["role"])) {
-            switch ($sessData["userInfo"]["role"]) {
+        if (isset($sessData["userInfo"]["roleLevel"])) {
+            switch ($sessData["userInfo"]["roleLevel"]) {
                 case 1:
                     $userRole = 'admin';
                     break;
@@ -162,11 +167,18 @@ class Module {
                 case 3:
                     $userRole = 'guest';
                     break;
-                default:
-                    $userRole = 'guest';
-                    break;
             }
+        } else {
+            $userRole = 'guest';
         }
+
+        #$userRole = 'guest';
+        #dump($e->getViewModel()->acl);
+        #dump($route);
+        #dump($userRole);
+        #dump($e->getViewModel()->acl->hasResource($route));
+        #dump($e->getViewModel()->acl->isAllowed($userRole, $route));
+        #exit();
 
         dump($e->getViewModel());
         dump($e->getViewModel()->acl->hasResource($route));
@@ -176,8 +188,8 @@ class Module {
             //Naughty trying to get somewhere they shouldn't (Clear there identity force them to login again)
             $response = $e->getResponse();
             //location to page or what ever
-            $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/404');
-            $response->setStatusCode(401);
+            $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/403');
+            $response->setStatusCode(403);
         }
     }
 

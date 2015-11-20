@@ -2,15 +2,13 @@
 
 return array(
     'guest' => array(
-        'Login/login',
-        'Controller/Action'
+        'Auth/login'
     ),
-    'Member' => array(
-        'Login/login',
-        'Controller/Action'
+    'member' => array(
+        'Auth/login'
     ),
-    'Admin' => array(
-        'Login/login',
-        'Controller/Action'
+    'admin' => array(
+        'Auth/login',
+        'Index/index'
     ),
 );

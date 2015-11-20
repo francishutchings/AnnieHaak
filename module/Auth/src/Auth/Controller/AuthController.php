@@ -112,7 +112,7 @@ class AuthController extends AbstractActionController {
                         'userInfo' => array(
                             'loggedIn' => TRUE,
                             'username' => $request->getPost('username'),
-                            'role' => $currUser->role_level,
+                            'roleLevel' => $currUser->role_level,
                         ),
                     ];
                     $this->getAuthService()->getStorage()->write($sessionInfo);

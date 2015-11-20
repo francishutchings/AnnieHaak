@@ -2,7 +2,7 @@
 
 function Redirect($url, $permanent = false) {
     if (headers_sent() === false) {
-        header('Location: ' . $url, true, ($permanent === true) ? 301 : 302);
+        header('Location: ' . $url, true, ($permanent === true) ? 403 : 403);
     }
     exit();
 }
@@ -13,7 +13,7 @@ if (filter_input(INPUT_SERVER, 'HTTP_HOST') != 'anniehaak.localhost') {
 }
 ?>
 
-<h1><?php echo $this->translate('A 404 error occurred') ?></h1>
+<h1><?php echo $this->translate('A 403 access denied') ?></h1>
 <h2><?php echo $this->message ?></h2>
 
 <?php if (isset($this->reason) && $this->reason): ?>
@@ -124,6 +124,7 @@ if (filter_input(INPUT_SERVER, 'HTTP_HOST') != 'anniehaak.localhost') {
     <?php endif ?>
 
     <?php
+
 
 
  endif ?>

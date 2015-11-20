@@ -5,15 +5,32 @@ namespace AnnieHaak;
 return array(
     'router' => array(
         'routes' => array(
-            '/' => array(
+            'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
-                    'route' => '/',
+                    'route' => '/home',
                     'defaults' => array(
                         'controller' => 'AnnieHaak\Controller\Index',
                         'action' => 'index',
                     ),
                 ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'default' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[:controller[/:action]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ),
+                            'defaults' => array(
+                                'action' => 'index',
+                                '__NAMESPACE__' => 'Application\Controller'
+                            )
+                        )
+                    )
+                )
             ),
             'auth' => array(
                 'type' => 'segment',
@@ -236,11 +253,13 @@ return array(
         'display_exceptions' => true,
         'doctype' => 'HTML5',
         'not_found_template' => 'error/404',
+        'forbidden_template' => 'error/403',
         'exception_template' => 'error/index',
         'template_map' => array(
             'layout/layout' => __DIR__ . '/../view/layout/layout.phtml',
             'AnnieHaak/index/index' => __DIR__ . '/../view/AnnieHaak/index/index.phtml',
             'error/404' => __DIR__ . '/../view/error/404.phtml',
+            'error/403' => __DIR__ . '/../view/error/403.phtml',
             'error/index' => __DIR__ . '/../view/error/index.phtml',
         ),
         'template_path_stack' => array(
