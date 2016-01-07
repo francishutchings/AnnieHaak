@@ -5,6 +5,33 @@ namespace AnnieHaak;
 return array(
     'router' => array(
         'routes' => array(
+            '' => array(
+                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'options' => array(
+                    'route' => '/',
+                    'defaults' => array(
+                        'controller' => 'AnnieHaak\Controller\Index',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'default' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '[:controller[/:action]]',
+                            'constraints' => array(
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
+                            ),
+                            'defaults' => array(
+                                'action' => 'index',
+                                '__NAMESPACE__' => 'Application\Controller'
+                            )
+                        )
+                    )
+                )
+            ),
             'home' => array(
                 'type' => 'Zend\Mvc\Router\Http\Literal',
                 'options' => array(
@@ -182,6 +209,16 @@ return array(
                             'constraints' => array(
                                 'id' => '[1-9]\d*'
                             )
+                        ),
+                    ),
+                    'collections-types-report' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/collections-types-report',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Reports',
+                                'action' => 'collectionsTypes'
+                            ),
                         ),
                     ),
                 ),
@@ -434,10 +471,10 @@ return array(
                         'order' => 10,
                     ),
                     array(
-                        'label' => 'Collections & Occasions',
-                        'route' => 'business-reports/collections-occasions',
+                        'label' => 'Collections & Types',
+                        'route' => 'business-reports/collections-types-report',
                         'contoller' => 'ReportsController',
-                        'action' => 'index',
+                        'action' => 'collectionsTypes',
                         'order' => 20,
                     ),
                     array(

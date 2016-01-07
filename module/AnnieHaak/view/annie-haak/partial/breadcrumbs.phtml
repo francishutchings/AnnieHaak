@@ -6,7 +6,11 @@ function breadcrumbs() {
     $site = 'http://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
     $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
     $count = count($crumbs);
-    $link = ucwords(str_replace(array(".php", "-", "_"), array("", " ", " "), $crumbs[1]));
+    if ($count == 0) {
+        $link = 'Home';
+    } else {
+        $link = ucwords(str_replace(array(".php", "-", "_"), array("", " ", " "), $crumbs[1]));
+    }
 
     if ($link == 'Home') {
         $bc .= '<li class="active" typeof="v:Breadcrumb"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Main Menu</li>';

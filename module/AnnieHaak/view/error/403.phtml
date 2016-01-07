@@ -1,18 +1,3 @@
-<?php
-
-function Redirect($url, $permanent = false) {
-    if (headers_sent() === false) {
-        header('Location: ' . $url, true, ($permanent === true) ? 403 : 403);
-    }
-    exit();
-}
-
-if (filter_input(INPUT_SERVER, 'HTTP_HOST') != 'anniehaak.localhost') {
-    Redirect('http://' . filter_input(INPUT_SERVER, 'HTTP_HOST') . '/', false);
-    exit();
-}
-?>
-
 <h1><?php echo $this->translate('A 403 access denied') ?></h1>
 <h2><?php echo $this->message ?></h2>
 
@@ -124,7 +109,5 @@ if (filter_input(INPUT_SERVER, 'HTTP_HOST') != 'anniehaak.localhost') {
     <?php endif ?>
 
     <?php
-
-
 
  endif ?>

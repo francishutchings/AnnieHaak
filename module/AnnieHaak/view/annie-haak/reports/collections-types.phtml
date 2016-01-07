@@ -1,0 +1,102 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+
+dump($collectionsTypesReport->reportDataArr);
+/*  foreach ($collectionsTypesReport->reportDataArr as $collection) {
+
+  echo '<h2>' . $collection['ProductCollectionName'] . '</h2>';
+  echo $collection['ProductTypeName'];
+  echo $collection['ProductCount'];
+  echo '<hr>';
+  }
+ */
+?>
+
+<div class="bs-component">
+
+    <?php
+    $tempName = '';
+    for ($x = 0; $x < count($collectionsTypesReport->reportDataArr); $x++) {
+        $ProductCollectionName = $collectionsTypesReport->reportDataArr[$x]['ProductCollectionName'];
+
+        if ($ProductCollectionName != $tempName) {
+            echo '<h3>' . $ProductCollectionName . '</h3>';
+            echo '<table class="table table-striped table-hover">';
+            echo '<tbody>';
+        }
+
+        echo '<tr>';
+        echo '<td>' . $collectionsTypesReport->reportDataArr[$x]['ProductTypeName'] . '</td>';
+        echo '<td>' . $collectionsTypesReport->reportDataArr[$x]['ProductCount'] . '</td>';
+        echo '</tr>';
+
+        if ($ProductCollectionName != $tempName) {
+            echo '</tbody>';
+            echo '</table>';
+        }
+
+        $tempName = $collectionsTypesReport->reportDataArr[$x]['ProductCollectionName'];
+    }
+    ?>
+
+</div>
+
+<!--
+<div class="bs-component">
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Column heading</th>
+                <th>Column heading</th>
+                <th>Column heading</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+            </tr>
+            <tr class="info">
+                <td>3</td>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+            </tr>
+            <tr class="success">
+                <td>4</td>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+            </tr>
+            <tr class="danger">
+                <td>5</td>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+            </tr>
+            <tr class="warning">
+                <td>6</td>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+            </tr>
+            <tr class="active">
+                <td>7</td>
+                <td>Column content</td>
+                <td>Column content</td>
+                <td>Column content</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+-->

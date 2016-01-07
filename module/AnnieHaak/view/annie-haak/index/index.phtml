@@ -1,6 +1,10 @@
 <?php
 $topLevel = $this->navigation('navigation')->toArray();
-echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+if ($this->navigation('navigation')->findActive('navigation') == NULL) {
+    echo $this->UIPageTitleFormatter('Main Menu');
+} else {
+    echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+}
 ?>
 
 <div class="col-lg-6">

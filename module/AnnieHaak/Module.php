@@ -21,7 +21,6 @@ class Module {
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
-
         $eventManager->attach('route', function($e) {
             $app = $e->getApplication();
             $routeMatch = $e->getRouteMatch();
@@ -40,11 +39,11 @@ class Module {
             }
         }, -100);
 
-        #dump($response);
-        #exit();
 
-        $this->initAcl($e); //Initialise the ACL
-        $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl')); //Acl check
+        #dump($eventManager);
+        #exit();
+        #$this->initAcl($e); //Initialise the ACL
+        #$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl')); //Acl check
     }
 
     public function getConfig() {
@@ -179,18 +178,19 @@ class Module {
         #dump($e->getViewModel()->acl->hasResource($route));
         #dump($e->getViewModel()->acl->isAllowed($userRole, $route));
         #exit();
-
-        dump($e->getViewModel());
-        dump($e->getViewModel()->acl->hasResource($route));
-        dump($e->getViewModel()->acl);
-
-        if (!$e->getViewModel()->acl->hasResource($route) || !$e->getViewModel()->acl->isAllowed($userRole, $route)) {
-            //Naughty trying to get somewhere they shouldn't (Clear there identity force them to login again)
-            $response = $e->getResponse();
-            //location to page or what ever
-            $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/403');
-            $response->setStatusCode(403);
-        }
+        #dump($e->getViewModel());
+        #dump($e->getViewModel()->acl->hasResource($route));
+        #dump($e->getViewModel()->acl);
+        /*
+          if (!$e->getViewModel()->acl->hasResource($route) || !$e->getViewModel()->acl->isAllowed($userRole, $route)) {
+          //Naughty trying to get somewhere they shouldn't (Clear there identity force them to login again)
+          $response = $e->getResponse();
+          //location to page or what ever
+          $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/403');
+          $response->setStatusCode(403);
+          }
+         *
+         */
     }
 
 }
