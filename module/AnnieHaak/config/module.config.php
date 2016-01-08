@@ -471,7 +471,7 @@ return array(
                         'order' => 10,
                     ),
                     array(
-                        'label' => 'Collections & Types',
+                        'label' => 'Collections & Types Report',
                         'route' => 'business-reports/collections-types-report',
                         'contoller' => 'ReportsController',
                         'action' => 'collectionsTypes',

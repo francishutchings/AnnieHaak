@@ -16,11 +16,11 @@ body {
     bottom: 0;
     width: 100%;
     /* Set the fixed height of the footer here */
-    height: 40px;
+    height: 45px;
     background-color: #f5f5f5;
 }
 .footer {
-    padding-top: 5px;
+    padding-top: 12px;
     text-align: center;
 }
 .navbar-brand {
@@ -214,7 +214,14 @@ body {
 
 
 @media (max-width: 767px) {
+
     .nav-pills>li {
         float: none;
     }
+
+    .footer {
+        padding-top: 5px;
+        text-align: center;
+    }
+
 }

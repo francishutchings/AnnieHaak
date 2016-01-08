@@ -14,9 +14,9 @@
         <?php
         $version = 1;
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
-                ->prependStylesheet($this->basePath('css/style.css?v=' . $version))
-                ->prependStylesheet($this->basePath('css/font-awesome.min.css?v=' . $version))
-                ->prependStylesheet($this->basePath('css/bootstrap.css?v=' . $version))
+                ->prependStylesheet($this->basePath('css/style.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('css/font-awesome.min.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('css/bootstrap.css?v=' . $version), 'all')
         ?>
 
         <!-- Scripts -->

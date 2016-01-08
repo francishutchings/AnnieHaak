@@ -2,7 +2,7 @@
 
 function breadcrumbs() {
 
-    $bc = '<ul class="breadcrumb" xmlns:v="http://rdf.data-vocabulary.org/#">';
+    $bc = '<ul class="breadcrumb  hidden-print" xmlns:v="http://rdf.data-vocabulary.org/#">';
     $site = 'http://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
     $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
     $count = count($crumbs);
