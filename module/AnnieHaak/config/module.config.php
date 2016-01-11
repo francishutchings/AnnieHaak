@@ -221,6 +221,16 @@ return array(
                             ),
                         ),
                     ),
+                    'margins-report' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/margins-report',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Reports',
+                                'action' => 'margins'
+                            ),
+                        ),
+                    ),
                 ),
             ),
             // The following is a route to simplify getting started creating
@@ -478,10 +488,10 @@ return array(
                         'order' => 20,
                     ),
                     array(
-                        'label' => 'Margins',
-                        'route' => 'business-reports/margins',
+                        'label' => 'Margins Report',
+                        'route' => 'business-reports/margins-report',
                         'contoller' => 'ReportsController',
-                        'action' => 'index',
+                        'action' => 'margins',
                         'order' => 30,
                     ),
                     array(
