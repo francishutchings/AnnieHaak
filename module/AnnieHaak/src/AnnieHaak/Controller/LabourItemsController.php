@@ -13,7 +13,6 @@ class LabourItemsController extends AbstractActionController {
     protected $labourItemsTable;
 
     public function indexAction() {
-
         return new ViewModel(array(
             'labourItems' => $this->getLabourItemsTable()->fetchAll(),
         ));

@@ -10,6 +10,8 @@ use AnnieHaak\Model\LabourItems;
 use AnnieHaak\Model\LabourItemsTable;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Model\ProductTypesTable;
+use AnnieHaak\Model\RatesPercentages;
+use AnnieHaak\Model\RatesPercentagesTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -61,6 +63,9 @@ class Module {
     }
 
     public function getServiceConfig() {
+        /*
+         * http://stackoverflow.com/questions/15947224/when-to-use-tablegateway-and-adapter
+         */
         return array(
             'factories' => array(
                 'AuthService' => function ($sm) {
@@ -82,7 +87,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Collections());
-                    return new TableGateway('productcollections', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('ProductCollections', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\LabourItemsTable' => function($sm) {
                     $tableGateway = $sm->get('LabourItemsGateway');
@@ -93,7 +98,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new LabourItems());
-                    return new TableGateway('labourlookup', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('LabourLookup', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\ProductTypesTable' => function($sm) {
                     $tableGateway = $sm->get('ProductTypesGateway');

@@ -1,0 +1,23 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+echo '<p class="pull-right">' . $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/rates-percentages/edit', 'Edit') . '</p>';
+?>
+<table class="table table-striped table-responsive table-hover ">
+    <thead>
+        <tr class="text-info">
+            <th>Name</th>
+            <th>Value</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        echo '<tr><td>Assay Cost</td><td>' . $ratesPercentages->AssayRateUnitCost . '</td></tr>';
+        echo '<tr><td>Import Rate &#37;</td><td>' . $ratesPercentages->ImportPercentage . '</td></tr>';
+        echo '<tr><td>Merchant Charge &#37;</td><td>' . $ratesPercentages->MerchantChargePercentage . '</td></tr>';
+        echo '<tr><td>Packaging and Dispatch Cost</td><td>' . $ratesPercentages->PackageAndDispatchUnitCost . '</td></tr>';
+        echo '<tr><td>Post Cost</td><td>' . $ratesPercentages->PostageCostUnitCost . '</td></tr>';
+        echo '<tr><td>Post For Profit Cost</td><td>' . $ratesPercentages->PostageForProfitUnitCost . '</td></tr>';
+        echo '<tr><td>VAT Rate &#37;</td><td>' . $ratesPercentages->VATPercentage . '</td></tr>';
+        ?>
+    </tbody>
+</table>

@@ -1,0 +1,65 @@
+<?php
+
+$form = $this->form;
+
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+$form->setAttribute('action', $this->url('business-admin/rates-percentages', array('action' => 'edit')));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->get('submit')->setAttribute('value', 'Update');
+$form->prepare();
+
+
+echo '<div class="well bs-component">';
+
+echo $this->form()->openTag($form);
+
+echo '<fieldset><legend>Edit Rates and Percentages</legend>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="AssayRateUnitCost">Assay Cost &pound;:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('AssayRateUnitCost'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="ImportPercentage">Import Rate &#37;:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('ImportPercentage'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="MerchantChargePercentage">Merchant Charge &#37;:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('MerchantChargePercentage'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="PackageAndDispatchUnitCost">Package and Dispatch Cost &pound;:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('PackageAndDispatchUnitCost'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="PostageCostUnitCost">Post Cost &pound;:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('PostageCostUnitCost'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="PostageForProfitUnitCost">Post for Profit Cost &pound;:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('PostageForProfitUnitCost'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="VATPercentage">VAT Rate &pound;:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('VATPercentage'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/business-admin/rates-percentages" type="reset" class="btn btn-default btn-sm">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-warning btn-sm');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
+
+echo '</fieldset>';
+
+echo $this->form()->closeTag();
+
+echo '</div>';

@@ -185,6 +185,16 @@ return array(
                             )
                         ),
                     ),
+                    'rates-percentages' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/rates-percentages[/:action]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\RatesPercentages',
+                                'action' => 'index'
+                            ),
+                        ),
+                    ),
                 ),
             ),
             'business-reports' => array(
@@ -291,6 +301,7 @@ return array(
             'AnnieHaak\Controller\Collections' => Controller\CollectionsController::class,
             'AnnieHaak\Controller\LabourItems' => Controller\LabourItemsController::class,
             'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
+            'AnnieHaak\Controller\RatesPercentages' => Controller\RatesPercentagesController::class,
             'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
             'AnnieHaak\Controller\DynamicReports' => Controller\DynamicReportsController::class
         ),
@@ -438,11 +449,20 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => 'Rates Percentages',
+                        'label' => 'Rates and Percentages',
                         'route' => 'business-admin/rates-percentages',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 60,
+                        'pages' => array(
+                            array(
+                                'label' => 'Rates and Percentages',
+                                'route' => 'business-admin/rates-percentages',
+                                'contoller' => 'BusinessAdminController',
+                                'action' => 'edit',
+                                'order' => 10,
+                            ),
+                        ),
                     ),
                     array(
                         'label' => 'Raw Materials',
