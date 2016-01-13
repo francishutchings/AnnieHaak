@@ -1,20 +1,8 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
-
-/* dump($marginsReport);
- * SKU
- * Name
- * Type
- * Collection
- * Current
- * Trade Pack
- * RRP = [RRP] + (DLookUp("PostageForProfitUnitCost", "PostageForProfitLookup"))
- * Retail Profit = [RRP + Postage - Vat]-[ExVatCost]
- * Retail Margin = [Retail Profit]/[RRP + Postage - Vat]
- * Trade Profit = IIf([ExcludeFromTrade] = -1, 'N/A', [tradeprofsub] + [addback])
- * Trade Margin = IIf([ExcludeFromTrade] = -1, 'N/A', [Trade Profit] / [TradePrice])
- */
+#dump($marginsReport);
+#exit();
 ?>
 <div class = "col-lg-12">
     <div class = "bs-component">
@@ -42,17 +30,13 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
                     echo '<td>' . $value['Name'] . '</td>';
                     echo '<td>' . $value['Type'] . '</td>';
                     echo '<td>' . $value['Collection'] . '</td>';
-                    echo '<td>' . (($value['Current']) ? 'Yes' : 'No') . '</td>';
-                    echo '<td>' . (($value['TradePack']) ? 'Yes' : 'No') . '</td>';
+                    echo '<td>' . $value['Current'] . '</td>';
+                    echo '<td>' . $value['TradePack'] . '</td>';
                     echo '<td>' . $this->UICurrencyFormatter($value['RRP'], TRUE) . '</td>';
-                    #echo '<td>' . $value['RetailProfit'] . '</td>';
-                    #echo '<td>' . $value['RetailMargin'] . '</td>';
-                    #echo '<td>' . $value['TradeProfit'] . '</td>';
-                    #echo '<td>' . $value['TradeMargin'] . '</td></tr>';
-                    echo '<td></td>';
-                    echo '<td></td>';
-                    echo '<td></td>';
-                    echo '<td></td>';
+                    echo '<td>' . $this->UICurrencyFormatter($value['RetailProfit'], TRUE) . '</td>';
+                    echo '<td>' . round($value['RetailMargin'], 2) . '%</td>';
+                    echo '<td>' . $this->UICurrencyFormatter($value['TradeProfit'], TRUE) . '</td>';
+                    echo '<td>' . round($value['TradeMargin'], 2) . '%</td></tr>';
                     echo '</tr>';
                 }
                 ?>

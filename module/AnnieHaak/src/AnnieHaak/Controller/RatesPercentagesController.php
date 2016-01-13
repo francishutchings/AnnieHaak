@@ -10,14 +10,16 @@ use AnnieHaak\Form\RatesPercentagesForm;
 
 class RatesPercentagesController extends AbstractActionController {
 
+    protected $ratesPercentagesObj;
+
     public function indexAction() {
         $sm = $this->getServiceLocator();
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
 
-        $ratesPercentagesObj = new RatesPercentages($dbAdapter);
+        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
 
         return new ViewModel(array(
-            'ratesPercentages' => $ratesPercentagesObj->fetchAll(),
+            'ratesPercentages' => $this->ratesPercentagesObj->fetchAll(),
         ));
     }
 
@@ -25,10 +27,20 @@ class RatesPercentagesController extends AbstractActionController {
         $sm = $this->getServiceLocator();
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
 
-        $ratesPercentagesObj = new RatesPercentages($dbAdapter);
+        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
 
         $form = new RatesPercentagesForm();
-        $form->bind($ratesPercentagesObj->fetchAll());
+        $form->bind($this->ratesPercentagesObj->fetchAll());
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($this->ratesPercentagesObj->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $this->ratesPercentagesObj->saveRatesPercents($this->ratesPercentagesObj);
+                return $this->redirect()->toRoute('business-admin/rates-percentages');
+            }
+        }
 
         return new ViewModel(array(
             'form' => $form
