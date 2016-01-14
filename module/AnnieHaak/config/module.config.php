@@ -195,6 +195,32 @@ return array(
                             ),
                         ),
                     ),
+                    'raw-materials' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/raw-materials[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\RawMaterials',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
+                    'raw-material-types' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/raw-material-types[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\RawMaterialTypes',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
                 ),
             ),
             'business-reports' => array(
@@ -302,6 +328,8 @@ return array(
             'AnnieHaak\Controller\LabourItems' => Controller\LabourItemsController::class,
             'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
             'AnnieHaak\Controller\RatesPercentages' => Controller\RatesPercentagesController::class,
+            'AnnieHaak\Controller\RawMaterials' => Controller\RawMaterialsController::class,
+            'AnnieHaak\Controller\RawMaterialTypes' => Controller\RawMaterialTypesController::class,
             'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
             'AnnieHaak\Controller\DynamicReports' => Controller\DynamicReportsController::class
         ),
@@ -470,13 +498,59 @@ return array(
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 70,
+                        'pages' => array(
+                            array(
+                                'label' => 'Raw Materials',
+                                'route' => 'business-admin/raw-materials',
+                                'contoller' => 'RawMaterialsController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Raw Materials',
+                                'route' => 'business-admin/raw-materials',
+                                'contoller' => 'RawMaterialsController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Raw Materials',
+                                'route' => 'business-admin/raw-materials',
+                                'contoller' => 'RawMaterialsController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                     array(
-                        'label' => 'Raw Materials Types',
-                        'route' => 'business-admin/raw-materials-types',
+                        'label' => 'Raw Material Types',
+                        'route' => 'business-admin/raw-material-types',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 80,
+                        'pages' => array(
+                            array(
+                                'label' => 'Raw Material Types',
+                                'route' => 'business-admin/raw-material-types',
+                                'contoller' => 'RawMaterialTypesController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Raw Material Types',
+                                'route' => 'business-admin/raw-material-types',
+                                'contoller' => 'RawMaterialTypesController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Raw Material Types',
+                                'route' => 'business-admin/raw-material-types',
+                                'contoller' => 'RawMaterialTypesController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                     array(
                         'label' => 'Suppliers',

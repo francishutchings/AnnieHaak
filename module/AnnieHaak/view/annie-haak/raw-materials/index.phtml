@@ -1,0 +1,63 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/raw-materials/add', 'Add new Raw Material');
+
+/*
+  dump($rawMaterials);
+  $RawMaterialID;           # INT(11) NOT NULL AUTO_INCREMENT,
+  $RawMaterialCode;         # VARCHAR(50) NULL DEFAULT NULL,
+  $RawMaterialName;         # VARCHAR(150) NOT NULL,
+  $RawMaterialUnitCost;     # DOUBLE NOT NULL DEFAULT '0',
+  $RMSupplierID;            # INT(11) NOT NULL DEFAULT '0',
+  $RMTypeID;                # INT(11) NOT NULL DEFAULT '0',
+  $DateLastChecked;         # DATETIME NULL DEFAULT NULL,
+  $LastInvoiceNumber;       # VARCHAR(20) NULL DEFAULT NULL
+ */
+?>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr class="text-info">
+            <th>Raw Material Code</th>
+            <th>Raw Material Name</th>
+            <th>Type</th>
+            <th>Supplier</th>
+            <th>Raw Material Unit Cost</th>
+            <th>Date Last Checked</th>
+            <th>Last Invoice Number</th>
+            <th colspan="2" style="width: 25%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rawMaterials as $rawMaterial) : ?>
+            <tr>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RawMaterialCode); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RawMaterialName); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RMTypeID); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RMSupplierID); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RawMaterialUnitCost); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->DateLastChecked); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->LastInvoiceNumber); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/raw-materials/edit/' . $rawMaterial->RawMaterialID, 'Edit'); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/business-admin/raw-materials/delete/' . $rawMaterial->RawMaterialID, 'Delete'); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

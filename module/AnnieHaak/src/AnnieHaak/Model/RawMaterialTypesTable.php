@@ -5,7 +5,7 @@ namespace AnnieHaak\Model;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
-class ProductTypesTable {
+class RawMaterialTypesTable {
 
     protected $tableGateway;
 
@@ -15,14 +15,14 @@ class ProductTypesTable {
 
     public function fetchAll() {
         $resultSet = $this->tableGateway->select(function (Select $select) {
-            $select->order('ProductTypeName ASC');
+            $select->order('RMTypeName ASC');
         });
         return $resultSet;
     }
 
-    public function getProductTypes($id) {
+    public function getRawMaterialTypes($id) {
         $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('ProductTypeId' => $id));
+        $rowset = $this->tableGateway->select(array('RMTypeID' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -30,25 +30,25 @@ class ProductTypesTable {
         return $row;
     }
 
-    public function saveProductTypes(ProductTypes $ProductTypes) {
+    public function saveRawMaterialTypes(RawMaterialTypes $RawMaterialTypes) {
         $data = array(
-            'ProductTypeName' => $ProductTypes->ProductTypeName
+            'RMTypeName' => $RawMaterialTypes->RMTypeName
         );
 
-        $id = (int) $ProductTypes->ProductTypeId;
+        $id = (int) $RawMaterialTypes->RMTypeID;
         if ($id == 0) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getProductTypes($id)) {
-                $this->tableGateway->update($data, array('ProductTypeId' => $id));
+            if ($this->getRawMaterialTypes($id)) {
+                $this->tableGateway->update($data, array('RMTypeID' => $id));
             } else {
                 throw new \Exception('Product Type id does not exist');
             }
         }
     }
 
-    public function deleteProductTypes($id) {
-        $this->tableGateway->delete(array('ProductTypeId' => (int) $id));
+    public function deleteRawMaterialTypes($id) {
+        $this->tableGateway->delete(array('RMTypeID' => (int) $id));
     }
 
 }

@@ -1,0 +1,34 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/raw-material-types/add', 'Add new Raw Material Type');
+
+
+/*
+  dump($rawMaterialTypes);exit();
+  RMTypeID` INT(11) NOT NULL AUTO_INCREMENT,
+  RMTypeName` VARCHAR(255) NOT NULL
+ */
+?>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr class="text-info">
+            <th>Raw Material Type Name</th>
+            <th colspan="2" style="width: 25%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($rawMaterialTypes as $rawMaterialType) : ?>
+            <tr>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterialType->RMTypeName); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/raw-material-types/edit/' . $rawMaterialType->RMTypeID, 'Edit'); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/business-admin/raw-material-types/delete/' . $rawMaterialType->RMTypeID, 'Delete'); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

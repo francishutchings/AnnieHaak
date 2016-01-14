@@ -110,80 +110,105 @@ SQL;
 #        exit();
 
         for ($x = 0; $x < count($tempDataArr); $x++) {
-            $tempArr = array();
-            foreach ($tempDataArr[$x] as $key => $value) {
-                switch ($key) {
-                    case 'SKU':
-                        $tempArr['SKU'] = $value;
-                        break;
-                    case 'ProductName':
-                        $tempArr['Name'] = $value;
-                        break;
-                    case 'ProductTypeName':
-                        $tempArr['Type'] = $value;
-                        break;
-                    case 'ProductCollectionCode':
-                        $tempArr['Collection'] = $value;
-                        break;
-                    case 'Current':
-                        $tempArr['Current'] = ($value) ? 'Yes' : 'No';
-                        break;
-                    case 'PartOfTradePack':
-                        $tempArr['TradePack'] = ($value) ? 'Yes' : 'No';
-                        break;
-                    case 'RRP':
-                        $tempArr['RRP'] = ($value + $ratesPercentages->PostageForProfitUnitCost);
-                        break;
+
+            #START
+            if ($tempDataArr[$x]['ProductName'] == 'Ankle Silver Charm Bracelet - Butterfly') {
+
+                $tempArr = array();
+                foreach ($tempDataArr[$x] as $key => $value) {
+                    switch ($key) {
+                        case 'SKU':
+                            $tempArr['SKU'] = $value;
+                            break;
+                        case 'ProductName':
+                            $tempArr['Name'] = $value;
+                            break;
+                        case 'ProductTypeName':
+                            $tempArr['Type'] = $value;
+                            break;
+                        case 'ProductCollectionCode':
+                            $tempArr['Collection'] = $value;
+                            break;
+                        case 'Current':
+                            $tempArr['Current'] = ($value) ? 'Yes' : 'No';
+                            break;
+                        case 'PartOfTradePack':
+                            $tempArr['TradePack'] = ($value) ? 'Yes' : 'No';
+                            break;
+                        case 'RRP':
+                            $tempArr['RRP'] = ($value + $ratesPercentages->PostageForProfitUnitCost);
+                            break;
+                    }
                 }
+
+                /* Retail Profit =
+                 *  [RRP+Postage-Vat]
+                 * -
+                 *  [ExVatCost]
+                 *      => ([TotalForMarkup]+[TotalPackCost]+[AssTotal]+[MCTotal]+[PostageTotal])
+                 *
+                 * [TotalPackCost] = SQL
+                 * [AssTotal] = IIf([RequiresAssay]=-1,DLookUp("AssayRateUnitCost","AssayRateLookup")*1,0)
+                 * [MCTotal] = (([RRP+Postage])*((DLookUp("MerchantChargePercentage","MerchantChargeLookup")/100)))
+                 * [PostageTotal] = DLookUp("PostageCostUnitCost","PostageCostLookup")
+                 */
+                #[RRP+Postage-Vat]
+                $RRP_Postage = ($tempDataArr[$x]['RRP'] + $ratesPercentages->PostageForProfitUnitCost);
+                $Vat = ($tempDataArr[$x]['RRP'] + $ratesPercentages->PostageForProfitUnitCost) * ($ratesPercentages->VATPercentage / 100);
+
+                dump($RRP_Postage);
+                dump($Vat);
+                dump($tempDataArr[$x]['TotalRMCost']);
+                dump($tempDataArr[$x]['TotalLabourCost']);
+                dump($ratesPercentages->PackageAndDispatchUnitCost);
+
+
+
+                #[TotalForMarkup]
+                #[TotalSoFar]
+                $ExVatCost = ($tempDataArr[$x]['TotalRMCost'] + $tempDataArr[$x]['TotalLabourCost'] + $ratesPercentages->PackageAndDispatchUnitCost);
+                dump($ExVatCost);
+
+                dump($tempDataArr[$x]['TotalRMCost'] * ($ratesPercentages->ImportPercentage / 100));
+
+                #[ImpTotal]
+                $ExVatCost += ($tempDataArr[$x]['TotalRMCost'] * ($ratesPercentages->ImportPercentage / 100));
+
+                dump($ExVatCost);
+
+                exit();
+
+                #[TotalPackCost]
+                $ExVatCost += $tempDataArr[$x]['TotalPackCost'];
+                #[AssTotal]
+                $ExVatCost += ($tempDataArr[$x]['RequiresAssay']) ? $ratesPercentages->AssayRateUnitCost : 0;
+                #[MCTotal]
+                $ExVatCost += ($RRP_Postage * ($ratesPercentages->MerchantChargePercentage / 100));
+                #[PostageTotal]
+                $ExVatCost += $ratesPercentages->PostageCostUnitCost;
+                $tempArr['RetailProfit'] = ($RRP_Postage - $Vat) - $ExVatCost;
+
+                # ['RetailMargin'] = [Retail Profit] / [RRP+Postage-Vat]
+                $tempArr['RetailMargin'] = ($tempArr['RetailProfit'] / ($RRP_Postage - $Vat) * 100);
+
+                /* ['TradeProfit'] = IIf([ExcludeFromTrade]=-1,'N/A',[tradeprofsub]+[addback])
+                 * [tradeprofsub] = [tradeprice]-[ExVatCost]
+                 * [tradeprice] = [RRP+Postage-Vat] * 0.4
+                 * [addback] = IIf([RRP+Postage] > 49, [PDTotal]+[BoxCost]+[MCTotal]+[PostageTotal], [PDTotal]+[MCTotal]+[PostageTotal])
+                 */
+                $tradePrice = (($RRP_Postage - $Vat) * 0.4);
+                $addBack = ($RRP_Postage > 49) ? ($ratesPercentages->PostageCostUnitCost + $tempDataArr[$x]['BoxCost'] + ($RRP_Postage * ($ratesPercentages->MerchantChargePercentage / 100)) + $ratesPercentages->PostageCostUnitCost) : 0;
+                $tempArr['TradeProfit'] = ($tempDataArr[$x]['ExcludeFromTrade']) ? 'N/A' : (($tradePrice - $ExVatCost) + $addBack);
+
+                # ['TradeMargin'] = IIf([ExcludeFromTrade]=-1,'N/A',[Trade Profit] / [TradePrice])
+                $tempArr['TradeMargin'] = ($tempDataArr[$x]['ExcludeFromTrade']) ? 'N/A' : ($tempArr['TradeProfit'] / (($RRP_Postage - $Vat) * 0.4) * 100);
+
+
+
+                exit();
+                $this->reportDataArr[$x] = $tempArr;
             }
-
-            /* Retail Profit =
-             *  [RRP+Postage-Vat]
-             * -
-             *  [ExVatCost]
-             *      => ([TotalForMarkup]+[TotalPackCost]+[AssTotal]+[MCTotal]+[PostageTotal])
-             *
-             * [TotalPackCost] = SQL
-             * [AssTotal] = IIf([RequiresAssay]=-1,DLookUp("AssayRateUnitCost","AssayRateLookup")*1,0)
-             * [MCTotal] = (([RRP+Postage])*((DLookUp("MerchantChargePercentage","MerchantChargeLookup")/100)))
-             * [PostageTotal] = DLookUp("PostageCostUnitCost","PostageCostLookup")
-             */
-            #[RRP+Postage-Vat]
-            $RRP_Postage = ($tempDataArr[$x]['RRP'] + $ratesPercentages->PostageForProfitUnitCost);
-            $Vat = ($tempDataArr[$x]['RRP'] + $ratesPercentages->PostageForProfitUnitCost) * ($ratesPercentages->VATPercentage / 100);
-
-            #[TotalForMarkup]
-            #[TotalSoFar]
-            $ExVatCost = ($tempDataArr[$x]['TotalRMCost'] + $tempDataArr[$x]['TotalLabourCost'] + $ratesPercentages->PackageAndDispatchUnitCost);
-            #[ImpTotal]
-            $ExVatCost -= ($tempDataArr[$x]['TotalRMCost'] * ($ratesPercentages->ImportPercentage / 100));
-            #[TotalPackCost]
-            $ExVatCost += $tempDataArr[$x]['TotalPackCost'];
-            #[AssTotal]
-            $ExVatCost += ($tempDataArr[$x]['RequiresAssay']) ? $ratesPercentages->AssayRateUnitCost : 0;
-            #[MCTotal]
-            $ExVatCost += ($RRP_Postage * ($ratesPercentages->MerchantChargePercentage / 100));
-            #[PostageTotal]
-            $ExVatCost += $ratesPercentages->PostageCostUnitCost;
-            $tempArr['RetailProfit'] = ($RRP_Postage - $Vat) - $ExVatCost;
-
-            # ['RetailMargin'] = [Retail Profit] / [RRP+Postage-Vat]
-            $tempArr['RetailMargin'] = ($tempArr['RetailProfit'] / ($RRP_Postage - $Vat) * 100);
-
-            /* ['TradeProfit'] = IIf([ExcludeFromTrade]=-1,'N/A',[tradeprofsub]+[addback])
-             * [tradeprofsub] = [tradeprice]-[ExVatCost]
-             * [tradeprice] = [RRP+Postage-Vat] * 0.4
-             * [addback] = IIf([RRP+Postage] > 49, [PDTotal]+[BoxCost]+[MCTotal]+[PostageTotal], [PDTotal]+[MCTotal]+[PostageTotal])
-             */
-            $tradePrice = (($RRP_Postage - $Vat) * 0.4);
-            $addBack = ($RRP_Postage > 49) ? ($ratesPercentages->PostageCostUnitCost + $tempDataArr[$x]['BoxCost'] + ($RRP_Postage * ($ratesPercentages->MerchantChargePercentage / 100)) + $ratesPercentages->PostageCostUnitCost) : 0;
-            $tempArr['TradeProfit'] = ($tempDataArr[$x]['ExcludeFromTrade']) ? 'N/A' : (($tradePrice - $ExVatCost) + $addBack);
-
-            # ['TradeMargin'] = IIf([ExcludeFromTrade]=-1,'N/A',[Trade Profit] / [TradePrice])
-            $tempArr['TradeMargin'] = ($tempDataArr[$x]['ExcludeFromTrade']) ? 'N/A' : ($tempArr['TradeProfit'] / (($RRP_Postage - $Vat) * 0.4) * 100);
-
-            $this->reportDataArr[$x] = $tempArr;
-        }
+        } #END
     }
 
 }

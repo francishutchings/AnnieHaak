@@ -24,7 +24,7 @@ class LabourItemsController extends AbstractActionController {
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $labourItems = new ProductTypes();
+            $labourItems = new LabourItems();
             $form->setInputFilter($labourItems->getInputFilter());
             $form->setData($request->getPost());
 

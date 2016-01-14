@@ -8,10 +8,12 @@ use AnnieHaak\Model\Collections;
 use AnnieHaak\Model\CollectionsTable;
 use AnnieHaak\Model\LabourItems;
 use AnnieHaak\Model\LabourItemsTable;
+use AnnieHaak\Model\RawMaterials;
+use AnnieHaak\Model\RawMaterialsTable;
+use AnnieHaak\Model\RawMaterialTypes;
+use AnnieHaak\Model\RawMaterialTypesTable;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Model\ProductTypesTable;
-use AnnieHaak\Model\RatesPercentages;
-use AnnieHaak\Model\RatesPercentagesTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -110,6 +112,28 @@ class Module {
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ProductTypes());
                     return new TableGateway('ProductTypes', $dbAdapter, null, $resultSetPrototype);
+                },
+                'AnnieHaak\Model\RawMaterialsTable' => function($sm) {
+                    $tableGateway = $sm->get('RawMaterialsGateway');
+                    $table = new RawMaterialsTable($tableGateway);
+                    return $table;
+                },
+                'RawMaterialsGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new RawMaterials());
+                    return new TableGateway('rawmateriallookup', $dbAdapter, null, $resultSetPrototype);
+                },
+                'AnnieHaak\Model\RawMaterialTypesTable' => function($sm) {
+                    $tableGateway = $sm->get('RawMaterialTypesGateway');
+                    $table = new RawMaterialTypesTable($tableGateway);
+                    return $table;
+                },
+                'RawMaterialTypesGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new RawMaterialTypes());
+                    return new TableGateway('rawmaterialtypelookup', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );
