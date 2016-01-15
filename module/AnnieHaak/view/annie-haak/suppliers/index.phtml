@@ -1,0 +1,30 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/suppliers/add', 'Add new Product Type');
+?>
+
+<a href="/business-admin/suppliers" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>
+
+<table class="table table-striped table-responsive table-hover ">
+    <thead>
+        <tr class="text-info">
+            <th>Supplier Name</th>
+            <th colspan="2" style="width: 25%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($suppliers as $supplier) : ?>
+            <tr>
+                <td>
+                    <?php echo $this->escapeHtml($supplier->RMSupplierName); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/suppliers/edit/' . $supplier->RMSupplierID, 'Edit'); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/business-admin/suppliers/delete/' . $supplier->RMSupplierID, 'Delete'); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

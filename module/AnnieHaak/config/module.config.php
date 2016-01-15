@@ -234,6 +234,19 @@ return array(
                             )
                         ),
                     ),
+                    'suppliers' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/suppliers[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Suppliers',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
                 ),
             ),
             'business-reports' => array(
@@ -344,6 +357,7 @@ return array(
             'AnnieHaak\Controller\RatesPercentages' => Controller\RatesPercentagesController::class,
             'AnnieHaak\Controller\RawMaterials' => Controller\RawMaterialsController::class,
             'AnnieHaak\Controller\RawMaterialTypes' => Controller\RawMaterialTypesController::class,
+            'AnnieHaak\Controller\Suppliers' => Controller\SuppliersController::class,
             'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
             'AnnieHaak\Controller\DynamicReports' => Controller\DynamicReportsController::class
         ),
@@ -595,6 +609,29 @@ return array(
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 90,
+                        'pages' => array(
+                            array(
+                                'label' => 'Suppliers',
+                                'route' => 'business-admin/suppliers',
+                                'contoller' => 'SuppliersController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Suppliers',
+                                'route' => 'business-admin/suppliers',
+                                'contoller' => 'SuppliersController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Suppliers',
+                                'route' => 'business-admin/suppliers',
+                                'contoller' => 'SuppliersController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                 ),
             ),

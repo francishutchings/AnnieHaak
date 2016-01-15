@@ -16,6 +16,8 @@ use AnnieHaak\Model\RawMaterialTypes;
 use AnnieHaak\Model\RawMaterialTypesTable;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Model\ProductTypesTable;
+use AnnieHaak\Model\Suppliers;
+use AnnieHaak\Model\SuppliersTable;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 
@@ -147,6 +149,17 @@ class Module {
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RawMaterialTypes());
                     return new TableGateway('rawmaterialtypelookup', $dbAdapter, null, $resultSetPrototype);
+                },
+                'AnnieHaak\Model\SuppliersTable' => function($sm) {
+                    $tableGateway = $sm->get('SuppliersGateway');
+                    $table = new SuppliersTable($tableGateway);
+                    return $table;
+                },
+                'SuppliersGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Suppliers());
+                    return new TableGateway('rawmaterialsupplierlookup', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

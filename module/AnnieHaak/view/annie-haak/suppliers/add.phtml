@@ -1,0 +1,33 @@
+<?php
+
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+$form->setAttribute('action', $this->url('business-admin/suppliers', array('action' => 'add')));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->prepare();
+
+echo '<div class="well bs-component">';
+
+echo $this->form()->openTag($form);
+
+echo '<fieldset><legend>Add Supplier</legend>';
+
+echo $this->formHidden($form->get('RMSupplierID')->setValue(0));
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="RMSupplierName">Supplier Name:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('RMSupplierName'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/business-admin/suppliers" type="reset" class="btn btn-default btn-sm">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
+
+echo '</fieldset>';
+
+echo $this->form()->closeTag();
+
+echo '</div>';
