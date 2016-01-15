@@ -3,6 +3,7 @@
 namespace Auth\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
 
 class UsersTable {
 
@@ -13,7 +14,9 @@ class UsersTable {
     }
 
     public function fetchAll() {
-        $resultSet = $this->tableGateway->select(array('deleted' => '0'));
+        $resultSet = $this->tableGateway->select(function (Select $select) {
+            $select->where('deleted = 0');
+        });
         return $resultSet;
     }
 

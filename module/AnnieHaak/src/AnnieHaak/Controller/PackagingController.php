@@ -5,68 +5,71 @@ namespace AnnieHaak\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\Form\Annotation\AnnotationBuilder;
-use AnnieHaak\Model\LabourItems;
-use AnnieHaak\Form\LabourItemsForm;
+use AnnieHaak\Model\Packaging;
+use AnnieHaak\Form\PackagingForm;
 
-class LabourItemsController extends AbstractActionController {
+class PackagingController extends AbstractActionController {
 
-    protected $labourItemsTable;
+    protected $packagingTable;
 
     public function indexAction() {
         return new ViewModel(array(
-            'labourItems' => $this->getLabourItemsTable()->fetchAll(),
+            'packaging' => $this->getPackagingTable()->fetchAll(),
         ));
     }
 
     public function addAction() {
-        $form = new LabourItemsForm();
+
+        $form = new PackagingForm();
+
         $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $labourItems = new LabourItems();
-            $form->setInputFilter($labourItems->getInputFilter());
+            $packaging = new Packaging();
+            $form->setInputFilter($packaging->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $labourItems->exchangeArray($form->getData());
-                $this->getLabourItemsTable()->saveLabourItems($labourItems);
+                $packaging->exchangeArray($form->getData());
+                $this->getPackagingTable()->savePackaging($packaging);
 
-                return $this->redirect()->toRoute('business-admin/labour-items');
+                return $this->redirect()->toRoute('business-admin/packaging');
             }
         }
+
         return array('form' => $form);
     }
 
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/labour-items', array(
+            return $this->redirect()->toRoute('business-admin/packaging', array(
                         'action' => 'add'
             ));
         }
 
         try {
-            $labourItems = $this->getLabourItemsTable()->getLabourItems($id);
+            $packaging = $this->getPackagingTable()->getPackaging($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/labour-items', array(
+            return $this->redirect()->toRoute('business-admin/packaging', array(
                         'action' => 'index'
             ));
         }
 
-        $form = new LabourItemsForm();
-        $form->bind($labourItems);
+        $form = new PackagingForm();
+        $form->bind($packaging);
         $form->get('submit')->setAttribute('value', 'Update');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
-            $form->setInputFilter($labourItems->getInputFilter());
+            $form->setInputFilter($packaging->getInputFilter());
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getLabourItemsTable()->saveLabourItems($labourItems);
+                $this->getPackagingTable()->savePackaging($packaging);
 
-                return $this->redirect()->toRoute('business-admin/labour-items');
+                return $this->redirect()->toRoute('business-admin/packaging');
             }
         }
 
@@ -79,7 +82,7 @@ class LabourItemsController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/labour-items');
+            return $this->redirect()->toRoute('business-admin/packaging');
         }
 
         $request = $this->getRequest();
@@ -88,24 +91,24 @@ class LabourItemsController extends AbstractActionController {
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getLabourItemsTable()->deleteLabourItems($id);
+                $this->getPackagingTable()->deletePackaging($id);
             }
 
-            return $this->redirect()->toRoute('business-admin/labour-items');
+            return $this->redirect()->toRoute('business-admin/packaging');
         }
 
         return array(
             'id' => $id,
-            'labourItems' => $this->getLabourItemsTable()->getLabourItems($id)
+            'packaging' => $this->getPackagingTable()->getPackaging($id)
         );
     }
 
-    public function getLabourItemsTable() {
-        if (!$this->labourItemsTable) {
+    public function getPackagingTable() {
+        if (!$this->packagingTable) {
             $sm = $this->getServiceLocator();
-            $this->labourItemsTable = $sm->get('AnnieHaak\Model\LabourItemsTable');
+            $this->packagingTable = $sm->get('AnnieHaak\Model\PackagingTable');
         }
-        return $this->labourItemsTable;
+        return $this->packagingTable;
     }
 
 }

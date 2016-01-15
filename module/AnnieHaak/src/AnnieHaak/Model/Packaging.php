@@ -6,19 +6,21 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class LabourItems implements InputFilterAwareInterface {
+class Packaging implements InputFilterAwareInterface {
 
-    public $LabourID;
-    public $LabourName;
-    public $LabourUnitCost;
-    public $LabourCode;
+    public $PackagingID;        # INT(11) NOT NULL AUTO_INCREMENT,
+    public $PackagingName;      # VARCHAR(255) NOT NULL,
+    public $PackagingUnitCost;  # DOUBLE NOT NULL DEFAULT '0',
+    public $PackagingCode;      # VARCHAR(50) NOT NULL,
+    public $PackagingType;      # INT(11) NULL DEFAULT NULL
     protected $inputFilter;
 
     public function exchangeArray($data) {
-        $this->LabourID = (!empty($data['LabourID'])) ? $data['LabourID'] : null;
-        $this->LabourName = (!empty($data['LabourName'])) ? $data['LabourName'] : null;
-        $this->LabourUnitCost = (!empty($data['LabourUnitCost'])) ? $data['LabourUnitCost'] : null;
-        $this->LabourCode = (!empty($data['LabourCode'])) ? $data['LabourCode'] : null;
+        $this->PackagingID = (!empty($data['PackagingID'])) ? $data['PackagingID'] : null;
+        $this->PackagingName = (!empty($data['PackagingName'])) ? $data['PackagingName'] : null;
+        $this->PackagingUnitCost = (!empty($data['PackagingUnitCost'])) ? $data['PackagingUnitCost'] : null;
+        $this->PackagingCode = (!empty($data['PackagingCode'])) ? $data['PackagingCode'] : null;
+        $this->PackagingType = (!empty($data['PackagingType'])) ? $data['PackagingType'] : null;
     }
 
     public function getArrayCopy() {
@@ -34,7 +36,7 @@ class LabourItems implements InputFilterAwareInterface {
             $inputFilter = new InputFilter();
 
             $inputFilter->add(array(
-                'name' => 'LabourID',
+                'name' => 'PackagingID',
                 'required' => true,
                 'validators' => array(
                     array('name' => 'Int'),
@@ -42,7 +44,7 @@ class LabourItems implements InputFilterAwareInterface {
             ));
 
             $inputFilter->add(array(
-                'name' => 'LabourName',
+                'name' => 'PackagingName',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'),
@@ -61,7 +63,7 @@ class LabourItems implements InputFilterAwareInterface {
             ));
 
             $inputFilter->add(array(
-                'name' => 'LabourUnitCost',
+                'name' => 'PackagingUnitCost',
                 'required' => true,
                 'validators' => array(
                     array(
@@ -75,7 +77,7 @@ class LabourItems implements InputFilterAwareInterface {
             ));
 
             $inputFilter->add(array(
-                'name' => 'LabourCode',
+                'name' => 'PackagingCode',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'),
@@ -90,6 +92,14 @@ class LabourItems implements InputFilterAwareInterface {
                             'max' => 255,
                         ),
                     ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'PackagingType',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'Int'),
                 ),
             ));
 

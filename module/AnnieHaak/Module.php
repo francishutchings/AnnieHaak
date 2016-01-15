@@ -8,6 +8,8 @@ use AnnieHaak\Model\Collections;
 use AnnieHaak\Model\CollectionsTable;
 use AnnieHaak\Model\LabourItems;
 use AnnieHaak\Model\LabourItemsTable;
+use AnnieHaak\Model\Packaging;
+use AnnieHaak\Model\PackagingTable;
 use AnnieHaak\Model\RawMaterials;
 use AnnieHaak\Model\RawMaterialsTable;
 use AnnieHaak\Model\RawMaterialTypes;
@@ -101,6 +103,17 @@ class Module {
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new LabourItems());
                     return new TableGateway('LabourLookup', $dbAdapter, null, $resultSetPrototype);
+                },
+                'AnnieHaak\Model\PackagingTable' => function($sm) {
+                    $tableGateway = $sm->get('PackagingGateway');
+                    $table = new PackagingTable($tableGateway);
+                    return $table;
+                },
+                'PackagingGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Packaging());
+                    return new TableGateway('PackagingLookup', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\ProductTypesTable' => function($sm) {
                     $tableGateway = $sm->get('ProductTypesGateway');

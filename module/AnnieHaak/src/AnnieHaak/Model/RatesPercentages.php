@@ -13,7 +13,7 @@ use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 use Zend\Db\Adapter\Adapter;
 
-class RatesPercentages {
+class RatesPercentages implements InputFilterAwareInterface {
 
     public $AssayRateUnitCost;
     public $ImportPercentage;

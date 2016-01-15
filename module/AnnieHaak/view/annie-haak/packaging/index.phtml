@@ -1,0 +1,42 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/packaging/add', 'Add new Product Type');
+?>
+
+<a href="/business-admin/packaging" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>
+
+<table class="table table-striped table-responsive table-hover ">
+    <thead>
+        <tr class="text-info">
+            <th>Packaging Name</th>
+            <th>Packaging Unit Cost</th>
+            <th>Packaging Code</th>
+            <th>Packaging Type</th>
+            <th colspan="2" style="width: 25%;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($packaging as $package) : ?>
+            <tr>
+                <td>
+                    <?php echo $this->escapeHtml($package->PackagingName); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($package->PackagingUnitCost); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($package->PackagingCode); ?>
+                </td>
+                <td>
+                    <?php echo ($package->PackagingType == 1) ? 'Box' : 'Bag'; ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/packaging/edit/' . $package->PackagingID, 'Edit'); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/business-admin/packaging/delete/' . $package->PackagingID, 'Delete'); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

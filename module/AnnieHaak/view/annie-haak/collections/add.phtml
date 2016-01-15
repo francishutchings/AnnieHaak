@@ -13,7 +13,7 @@ echo $this->form()->openTag($form);
 
 echo '<fieldset><legend>Add Collection</legend>';
 
-echo $this->formHidden($form->get('ProductCollectionID'));
+echo $this->formHidden($form->get('ProductCollectionID')->setValue(0));
 
 echo '<div class="form-group">';
 echo '<label class="col-lg-2 control-label" for="ProductTypeName">Collection Name:</label><div class="col-lg-10">';

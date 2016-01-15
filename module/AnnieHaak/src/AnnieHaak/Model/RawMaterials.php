@@ -6,7 +6,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class RawMaterials {
+class RawMaterials implements InputFilterAwareInterface {
 
     public $RawMaterialID;           # INT(11) NOT NULL AUTO_INCREMENT,
     public $RawMaterialCode;         # VARCHAR(50) NULL DEFAULT NULL,
@@ -16,6 +16,7 @@ class RawMaterials {
     public $RMTypeID;                # INT(11) NOT NULL DEFAULT '0',
     public $DateLastChecked;         # DATETIME NULL DEFAULT NULL,
     public $LastInvoiceNumber;       # VARCHAR(20) NULL DEFAULT NULL
+    protected $inputFilter;
 
     public function exchangeArray($data) {
         $this->RawMaterialID = (!empty($data['RawMaterialID'])) ? $data['RawMaterialID'] : null;
@@ -33,6 +34,10 @@ class RawMaterials {
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter) {
+        throw new \Exception("Not used");
+    }
+
+    public function getInputFilter(InputFilterInterface $inputFilter) {
         throw new \Exception("Not used");
     }
 

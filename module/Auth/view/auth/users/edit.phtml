@@ -1,9 +1,11 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
+
 $form = $this->form;
 $form->setAttribute('action', $this->url('user-admin', array('action' => 'edit', 'id' => $this->id,)));
 $form->setAttributes(array('class' => 'form-horizontal'));
+
 $form->prepare();
 
 echo '<div class="well bs-component">';

@@ -6,7 +6,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class Collections {
+class Collections implements InputFilterAwareInterface {
 
     public $ProductCollectionID;
     public $ProductCollectionName;
@@ -15,7 +15,7 @@ class Collections {
     protected $inputFilter;
 
     public function exchangeArray($data) {
-        $this->ProductCollectionID = (!empty($data['ProductCollectionID'])) ? $data['ProductCollectionID'] : null;
+        $this->ProductCollectionID = (!empty($data['ProductCollectionID'])) ? $data['ProductCollectionID'] : 0;
         $this->ProductCollectionName = (!empty($data['ProductCollectionName'])) ? $data['ProductCollectionName'] : null;
         $this->ProductCollectionCode = (!empty($data['ProductCollectionCode'])) ? $data['ProductCollectionCode'] : null;
         $this->Current = (!empty($data['Current'])) ? $data['Current'] : null;
@@ -81,9 +81,9 @@ class Collections {
 
             $inputFilter->add(array(
                 'name' => 'Current',
-                'required' => false,
+                'required' => true,
                 'filters' => array(
-                    array('name' => 'Boolean'),
+                    array('name' => 'Int'),
                 ),
             ));
 

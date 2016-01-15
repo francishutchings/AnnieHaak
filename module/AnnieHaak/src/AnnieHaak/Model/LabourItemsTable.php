@@ -3,6 +3,7 @@
 namespace AnnieHaak\Model;
 
 use Zend\Db\TableGateway\TableGateway;
+use Zend\Db\Sql\Select;
 
 class LabourItemsTable {
 
@@ -13,7 +14,9 @@ class LabourItemsTable {
     }
 
     public function fetchAll() {
-        $resultSet = $this->tableGateway->select();
+        $resultSet = $this->tableGateway->select(function (Select $select) {
+            $select->order('LabourName ASC');
+        });
         return $resultSet;
     }
 

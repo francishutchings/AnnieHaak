@@ -17,6 +17,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'id' => 'AssayRateUnitCost',
                 'class' => 'form-control',
+                'placeholder' => '£',
             ),
         ));
 
@@ -26,6 +27,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'id' => 'ImportPercentage',
                 'class' => 'form-control',
+                'placeholder' => '%',
             ),
         ));
 
@@ -35,6 +37,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'id' => 'MerchantChargePercentage',
                 'class' => 'form-control',
+                'placeholder' => '%',
             ),
         ));
 
@@ -44,6 +47,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'id' => 'PackageAndDispatchUnitCost',
                 'class' => 'form-control',
+                'placeholder' => '£',
             ),
         ));
 
@@ -53,6 +57,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'id' => 'PostageCostUnitCost',
                 'class' => 'form-control',
+                'placeholder' => '£',
             ),
         ));
 
@@ -62,6 +67,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'id' => 'PostageForProfitUnitCost',
                 'class' => 'form-control',
+                'placeholder' => '£',
             ),
         ));
 
@@ -71,6 +77,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'id' => 'VATPercentage',
                 'class' => 'form-control',
+                'placeholder' => '%',
             ),
         ));
 

@@ -185,6 +185,19 @@ return array(
                             )
                         ),
                     ),
+                    'packaging' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/packaging[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Packaging',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
                     'rates-percentages' => array(
                         'type' => 'segment',
                         'options' => array(
@@ -326,6 +339,7 @@ return array(
             'AnnieHaak\Controller\BusinessAdmin' => Controller\BusinessAdminController::class,
             'AnnieHaak\Controller\Collections' => Controller\CollectionsController::class,
             'AnnieHaak\Controller\LabourItems' => Controller\LabourItemsController::class,
+            'AnnieHaak\Controller\Packaging' => Controller\PackagingController::class,
             'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
             'AnnieHaak\Controller\RatesPercentages' => Controller\RatesPercentagesController::class,
             'AnnieHaak\Controller\RawMaterials' => Controller\RawMaterialsController::class,
@@ -438,6 +452,29 @@ return array(
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 30,
+                        'pages' => array(
+                            array(
+                                'label' => 'Packaging',
+                                'route' => 'business-admin/packaging',
+                                'contoller' => 'PackagingController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Packaging',
+                                'route' => 'business-admin/packaging',
+                                'contoller' => 'PackagingController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Packaging',
+                                'route' => 'business-admin/packaging',
+                                'contoller' => 'PackagingController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                     array(
                         'label' => 'Product',

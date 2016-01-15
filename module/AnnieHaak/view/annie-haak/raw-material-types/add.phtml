@@ -12,7 +12,7 @@ echo $this->form()->openTag($form);
 
 echo '<fieldset><legend>Add Raw Material Type</legend>';
 
-echo $this->formHidden($form->get('RMTypeID'));
+echo $this->formHidden($form->get('RMTypeID')->setValue(0));
 
 echo '<div class="form-group">';
 echo '<label class="col-lg-2 control-label" for="RMTypeName">Raw Material Type Name:</label><div class="col-lg-10">';

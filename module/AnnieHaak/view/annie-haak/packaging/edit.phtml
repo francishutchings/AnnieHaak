@@ -1,0 +1,49 @@
+<?php
+
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+$form = $this->form;
+$form->setAttribute('action', $this->url('business-admin/packaging', array('action' => 'edit', 'id' => $this->id,)));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->prepare();
+
+echo '<div class="well bs-component">';
+
+echo $this->form()->openTag($form);
+
+echo '<fieldset><legend>Edit Packaging</legend>';
+
+echo $this->formHidden($form->get('PackagingID'));
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="PackagingName">Packaging Name:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('PackagingName'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="PackagingCode">Packaging Code:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('PackagingCode'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="PackagingUnitCost">Packaging Unit Cost:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('PackagingUnitCost'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="PackagingType">Packaging Type:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('PackagingType'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/business-admin/packaging" type="reset" class="btn btn-default btn-sm">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-warning btn-sm');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
+
+echo '</fieldset>';
+
+echo $this->form()->closeTag();
+
+echo '</div>';

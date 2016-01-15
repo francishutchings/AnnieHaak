@@ -6,7 +6,7 @@ use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterAwareInterface;
 use Zend\InputFilter\InputFilterInterface;
 
-class RawMaterialTypes {
+class RawMaterialTypes implements InputFilterAwareInterface {
     /*
       RMTypeID` INT(11) NOT NULL AUTO_INCREMENT,
       RMTypeName` VARCHAR(255) NOT NULL

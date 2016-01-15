@@ -5,7 +5,7 @@ namespace AnnieHaak\Model;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
 
-class CollectionsTable {
+class PackagingTable {
 
     protected $tableGateway;
 
@@ -15,14 +15,14 @@ class CollectionsTable {
 
     public function fetchAll() {
         $resultSet = $this->tableGateway->select(function (Select $select) {
-            $select->order('ProductCollectionName ASC');
+            $select->order('PackagingName ASC');
         });
         return $resultSet;
     }
 
-    public function getCollections($id) {
+    public function getPackaging($id) {
         $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('ProductCollectionID' => $id));
+        $rowset = $this->tableGateway->select(array('PackagingID' => $id));
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -30,27 +30,28 @@ class CollectionsTable {
         return $row;
     }
 
-    public function saveCollections(Collections $Collections) {
+    public function savePackaging(Packaging $Packaging) {
         $data = array(
-            'ProductCollectionName' => $Collections->ProductCollectionName,
-            'ProductCollectionCode' => $Collections->ProductCollectionCode,
-            'Current' => $Collections->Current
+            'PackagingName' => $Packaging->PackagingName,
+            'PackagingUnitCost' => $Packaging->PackagingUnitCost,
+            'PackagingCode' => $Packaging->PackagingCode,
+            'PackagingType' => $Packaging->PackagingType
         );
 
-        $id = (int) $Collections->ProductCollectionID;
+        $id = (int) $Packaging->PackagingID;
         if ($id == 0) {
             $this->tableGateway->insert($data);
         } else {
-            if ($this->getCollections($id)) {
-                $this->tableGateway->update($data, array('ProductCollectionID' => $id));
+            if ($this->getPackaging($id)) {
+                $this->tableGateway->update($data, array('PackagingID' => $id));
             } else {
                 throw new \Exception('Product Type id does not exist');
             }
         }
     }
 
-    public function deleteCollections($id) {
-        $this->tableGateway->delete(array('ProductCollectionID' => (int) $id));
+    public function deletePackaging($id) {
+        $this->tableGateway->delete(array('PackagingID' => (int) $id));
     }
 
 }
