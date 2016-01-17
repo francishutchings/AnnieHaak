@@ -8,14 +8,16 @@ use Zend\InputFilter\InputFilterInterface;
 
 class RawMaterials implements InputFilterAwareInterface {
 
-    public $RawMaterialID;           # INT(11) NOT NULL AUTO_INCREMENT,
-    public $RawMaterialCode;         # VARCHAR(50) NULL DEFAULT NULL,
-    public $RawMaterialName;         # VARCHAR(150) NOT NULL,
-    public $RawMaterialUnitCost;     # DOUBLE NOT NULL DEFAULT '0',
-    public $RMSupplierID;            # INT(11) NOT NULL DEFAULT '0',
-    public $RMTypeID;                # INT(11) NOT NULL DEFAULT '0',
-    public $DateLastChecked;         # DATETIME NULL DEFAULT NULL,
-    public $LastInvoiceNumber;       # VARCHAR(20) NULL DEFAULT NULL
+    public $RawMaterialID;
+    public $RawMaterialCode;
+    public $RawMaterialName;
+    public $RawMaterialUnitCost;
+    public $RMSupplierID;
+    public $RMSupplierName;
+    public $RMTypeID;
+    public $RMTypeName;
+    public $DateLastChecked;
+    public $LastInvoiceNumber;
     protected $inputFilter;
 
     public function exchangeArray($data) {
@@ -24,7 +26,9 @@ class RawMaterials implements InputFilterAwareInterface {
         $this->RawMaterialName = (!empty($data['RawMaterialName'])) ? $data['RawMaterialName'] : null;
         $this->RawMaterialUnitCost = (!empty($data['RawMaterialUnitCost'])) ? $data['RawMaterialUnitCost'] : null;
         $this->RMSupplierID = (!empty($data['RMSupplierID'])) ? $data['RMSupplierID'] : null;
+        $this->RMSupplierName = (!empty($data['RMSupplierName'])) ? $data['RMSupplierName'] : null;
         $this->RMTypeID = (!empty($data['RMTypeID'])) ? $data['RMTypeID'] : null;
+        $this->RMTypeName = (!empty($data['RMTypeName'])) ? $data['RMTypeName'] : null;
         $this->DateLastChecked = (!empty($data['DateLastChecked'])) ? $data['DateLastChecked'] : null;
         $this->LastInvoiceNumber = (!empty($data['LastInvoiceNumber'])) ? $data['LastInvoiceNumber'] : null;
     }
@@ -37,8 +41,137 @@ class RawMaterials implements InputFilterAwareInterface {
         throw new \Exception("Not used");
     }
 
-    public function getInputFilter(InputFilterInterface $inputFilter) {
-        throw new \Exception("Not used");
+    public function getInputFilter() {
+        if (!$this->inputFilter) {
+            $inputFilter = new InputFilter();
+
+            $inputFilter->add(array(
+                'name' => 'RawMaterialID',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RawMaterialCode',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RawMaterialName',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RawMaterialUnitCost',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RMSupplierID',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RMTypeID',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'type' => 'Zend\Form\Element\DateTime',
+                'name' => 'DateLastChecked',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'attributes' => array(
+                    'min' => '2010-01-01T00:00:00Z',
+                    'max' => '2020-01-01T00:00:00Z',
+                    'step' => '1', // minutes; default step interval is 1 min
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RMTypeID',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'LastInvoiceNumber',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
+            ));
+
+            $this->inputFilter = $inputFilter;
+        }
+
+        return $this->inputFilter;
     }
 
 }

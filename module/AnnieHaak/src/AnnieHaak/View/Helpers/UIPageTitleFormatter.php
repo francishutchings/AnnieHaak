@@ -12,7 +12,7 @@ class UIPageTitleFormatter extends AbstractHelper {
 
     public function __invoke($titleStr) {
 
-        return '<div class="page-header"><h2>' . $titleStr . '</h2></div>';
+        return '<div class="page-header"><h3>' . $titleStr . '</h3></div>';
     }
 
 }

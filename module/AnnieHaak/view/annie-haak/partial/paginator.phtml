@@ -1,0 +1,71 @@
+<?php if ($this->pageCount): ?>
+    <div class="text-center">
+        <ul class="pagination pagination-sm">
+            <!-- Previous page link -->
+            <?php if (isset($this->previous)): ?>
+                <li>
+                    <a href="<?php echo $this->url($this->route); ?>?page=1">
+                        <span class="glyphicon glyphicon-fast-backward" aria-hidden = "true"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $this->previous; ?>">
+                        <span class="glyphicon glyphicon-backward" aria-hidden = "true"></span>
+                    </a>
+                </li>
+            <?php else:
+                ?>
+                <li class="disabled">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+                    </a>
+                </li>
+            <?php endif; ?>
+
+            <!-- Numbered page links -->
+            <?php foreach ($this->pagesInRange as $page): ?>
+                <?php if ($page != $this->current): ?>
+                    <li>
+                        <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $page; ?>">
+                            <?php echo $page; ?>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li class="active">
+                        <a href="#"><?php echo $page; ?></a>
+                    </li>
+                <?php endif; ?>
+            <?php endforeach; ?>
+
+            <!-- Next page link -->
+            <?php if (isset($this->next)): ?>
+                <li>
+                    <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $this->next; ?>">
+                        <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?php echo $this->url($this->route); ?>?page=<?php echo $this->pageCount; ?>">
+                        <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+                    </a>
+                </li>
+            <?php else: ?>
+                <li class="disabled">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#">
+                        <span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span>
+                    </a>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </div>
+<?php endif; ?>

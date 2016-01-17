@@ -1,0 +1,79 @@
+<?php
+#http://www.jqueryscript.net/table/jQuery-Based-Sortable-Pageable-Table-SlimTable.html
+
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label . ' - ' . $paginator->getAdapter()->count() . ' Records');
+echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/raw-materials/add', 'Add new Raw Material');
+echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Refresh</a><div class="clearfix"></div>';
+?>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th colspan="9">
+                <?php
+                echo $this->paginationControl(
+                        $this->paginator, 'Jumping', 'annie-haak/partial/paginator.phtml', array(
+                    'route' => 'business-admin/raw-materials'
+                        )
+                );
+                ?>
+            </th>
+        </tr>
+        <tr class="text-info">
+            <th>Raw Material Code</th>
+            <th>Raw Material Name</th>
+            <th>Type</th>
+            <th>Supplier</th>
+            <th>Raw Material Unit Cost</th>
+            <th>Date Last Checked</th>
+            <th>Last Invoice Number</th>
+            <th colspan="2" style="">Actions</th>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td colspan="9">
+                <?php
+                echo $this->paginationControl(
+                        $this->paginator, 'Jumping', 'annie-haak/partial/paginator.phtml', array(
+                    'route' => 'business-admin/raw-materials'
+                        )
+                );
+                ?>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody>
+        <?php foreach ($this->paginator as $rawMaterial) : ?>
+            <tr>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RawMaterialCode); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RawMaterialName); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RMTypeName); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RMSupplierName); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->RawMaterialUnitCost); ?>
+                </td>
+                <td>
+                    <?php echo date_format(date_create($this->escapeHtml($rawMaterial->DateLastChecked)), 'Y-m-d'); ?>
+                </td>
+                <td>
+                    <?php echo $this->escapeHtml($rawMaterial->LastInvoiceNumber); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/raw-materials/edit/' . $rawMaterial->RawMaterialID, 'Edit'); ?>
+                </td>
+                <td>
+                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/business-admin/raw-materials/delete/' . $rawMaterial->RawMaterialID, 'Delete'); ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

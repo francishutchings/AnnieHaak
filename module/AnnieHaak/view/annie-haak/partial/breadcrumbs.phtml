@@ -26,7 +26,7 @@ function breadcrumbs() {
 
     for ($i = 1; $i <= $count; $i++) {
 
-        $link = ucwords(str_replace(array(".php", "-", "_"), array("", " ", " "), $crumbs[$i]));
+        $link = ucwords(str_replace(array(".php", "-", "_", "?", "=", "&"), array("", " ", " ", " - ", " ", " "), $crumbs[$i]));
 
         if ($link != 'Home') {
 
