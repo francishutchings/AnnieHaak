@@ -66,7 +66,7 @@ class RawMaterials implements InputFilterAwareInterface {
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 255,
+                            'max' => 50,
                         ),
                     ),
                 ),
@@ -85,7 +85,29 @@ class RawMaterials implements InputFilterAwareInterface {
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 255,
+                            'max' => 150,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RMTypeID',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RMSupplierID',
+                'required' => true,
+                'validators' => array(
+                    array(
+                        'name' => 'Float',
+                        'options' => array(
+                            'min' => 0,
+                            'locale' => '<my_locale>'
                         ),
                     ),
                 ),
@@ -99,30 +121,7 @@ class RawMaterials implements InputFilterAwareInterface {
                     array('name' => 'StringTrim'),
                 ),
                 'validators' => array(
-                    array(
-                        'name' => 'StringLength',
-                        'options' => array(
-                            'encoding' => 'UTF-8',
-                            'min' => 1,
-                            'max' => 255,
-                        ),
-                    ),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'RMSupplierID',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
-                'name' => 'RMTypeID',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'Int'),
+                    array('name' => 'Float'),
                 ),
             ));
 
@@ -142,14 +141,6 @@ class RawMaterials implements InputFilterAwareInterface {
             ));
 
             $inputFilter->add(array(
-                'name' => 'RMTypeID',
-                'required' => true,
-                'validators' => array(
-                    array('name' => 'Int'),
-                ),
-            ));
-
-            $inputFilter->add(array(
                 'name' => 'LastInvoiceNumber',
                 'required' => true,
                 'filters' => array(
@@ -162,7 +153,7 @@ class RawMaterials implements InputFilterAwareInterface {
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 255,
+                            'max' => 20,
                         ),
                     ),
                 ),

@@ -16,7 +16,6 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
 
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
 <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
-
 <script type="text/javascript">
     $.jgrid.defaults.responsive = true;
     $.jgrid.defaults.styleUI = 'Bootstrap';
@@ -37,7 +36,7 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
             styleUI: 'Bootstrap',
             datatype: "json",
             viewrecords: true,
-            loadui: 'block',
+            loadonce: false,
             sortname: 'RawMaterialCode',
             height: 'auto',
             rowNum: 15,
@@ -73,15 +72,17 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
                     }
                 },
                 {
-                    label: 'Cost £',
+                    label: 'Cost',
                     name: 'RawMaterialUnitCost',
                     align: 'right',
                     sortable: true,
                     width: 75,
-                    decimalSeparator: ".",
-                    thousandsSeparator: " ",
-                    decimalPlaces: 4,
-                    defaultValue: '0.00',
+                    formatter: 'currency',
+                    formatoptions: {
+                        decimalSeparator: '.',
+                        decimalPlaces: 4,
+                        thousandsSeparator: ',',
+                        prefix: '£'},
                     search: true,
                     searchoptions: {
                         sopt: ["eq", "lt", "le", "gt", "ge"]
@@ -147,8 +148,10 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
                     search: false
                 }
             ],
+            rownumbers: true, // show row numbers
+            rownumWidth: 35, // the width of the row numbers columns
             pager: "#jqGridPager"
         });
-        $("#jqGrid").navGrid('#jqGridPager', {search: true, view: false, del: false, edit: false, add: false});
+        $("#jqGrid").navGrid('#jqGridPager', {search: true, view: false, del: false, edit: false, add: false, view: true});
     });
 </script>

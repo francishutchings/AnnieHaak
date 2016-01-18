@@ -8,62 +8,20 @@ use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\RawMaterials;
 use AnnieHaak\Form\RawMaterialsForm;
 use Zend\View\Model\JsonModel;
+use AnnieHaak\Model\RawMaterialTypesTable;
+use AnnieHaak\Model\SuppliersTable;
 
 class RawMaterialsController extends AbstractActionController {
 
     protected $rawMaterialsTable;
+    protected $rawMaterialTypesTable;
+    protected $suppliersTable;
 
     public function indexAction() {
-        /*
-          http://framework.zend.com/manual/current/en/tutorials/tutorial.pagination.html
-         *
-          $paginator = $this->getRawMaterialsTable()->fetchFullData(false);
-          $paginator->setCurrentPageNumber((int) $this->params()->fromQuery('page', 1));
-          $paginator->setItemCountPerPage(15);
-          return new ViewModel(array(
-          'paginator' => $paginator
-          ));
-         *
-          return new ViewModel(array(
-          'rawMaterials' => $this->getRawMaterialsTable()->fetchAll(),
-          ));
-         *
-          $result = new JsonModel(array(
-          'some_parameter' => 'some value',
-          'success' => true,
-          ));
-         */
-
         return new ViewModel();
     }
 
     public function jsonDataAction() {
-
-        /*
-         * /business-admin/raw-materials/jsonData
-         * ?_search=false
-         * &nd=1452974065193
-         * &rows=15
-         * &page=1
-         * &sidx=RMSupplierName
-         * &sord=asc
-         *
-         * ##SEARCH
-         * _search=true
-         * &nd=1453035449910
-         * &rows=15
-         * &page=1
-         * &sidx=RawMaterialCode
-         * &sord=asc
-         * &searchOper=eq
-         * &searchString=B3X2.5FRCRM
-         * &searchField=RawMaterialCode
-         * &filters=
-         */
-
-        #dump($this->params());
-        #exit();
-
         $currentPage = (int) $this->params()->fromQuery('page', 1);
         $sortColumn = $this->params()->fromQuery('sidx', 'RawMaterialCode');
         $sortOrder = $this->params()->fromQuery('sord', 'asc');
@@ -98,12 +56,64 @@ class RawMaterialsController extends AbstractActionController {
         return $result;
     }
 
+    public function addAction() {
+        $form = new RawMaterialsForm();
+        $form->get('submit')->setValue('Add');
+
+        $rawMaterialTypes = $this->getRawMaterialTypesTable()->fetchAll();
+        $suppliers = $this->getSuppliersTable()->fetchAll();
+
+        foreach ($rawMaterialTypes as $key => $value) {
+            $rawMaterialTypesData[$value->RMTypeID] = $value->RMTypeName;
+        }
+
+        foreach ($suppliers as $key => $value) {
+            $suppliersData[$value->RMSupplierID] = $value->RMSupplierName;
+        }
+
+        $form->get('RMTypeID')->setValueOptions($rawMaterialTypesData);
+        $form->get('RMSupplierID')->setValueOptions($suppliersData);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $rawMaterial = new RawMaterial();
+            $form->setInputFilter($rawMaterial->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $rawMaterial->exchangeArray($form->getData());
+                $this->getRawMaterialTypesTable()->saveRawMaterial($rawMaterial);
+
+                return $this->redirect()->toRoute('business-admin/raw-materials');
+            }
+        }
+        #dump($form->get('RMSupplierID'));
+        #exit();
+        return array('form' => $form);
+    }
+
     public function getRawMaterialsTable() {
         if (!$this->rawMaterialsTable) {
             $sm = $this->getServiceLocator();
             $this->rawMaterialsTable = $sm->get('AnnieHaak\Model\RawMaterialsTable');
         }
         return $this->rawMaterialsTable;
+    }
+
+    public function getRawMaterialTypesTable() {
+        if (!$this->rawMaterialTypesTable) {
+            $sm = $this->getServiceLocator();
+            $this->rawMaterialTypesTable = $sm->get('AnnieHaak\Model\RawMaterialTypesTable');
+        }
+        return $this->rawMaterialTypesTable;
+    }
+
+    public function getSuppliersTable() {
+        if (!$this->suppliersTable) {
+            $sm = $this->getServiceLocator();
+            $this->suppliersTable = $sm->get('AnnieHaak\Model\suppliersTable');
+        }
+        return $this->suppliersTable;
     }
 
 }
