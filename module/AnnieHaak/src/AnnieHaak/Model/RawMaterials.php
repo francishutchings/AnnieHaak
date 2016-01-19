@@ -126,23 +126,17 @@ class RawMaterials implements InputFilterAwareInterface {
             ));
 
             $inputFilter->add(array(
-                'type' => 'Zend\Form\Element\DateTime',
                 'name' => 'DateLastChecked',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),
                 ),
-                'attributes' => array(
-                    'min' => '2010-01-01T00:00:00Z',
-                    'max' => '2020-01-01T00:00:00Z',
-                    'step' => '1', // minutes; default step interval is 1 min
-                ),
             ));
 
             $inputFilter->add(array(
                 'name' => 'LastInvoiceNumber',
-                'required' => true,
+                'required' => false,
                 'filters' => array(
                     array('name' => 'StripTags'),
                     array('name' => 'StringTrim'),

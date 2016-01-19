@@ -1,5 +1,5 @@
 <?php
-$url = $this->url('business-admin/labour-items', array('action' => 'delete', 'id' => $this->id,));
+$url = $this->url('business-admin/raw-materials', array('action' => 'delete', 'id' => $this->id,));
 
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 ?>
@@ -8,7 +8,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
     <form action="<?php echo $url; ?>" method="post">
 
         <fieldset>
-            <legend>Delete Labour Item</legend>
+            <legend>Delete Raw Material</legend>
 
             <div class="form-group">
                 <div class="col-lg-10">
@@ -17,16 +17,16 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
                             <h3 class="panel-title">Warning</h3>
                         </div>
                         <div class="panel-body">
-                            Are you sure that you want to delete <span class="text-warning bold">"<?php echo $this->escapeHtml($labourItems->LabourName); ?>"</span>?
+                            Are you sure that you want to delete <span class="text-warning bold">"<?php echo $this->escapeHtml($rawMaterials->RawMaterialName); ?>"</span>?
                         </div>
                     </div>
                 </div>
             </div>
 
-            <input type="hidden" name="id" value="<?php echo (int) $labourItems->LabourID; ?>" />
+            <input type="hidden" name="id" value="<?php echo (int) $rawMaterials->RawMaterialID; ?>" />
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-1">
-                    <a href="/business-admin/labour-items" type="reset" class="btn btn-default btn-sm">Cancel</a>
+                    <a href="/business-admin/raw-materials" type="reset" class="btn btn-default btn-sm">Cancel</a>
                     <button type="submit" class="btn btn-danger btn-sm" name="del" value="Yes">Delete</button>
                 </div>
             </div>

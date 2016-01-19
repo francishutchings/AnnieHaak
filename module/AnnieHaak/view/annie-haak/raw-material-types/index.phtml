@@ -30,7 +30,6 @@ echo '<a href="/business-admin/raw-material-types" class="btn btn-info btn-sm pu
             sortname: 'RMTypeName',
             height: 'auto',
             width: 750,
-            rowNum: 15,
             viewsortcols: [true, 'vertical', true],
             colModel: [
                 {
@@ -68,8 +67,10 @@ echo '<a href="/business-admin/raw-material-types" class="btn btn-info btn-sm pu
                     search: false
                 }
             ],
-            rownumbers: true, // show row numbers
-            rownumWidth: 35, // the width of the row numbers columns
+            rownumbers: true,
+            rownumWidth: 20,
+            rowNum: 15,
+            rowList: [15, 30, 50],
             pager: "#jqGridPager"
         });
         $("#jqGrid").navGrid('#jqGridPager', {search: true, view: false, del: false, edit: false, add: false, view: true});

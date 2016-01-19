@@ -4,7 +4,6 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\RatesPercentages;
 use AnnieHaak\Form\RatesPercentagesForm;
 
@@ -38,6 +37,7 @@ class RatesPercentagesController extends AbstractActionController {
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $this->ratesPercentagesObj->saveRatesPercents($this->ratesPercentagesObj);
+                $this->flashmessenger()->setNamespace('info')->addMessage('Rates and Percentages updated.');
                 return $this->redirect()->toRoute('business-admin/rates-percentages');
             }
         }

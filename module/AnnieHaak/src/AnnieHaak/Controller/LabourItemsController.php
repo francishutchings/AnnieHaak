@@ -4,7 +4,6 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\LabourItems;
 use AnnieHaak\Form\LabourItemsForm;
 
@@ -31,7 +30,7 @@ class LabourItemsController extends AbstractActionController {
             if ($form->isValid()) {
                 $labourItems->exchangeArray($form->getData());
                 $this->getLabourItemsTable()->saveLabourItems($labourItems);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item - ' . $labourItems->LabourName . ' - added.');
                 return $this->redirect()->toRoute('business-admin/labour-items');
             }
         }
@@ -65,7 +64,7 @@ class LabourItemsController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $this->getLabourItemsTable()->saveLabourItems($labourItems);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item - ' . $labourItems->LabourName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/labour-items');
             }
         }
@@ -90,7 +89,7 @@ class LabourItemsController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getLabourItemsTable()->deleteLabourItems($id);
             }
-
+            $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item - ' . $labourItems->LabourName . ' - deleted.');
             return $this->redirect()->toRoute('business-admin/labour-items');
         }
 

@@ -4,7 +4,6 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\Collections;
 use AnnieHaak\Form\CollectionsForm;
 
@@ -37,7 +36,7 @@ class CollectionsController extends AbstractActionController {
             if ($form->isValid()) {
                 $collections->exchangeArray($form->getData());
                 $this->getCollectionsTable()->saveCollections($collections);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Collection - ' . $collections->ProductCollectionName . ' - added.');
                 return $this->redirect()->toRoute('business-admin/collections');
             }
         }
@@ -71,7 +70,7 @@ class CollectionsController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $this->getCollectionsTable()->saveCollections($collections);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Collection - ' . $collections->ProductCollectionName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/collections');
             }
         }
@@ -96,7 +95,7 @@ class CollectionsController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getCollectionsTable()->deleteCollections($id);
             }
-
+            $this->flashmessenger()->setNamespace('info')->addMessage('Collection - ' . $collections->ProductCollectionName . ' - deleted.');
             return $this->redirect()->toRoute('business-admin/collections');
         }
 
@@ -106,7 +105,7 @@ class CollectionsController extends AbstractActionController {
         );
     }
 
-    public function getCollectionsTable() {
+    private function getCollectionsTable() {
         if (!$this->collectionsTable) {
             $sm = $this->getServiceLocator();
             $this->collectionsTable = $sm->get('AnnieHaak\Model\CollectionsTable');

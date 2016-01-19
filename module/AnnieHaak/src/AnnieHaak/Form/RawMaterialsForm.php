@@ -88,10 +88,14 @@ class RawMaterialsForm extends Form {
 
         $this->add(array(
             'name' => 'DateLastChecked',
-            'type' => 'Text',
+            'type' => 'Date',
+            'options' => array(
+                'format' => 'Y-m-d'
+            ),
             'attributes' => array(
                 'id' => 'DateLastChecked',
                 'class' => 'form-control',
+                'readonly' => 'readonly'
             ),
         ));
 

@@ -4,7 +4,6 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\Suppliers;
 use AnnieHaak\Form\SuppliersForm;
 
@@ -32,7 +31,7 @@ class SuppliersController extends AbstractActionController {
             if ($form->isValid()) {
                 $suppliers->exchangeArray($form->getData());
                 $this->getSuppliersTable()->saveSuppliers($suppliers);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Supplier - ' . $suppliers->RMSupplierName . ' - added.');
                 return $this->redirect()->toRoute('business-admin/suppliers');
             }
         }
@@ -66,7 +65,7 @@ class SuppliersController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $this->getSuppliersTable()->saveSuppliers($suppliers);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Supplier - ' . $suppliers->RMSupplierName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/suppliers');
             }
         }
@@ -91,7 +90,7 @@ class SuppliersController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getSuppliersTable()->deleteSuppliers($id);
             }
-
+            $this->flashmessenger()->setNamespace('info')->addMessage('Supplier - ' . $suppliers->RMSupplierName . ' - deleted.');
             return $this->redirect()->toRoute('business-admin/suppliers');
         }
 
@@ -101,7 +100,7 @@ class SuppliersController extends AbstractActionController {
         );
     }
 
-    public function getSuppliersTable() {
+    private function getSuppliersTable() {
         if (!$this->suppliersTable) {
             $sm = $this->getServiceLocator();
             $this->suppliersTable = $sm->get('AnnieHaak\Model\suppliersTable');

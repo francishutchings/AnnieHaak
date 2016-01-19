@@ -23,6 +23,16 @@ class RawMaterialsTable {
         return $resultSet;
     }
 
+    public function getRawMaterials($id) {
+        $id = (int) $id;
+        $rowset = $this->tableGateway->select(array('RawMaterialID' => $id));
+        $row = $rowset->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $id");
+        }
+        return $row;
+    }
+
     public function fetchFullData($paginated = FALSE) {
         $select = new Select();
         $select->from(array('RM' => 'rawmateriallookup'));
@@ -101,6 +111,33 @@ class RawMaterialsTable {
         $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);
         $paginator = new Paginator($paginatorAdapter);
         return $paginator;
+    }
+
+    public function saveRawMaterials(RawMaterials $RawMaterials) {
+        $data = array(
+            'RawMaterialCode' => $RawMaterials->RawMaterialCode,
+            'RawMaterialName' => $RawMaterials->RawMaterialName,
+            'RMTypeID' => $RawMaterials->RMTypeID,
+            'RMSupplierID' => $RawMaterials->RMSupplierID,
+            'RawMaterialUnitCost' => $RawMaterials->RawMaterialUnitCost,
+            'DateLastChecked' => $RawMaterials->DateLastChecked,
+            'LastInvoiceNumber' => $RawMaterials->LastInvoiceNumber
+        );
+
+        $id = (int) $RawMaterials->RawMaterialID;
+        if ($id == 0) {
+            $this->tableGateway->insert($data);
+        } else {
+            if ($this->getRawMaterials($id)) {
+                $this->tableGateway->update($data, array('RawMaterialID' => $id));
+            } else {
+                throw new \Exception('Product Type id does not exist');
+            }
+        }
+    }
+
+    public function deleteRawMaterials($id) {
+        $this->tableGateway->delete(array('RawMaterialID' => (int) $id));
     }
 
 }

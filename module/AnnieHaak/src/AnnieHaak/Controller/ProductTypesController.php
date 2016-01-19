@@ -4,7 +4,6 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Form\ProductTypesForm;
 
@@ -32,7 +31,7 @@ class ProductTypesController extends AbstractActionController {
             if ($form->isValid()) {
                 $productTypes->exchangeArray($form->getData());
                 $this->getProductTypesTable()->saveProductTypes($productTypes);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - added.');
                 return $this->redirect()->toRoute('business-admin/product-types');
             }
         }
@@ -66,7 +65,7 @@ class ProductTypesController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $this->getProductTypesTable()->saveProductTypes($productTypes);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/product-types');
             }
         }
@@ -91,7 +90,7 @@ class ProductTypesController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getProductTypesTable()->deleteProductTypes($id);
             }
-
+            $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - deleted.');
             return $this->redirect()->toRoute('business-admin/product-types');
         }
 

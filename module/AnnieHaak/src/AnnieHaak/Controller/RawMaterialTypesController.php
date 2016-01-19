@@ -87,11 +87,10 @@ class RawMaterialTypesController extends AbstractActionController {
             $rawMaterialTypes = new RawMaterialTypes();
             $form->setInputFilter($rawMaterialTypes->getInputFilter());
             $form->setData($request->getPost());
-
             if ($form->isValid()) {
                 $rawMaterialTypes->exchangeArray($form->getData());
                 $this->getRawMaterialTypesTable()->saveRawMaterialTypes($rawMaterialTypes);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - added.');
                 return $this->redirect()->toRoute('business-admin/raw-material-types');
             }
         }
@@ -125,7 +124,7 @@ class RawMaterialTypesController extends AbstractActionController {
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $this->getRawMaterialTypesTable()->saveRawMaterialTypes($rawMaterialTypes);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/raw-material-types');
             }
         }
@@ -149,7 +148,7 @@ class RawMaterialTypesController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getRawMaterialTypesTable()->deleteRawMaterialTypes($id);
             }
-
+            $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - deleted.');
             return $this->redirect()->toRoute('business-admin/raw-material-types');
         }
 

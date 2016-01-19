@@ -4,12 +4,9 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\RawMaterials;
 use AnnieHaak\Form\RawMaterialsForm;
 use Zend\View\Model\JsonModel;
-use AnnieHaak\Model\RawMaterialTypesTable;
-use AnnieHaak\Model\SuppliersTable;
 
 class RawMaterialsController extends AbstractActionController {
 
@@ -43,7 +40,7 @@ class RawMaterialsController extends AbstractActionController {
 
         foreach ($paginator->getItemsByPage($currentPage) as $value) {
             $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-materials/edit/' . $value->RawMaterialID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
-            $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-materials/edit/' . $value->RawMaterialID . '"><span class="glyphicon glyphicon-trash"></span></a>';
+            $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-materials/delete/' . $value->RawMaterialID . '"><span class="glyphicon glyphicon-trash"></span></a>';
             $rawData[] = $value;
         }
 
@@ -60,39 +57,105 @@ class RawMaterialsController extends AbstractActionController {
         $form = new RawMaterialsForm();
         $form->get('submit')->setValue('Add');
 
+        $selectData = $this->popSelectMenus();
+        $form->get('RMTypeID')->setValueOptions($selectData['rawMaterialTypesData']);
+        $form->get('RMSupplierID')->setValueOptions($selectData['suppliersData']);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $rawMaterials = new RawMaterials();
+            $form->setInputFilter($rawMaterials->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $rawMaterials->exchangeArray($form->getData());
+                $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials);
+                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - added.');
+                return $this->redirect()->toRoute('business-admin/raw-materials');
+            }
+        }
+        return array('form' => $form);
+    }
+
+    public function editAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('business-admin/raw-materials', array(
+                        'action' => 'add'
+            ));
+        }
+
+        try {
+            $rawMaterials = $this->getRawMaterialsTable()->getRawMaterials($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('business-admin/raw-materials', array(
+                        'action' => 'index'
+            ));
+        }
+
+        $form = new RawMaterialsForm();
+
+        $selectData = $this->popSelectMenus();
+        $form->get('RMTypeID')->setValueOptions($selectData['rawMaterialTypesData']);
+        $form->get('RMSupplierID')->setValueOptions($selectData['suppliersData']);
+
+        $form->bind($rawMaterials);
+        $form->get('submit')->setAttribute('value', 'Update');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($rawMaterials->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials);
+                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - updated.');
+                return $this->redirect()->toRoute('business-admin/raw-materials');
+            }
+        }
+
+        return array(
+            'id' => $id,
+            'form' => $form,
+        );
+    }
+
+    public function deleteAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('business-admin/raw-materials');
+        }
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $this->getRawMaterialsTable()->deleteRawMaterials($id);
+            }
+            $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - deleted.');
+            return $this->redirect()->toRoute('business-admin/raw-materials');
+        }
+
+        return array(
+            'id' => $id,
+            'rawMaterials' => $this->getRawMaterialsTable()->getRawMaterials($id)
+        );
+    }
+
+    private function popSelectMenus() {
         $rawMaterialTypes = $this->getRawMaterialTypesTable()->fetchAll();
         $suppliers = $this->getSuppliersTable()->fetchAll();
-
         foreach ($rawMaterialTypes as $key => $value) {
             $rawMaterialTypesData[$value->RMTypeID] = $value->RMTypeName;
         }
-
         foreach ($suppliers as $key => $value) {
             $suppliersData[$value->RMSupplierID] = $value->RMSupplierName;
         }
 
-        $form->get('RMTypeID')->setValueOptions($rawMaterialTypesData);
-        $form->get('RMSupplierID')->setValueOptions($suppliersData);
-
-        $request = $this->getRequest();
-        if ($request->isPost()) {
-            $rawMaterial = new RawMaterial();
-            $form->setInputFilter($rawMaterial->getInputFilter());
-            $form->setData($request->getPost());
-
-            if ($form->isValid()) {
-                $rawMaterial->exchangeArray($form->getData());
-                $this->getRawMaterialTypesTable()->saveRawMaterial($rawMaterial);
-
-                return $this->redirect()->toRoute('business-admin/raw-materials');
-            }
-        }
-        #dump($form->get('RMSupplierID'));
-        #exit();
-        return array('form' => $form);
+        return array('rawMaterialTypesData' => $rawMaterialTypesData, 'suppliersData' => $suppliersData);
     }
 
-    public function getRawMaterialsTable() {
+    private function getRawMaterialsTable() {
         if (!$this->rawMaterialsTable) {
             $sm = $this->getServiceLocator();
             $this->rawMaterialsTable = $sm->get('AnnieHaak\Model\RawMaterialsTable');
@@ -100,7 +163,7 @@ class RawMaterialsController extends AbstractActionController {
         return $this->rawMaterialsTable;
     }
 
-    public function getRawMaterialTypesTable() {
+    private function getRawMaterialTypesTable() {
         if (!$this->rawMaterialTypesTable) {
             $sm = $this->getServiceLocator();
             $this->rawMaterialTypesTable = $sm->get('AnnieHaak\Model\RawMaterialTypesTable');
@@ -108,7 +171,7 @@ class RawMaterialsController extends AbstractActionController {
         return $this->rawMaterialTypesTable;
     }
 
-    public function getSuppliersTable() {
+    private function getSuppliersTable() {
         if (!$this->suppliersTable) {
             $sm = $this->getServiceLocator();
             $this->suppliersTable = $sm->get('AnnieHaak\Model\suppliersTable');

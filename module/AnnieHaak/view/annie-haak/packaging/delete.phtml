@@ -26,7 +26,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
             <input type="hidden" name="id" value="<?php echo (int) $packaging->PackagingID; ?>" />
             <div class="form-group">
                 <div class="col-lg-10 col-lg-offset-1">
-                    <button type="submit" class="btn btn-default btn-sm margin-right-10" name="del" value="No">Cancel</button>
+                    <a href="/business-admin/packaging" type="reset" class="btn btn-default btn-sm">Cancel</a>
                     <button type="submit" class="btn btn-danger btn-sm" name="del" value="Yes">Delete</button>
                 </div>
             </div>

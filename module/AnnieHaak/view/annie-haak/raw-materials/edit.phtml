@@ -1,0 +1,75 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+$form->setAttribute('action', $this->url('business-admin/raw-materials', array('action' => 'edit', 'id' => $this->id,)));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->prepare();
+
+echo '<div class="well bs-component">';
+
+echo $this->form()->openTag($form);
+
+echo '<fieldset><legend>Add Raw Material Type</legend>';
+
+echo $this->formHidden($form->get('RawMaterialID'));
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="RawMaterialCode">Raw Material Code:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('RawMaterialCode'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="RawMaterialName">Raw Material Name:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('RawMaterialName'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="RMTypeID">Raw Material Type:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('RMTypeID'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="RMSupplierID">Raw Material Supplier:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('RMSupplierID'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="RawMaterialUnitCost">Raw Material Unit Cost:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('RawMaterialUnitCost'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="DateLastChecked">Date Last Checked:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('DateLastChecked'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="LastInvoiceNumber">Last Invoice Number:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('LastInvoiceNumber'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/business-admin/raw-materials" type="reset" class="btn btn-default btn-sm">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
+
+echo '</fieldset>';
+
+echo $this->form()->closeTag();
+
+echo '</div>';
+?>
+
+<script>
+    $(function () {
+        $("#DateLastChecked").datepicker({
+            autoclose: true,
+            dateFormat: "yy-mm-dd",
+            format: 'dd-mm-yy',
+            altFormat: "yy-mm-dd",
+            orientation: 'bottom'
+        });
+    });
+</script>

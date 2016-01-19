@@ -4,7 +4,6 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
-use Zend\Form\Annotation\AnnotationBuilder;
 use AnnieHaak\Model\Packaging;
 use AnnieHaak\Form\PackagingForm;
 
@@ -33,7 +32,7 @@ class PackagingController extends AbstractActionController {
             if ($form->isValid()) {
                 $packaging->exchangeArray($form->getData());
                 $this->getPackagingTable()->savePackaging($packaging);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $labourItems->LabourName . ' - added.');
                 return $this->redirect()->toRoute('business-admin/packaging');
             }
         }
@@ -65,10 +64,9 @@ class PackagingController extends AbstractActionController {
         if ($request->isPost()) {
             $form->setInputFilter($packaging->getInputFilter());
             $form->setData($request->getPost());
-
             if ($form->isValid()) {
                 $this->getPackagingTable()->savePackaging($packaging);
-
+                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $labourItems->LabourName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/packaging');
             }
         }
@@ -93,7 +91,7 @@ class PackagingController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getPackagingTable()->deletePackaging($id);
             }
-
+            $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $labourItems->LabourName . ' - deleted.');
             return $this->redirect()->toRoute('business-admin/packaging');
         }
 
