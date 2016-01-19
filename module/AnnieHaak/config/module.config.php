@@ -146,19 +146,6 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'product-types' => array(
-                        'type' => 'segment',
-                        'options' => array(
-                            'route' => '/product-types[/:action][/:id]',
-                            'defaults' => array(
-                                'controller' => 'AnnieHaak\Controller\ProductTypes',
-                                'action' => 'index'
-                            ),
-                            'constraints' => array(
-                                'id' => '[1-9]\d*'
-                            )
-                        ),
-                    ),
                     'collections' => array(
                         'type' => 'segment',
                         'options' => array(
@@ -191,6 +178,32 @@ return array(
                             'route' => '/packaging[/:action][/:id]',
                             'defaults' => array(
                                 'controller' => 'AnnieHaak\Controller\Packaging',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
+                    'products' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/products[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Products',
+                                'action' => 'index'
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
+                    'product-types' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/product-types[/:action][/:id]',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\ProductTypes',
                                 'action' => 'index'
                             ),
                             'constraints' => array(
@@ -353,6 +366,7 @@ return array(
             'AnnieHaak\Controller\Collections' => Controller\CollectionsController::class,
             'AnnieHaak\Controller\LabourItems' => Controller\LabourItemsController::class,
             'AnnieHaak\Controller\Packaging' => Controller\PackagingController::class,
+            'AnnieHaak\Controller\Products' => Controller\ProductsController::class,
             'AnnieHaak\Controller\ProductTypes' => Controller\ProductTypesController::class,
             'AnnieHaak\Controller\RatesPercentages' => Controller\RatesPercentagesController::class,
             'AnnieHaak\Controller\RawMaterials' => Controller\RawMaterialsController::class,
@@ -494,11 +508,34 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => 'Product',
-                        'route' => 'business-admin/product',
+                        'label' => 'Products',
+                        'route' => 'business-admin/products',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 40,
+                        'pages' => array(
+                            array(
+                                'label' => 'Products',
+                                'route' => 'business-admin/products',
+                                'contoller' => 'ProductsController',
+                                'action' => 'add',
+                                'order' => 10,
+                            ),
+                            array(
+                                'label' => 'Products',
+                                'route' => 'business-admin/products',
+                                'contoller' => 'ProductsController',
+                                'action' => 'edit',
+                                'order' => 20,
+                            ),
+                            array(
+                                'label' => 'Products',
+                                'route' => 'business-admin/products',
+                                'contoller' => 'ProductsController',
+                                'action' => 'delete',
+                                'order' => 30,
+                            ),
+                        ),
                     ),
                     array(
                         'label' => 'Product Types',

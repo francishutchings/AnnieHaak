@@ -37,8 +37,8 @@ class RawMaterialsTable {
         $select = new Select();
         $select->from(array('RM' => 'rawmateriallookup'));
         $select->columns(array('RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
-        $select->join(array('SUPP' => 'rawmaterialsupplierlookup'), 'SUPP.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
-        $select->join(array('TYPE' => 'rawmaterialtypelookup'), 'TYPE.RMTypeID = RM.RMTypeID', array('RMTypeName'));
+        $select->join(array('Supp' => 'rawmaterialsupplierlookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
+        $select->join(array('RMType' => 'rawmaterialtypelookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
         $select->order('RawMaterialCode ASC');
 
         if ($paginated) {
@@ -103,8 +103,8 @@ class RawMaterialsTable {
         }
         $select->order($sortBy);
 
-        #dump($select->getSqlString());
-        #exit();
+        dump($select->getSqlString());
+        exit();
 
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new RawMaterials());

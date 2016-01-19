@@ -10,12 +10,14 @@ use AnnieHaak\Model\LabourItems;
 use AnnieHaak\Model\LabourItemsTable;
 use AnnieHaak\Model\Packaging;
 use AnnieHaak\Model\PackagingTable;
+use AnnieHaak\Model\ProductTypes;
+use AnnieHaak\Model\ProductTypesTable;
+use AnnieHaak\Model\Products;
+use AnnieHaak\Model\ProductsTable;
 use AnnieHaak\Model\RawMaterials;
 use AnnieHaak\Model\RawMaterialsTable;
 use AnnieHaak\Model\RawMaterialTypes;
 use AnnieHaak\Model\RawMaterialTypesTable;
-use AnnieHaak\Model\ProductTypes;
-use AnnieHaak\Model\ProductTypesTable;
 use AnnieHaak\Model\Suppliers;
 use AnnieHaak\Model\SuppliersTable;
 use Zend\Db\ResultSet\ResultSet;
@@ -116,6 +118,17 @@ class Module {
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Packaging());
                     return new TableGateway('PackagingLookup', $dbAdapter, null, $resultSetPrototype);
+                },
+                'AnnieHaak\Model\ProductsTable' => function($sm) {
+                    $tableGateway = $sm->get('ProductsGateway');
+                    $table = new ProductsTable($tableGateway);
+                    return $table;
+                },
+                'ProductsGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new Products());
+                    return new TableGateway('Products', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\ProductTypesTable' => function($sm) {
                     $tableGateway = $sm->get('ProductTypesGateway');
