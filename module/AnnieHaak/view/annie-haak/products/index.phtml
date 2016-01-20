@@ -11,40 +11,31 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
 </div>
 <p>&nbsp;</p>
 
-<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
-<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
-<style>
-    .ui-datepicker-month,
-    .ui-datepicker-year{
-        color: black;
-        font-weight: normal;
-    }
-</style>
 <script type="text/javascript">
-    $.jgrid.defaults.responsive = true;
-    $.jgrid.defaults.styleUI = 'Bootstrap';
-    datePick = function (elem)
-    {
-        jQuery(elem).datepicker({
-            autoclose: true,
-            dateFormat: "yy-mm-dd",
-            format: 'dd-mm-yy',
-            altFormat: "yy-mm-dd",
-            orientation: 'bottom',
-            changeMonth: true,
-            changeYear: true
-        });
-    };
-    function dateCheck(value, colname) {
-        var re = /^\d{4}-\d{1,2}-\d{1,2}$/;
-        if (re.test(value)) {
-            return [true, ""];
-        }
-        else {
-            return [false, "Date format for " + colname + " wrong: YYYY-MM-DD"];
-        }
-    }
     $(document).ready(function () {
+        $.jgrid.defaults.responsive = true;
+        $.jgrid.defaults.styleUI = 'Bootstrap';
+        datePick = function (elem)
+        {
+            jQuery(elem).datepicker({
+                autoclose: true,
+                dateFormat: "yy-mm-dd",
+                format: 'dd-mm-yy',
+                altFormat: "yy-mm-dd",
+                orientation: 'bottom',
+                changeMonth: true,
+                changeYear: true
+            });
+        };
+        function dateCheck(value, colname) {
+            var re = /^\d{4}-\d{1,2}-\d{1,2}$/;
+            if (re.test(value)) {
+                return [true, ""];
+            }
+            else {
+                return [false, "Date format for " + colname + " wrong: YYYY-MM-DD"];
+            }
+        }
         $("#jqGrid").jqGrid({
             url: '/business-admin/products/jsonData',
             mtype: "GET",
@@ -188,3 +179,5 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
         );
     });
 </script>
+<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
+<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
