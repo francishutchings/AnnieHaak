@@ -38,12 +38,15 @@ class RawMaterialsController extends AbstractActionController {
         $paginator->setCurrentPageNumber($currentPage);
         $paginator->setItemCountPerPage($rows);
 
-
-        foreach ($paginator->getItemsByPage($currentPage) as $value) {
-            $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-materials/edit/' . $value->RawMaterialID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
-            $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-materials/delete/' . $value->RawMaterialID . '"><span class="glyphicon glyphicon-trash"></span></a>';
-            $rawData[] = $value;
-        }
+        if ($paginator->count() > 0) {
+            foreach ($paginator->getItemsByPage($currentPage) as $value) {
+                $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-materials/edit/' . $value->RawMaterialID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
+                $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-materials/delete/' . $value->RawMaterialID . '"><span class="glyphicon glyphicon-trash"></span></a>';
+                $rawData[] = $value;
+            }
+        } else {
+            $rawData[] = NULL;
+        };
 
         $result = new JsonModel(array(
             'records' => $paginator->getPages()->totalItemCount,
