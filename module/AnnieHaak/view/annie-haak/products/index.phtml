@@ -1,6 +1,154 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/products/add', 'Add new Product');
+echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Refresh Page</a>';
 ?>
+<div class="clearfix"></div>
+<p>&nbsp;</p>
+<div style="width: 95%; margin: 0 auto;">
+    <table id="jqGrid" class="table table-striped table-hover"></table>
+    <div id="jqGridPager"></div>
+</div>
+<p>&nbsp;</p>
 
-<a href="/business-admin/product-types" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>
+<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
+<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
+<script type="text/javascript">
+    $.jgrid.defaults.responsive = true;
+    $.jgrid.defaults.styleUI = 'Bootstrap';
+    datePick = function (elem)
+    {
+        jQuery(elem).datepicker({
+            autoclose: true,
+            dateFormat: "yy-mm-dd",
+            format: 'dd-mm-yy',
+            altFormat: "yy-mm-dd",
+            orientation: 'bottom'
+        });
+    };
+    $(document).ready(function () {
+        $("#jqGrid").jqGrid({
+            url: '/business-admin/products/jsonData',
+            mtype: "GET",
+            styleUI: 'Bootstrap',
+            datatype: "json",
+            viewrecords: true,
+            loadonce: false,
+            sortname: 'ProductName',
+            height: 'auto',
+            viewsortcols: [true, 'vertical', true],
+            colModel: [
+                {
+                    label: 'ID',
+                    name: 'ProductID',
+                    key: true,
+                    hidden: true
+                },
+                {
+                    label: 'Product Name',
+                    name: 'ProductName',
+                    align: 'left',
+                    sortable: true,
+                    width: 450,
+                    search: true,
+                    searchoptions: {
+                        sopt: ["eq", "cn", "bw", "ew"]
+                    },
+                },
+                {
+                    label: 'Product Type',
+                    name: 'ProductTypeName',
+                    align: 'left',
+                    sortable: true,
+                    width: 100,
+                    search: true,
+                    searchoptions: {
+                        sopt: ["eq", "cn", "bw", "ew"]
+                    }
+                },
+                {
+                    label: 'Collection Name',
+                    name: 'ProductCollectionName',
+                    align: 'left',
+                    sortable: true,
+                    width: 175,
+                    search: true,
+                    searchoptions: {
+                        sopt: ["eq", "cn", "bw", "ew"]
+                    }
+                },
+                {
+                    label: 'Current',
+                    name: 'CurrentHTML',
+                    index: 'Current',
+                    align: 'left',
+                    sortable: true,
+                    width: 75,
+                    search: true,
+                    stype: 'select',
+                    searchoptions: {
+                        sopt: ["eq"],
+                        value: ":All; 1:Yes; 0:No"
+                    }
+                },
+                {
+                    label: 'Introduced',
+                    name: 'IntroDate',
+                    formatter: 'date',
+                    formatoptions: {
+                        srcformat: 'Y-m-d',
+                        newformat: 'Y M d',
+                        defaultValue: null
+                    },
+                    width: 100,
+                    sortable: true,
+                    align: 'left',
+                    search: true,
+                    sorttype: "text",
+                    searchoptions: {
+                        dataInit: datePick,
+                        sopt: ["eq", "lt", "gt"]
+                    }
+                },
+                {
+                    label: 'Edit',
+                    name: 'EditHTML',
+                    align: 'center',
+                    title: 'Edit',
+                    width: 75,
+                    sortable: false,
+                    search: false
+                },
+                {
+                    label: 'Delete',
+                    name: 'DeleteHTML',
+                    align: 'center',
+                    width: 75,
+                    sortable: false,
+                    search: false
+                }
+            ],
+            rownumbers: true,
+            rownumWidth: 20,
+            rowNum: 15,
+            rowList: [15, 30, 50],
+            pager: "#jqGridPager"
+        });
+        $("#jqGrid").navGrid('#jqGridPager',
+                {
+                    search: true,
+                    view: false,
+                    del: false,
+                    edit: false,
+                    add: false,
+                    view: true
+                },
+                {}, // edit options
+                {}, // add options
+                {}, // delete options
+                {
+                    multipleSearch: true
+                }
+        );
+    });
+</script>

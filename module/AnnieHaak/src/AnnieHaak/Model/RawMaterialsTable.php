@@ -44,9 +44,7 @@ class RawMaterialsTable {
         if ($paginated) {
             $resultSetPrototype = new ResultSet();
             $resultSetPrototype->setArrayObjectPrototype(new RawMaterials());
-            $paginatorAdapter = new DbSelect(
-                    $select, $this->tableGateway->getAdapter(), $resultSetPrototype
-            );
+            $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);
             $paginator = new Paginator($paginatorAdapter);
             return $paginator;
         } else {
@@ -102,9 +100,6 @@ class RawMaterialsTable {
             }
         }
         $select->order($sortBy);
-
-        dump($select->getSqlString());
-        exit();
 
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new RawMaterials());

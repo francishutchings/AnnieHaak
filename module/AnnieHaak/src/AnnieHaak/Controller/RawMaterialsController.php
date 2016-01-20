@@ -13,6 +13,7 @@ class RawMaterialsController extends AbstractActionController {
     protected $rawMaterialsTable;
     protected $rawMaterialTypesTable;
     protected $suppliersTable;
+    protected $productsTable;
 
     public function indexAction() {
         return new ViewModel();
@@ -97,8 +98,6 @@ class RawMaterialsController extends AbstractActionController {
 
         $selectMenusData = $this->popSelectMenus();
 
-
-
         $form->get('RMTypeID')->setValueOptions($selectMenusData['rawMaterialTypesData']);
         $form->get('RMSupplierID')->setValueOptions($selectMenusData['suppliersData']);
 
@@ -116,9 +115,12 @@ class RawMaterialsController extends AbstractActionController {
             }
         }
 
+        $relatedProducts = $this->getProductsTable()->fetchProductsByMaterial($id);
+
         return array(
             'id' => $id,
             'form' => $form,
+            'relatedProducts' => $relatedProducts
         );
     }
 
@@ -180,6 +182,14 @@ class RawMaterialsController extends AbstractActionController {
             $this->suppliersTable = $sm->get('AnnieHaak\Model\suppliersTable');
         }
         return $this->suppliersTable;
+    }
+
+    private function getProductsTable() {
+        if (!$this->productsTable) {
+            $sm = $this->getServiceLocator();
+            $this->productsTable = $sm->get('AnnieHaak\Model\ProductsTable');
+        }
+        return $this->productsTable;
     }
 
 }
