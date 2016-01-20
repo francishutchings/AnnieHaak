@@ -32,45 +32,49 @@ class ProductsTable {
         $select->join(array('PT' => 'ProductTypes'), 'PT.ProductTypeID = P.ProductTypeID', array('ProductTypeName'));
         $select->join(array('C' => 'ProductCollections'), 'C.ProductCollectionID = P.CollectionID', array('ProductCollectionName', 'Current'));
 
-
         if (isset($search)) {
-            if ($search['groupOp'] == 'AND') {
-                $pedic = PredicateSet::OP_AND;
-            } else {
-                $pedic = PredicateSet::OP_OR;
+            $orOperator = FALSE;
+            if ($search['groupOp'] == 'OR') {
+                $orOperator = TRUE;
             }
+
             foreach ($search['rules'] as $rule) {
                 switch ($rule['searchOper']) {
                     case 'eq':
-                        $select->where(array($rule['searchColumn'] => $rule['searchString']), $pedic);
+                        $select->where(array($rule['searchColumn'] => $rule['searchString']));
                         break;
                     case 'cn':
-                        $select->where->like($rule['searchColumn'], '%' . $rule['searchString'] . '%', $pedic);
+                        $select->where->like($rule['searchColumn'], '%' . $rule['searchString'] . '%');
                         break;
                     case 'bw':
-                        $select->where->like($rule['searchColumn'], $rule['searchString'] . '%', $pedic);
+                        $select->where->like($rule['searchColumn'], $rule['searchString'] . '%');
                         break;
                     case 'ew':
-                        $select->where->like($rule['searchColumn'], '%' . $rule['searchString'], $pedic);
+                        $select->where->like($rule['searchColumn'], '%' . $rule['searchString']);
                         break;
                     case 'lt':
-                        $select->where->lessThan($rule['searchColumn'], $rule['searchString'], $pedic);
+                        $select->where->lessThan($rule['searchColumn'], $rule['searchString']);
                         break;
                     case 'le':
-                        $select->where->lessThanOrEqualTo($rule['searchColumn'], $rule['searchString'], $pedic);
+                        $select->where->lessThanOrEqualTo($rule['searchColumn'], $rule['searchString']);
                         break;
                     case 'gt':
-                        $select->where->greaterThan($rule['searchColumn'], $rule['searchString'], $pedic);
+                        $select->where->greaterThan($rule['searchColumn'], $rule['searchString']);
                         break;
                     case 'ge':
-                        $select->where->greaterThanOrEqualTo($rule['searchColumn'], $rule['searchString'], $pedic);
+                        $select->where->greaterThanOrEqualTo($rule['searchColumn'], $rule['searchString']);
                         break;
+                }
+                if (count($search['rules']) > 1) {
+                    ($orOperator) ? $select->where->OR : $select->where->AND;
                 }
             }
         }
         $select->order($sortBy);
+
         #echo $select->getSqlString();
         #exit();
+
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Products());
         $paginatorAdapter = new DbSelect($select, $this->tableGateway->getAdapter(), $resultSetPrototype);

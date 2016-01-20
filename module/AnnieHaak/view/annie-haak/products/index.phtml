@@ -13,6 +13,13 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
 
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
 <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
+<style>
+    .ui-datepicker-month,
+    .ui-datepicker-year{
+        color: black;
+        font-weight: normal;
+    }
+</style>
 <script type="text/javascript">
     $.jgrid.defaults.responsive = true;
     $.jgrid.defaults.styleUI = 'Bootstrap';
@@ -23,9 +30,20 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
             dateFormat: "yy-mm-dd",
             format: 'dd-mm-yy',
             altFormat: "yy-mm-dd",
-            orientation: 'bottom'
+            orientation: 'bottom',
+            changeMonth: true,
+            changeYear: true
         });
     };
+    function dateCheck(value, colname) {
+        var re = /^\d{4}-\d{1,2}-\d{1,2}$/;
+        if (re.test(value)) {
+            return [true, ""];
+        }
+        else {
+            return [false, "Date format for " + colname + " wrong: YYYY-MM-DD"];
+        }
+    }
     $(document).ready(function () {
         $("#jqGrid").jqGrid({
             url: '/business-admin/products/jsonData',
@@ -51,6 +69,9 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                     sortable: true,
                     width: 450,
                     search: true,
+                    searchrules: {
+                        required: true
+                    },
                     searchoptions: {
                         sopt: ["eq", "cn", "bw", "ew"]
                     },
@@ -62,6 +83,9 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                     sortable: true,
                     width: 100,
                     search: true,
+                    searchrules: {
+                        required: true
+                    },
                     searchoptions: {
                         sopt: ["eq", "cn", "bw", "ew"]
                     }
@@ -73,6 +97,9 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                     sortable: true,
                     width: 175,
                     search: true,
+                    searchrules: {
+                        required: true
+                    },
                     searchoptions: {
                         sopt: ["eq", "cn", "bw", "ew"]
                     }
@@ -86,6 +113,9 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                     width: 75,
                     search: true,
                     stype: 'select',
+                    searchrules: {
+                        required: true
+                    },
                     searchoptions: {
                         sopt: ["eq"],
                         value: ":All;1:Yes;0:No"
@@ -105,10 +135,16 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                     align: 'left',
                     search: true,
                     sorttype: "text",
+                    searchrules: {
+                        //required: true
+                        custom: true,
+                        custom_func: dateCheck
+                    },
                     searchoptions: {
                         dataInit: datePick,
-                        sopt: ["eq", "lt", "gt"]
-                    }
+                        sopt: ["eq", "lt", "gt"],
+                        placeholder: 'yyyy-mm-dd'
+                    },
                 },
                 {
                     label: 'Edit',
