@@ -21,17 +21,26 @@ class RawMaterialsController extends AbstractActionController {
 
     public function jsonDataAction() {
         $currentPage = (int) $this->params()->fromQuery('page', 1);
-        $sortColumn = $this->params()->fromQuery('sidx', 'RawMaterialCode');
-        $sortOrder = $this->params()->fromQuery('sord', 'asc');
+        $sortColumn = $this->params()->fromQuery('sidx', 'ProductName');
+        $sortOrder = $this->params()->fromQuery('sord', 'ASC');
         $rows = (int) $this->params()->fromQuery('rows', 15);
+        $filters = $this->params()->fromQuery('filters', NULL);
 
         $sortBy = $sortColumn . ' ' . $sortOrder;
 
         $search = NULL;
-        if ((Boolean) $this->params()->fromQuery('_search', FALSE)) {
-            $search['searchColumn'] = $this->params()->fromQuery('searchField');
-            $search['searchOper'] = $this->params()->fromQuery('searchOper');
-            $search['searchString'] = $this->params()->fromQuery('searchString');
+
+        if (isset($filters) && !empty($filters)) {
+            $filters = json_decode($this->params()->fromQuery('filters'));
+            $search['groupOp'] = $filters->groupOp;
+            foreach ($filters->rules as $value) {
+                $temp = array();
+                $temp['searchColumn'] = $value->field;
+                $temp['searchOper'] = $value->op;
+                $temp['searchString'] = $value->data;
+                $searchTmp[] = $temp;
+            }
+            $search['rules'] = $searchTmp;
         }
 
         $paginator = $this->getRawMaterialsTable()->fetchFullDataPaginated($sortBy, $search);
@@ -45,7 +54,7 @@ class RawMaterialsController extends AbstractActionController {
                 $rawData[] = $value;
             }
         } else {
-            $rawData[] = NULL;
+            $rawData[] = '[]';
         };
 
         $result = new JsonModel(array(

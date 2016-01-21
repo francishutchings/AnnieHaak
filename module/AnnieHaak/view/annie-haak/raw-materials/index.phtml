@@ -1,7 +1,7 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/raw-materials/add', 'Add new Raw Material');
-echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Refresh</a>';
+echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Refresh Page</a>';
 
 #http://www.guriddo.net/demo/bootstrap/
 #http://www.trirand.com/jqgridwiki/doku.php?id=wiki:predefined_formatter
@@ -14,22 +14,31 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
 </div>
 <p>&nbsp;</p>
 
-<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
-<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
 <script type="text/javascript">
-    $.jgrid.defaults.responsive = true;
-    $.jgrid.defaults.styleUI = 'Bootstrap';
-    datePick = function (elem)
-    {
-        jQuery(elem).datepicker({
-            autoclose: true,
-            dateFormat: "yy-mm-dd",
-            format: 'dd-mm-yy',
-            altFormat: "yy-mm-dd",
-            orientation: 'bottom'
-        });
-    };
     $(document).ready(function () {
+        $.jgrid.defaults.responsive = true;
+        $.jgrid.defaults.styleUI = 'Bootstrap';
+        datePick = function (elem)
+        {
+            jQuery(elem).datepicker({
+                autoclose: true,
+                dateFormat: "yy-mm-dd",
+                format: 'dd-mm-yy',
+                altFormat: "yy-mm-dd",
+                orientation: 'bottom',
+                changeMonth: true,
+                changeYear: true
+            });
+        };
+        function dateCheck(value, colname) {
+            var re = /^\d{4}-\d{1,2}-\d{1,2}$/;
+            if (re.test(value)) {
+                return [true, ""];
+            }
+            else {
+                return [false, "Date format for " + colname + " wrong: YYYY-MM-DD"];
+            }
+        }
         $("#jqGrid").jqGrid({
             url: '/business-admin/raw-materials/jsonData',
             mtype: "GET",
@@ -138,7 +147,8 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
                     search: true,
                     sorttype: "text",
                     searchrules: {
-                        required: true
+                        custom: true,
+                        custom_func: dateCheck
                     },
                     searchoptions: {
                         dataInit: datePick,
@@ -170,6 +180,23 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
             rowList: [15, 30, 50],
             pager: "#jqGridPager"
         });
-        $("#jqGrid").navGrid('#jqGridPager', {search: true, view: false, del: false, edit: false, add: false, view: true});
+        $("#jqGrid").navGrid('#jqGridPager',
+                {
+                    search: true,
+                    view: false,
+                    del: false,
+                    edit: false,
+                    add: false,
+                    view: true
+                },
+                {}, // edit options
+                {}, // add options
+                {}, // delete options
+                {
+                    multipleSearch: true
+                }
+        );
     });
 </script>
+<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
+<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>

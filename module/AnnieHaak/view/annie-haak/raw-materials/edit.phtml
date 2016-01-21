@@ -61,10 +61,10 @@ echo $this->form()->closeTag();
 
 echo '</div>';
 
-echo '<div class="col-lg-12"><h3>Products using this Raw Material</h3></div>';
-echo '<div class="col-lg-6"><div class="bs-component"><div class="list-group">';
+echo '<div class="col-lg-12"><h3>' . count($relatedProducts) . ' Products use this Raw Material</h3></div>';
+echo '<div class="col-lg-8"><div class="bs-component"><div class="list-group">';
 foreach ($relatedProducts as $relatedProduct) {
-    echo '<a href="/business-admin/products/edit/' . $relatedProduct->ProductID . '" class="list-group-item">' . $relatedProduct->ProductName . '</a>';
+    echo '<a href="/business-admin/products/edit/' . $relatedProduct->ProductID . '" class="list-group-item"><div class="btn btn-warning btn-sm margin-right-10"><span class="glyphicon glyphicon-pencil"></span></div>' . $relatedProduct->ProductName . '</a>';
 }
 echo '</div></div></div>';
 ?>

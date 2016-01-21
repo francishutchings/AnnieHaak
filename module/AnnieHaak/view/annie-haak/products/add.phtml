@@ -1,0 +1,124 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+$form->setAttribute('action', $this->url('business-admin/products', array('action' => 'add')));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->prepare();
+
+echo '<div class="well bs-component">';
+
+echo $this->form()->openTag($form);
+
+echo '<fieldset><legend>Add New Product</legend>';
+
+echo $this->formHidden($form->get('ProductID')->setValue(0));
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="ProductName">Product Name:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('ProductName'));
+echo '</div></div>';
+
+echo '<label class="col-lg-2 control-label" for="Name">Build Product Name:</label>';
+echo '<div class="input-group col-lg-10">';
+echo $this->formRow($form->get('Name'));
+
+echo '<span class="input-group-addon">-</span>';
+
+echo $this->formRow($form->get('Charm'));
+
+echo '<span class="input-group-addon">-</span>';
+
+echo $this->formRow($form->get('Chrystal'));
+
+echo '<span class="input-group-addon">-</span>';
+
+echo $this->formRow($form->get('Colour'));
+
+echo '<span class="input-group-addon">-</span>';
+
+echo $this->formRow($form->get('Length'));
+
+echo '</div>';
+
+#===========================================================
+echo '<hr/>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="SKU">SKU:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('SKU'));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('ProductTypeID'));
+echo '</div></div>';
+
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d')));
+echo '</div></div>';
+
+echo '<div class="form-group">';
+echo '<label class="col-lg-2 control-label" for="Strands">Strands:</label><div class="col-lg-10">';
+echo $this->formRow($form->get('Strands'));
+echo '</div></div>';
+
+
+echo '<div class="form-group">';
+echo '<div class="col-lg-10 col-lg-offset-2">';
+echo '<a href="/business-admin/raw-material-types" type="reset" class="btn btn-default btn-sm">Cancel</a>';
+$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
+echo $this->formSubmit($form->get('submit'));
+echo '</div></div>';
+
+echo '</fieldset>';
+
+echo $this->form()->closeTag();
+
+echo '</div>';
+?>
+
+<script>
+    $(document).ready(function () {
+        $("#IntroDate").datepicker({
+            autoclose: true,
+            dateFormat: "yy-mm-dd",
+            format: 'dd-mm-yy',
+            altFormat: "yy-mm-dd",
+            orientation: 'bottom',
+            changeMonth: true,
+            changeYear: true
+        });
+        $("#Name").bind('keyup', function () {
+            concatName();
+        });
+        $("#Charm").bind('change', function () {
+            concatName();
+        });
+        $("#Chrystal").bind('change', function () {
+            concatName();
+        });
+        $("#Colour").bind('change', function () {
+            concatName();
+        });
+        $("#Length").bind('change', function () {
+            concatName();
+        });
+        concatName = function () {
+            $("#ProductName").val($("#Name").val());
+            if ($("#Charm").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Charm").val());
+            }
+            if ($("#Chrystal").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Chrystal").val());
+            }
+            if ($("#Colour").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Colour").val());
+            }
+            if ($("#Length").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Length").val());
+            }
+        };
+    });
+</script>

@@ -11,6 +11,7 @@ use Zend\View\Model\JsonModel;
 class ProductsController extends AbstractActionController {
 
     protected $productsTable;
+    protected $productTypesTable;
 
     public function indexAction() {
         return new ViewModel(array(
@@ -29,7 +30,7 @@ class ProductsController extends AbstractActionController {
 
         $search = NULL;
 
-        if (isset($filters)) {
+        if (isset($filters) && !empty($filters)) {
             $filters = json_decode($this->params()->fromQuery('filters'));
             $search['groupOp'] = $filters->groupOp;
             foreach ($filters->rules as $value) {
@@ -66,12 +67,51 @@ class ProductsController extends AbstractActionController {
         return $result;
     }
 
+    public function addAction() {
+        $form = new ProductsForm();
+        $form->get('submit')->setValue('Add');
+
+        $selectData = $this->popSelectMenus();
+        $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $products = new Products();
+            $form->setInputFilter($products->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+                $products->exchangeArray($form->getData());
+                $this->getProductsTable()->saveProducts($products);
+                $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->productName . ' - added.');
+                return $this->redirect()->toRoute('business-admin/products');
+            }
+        }
+        return array('form' => $form);
+    }
+
+    private function popSelectMenus() {
+        $productTypes = $this->getProductTypesTable()->fetchAll();
+        foreach ($productTypes as $key => $value) {
+            $productTypesData[$value->ProductTypeId] = $value->ProductTypeName;
+        }
+        return array('productTypesData' => $productTypesData);
+    }
+
     private function getProductsTable() {
         if (!$this->productsTable) {
             $sm = $this->getServiceLocator();
             $this->productsTable = $sm->get('AnnieHaak\Model\ProductsTable');
         }
         return $this->productsTable;
+    }
+
+    private function getProductTypesTable() {
+        if (!$this->productTypesTable) {
+            $sm = $this->getServiceLocator();
+            $this->productTypesTable = $sm->get('AnnieHaak\Model\ProductTypesTable');
+        }
+        return $this->productTypesTable;
     }
 
 }

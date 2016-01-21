@@ -5,17 +5,6 @@ namespace AnnieHaak\Form;
 use Zend\Form\Form;
 
 class RawMaterialsForm extends Form {
-    /*
-      public RawMaterialID;
-      public RawMaterialCode;
-      public RawMaterialName;
-      public RawMaterialUnitCost;
-      public RMSupplierID;
-      public RMTypeID;
-      public DateLastChecked;
-      public LastInvoiceNumber;
-
-     */
 
     public function __construct($name = null) {
 

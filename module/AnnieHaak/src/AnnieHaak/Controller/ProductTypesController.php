@@ -100,7 +100,7 @@ class ProductTypesController extends AbstractActionController {
         );
     }
 
-    public function getProductTypesTable() {
+    private function getProductTypesTable() {
         if (!$this->productTypesTable) {
             $sm = $this->getServiceLocator();
             $this->productTypesTable = $sm->get('AnnieHaak\Model\ProductTypesTable');
