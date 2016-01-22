@@ -117,21 +117,30 @@ class ProductsForm extends Form {
         ));
 
         $this->add(array(
+            'name' => 'CollectionID',
+            'type' => 'select',
+            'options' => array(
+                'empty_option' => 'Please select Collection ...',
+                'value_options' => array(),
+            ), 'attributes' => array(
+                'id' => 'CollectionID',
+                'class' => 'form-control',
+                'required' => true,
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'ProductTypeID',
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Please select Product Type ...',
-                'value_options' => array(
-                    '1' => 'Data',
-                    '2' => 'Data',
-                ),
+                'value_options' => array(),
             ), 'attributes' => array(
                 'id' => 'ProductTypeID',
                 'class' => 'form-control',
                 'required' => true,
             ),
         ));
-
 
         $this->add(array(
             'name' => 'Strands',

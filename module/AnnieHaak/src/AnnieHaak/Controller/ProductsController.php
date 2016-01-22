@@ -11,6 +11,7 @@ use Zend\View\Model\JsonModel;
 class ProductsController extends AbstractActionController {
 
     protected $productsTable;
+    protected $collectionsTable;
     protected $productTypesTable;
 
     public function indexAction() {
@@ -71,7 +72,9 @@ class ProductsController extends AbstractActionController {
         $form = new ProductsForm();
 
         $selectData = $this->popSelectMenus();
+        $form->get('CollectionID')->setValueOptions($selectData['collectionsData']);
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
+
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -90,11 +93,18 @@ class ProductsController extends AbstractActionController {
     }
 
     private function popSelectMenus() {
+        $collections = $this->getCollectionsTable()->fetchAll();
         $productTypes = $this->getProductTypesTable()->fetchAll();
+        foreach ($collections as $key => $value) {
+            $collectionsData[$value->ProductCollectionID] = $value->ProductCollectionName;
+        }
         foreach ($productTypes as $key => $value) {
             $productTypesData[$value->ProductTypeId] = $value->ProductTypeName;
         }
-        return array('productTypesData' => $productTypesData);
+        return array(
+            'collectionsData' => $collectionsData,
+            'productTypesData' => $productTypesData
+        );
     }
 
     private function getProductsTable() {
@@ -103,6 +113,14 @@ class ProductsController extends AbstractActionController {
             $this->productsTable = $sm->get('AnnieHaak\Model\ProductsTable');
         }
         return $this->productsTable;
+    }
+
+    private function getCollectionsTable() {
+        if (!$this->collectionsTable) {
+            $sm = $this->getServiceLocator();
+            $this->collectionsTable = $sm->get('AnnieHaak\Model\CollectionsTable');
+        }
+        return $this->collectionsTable;
     }
 
     private function getProductTypesTable() {

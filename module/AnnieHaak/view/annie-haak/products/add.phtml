@@ -30,6 +30,13 @@ $form->prepare();
         </div>
 
         <div class="form-group">
+            <label class="col-lg-2 control-label" for="CollectionID">Collection:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('CollectionID')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label>
             <div class="col-lg-10">
                 <?php echo $this->formRow($form->get('ProductTypeID')); ?>
@@ -71,7 +78,7 @@ $form->prepare();
                     <div class="form-group">
                         <label class="col-lg-3 control-label" for="Name">Name:</label>
                         <div class="col-lg-9">
-                            <?php echo $this->formRow($form->get('ProductName')); ?>
+                            <?php echo $this->formRow($form->get('Name')); ?>
                         </div>
                     </div>
                     <div class="form-group">
@@ -114,6 +121,7 @@ $form->prepare();
     $(document).ready(function () {
         $('#ProductName').focus(function () {
             $('#buildProductName').modal('show');
+            $('#Name').focus();
         });
         $('#buildProductName').on('hidden.bs.modal', function () {
             $('#SKU').focus();
@@ -150,8 +158,8 @@ $form->prepare();
             if ($("#NameCharm").val()) {
                 $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm").val());
             }
-            if ($("#NameChrystal").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameChrystal").val());
+            if ($("#NameCrystal").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCrystal").val());
             }
             if ($("#NameColour").val()) {
                 $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour").val());
