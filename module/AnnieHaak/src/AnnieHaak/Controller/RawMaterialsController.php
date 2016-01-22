@@ -68,7 +68,6 @@ class RawMaterialsController extends AbstractActionController {
 
     public function addAction() {
         $form = new RawMaterialsForm();
-        $form->get('submit')->setValue('Add');
 
         $selectData = $this->popSelectMenus();
         $form->get('RMTypeID')->setValueOptions($selectData['rawMaterialTypesData']);

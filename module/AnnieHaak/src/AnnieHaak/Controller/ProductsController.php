@@ -69,7 +69,6 @@ class ProductsController extends AbstractActionController {
 
     public function addAction() {
         $form = new ProductsForm();
-        $form->get('submit')->setValue('Add');
 
         $selectData = $this->popSelectMenus();
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);

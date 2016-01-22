@@ -18,10 +18,7 @@ class PackagingController extends AbstractActionController {
     }
 
     public function addAction() {
-
         $form = new PackagingForm();
-
-        $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -32,7 +29,7 @@ class PackagingController extends AbstractActionController {
             if ($form->isValid()) {
                 $packaging->exchangeArray($form->getData());
                 $this->getPackagingTable()->savePackaging($packaging);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $labourItems->LabourName . ' - added.');
+                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $packaging->PackagingName . ' - added.');
                 return $this->redirect()->toRoute('business-admin/packaging');
             }
         }
@@ -66,7 +63,7 @@ class PackagingController extends AbstractActionController {
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $this->getPackagingTable()->savePackaging($packaging);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $labourItems->LabourName . ' - updated.');
+                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $packaging->PackagingName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/packaging');
             }
         }
@@ -91,7 +88,7 @@ class PackagingController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getPackagingTable()->deletePackaging($id);
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $labourItems->LabourName . ' - deleted.');
+            $this->flashmessenger()->setNamespace('info')->addMessage('Packaging deleted.');
             return $this->redirect()->toRoute('business-admin/packaging');
         }
 

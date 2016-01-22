@@ -19,7 +19,6 @@ class LabourItemsController extends AbstractActionController {
 
     public function addAction() {
         $form = new LabourItemsForm();
-        $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -89,7 +88,7 @@ class LabourItemsController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getLabourItemsTable()->deleteLabourItems($id);
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item - ' . $labourItems->LabourName . ' - deleted.');
+            $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item deleted.');
             return $this->redirect()->toRoute('business-admin/labour-items');
         }
 

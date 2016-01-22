@@ -23,6 +23,7 @@ class RawMaterialsForm extends Form {
                 'id' => 'RawMaterialCode',
                 'class' => 'form-control',
                 'required' => true,
+                'maxlength' => 50,
             ),
         ));
 
@@ -33,6 +34,7 @@ class RawMaterialsForm extends Form {
                 'id' => 'RawMaterialName',
                 'class' => 'form-control',
                 'required' => true,
+                'maxlength' => 150,
             ),
         ));
 
@@ -41,10 +43,7 @@ class RawMaterialsForm extends Form {
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Please select Type ...',
-                'value_options' => array(
-                    '1' => 'Data',
-                    '2' => 'Data',
-                ),
+                'value_options' => array(),
             ), 'attributes' => array(
                 'id' => 'RMTypeID',
                 'class' => 'form-control',
@@ -66,12 +65,14 @@ class RawMaterialsForm extends Form {
 
         $this->add(array(
             'name' => 'RawMaterialUnitCost',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'RawMaterialUnitCost',
-                'class' => 'form-control',
-                'placeholder' => '£',
-                'required' => true,
+                'class' => 'form-control bfh-number',
+                'step' => '0.0001',
+                'min' => 0.0001,
+                'placeholder' => 'Amount',
+                'required' => true
             ),
         ));
 
@@ -94,6 +95,7 @@ class RawMaterialsForm extends Form {
             'attributes' => array(
                 'id' => 'LastInvoiceNumber',
                 'class' => 'form-control',
+                'maxlength' => 20,
             ),
         ));
 
@@ -101,9 +103,9 @@ class RawMaterialsForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-success',
             ),
         ));
     }

@@ -87,7 +87,7 @@ class RatesPercentagesForm extends Form {
             'attributes' => array(
                 'value' => 'Go',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-success',
             ),
         ));
     }

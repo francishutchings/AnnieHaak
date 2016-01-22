@@ -22,8 +22,7 @@ class ProductsForm extends Form {
             'attributes' => array(
                 'id' => 'ProductName',
                 'class' => 'form-control',
-                'required' => true,
-                'readonly' => 'readonly'
+                'required' => true
             ),
         ));
 
@@ -38,7 +37,7 @@ class ProductsForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'Charm',
+            'name' => 'NameCharm',
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Charm ...',
@@ -49,30 +48,30 @@ class ProductsForm extends Form {
                 ),
             ),
             'attributes' => array(
-                'id' => 'Charm',
+                'id' => 'NameCharm',
                 'class' => 'form-control'
             ),
         ));
 
         $this->add(array(
-            'name' => 'Chrystal',
+            'name' => 'NameCrystal',
             'type' => 'select',
             'options' => array(
-                'empty_option' => 'Chrystal ...',
+                'empty_option' => 'Crystal ...',
                 'value_options' => array(
-                    'Chrystal 1' => 'Chrystal 1',
-                    'Chrystal 2' => 'Chrystal 2',
-                    'Chrystal 3' => 'Chrystal 3'
+                    'Crystal 1' => 'Crystal 1',
+                    'Crystal 2' => 'Crystal 2',
+                    'Crystal 3' => 'Crystal 3'
                 ),
             ),
             'attributes' => array(
-                'id' => 'Chrystal',
+                'id' => 'NameCrystal',
                 'class' => 'form-control'
             ),
         ));
 
         $this->add(array(
-            'name' => 'Colour',
+            'name' => 'NameColour',
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Colour ...',
@@ -83,13 +82,13 @@ class ProductsForm extends Form {
                 ),
             ),
             'attributes' => array(
-                'id' => 'Colour',
+                'id' => 'NameColour',
                 'class' => 'form-control'
             ),
         ));
 
         $this->add(array(
-            'name' => 'Length',
+            'name' => 'NameLength',
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Length ...',
@@ -102,7 +101,7 @@ class ProductsForm extends Form {
                 ),
             ),
             'attributes' => array(
-                'id' => 'Length',
+                'id' => 'NameLength',
                 'class' => 'form-control'
             ),
         ));
@@ -177,9 +176,9 @@ class ProductsForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-success'
             ),
         ));
     }

@@ -20,7 +20,6 @@ class ProductTypesController extends AbstractActionController {
 
     public function addAction() {
         $form = new ProductTypesForm();
-        $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -90,7 +89,7 @@ class ProductTypesController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getProductTypesTable()->deleteProductTypes($id);
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - deleted.');
+            $this->flashmessenger()->setNamespace('info')->addMessage('Product Type deleted.');
             return $this->redirect()->toRoute('business-admin/product-types');
         }
 

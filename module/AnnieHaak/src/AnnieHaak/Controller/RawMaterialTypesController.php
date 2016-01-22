@@ -80,7 +80,6 @@ class RawMaterialTypesController extends AbstractActionController {
 
     public function addAction() {
         $form = new RawMaterialTypesForm();
-        $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {

@@ -22,15 +22,21 @@ class LabourItemsForm extends Form {
             'attributes' => array(
                 'id' => 'LabourName',
                 'class' => 'form-control',
+                'maxlength' => 255,
+                'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'LabourUnitCost',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'LabourUnitCost',
                 'class' => 'form-control',
+                'step' => '0.0001',
+                'min' => 0.0001,
+                'placeholder' => 'Amount',
+                'required' => true,
             ),
         ));
 
@@ -40,6 +46,8 @@ class LabourItemsForm extends Form {
             'attributes' => array(
                 'id' => 'LabourCode',
                 'class' => 'form-control',
+                'maxlength' => 255,
+                'required' => true,
             ),
         ));
 
@@ -47,9 +55,9 @@ class LabourItemsForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-success',
             ),
         ));
     }

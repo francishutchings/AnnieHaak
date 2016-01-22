@@ -25,7 +25,6 @@ class CollectionsController extends AbstractActionController {
         }
 
         $form = new CollectionsForm();
-        $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {

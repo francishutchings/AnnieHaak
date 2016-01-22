@@ -8,7 +8,6 @@ use Zend\View\Model\ViewModel;
 class BusinessAdminController extends AbstractActionController {
 
     public function indexAction() {
-
         return new ViewModel();
     }
 

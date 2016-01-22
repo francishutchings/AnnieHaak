@@ -25,6 +25,11 @@ class Products implements InputFilterAwareInterface {
     public $IntroDate;
     public $KeyPiece;
     public $MinsToBuild;
+    public $Name;
+    public $NameCharm;
+    public $NameColour;
+    public $NameCrystal;
+    public $NameLength;
     public $OldURL;
     public $PartOfTradePack;
     public $Personalisable;
@@ -62,6 +67,11 @@ class Products implements InputFilterAwareInterface {
         $this->IntroDate = (!empty($data['IntroDate'])) ? $data['IntroDate'] : 0;
         $this->KeyPiece = (!empty($data['KeyPiece'])) ? $data['KeyPiece'] : 0;
         $this->MinsToBuild = (!empty($data['MinsToBuild'])) ? $data['MinsToBuild'] : 0;
+        $this->Name = (!empty($data['Name'])) ? $data['Name'] : 0;
+        $this->NameCharm = (!empty($data['NameCharm'])) ? $data['NameCharm'] : 0;
+        $this->NameColour = (!empty($data['NameColour'])) ? $data['NameColour'] : 0;
+        $this->NameCrystal = (!empty($data['NameCrystal'])) ? $data['NameCrystal'] : 0;
+        $this->NameLength = (!empty($data['NameLength'])) ? $data['NameLength'] : 0;
         $this->OldURL = (!empty($data['OldURL'])) ? $data['OldURL'] : 0;
         $this->PartOfTradePack = (!empty($data['PartOfTradePack'])) ? $data['PartOfTradePack'] : 0;
         $this->Personalisable = (!empty($data['Personalisable'])) ? $data['Personalisable'] : 0;

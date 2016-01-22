@@ -4,83 +4,120 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
 $form->setAttribute('action', $this->url('business-admin/products', array('action' => 'add')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
-
-echo '<div class="well bs-component">';
-
-echo $this->form()->openTag($form);
-
-echo '<fieldset><legend>Add New Product</legend>';
-
-echo $this->formHidden($form->get('ProductID')->setValue(0));
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="ProductName">Product Name:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('ProductName'));
-echo '</div></div>';
-
-echo '<label class="col-lg-2 control-label" for="Name">Build Product Name:</label>';
-echo '<div class="input-group col-lg-10">';
-echo $this->formRow($form->get('Name'));
-
-echo '<span class="input-group-addon">-</span>';
-
-echo $this->formRow($form->get('Charm'));
-
-echo '<span class="input-group-addon">-</span>';
-
-echo $this->formRow($form->get('Chrystal'));
-
-echo '<span class="input-group-addon">-</span>';
-
-echo $this->formRow($form->get('Colour'));
-
-echo '<span class="input-group-addon">-</span>';
-
-echo $this->formRow($form->get('Length'));
-
-echo '</div>';
-
-#===========================================================
-echo '<hr/>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="SKU">SKU:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('SKU'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('ProductTypeID'));
-echo '</div></div>';
-
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d')));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="Strands">Strands:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('Strands'));
-echo '</div></div>';
-
-
-echo '<div class="form-group">';
-echo '<div class="col-lg-10 col-lg-offset-2">';
-echo '<a href="/business-admin/raw-material-types" type="reset" class="btn btn-default btn-sm">Cancel</a>';
-$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
-echo $this->formSubmit($form->get('submit'));
-echo '</div></div>';
-
-echo '</fieldset>';
-
-echo $this->form()->closeTag();
-
-echo '</div>';
 ?>
+
+<div class="well bs-component">
+
+    <?php echo$this->form()->openTag($form) ?>
+
+    <fieldset>
+        <legend>Add New Product</legend>
+
+        <?php echo $this->formHidden($form->get('ProductID')->setValue(0)) ?>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="ProductName">Product Name:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('ProductName')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="SKU">SKU:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('SKU')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('ProductTypeID')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d'))); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="Strands">Strands:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('Strands')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <a href="/business-admin/raw-material-types" type="reset" class="btn btn-default btn-sm">Cancel</a>
+                <?php echo $this->formSubmit($form->get('submit')); ?>
+            </div>
+        </div>
+    </fieldset>
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
+    <div class="modal fade" id="buildProductName" tabindex="-1" role="dialog" aria-labelledby="buildProductName">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Build Product Name</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="Name">Name:</label>
+                        <div class="col-lg-9">
+                            <?php echo $this->formRow($form->get('ProductName')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="NameCharm">Choose Charm:</label>
+                        <div class="col-lg-9">
+                            <?php echo $this->formRow($form->get('NameCharm')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="NameCrystal">Choose Crystal:</label>
+                        <div class="col-lg-9">
+                            <?php echo $this->formRow($form->get('NameCrystal')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="NameColour">Choose Colour:</label>
+                        <div class="col-lg-9">
+                            <?php echo $this->formRow($form->get('NameColour')); ?>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label" for="NameLength">Choose Length:</label>
+                        <div class="col-lg-9">
+                            <?php echo $this->formRow($form->get('NameLength')); ?>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="buildProductNameSave" class="btn btn-success" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php echo $this->form()->closeTag(); ?>
+
+</div>
 
 <script>
     $(document).ready(function () {
+        $('#ProductName').focus(function () {
+            $('#buildProductName').modal('show');
+        });
+        $('#buildProductName').on('hidden.bs.modal', function () {
+            $('#SKU').focus();
+        });
         $("#IntroDate").datepicker({
             autoclose: true,
             dateFormat: "yy-mm-dd",
@@ -105,19 +142,22 @@ echo '</div>';
         $("#Length").bind('change', function () {
             concatName();
         });
+        $("#buildProductNameSave").click(function () {
+            concatName();
+        });
         concatName = function () {
             $("#ProductName").val($("#Name").val());
-            if ($("#Charm").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Charm").val());
+            if ($("#NameCharm").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm").val());
             }
-            if ($("#Chrystal").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Chrystal").val());
+            if ($("#NameChrystal").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameChrystal").val());
             }
-            if ($("#Colour").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Colour").val());
+            if ($("#NameColour").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour").val());
             }
-            if ($("#Length").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#Length").val());
+            if ($("#NameLength").val()) {
+                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength").val());
             }
         };
     });

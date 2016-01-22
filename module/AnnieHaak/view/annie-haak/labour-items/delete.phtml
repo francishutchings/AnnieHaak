@@ -8,13 +8,13 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
     <form action="<?php echo $url; ?>" method="post">
 
         <fieldset>
-            <legend>Delete Labour Item</legend>
+            <legend>Delete Labour Item?</legend>
 
             <div class="form-group">
                 <div class="col-lg-10">
                     <div class="panel panel-warning">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Warning</h3>
+                            <h3 class="panel-title">Warning!</h3>
                         </div>
                         <div class="panel-body">
                             Are you sure that you want to delete <span class="text-warning bold">"<?php echo $this->escapeHtml($labourItems->LabourName); ?>"</span>?
@@ -25,9 +25,9 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
 
             <input type="hidden" name="id" value="<?php echo (int) $labourItems->LabourID; ?>" />
             <div class="form-group">
-                <div class="col-lg-10 col-lg-offset-1">
-                    <a href="/business-admin/labour-items" type="reset" class="btn btn-default btn-sm">Cancel</a>
-                    <button type="submit" class="btn btn-danger btn-sm" name="del" value="Yes">Delete</button>
+                <div class="col-lg-5 col-lg-offset-7">
+                    <a href="/business-admin/labour-items" type="reset" class="btn btn-default">Cancel</a>
+                    <button type="submit" class="btn btn-danger btn-default" name="del" value="Yes">Delete</button>
                 </div>
             </div>
         </fieldset>

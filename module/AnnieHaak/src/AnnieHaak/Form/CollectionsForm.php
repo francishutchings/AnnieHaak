@@ -22,6 +22,7 @@ class CollectionsForm extends Form {
             'attributes' => array(
                 'id' => 'ProductCollectionName',
                 'class' => 'form-control',
+                'maxlength' => 255
             ),
         ));
 
@@ -31,6 +32,7 @@ class CollectionsForm extends Form {
             'attributes' => array(
                 'id' => 'ProductCollectionCode',
                 'class' => 'form-control',
+                'maxlength' => 255
             ),
         ));
 
@@ -38,8 +40,7 @@ class CollectionsForm extends Form {
             'name' => 'Current',
             'type' => 'checkbox',
             'attributes' => array(
-                'id' => 'Current',
-                'class' => 'pull-left',
+                'id' => 'Current'
             ),
         ));
 
@@ -47,9 +48,9 @@ class CollectionsForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-success',
             ),
         ));
     }

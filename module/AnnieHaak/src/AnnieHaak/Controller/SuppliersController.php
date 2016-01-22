@@ -20,7 +20,6 @@ class SuppliersController extends AbstractActionController {
 
     public function addAction() {
         $form = new SuppliersForm();
-        $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
@@ -90,7 +89,7 @@ class SuppliersController extends AbstractActionController {
                 $id = (int) $request->getPost('id');
                 $this->getSuppliersTable()->deleteSuppliers($id);
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Supplier - ' . $suppliers->RMSupplierName . ' - deleted.');
+            $this->flashmessenger()->setNamespace('info')->addMessage('Supplier deleted.');
             return $this->redirect()->toRoute('business-admin/suppliers');
         }
 

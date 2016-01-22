@@ -4,71 +4,95 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
 $form->setAttribute('action', $this->url('business-admin/raw-materials', array('action' => 'edit', 'id' => $this->id,)));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
-
-echo '<div class="well bs-component">';
-
-echo $this->form()->openTag($form);
-
-echo '<fieldset><legend>Add Raw Material Type</legend>';
-
-echo $this->formHidden($form->get('RawMaterialID'));
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="RawMaterialCode">Raw Material Code:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('RawMaterialCode'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="RawMaterialName">Raw Material Name:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('RawMaterialName'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="RMTypeID">Raw Material Type:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('RMTypeID'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="RMSupplierID">Raw Material Supplier:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('RMSupplierID'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="RawMaterialUnitCost">Raw Material Unit Cost:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('RawMaterialUnitCost'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="DateLastChecked">Date Last Checked:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('DateLastChecked'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="LastInvoiceNumber">Last Invoice Number:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('LastInvoiceNumber'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<div class="col-lg-10 col-lg-offset-2">';
-echo '<a href="/business-admin/raw-materials" type="reset" class="btn btn-default btn-sm">Cancel</a>';
-$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
-echo $this->formSubmit($form->get('submit'));
-echo '</div></div>';
-
-echo '</fieldset>';
-
-echo $this->form()->closeTag();
-
-echo '</div>';
-
-echo '<div class="col-lg-12"><h3>' . count($relatedProducts) . ' Products use this Raw Material</h3></div>';
-echo '<div class="col-lg-8"><div class="bs-component"><div class="list-group">';
-foreach ($relatedProducts as $relatedProduct) {
-    echo '<a href="/business-admin/products/edit/' . $relatedProduct->ProductID . '" class="list-group-item"><div class="btn btn-warning btn-sm margin-right-10"><span class="glyphicon glyphicon-pencil"></span></div>' . $relatedProduct->ProductName . '</a>';
-}
-echo '</div></div></div>';
 ?>
-<div class="col-md-10"></div>
+
+<div class="well bs-component">
+
+    <?php echo $this->form()->openTag($form); ?>
+
+    <fieldset>
+        <legend>Edit Raw Material</legend>
+
+        <?php echo $this->formHidden($form->get('RawMaterialID')); ?>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="RawMaterialCode">Raw Material Code:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('RawMaterialCode')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="RawMaterialName">Raw Material Name:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('RawMaterialName')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="RMTypeID">Raw Material Type:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('RMTypeID')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="RMSupplierID">Raw Material Supplier:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('RMSupplierID')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="RawMaterialUnitCost">Raw Material Unit Cost:</label>
+            <div class="col-lg-10">
+                <div class="input-group">
+                    <div class="input-group-addon">£</div>
+                    <?php echo $this->formRow($form->get('RawMaterialUnitCost')); ?>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="DateLastChecked">Date Last Checked:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('DateLastChecked')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="LastInvoiceNumber">Last Invoice Number:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('LastInvoiceNumber')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-3 col-lg-offset-9">
+                <a href="/business-admin/raw-materials" type="reset" class="btn btn-default">Cancel</a>
+                <?php echo $this->formSubmit($form->get('submit')); ?>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <?php echo $this->form()->closeTag(); ?>
+
+</div>
+
+<div class="panel panel-info">
+    <div class="panel-heading">
+        <h4>Products using this Raw Material = <?php echo count($relatedProducts) ?></h4>
+    </div>
+    <div class="panel-body">
+        <?php
+        foreach ($relatedProducts as $relatedProduct) {
+            echo '<a href="/business-admin/products/edit/' . $relatedProduct->ProductID . '" class="list-group-item"><div class="btn btn-warning btn-sm margin-right-10"><span class="glyphicon glyphicon-pencil"></span></div>' . $relatedProduct->ProductName . '</a>';
+        }
+        ?>
+    </div>
+</div>
 
 <script>
     $(function () {

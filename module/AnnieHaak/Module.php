@@ -31,6 +31,22 @@ class Module {
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
 
+        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function($e) {
+            #echo $e->getParam('error');
+            #exit();
+            $catchStates = array('error-router-no-match', 'error-controller-not-found');
+            if (array_search($e->getParam('error'), $catchStates)) {
+                $response = $e->getResponse();
+                $response->getHeaders()->addHeaderLine(
+                        'Location', $e->getRouter()->assemble(
+                                array(), array('name' => 'home')
+                        )
+                );
+                $response->setStatusCode(302);
+                return $response;
+            }
+        });
+
         $eventManager->attach('route', function($e) {
             $app = $e->getApplication();
             $routeMatch = $e->getRouteMatch();
@@ -49,11 +65,10 @@ class Module {
             }
         }, -100);
 
-
-        #dump($eventManager);
-        #exit();
-        #$this->initAcl($e); //Initialise the ACL
-        #$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl')); //Acl check
+#dump($eventManager);
+#exit();
+#$this->initAcl($e); //Initialise the ACL
+#$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl')); //Acl check
     }
 
     public function getConfig() {
@@ -194,19 +209,19 @@ class Module {
 
             $allResources = array_merge($resources, $allResources);
 
-            //Resources
+//Resources
             foreach ($resources as $resource) {
                 if (!$acl->hasResource($resource)) {
                     $acl->addResource(new \Zend\Permissions\Acl\Resource\GenericResource($resource));
                 }
             }
-            //Restrictions
+//Restrictions
             foreach ($resources as $resource) {
                 $acl->allow($role, $resource);
             }
         }
 
-        //setting to view
+//setting to view
         $e->getViewModel()->acl = $acl;
     }
 
@@ -239,16 +254,16 @@ class Module {
             $userRole = 'guest';
         }
 
-        #$userRole = 'guest';
-        #dump($e->getViewModel()->acl);
-        #dump($route);
-        #dump($userRole);
-        #dump($e->getViewModel()->acl->hasResource($route));
-        #dump($e->getViewModel()->acl->isAllowed($userRole, $route));
-        #exit();
-        #dump($e->getViewModel());
-        #dump($e->getViewModel()->acl->hasResource($route));
-        #dump($e->getViewModel()->acl);
+#$userRole = 'guest';
+#dump($e->getViewModel()->acl);
+#dump($route);
+#dump($userRole);
+#dump($e->getViewModel()->acl->hasResource($route));
+#dump($e->getViewModel()->acl->isAllowed($userRole, $route));
+#exit();
+#dump($e->getViewModel());
+#dump($e->getViewModel()->acl->hasResource($route));
+#dump($e->getViewModel()->acl);
         /*
           if (!$e->getViewModel()->acl->hasResource($route) || !$e->getViewModel()->acl->isAllowed($userRole, $route)) {
           //Naughty trying to get somewhere they shouldn't (Clear there identity force them to login again)

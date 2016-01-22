@@ -1,44 +1,53 @@
 <?php
-
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
 $form->setAttribute('action', $this->url('business-admin/labour-items', array('action' => 'add')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
-
-echo '<div class="well bs-component">';
-
-echo $this->form()->openTag($form);
-
-echo '<fieldset><legend>Add Labour Item</legend>';
-
-echo $this->formHidden($form->get('LabourID')->setValue(0));
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="LabourName">Item Name:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('LabourName'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="LabourUnitCost">Unit Cost:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('LabourUnitCost'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<label class="col-lg-2 control-label" for="LabourCode">Code:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('LabourCode'));
-echo '</div></div>';
-
-echo '<div class="form-group">';
-echo '<div class="col-lg-10 col-lg-offset-2">';
-echo '<a href="/business-admin/labour-items" type="reset" class="btn btn-warning btn-sm margin-right-10">Cancel</a>';
-$form->get('submit')->setAttribute('class', 'btn btn-success btn-sm');
-echo $this->formSubmit($form->get('submit'));
-echo '</div></div>';
-
-echo '</fieldset>';
-
-echo $this->form()->closeTag();
-
-echo '</div>';
 ?>
+
+<div class="well bs-component">
+
+    <?php echo $this->form()->openTag($form); ?>
+
+    <fieldset>
+        <legend>Add Labour Item</legend>
+
+        <?php echo $this->formHidden($form->get('LabourID')->setValue(0)); ?>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="LabourName">Item Name:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('LabourName')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="LabourUnitCost">Unit Cost:</label>
+            <div class="col-lg-10">
+                <div class="input-group">
+                    <div class="input-group-addon">£</div>
+                    <?php echo $this->formRow($form->get('LabourUnitCost')); ?>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="LabourCode">Code:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('LabourCode')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-lg-3 col-lg-offset-9">
+                <a href="/business-admin/labour-items" type="reset" class="btn btn-warning btn-default margin-right-10">Cancel</a>
+                <?php echo $this->formSubmit($form->get('submit')); ?>
+            </div>
+        </div>
+
+    </fieldset>
+
+    <?php echo $this->form()->closeTag(); ?>
+
+</div>

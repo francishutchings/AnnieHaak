@@ -22,6 +22,8 @@ class SuppliersForm extends Form {
             'attributes' => array(
                 'id' => 'RMSupplierName',
                 'class' => 'form-control',
+                'maxlength' => 255,
+                'required' => true,
             ),
         ));
 
@@ -29,9 +31,9 @@ class SuppliersForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-success',
             ),
         ));
     }

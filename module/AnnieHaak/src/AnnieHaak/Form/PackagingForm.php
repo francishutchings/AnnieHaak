@@ -22,18 +22,21 @@ class PackagingForm extends Form {
             'attributes' => array(
                 'id' => 'PackagingName',
                 'class' => 'form-control',
+                'maxlength' => 255,
                 'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'PackagingUnitCost',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'PackagingUnitCost',
                 'class' => 'form-control',
+                'step' => '0.0001',
+                'min' => 0.0001,
+                'placeholder' => 'Amount',
                 'required' => true,
-                'placeholder' => '£'
             ),
         ));
 
@@ -43,6 +46,7 @@ class PackagingForm extends Form {
             'attributes' => array(
                 'id' => 'PackagingCode',
                 'class' => 'form-control',
+                'maxlength' => 50,
                 'required' => true,
             ),
         ));
@@ -67,9 +71,9 @@ class PackagingForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
-                'class' => 'btn btn-default',
+                'class' => 'btn btn-success',
             ),
         ));
     }
