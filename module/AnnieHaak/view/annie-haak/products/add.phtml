@@ -11,59 +11,115 @@ $form->prepare();
     <?php echo$this->form()->openTag($form) ?>
 
     <fieldset>
-        <legend>Add New Product</legend>
+        <legend>
+            Add New Product
+            <button id="NewProduct" type="button" class="btn btn-default" data-toggle="collapse" data-target="#NewProductBlock">
+                <span class="glyphicon glyphicon-collapse-up"></span>
+            </button>
+        </legend>
+        <div id="NewProductBlock" class="in ">
 
-        <?php echo $this->formHidden($form->get('ProductID')->setValue(0)) ?>
+            <?php echo $this->formHidden($form->get('ProductID')->setValue(0)) ?>
 
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="ProductName">Product Name:</label>
-            <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('ProductName')); ?>
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="ProductName">Product Name:</label>
+                <div class="col-lg-10">
+                    <?php echo $this->formRow($form->get('ProductName')); ?>
+                </div>
             </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="SKU">SKU:</label>
+                <div class="col-lg-10">
+                    <?php echo $this->formRow($form->get('SKU')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="CollectionID">Collection:</label>
+                <div class="col-lg-10">
+                    <?php echo $this->formRow($form->get('CollectionID')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label>
+                <div class="col-lg-10">
+                    <?php echo $this->formRow($form->get('ProductTypeID')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label>
+                <div class="col-lg-10">
+                    <?php echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d'))); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="Strands">Strands:</label>
+                <div class="col-lg-10">
+                    <?php echo $this->formRow($form->get('Strands')); ?>
+                </div>
+            </div>
+
         </div>
 
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="SKU">SKU:</label>
-            <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('SKU')); ?>
-            </div>
-        </div>
+    </fieldset>
 
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="CollectionID">Collection:</label>
-            <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('CollectionID')); ?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label>
-            <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('ProductTypeID')); ?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label>
-            <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d'))); ?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="Strands">Strands:</label>
-            <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('Strands')); ?>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
-                <a href="/business-admin/raw-material-types" type="reset" class="btn btn-default btn-sm">Cancel</a>
-                <?php echo $this->formSubmit($form->get('submit')); ?>
-            </div>
+    <fieldset>
+        <legend>
+            Raw Materials
+            <button id="RawMaterials" type="button" class="btn btn-default" data-toggle="collapse" data-target="#RawMaterialsBlock">
+                <span class="glyphicon glyphicon-collapse-down"></span>
+            </button>
+        </legend>
+        <div id="RawMaterialsBlock" class="collapse">
+            <p>sbg sghfg sgasvsdfv qce</p>
+            <p>sbg sghfg sgasvsdfv qce</p>
+            <p>sbg sghfg sgasvsdfv qce</p>
+            <p>sbg sghfg sgasvsdfv qce</p>
+            <p>sbg sghfg sgasvsdfv qce</p>
+            <p>sbg sghfg sgasvsdfv qce</p>
+            <p>sbg sghfg sgasvsdfv qce</p>
+            <p>sbg sghfg sgasvsdfv qce</p>
         </div>
     </fieldset>
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
+    <fieldset>
+        <legend>Labour</legend>
+
+    </fieldset>
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
+    <fieldset>
+        <legend>Dispatch</legend>
+
+    </fieldset>
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
+    <fieldset>
+        <legend>Packaging</legend>
+
+    </fieldset>
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
+    <fieldset>
+        <legend>Financial</legend>
+
+    </fieldset>
+
+    <div class="form-group">
+        <div class="col-lg-3 col-lg-offset-9">
+            <a href="/business-admin/raw-material-types" type="reset" class="btn btn-default">Cancel</a>
+            <?php echo $this->formSubmit($form->get('submit')); ?>
+        </div>
+    </div>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
@@ -122,6 +178,18 @@ $form->prepare();
         $('#ProductName').focus(function () {
             $('#buildProductName').modal('show');
             $('#Name').focus();
+        });
+        $("#NewproductBlock").on("hide.bs.collapse", function () {
+            $("#Newproduct").html('<span class="glyphicon glyphicon-collapse-up"></span>');
+        });
+        $("#NewproductBlock").on("show.bs.collapse", function () {
+            $("#Newproduct").html('<span class="glyphicon glyphicon-collapse-down"></span>');
+        });
+        $("#RawMaterialsBlock").on("hide.bs.collapse", function () {
+            $("#RawMaterials").html('<span class="glyphicon glyphicon-collapse-down"></span>');
+        });
+        $("#RawMaterialsBlock").on("show.bs.collapse", function () {
+            $("#RawMaterials").html('<span class="glyphicon glyphicon-collapse-up"></span>');
         });
         $('#buildProductName').on('hidden.bs.modal', function () {
             $('#SKU').focus();
