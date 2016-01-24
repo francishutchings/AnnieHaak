@@ -64,33 +64,39 @@ $form->prepare();
 
     <fieldset>
         <legend>Raw Materials</legend>
-        <div class="table-responsive no-margin">
-
-            <table class="table table-striped table-hover table-condensed" id="rawMaterialsTable">
-                <thead>
-                    <tr>
-                        <th class="text-center">Head</th>
-                        <th class="text-center">Head</th>
-                        <th class="text-center">Head</th>
-                        <th class="text-center">Head</th>
-                        <th class="text-center">Head</th>
-                        <th class="text-center">Head</th>
-                        <th class="text-center">Head</th>
-                        <th class="text-center">Edit</th>
-                    </tr>
-                </thead>
-                <tfoot>
-                    <tr>
-                        <td colspan="8">
-                            <button id="addRawMaterialAction" class="btn btn-success btn-sm pull-right">Add Raw Material</button>
-                        </td>
-                    </tr>
-                </tfoot>
-                <tbody>
-                </tbody>
-            </table>
-
-        </div>
+        <div class="row">
+            <div class="col-lg-10 col-lg-offset-2">
+                <div class="table-responsive no-margin">
+                    <table class="table table-striped table-hover table-condensed" id="rawMaterialsTable">
+                        <thead>
+                            <tr class="text-info">
+                                <th class="">Head</th>
+                                <th class="">Head</th>
+                                <th class="">Head</th>
+                                <th class="">Head</th>
+                                <th class="">Head</th>
+                                <th class="">Head</th>
+                                <th class="">Head</th>
+                                <th class="">Edit</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="8">
+                                    <hr/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    <button id="addRawMaterialAction" class="btn btn-success btn-sm pull-right">Add Raw Material</button>
+                                </td>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
@@ -215,20 +221,44 @@ $form->prepare();
             $('#SKU').focus();
         });
         //=============================================
-        $('#addRawMaterialAction').focus(function () {
-            $('#addRawMaterial').modal('show');
-        });
-        $('#addRawMaterial').on('hidden.bs.modal', function () {
-            var RawMaterialData = {"RawMaterialData": [{"one": "1", "two": "2", "three": "3", "four": "4"}]};
-            rawMaterialArr.push(RawMaterialData);
-            console.log(RawMaterialData);
-            newRowMaterial = '<tr>'
-            newRowMaterial = newRowMaterial + '<td colspan="7">' + RawMaterialData.toString() + '</td>'
-            newRowMaterial = newRowMaterial + '<td><button class="btn btn-warning btn-sm"><span class="glyphicon glyphicon-pencil"></span></button></td>';
-            newRowMaterial = newRowMaterial + '</tr>'
-            $("#rawMaterialsTable tbody").append(newRowMaterial);
-        });
         var rawMaterialArr = [];
+        rawMaterialEdit = function (editDataId) {
+            console.log(editDataId);
+            if (editDataId > 0) {
+                //JSON.parse(rawMaterialArr[editDataId]);
+                console.log(rawMaterialArr[editDataId]);
+            }
+            $('#addRawMaterial').modal('show');
+            return false;
+        }
+        rawMaterialAdd = function () {
+            var rawMaterialData = {"RawMaterialData": [{"myName": rawMaterialArr.length}]};
+            rawMaterialArr.push(rawMaterialData);
+            console.log(rawMaterialArr);
+            newRowMaterial = '<tr>';
+            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
+            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
+            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
+            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
+            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
+            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
+            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
+            newRowMaterial += '<td><button onclick="rawMaterialEdit(this)" type="button" class="btn btn-warning btn-sm margin-right-5"><span class="glyphicon glyphicon-pencil"></span></button>';
+            newRowMaterial += '<button onclick="rawMaterialDelete(this)" type="button" id="rmD_' + (rawMaterialArr.length - 1) + '" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td>';
+            newRowMaterial += '</tr>';
+            $("#rawMaterialsTable tbody").append(newRowMaterial);
+            return false;
+        };
+        rawMaterialDelete = function (elem) {
+            var rmDataId = elem.id.split('_');
+            elem.closest('tr').remove();
+            console.log(rmDataId[1]);
+            rawMaterialArr.splice(rmDataId[1], 1);
+            console.log(rawMaterialArr);
+            return false;
+        };
+        $('#addRawMaterialAction').click(rawMaterialAdd);
+
         //=============================================
         $("#IntroDate").datepicker({
             autoclose: true,
