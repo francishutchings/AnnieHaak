@@ -64,39 +64,178 @@ $form->prepare();
 
     <fieldset>
         <legend>Raw Materials</legend>
+        <?php #echo $this->UIProductRawMaterialsManager(TRUE, $this->rawMaterials)['rmReturnBlock']; ?>
+
         <div class="row">
             <div class="col-lg-10 col-lg-offset-2">
-                <div class="table-responsive no-margin">
-                    <table class="table table-striped table-hover table-condensed" id="rawMaterialsTable">
-                        <thead>
-                            <tr class="text-info">
-                                <th class="">Head</th>
-                                <th class="">Head</th>
-                                <th class="">Head</th>
-                                <th class="">Head</th>
-                                <th class="">Head</th>
-                                <th class="">Head</th>
-                                <th class="">Head</th>
-                                <th class="">Edit</th>
-                            </tr>
-                        </thead>
-                        <tfoot>
-                            <tr>
-                                <td colspan="8">
-                                    <hr/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td colspan="8">
-                                    <button id="addRawMaterialAction" class="btn btn-success btn-sm pull-right">Add Raw Material</button>
-                                </td>
-                            </tr>
-                        </tfoot>
-                        <tbody>
-                        </tbody>
-                    </table>
-                </div>
+                <table id="jqGrid"></table>
+                <div id="jqGridPager"></div>
             </div>
+        </div>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $.jgrid.defaults.responsive = true;
+                $.jgrid.defaults.styleUI = 'Bootstrap';
+                $("#jqGrid").jqGrid({
+                    url: '/business-admin/raw-materials/jsonMaterialsByProduct?productid=1855',
+                    mtype: "GET",
+                    styleUI: 'Bootstrap',
+                    datatype: "json",
+                    viewrecords: true,
+                    loadonce: false,
+                    sortname: 'RMTypeName',
+                    height: 'auto',
+                    viewsortcols: [true, 'vertical', true],
+                    colModel: [
+                        {
+                            label: 'Order ID',
+                            name: 'OrderID',
+                            key: true,
+                            hidden: true
+                        },
+                        {
+                            label: 'Raw Material Type',
+                            name: 'RMTypeName',
+                            width: 200,
+                            editable: true,
+                            edittype: 'select',
+                            editoptions: {
+                                value: getRawMaterialType(),
+                            }
+                        },
+                        {
+                            label: 'Raw Material Name',
+                            name: 'RawMaterialName',
+                            width: 200,
+                            editable: true,
+                            edittype: "select",
+                            editoptions: {
+                                value: "Select a City"
+                            }
+                        },
+                        {
+                            label: 'Code',
+                            name: 'RawMaterialCode',
+                            width: 75,
+                            editable: false
+                        },
+                        {
+                            label: 'Supplier',
+                            name: 'RMSupplierName',
+                            width: 150,
+                            editable: false
+                        },
+                        {
+                            label: 'Qty',
+                            name: 'Qty',
+                            width: 75,
+                            editable: true
+                        },
+                        {
+                            label: 'Cost',
+                            name: 'RawMaterialUnitCost',
+                            width: 75,
+                            editable: false
+                        },
+                        {
+                            label: 'Subtotal',
+                            name: 'Subtotal',
+                            width: 75,
+                            editable: false
+                        }
+                    ],
+                    loadonce: true,
+                            viewrecords: true,
+                            height: 'auto',
+                            pager: "#jqGridPager"
+                });
+                $('#jqGrid').navGrid('#jqGridPager', {
+                    edit: true,
+                    add: true,
+                    del: true,
+                    search: false,
+                    refresh: false,
+                    view: true,
+                    position: "left",
+                    cloneToTop: true
+                },
+                // options for the Edit Dialog
+                {
+                    editCaption: "The Edit Dialog",
+                    recreateForm: true,
+                    closeAfterEdit: true,
+                    viewPagerButtons: false,
+                    afterShowForm: populateCities,
+                    errorTextFormat: function (data) {
+                        return 'Error: ' + data.responseText
+                    }
+                },
+                // options for the Add Dialog
+                {
+                    closeAfterAdd: true,
+                    recreateForm: true,
+                    errorTextFormat: function (data) {
+                        return 'Error: ' + data.responseText
+                    }
+                },
+                // options for the Delete Dailog
+                {
+                    errorTextFormat: function (data) {
+                        return 'Error: ' + data.responseText
+                    }
+                });
+                function getRawMaterialType() {
+                    $.getJSON("/business-admin/raw-material-types/jsonFetchAll", null, function (data) {
+                        if (data != null) {
+                            var i = 0, len = data['rows'].length, s = '<select name="test" id="">', d;
+                            while (i < len) {
+                                d = data['rows'][i].split(":");
+                                // s += d[0] + ':' + d[1] + ';';
+
+                                s += '<option value="' + d[0] + '">' + d[1] + '</option>';
+                                i++;
+                            }
+                            s + '</select>';
+                            console.log(s);
+                            return s;
+                        }
+                    });
+                }
+
+                // This function gets called whenever an edit dialog is opened
+                function populateCities() {
+                    // first of all update the city based on the country
+                    updateCityCallBack($("#Country").val(), true);
+                    // then hook the change event of the country dropdown so that it updates cities all the time
+                    $("#Country").bind("change", function (e) {
+                        updateCityCallBack($("#Country").val(), false);
+                    });
+                }
+
+                function updateCityCallBack(country, setselected) {
+                    var current = $("#jqGrid").jqGrid('getRowData', $("#jqGrid")[0].p.selrow).City;
+                    $("#City")
+                            .html("<option value=''>Loading cities...</option>")
+                            .attr("disabled", "disabled");
+                    $.ajax({
+                        url: country + ".html",
+                        type: "GET",
+                        success: function (citiesHtml) {
+                            $("#City")
+                                    .removeAttr("disabled")
+                                    .html(citiesHtml);
+                            if (setselected) {
+                                $("#City").val(current);
+                            }
+                        }
+                    });
+                }
+
+            });</script>
+        <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
+        <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
+
+
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
@@ -186,17 +325,23 @@ $form->prepare();
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
-    <div class="modal fade" id="addRawMaterial" tabindex="-1" role="dialog" aria-labelledby="addRawMaterialLabel">
+    <div class="modal fade" id="manageRawMaterials" tabindex="-1" role="dialog" aria-labelledby="manageRawMaterialsLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h4 class="modal-title" id="addRawMaterialLabel">Add Raw Material</h4>
+                    <h4 class="modal-title" id="manageRawMaterialsLabel">Add Raw Material</h4>
                 </div>
                 <div class="modal-body">
-                    <h1>PLOP</h1>
+                    <select name="testSelect" id="testSelect">
+                        <option value="1">testSelect - 1</option>
+                        <option value="2">testSelect - 2</option>
+                        <option value="3">testSelect - 3</option>
+                        <option value="4">testSelect - 4</option>
+                        <option value="5">testSelect - 5</option>
+                    </select>
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="addRawMaterialSave" class="btn btn-success" data-dismiss="modal">Add</button>
@@ -212,96 +357,110 @@ $form->prepare();
 </div>
 
 <script>
-    $(document).ready(function () {
-        $('#ProductName').focus(function () {
-            $('#buildProductName').modal('show');
-            $('#Name').focus();
-        });
-        $('#buildProductName').on('hidden.bs.modal', function () {
-            $('#SKU').focus();
-        });
-        //=============================================
-        var rawMaterialArr = [];
-        rawMaterialEdit = function (editDataId) {
-            console.log(editDataId);
-            if (editDataId > 0) {
-                //JSON.parse(rawMaterialArr[editDataId]);
-                console.log(rawMaterialArr[editDataId]);
-            }
-            $('#addRawMaterial').modal('show');
-            return false;
-        }
-        rawMaterialAdd = function () {
-            var rawMaterialData = {"RawMaterialData": [{"myName": rawMaterialArr.length}]};
-            rawMaterialArr.push(rawMaterialData);
-            console.log(rawMaterialArr);
-            newRowMaterial = '<tr>';
-            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
-            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
-            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
-            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
-            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
-            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
-            newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['myName'] + '</td>';
-            newRowMaterial += '<td><button onclick="rawMaterialEdit(this)" type="button" class="btn btn-warning btn-sm margin-right-5"><span class="glyphicon glyphicon-pencil"></span></button>';
-            newRowMaterial += '<button onclick="rawMaterialDelete(this)" type="button" id="rmD_' + (rawMaterialArr.length - 1) + '" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td>';
-            newRowMaterial += '</tr>';
-            $("#rawMaterialsTable tbody").append(newRowMaterial);
-            return false;
-        };
-        rawMaterialDelete = function (elem) {
-            var rmDataId = elem.id.split('_');
-            elem.closest('tr').remove();
-            console.log(rmDataId[1]);
-            rawMaterialArr.splice(rmDataId[1], 1);
-            console.log(rawMaterialArr);
-            return false;
-        };
-        $('#addRawMaterialAction').click(rawMaterialAdd);
-
-        //=============================================
-        $("#IntroDate").datepicker({
-            autoclose: true,
-            dateFormat: "yy-mm-dd",
-            format: 'dd-mm-yy',
-            altFormat: "yy-mm-dd",
-            orientation: 'bottom',
-            changeMonth: true,
-            changeYear: true
-        });
-        //=============================================
-        $("#Name").bind('keyup', function () {
-            concatName();
-        });
-        $("#Charm").bind('change', function () {
-            concatName();
-        });
-        $("#Chrystal").bind('change', function () {
-            concatName();
-        });
-        $("#Colour").bind('change', function () {
-            concatName();
-        });
-        $("#Length").bind('change', function () {
-            concatName();
-        });
-        $("#buildProductNameSave").click(function () {
-            concatName();
-        });
-        concatName = function () {
-            $("#ProductName").val($("#Name").val());
-            if ($("#NameCharm").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm").val());
-            }
-            if ($("#NameCrystal").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCrystal").val());
-            }
-            if ($("#NameColour").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour").val());
-            }
-            if ($("#NameLength").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength").val());
-            }
-        };
-    });
+            $(document).ready(function () {
+                $('#ProductName').focus(function () {
+                    $('#buildProductName').modal('show');
+                    $('#Name').focus();
+                });
+                $('#buildProductName').on('hidden.bs.modal', function () {
+                    $('#SKU').focus();
+                });
+                //=============================================
+                var rawMaterialArr = [];
+                rawMaterialEdit = function (editDataId) {
+                    console.log(editDataId);
+                    if (editDataId > 0) {
+                        console.log(rawMaterialArr[editDataId]);
+                    }
+                    return false;
+                }
+                rawMaterialAdd = function () {
+                    var rawMaterialData = {"RawMaterialData":
+                                [{
+                                        "RawMaterialType": $('#testSelect').val(),
+                                        "RawMaterialName": "RawMaterialName",
+                                        "Code": "Code",
+                                        "Supplier": "Supplier",
+                                        "Qty": "Qty",
+                                        "Cost": "Cost",
+                                        "Subtotal": "Subtotal"
+                                    }]};
+                    rawMaterialArr.push(rawMaterialData);
+                    console.log(rawMaterialArr);
+                    newRowMaterial = '<tr>';
+                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['RawMaterialType'] + '</td>';
+                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['RawMaterialName'] + '</td>';
+                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Code'] + '</td>';
+                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Supplier'] + '</td>';
+                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Qty'] + '</td>';
+                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Cost'] + '</td>';
+                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Subtotal'] + '</td>';
+                    newRowMaterial += '<td><button onclick="rawMaterialEdit(' + (rawMaterialArr.length - 1) + ')" type="button" class="btn btn-warning btn-sm margin-right-5"><span class="glyphicon glyphicon-pencil"></span></button>';
+                    newRowMaterial += '<button onclick="rawMaterialDelete(this)" type="button" id="rmD_' + (rawMaterialArr.length - 1) + '" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td>';
+                    newRowMaterial += '</tr>';
+                    $("#rawMaterialsTable tbody").append(newRowMaterial);
+                    return false;
+                };
+                rawMaterialDelete = function (elem) {
+                    var rmDataId = elem.id.split('_');
+                    elem.closest('tr').remove();
+                    console.log(rmDataId[1]);
+                    rawMaterialArr.splice(rmDataId[1], 1);
+                    console.log(rawMaterialArr);
+                    return false;
+                };
+                $('#addRawMaterialAction').click(function () {
+                    $('#manageRawMaterials').modal('show');
+                    return false;
+                });
+                $('#addRawMaterialSave').click(function () {
+                    rawMaterialAdd();
+                    $('#manageRawMaterials').modal('hide');
+                    return false;
+                });
+                //=============================================
+                $("#IntroDate").datepicker({
+                    autoclose: true,
+                    dateFormat: "yy-mm-dd",
+                    format: 'dd-mm-yy',
+                    altFormat: "yy-mm-dd",
+                    orientation: 'bottom',
+                    changeMonth: true,
+                    changeYear: true
+                });
+                //=============================================
+                $("#Name").bind('keyup', function () {
+                    concatName();
+                });
+                $("#Charm").bind('change', function () {
+                    concatName();
+                });
+                $("#Chrystal").bind('change', function () {
+                    concatName();
+                });
+                $("#Colour").bind('change', function () {
+                    concatName();
+                });
+                $("#Length").bind('change', function () {
+                    concatName();
+                });
+                $("#buildProductNameSave").click(function () {
+                    concatName();
+                });
+                concatName = function () {
+                    $("#ProductName").val($("#Name").val());
+                    if ($("#NameCharm").val()) {
+                        $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm").val());
+                    }
+                    if ($("#NameCrystal").val()) {
+                        $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCrystal").val());
+                    }
+                    if ($("#NameColour").val()) {
+                        $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour").val());
+                    }
+                    if ($("#NameLength").val()) {
+                        $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength").val());
+                    }
+                };
+            });
 </script>

@@ -1,9 +1,5 @@
 <?php
 
-/*
- * Formats float to currency
- */
-
 namespace AnnieHaak\View\Helpers;
 
 use Zend\View\Helper\AbstractHelper;

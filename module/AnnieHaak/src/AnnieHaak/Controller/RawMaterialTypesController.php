@@ -17,6 +17,18 @@ class RawMaterialTypesController extends AbstractActionController {
         return new ViewModel();
     }
 
+    public function jsonFetchAllAction() {
+        $rawMaterials = $this->getRawMaterialTypesTable()->fetchAll();
+        $data = '';
+        foreach ($rawMaterials as $value) {
+            $data[] = $value->RMTypeID . ':' . $value->RMTypeName;
+        }
+        $result = new JsonModel(array(
+            'rows' => $data
+        ));
+        return $result;
+    }
+
     public function jsonDataAction() {
 
         /*

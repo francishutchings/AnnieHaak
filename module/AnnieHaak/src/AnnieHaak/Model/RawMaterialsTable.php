@@ -24,9 +24,18 @@ class RawMaterialsTable {
         return $resultSet;
     }
 
-    public function getRawMaterials($id) {
-        $id = (int) $id;
-        $rowset = $this->tableGateway->select(array('RawMaterialID' => $id));
+    public function getRawMaterial($ids) {
+        $select = new Select();
+        $select->from(array('RM' => 'rawmateriallookup'));
+        $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
+        $select->join(array('Supp' => 'rawmaterialsupplierlookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
+        $select->join(array('RMType' => 'rawmaterialtypelookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
+        $select->where(array('RM.RawMaterialID' => array($ids)));
+
+        #echo $select->getSqlString();
+        #exit();
+
+        $rowset = $this->tableGateway->selectWith($select);
         $row = $rowset->current();
         if (!$row) {
             throw new \Exception("Could not find row $id");
@@ -137,6 +146,22 @@ class RawMaterialsTable {
 
     public function deleteRawMaterials($id) {
         $this->tableGateway->delete(array('RawMaterialID' => (int) $id));
+    }
+
+    public function fetchMaterialsByProduct($productId) {
+        $select = new Select();
+        $select->from(array('RML' => 'rawmateriallookup'));
+        $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'RMTypeID'));
+        $select->join(array('RMPL' => 'RawMaterialPicklists'), 'RMPL.RawMaterialID = RML.RawMaterialID', array());
+        $select->join(array('RMT' => 'rawmaterialtypelookup'), 'RMT.RMTypeID = RML.RMTypeID', array('RMTypeName'));
+        $select->join(array('SUPP' => 'rawmaterialsupplierlookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
+        $select->where(array('RMPL.ProductID' => $productId));
+
+        #echo $select->getSqlString();
+        #exit();
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        return $resultSet;
     }
 
 }

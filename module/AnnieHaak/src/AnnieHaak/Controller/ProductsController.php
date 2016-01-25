@@ -13,6 +13,7 @@ class ProductsController extends AbstractActionController {
     protected $productsTable;
     protected $collectionsTable;
     protected $productTypesTable;
+    protected $rawMaterialsTable;
 
     public function indexAction() {
         return new ViewModel(array(
@@ -76,6 +77,7 @@ class ProductsController extends AbstractActionController {
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
 
 
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $products = new Products();
@@ -89,7 +91,10 @@ class ProductsController extends AbstractActionController {
                 return $this->redirect()->toRoute('business-admin/products');
             }
         }
-        return array('form' => $form);
+        return array(
+            'form' => $form,
+            'rawMaterials' => $rawMaterials
+        );
     }
 
     private function popSelectMenus() {
@@ -129,6 +134,14 @@ class ProductsController extends AbstractActionController {
             $this->productTypesTable = $sm->get('AnnieHaak\Model\ProductTypesTable');
         }
         return $this->productTypesTable;
+    }
+
+    private function getRawMaterialsTable() {
+        if (!$this->rawMaterialsTable) {
+            $sm = $this->getServiceLocator();
+            $this->rawMaterialsTable = $sm->get('AnnieHaak\Model\RawMaterialsTable');
+        }
+        return $this->rawMaterialsTable;
     }
 
 }

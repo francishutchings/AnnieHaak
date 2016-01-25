@@ -19,6 +19,20 @@ class RawMaterialsController extends AbstractActionController {
         return new ViewModel();
     }
 
+    public function jsonMaterialsByProductAction() {
+        $productid = (int) $this->params()->fromQuery('productid', 0);
+        $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByProduct($productid);
+        #dump($rawMaterials);
+        #exit();
+        $result = new JsonModel(array(
+            'records' => $rawMaterials->count(),
+            'page' => 1,
+            'total' => $rawMaterials->count(),
+            'rows' => $rawMaterials->toArray()
+        ));
+        return $result;
+    }
+
     public function jsonDataAction() {
         $currentPage = (int) $this->params()->fromQuery('page', 1);
         $sortColumn = $this->params()->fromQuery('sidx', 'ProductName');

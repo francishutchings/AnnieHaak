@@ -129,7 +129,8 @@ return array(
         'invokables' => array(
             'UIAccessControlButtons' => 'AnnieHaak\View\Helpers\UIAccessControlButtons',
             'UICurrencyFormatter' => 'AnnieHaak\View\Helpers\UICurrencyFormatter',
-            'UIPageTitleFormatter' => 'AnnieHaak\View\Helpers\UIPageTitleFormatter'
+            'UIPageTitleFormatter' => 'AnnieHaak\View\Helpers\UIPageTitleFormatter',
+            'UIProductRawMaterialsManager' => 'AnnieHaak\View\Helpers\UIProductRawMaterialsManager'
         )
     ),
 );
