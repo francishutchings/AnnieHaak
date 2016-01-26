@@ -74,6 +74,56 @@ $form->prepare();
         </div>
         <script type="text/javascript">
             $(document).ready(function () {
+                var rawMaterialTypes = function () {
+                    var rtnData = null;
+                    $.ajax({
+                        async: false,
+                        url: "/business-admin/raw-material-types/jsonFetchAll",
+                        success: function (data, result) {
+                            rtnData = '0:Select ...;';
+                            if (!result) {
+                                alert('ERROR');
+                            } else {
+                                for (var x = 0; x < data.rawMaterialTypes.length; x++) {
+                                    rtnData += data.rawMaterialTypes[x]['id'] + ':' + data.rawMaterialTypes[x]['value'];
+                                    if (data.rawMaterialTypes.length - 1 > x) {
+                                        rtnData += ';'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return rtnData;
+                }();
+                var rawMaterials = function () {
+                    var rtnData = null;
+                    $.ajax({
+                        async: false,
+                        url: "/business-admin/raw-materials/jsonMaterialsByType",
+                        data: {RawMaterialTypeId: 35},
+                        success: function (data, result) {
+                            rtnData = '0:Select ...;';
+                            if (!result) {
+                                alert('ERROR');
+                            } else {
+                                for (var x = 0; x < data.rawMaterials.length; x++) {
+                                    rtnData += data.rawMaterials[x]['RawMaterialID'] + ':' + data.rawMaterials[x]['RawMaterialName'];
+                                    if (data.rawMaterials.length - 1 > x) {
+                                        rtnData += ';'
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return rtnData;
+                }();
+                onclickSubmitLocal = function (options, postdata) {
+                    console.log(options);
+                    console.log(postdata);
+                    this.processing = true;
+                    return {};
+                }
+
                 $.jgrid.defaults.responsive = true;
                 $.jgrid.defaults.styleUI = 'Bootstrap';
                 $("#jqGrid").jqGrid({
@@ -86,11 +136,15 @@ $form->prepare();
                     sortname: 'RMTypeName',
                     height: 'auto',
                     viewsortcols: [true, 'vertical', true],
+                    pager: "#jqGridPager",
+                    editurl: 'clientArray',
+                    loadComplete: function () {
+                        $("#jqGrid").setColProp('RMTypeName', {editoptions: {value: rawMaterialTypes}});
+                        $("#jqGrid").setColProp('RawMaterialName', {editoptions: {value: rawMaterials}});
+                    },
                     colModel: [
                         {
-                            label: 'Order ID',
-                            name: 'OrderID',
-                            key: true,
+                            name: 'RMTypeID',
                             hidden: true
                         },
                         {
@@ -100,8 +154,13 @@ $form->prepare();
                             editable: true,
                             edittype: 'select',
                             editoptions: {
-                                value: getRawMaterialType(),
-                            }
+                                readonly: true,
+                                size: 0
+                            },
+                        },
+                        {
+                            name: 'RawMaterialID',
+                            hidden: true
                         },
                         {
                             label: 'Raw Material Name',
@@ -120,6 +179,10 @@ $form->prepare();
                             editable: false
                         },
                         {
+                            name: 'RMSupplierID',
+                            hidden: true
+                        },
+                        {
                             label: 'Supplier',
                             name: 'RMSupplierName',
                             width: 150,
@@ -127,27 +190,32 @@ $form->prepare();
                         },
                         {
                             label: 'Qty',
-                            name: 'Qty',
+                            name: 'RawMaterialQty',
                             width: 75,
-                            editable: true
+                            edittype: "text",
+                            editable: true,
                         },
                         {
                             label: 'Cost',
                             name: 'RawMaterialUnitCost',
                             width: 75,
-                            editable: false
+                            edittype: "text",
+                            editable: true,
+                            editoptions: {
+                                readonly: true
+                            }
                         },
                         {
                             label: 'Subtotal',
                             name: 'Subtotal',
                             width: 75,
-                            editable: false
+                            edittype: "text",
+                            editable: true,
+                            editoptions: {
+                                readonly: true,
+                            }
                         }
-                    ],
-                    loadonce: true,
-                            viewrecords: true,
-                            height: 'auto',
-                            pager: "#jqGridPager"
+                    ]
                 });
                 $('#jqGrid').navGrid('#jqGridPager', {
                     edit: true,
@@ -155,77 +223,68 @@ $form->prepare();
                     del: true,
                     search: false,
                     refresh: false,
-                    view: true,
+                    view: false,
                     position: "left",
                     cloneToTop: true
                 },
-                // options for the Edit Dialog
                 {
-                    editCaption: "The Edit Dialog",
-                    recreateForm: true,
+                    // EDIT
+                    editCaption: "Edit this Raw Material",
+                    recreateForm: false,
                     closeAfterEdit: true,
                     viewPagerButtons: false,
-                    afterShowForm: populateCities,
+                    afterShowForm: RawMaterialData,
                     errorTextFormat: function (data) {
                         return 'Error: ' + data.responseText
-                    }
+                    },
+                    reloadAfterSubmit: false,
+                    closeOnEscape: true,
+                    savekey: [true, 13],
+                    onclickSubmit: onclickSubmitLocal
                 },
-                // options for the Add Dialog
                 {
+                    // ADD
                     closeAfterAdd: true,
-                    recreateForm: true,
+                    recreateForm: false,
                     errorTextFormat: function (data) {
                         return 'Error: ' + data.responseText
                     }
                 },
-                // options for the Delete Dailog
                 {
+                    // DELETE
                     errorTextFormat: function (data) {
                         return 'Error: ' + data.responseText
                     }
                 });
-                function getRawMaterialType() {
-                    $.getJSON("/business-admin/raw-material-types/jsonFetchAll", null, function (data) {
-                        if (data != null) {
-                            var i = 0, len = data['rows'].length, s = '<select name="test" id="">', d;
-                            while (i < len) {
-                                d = data['rows'][i].split(":");
-                                // s += d[0] + ':' + d[1] + ';';
 
-                                s += '<option value="' + d[0] + '">' + d[1] + '</option>';
-                                i++;
-                            }
-                            s + '</select>';
-                            console.log(s);
-                            return s;
-                        }
+                function RawMaterialData() {
+                    updateRawMaterialCallBack($("#RMTypeName").val(), true);
+                    $("#RMTypeName").bind("change", function (e) {
+                        updateRawMaterialCallBack($("#RMTypeName").val(), false);
                     });
+                    return false;
                 }
 
-                // This function gets called whenever an edit dialog is opened
-                function populateCities() {
-                    // first of all update the city based on the country
-                    updateCityCallBack($("#Country").val(), true);
-                    // then hook the change event of the country dropdown so that it updates cities all the time
-                    $("#Country").bind("change", function (e) {
-                        updateCityCallBack($("#Country").val(), false);
-                    });
-                }
-
-                function updateCityCallBack(country, setselected) {
-                    var current = $("#jqGrid").jqGrid('getRowData', $("#jqGrid")[0].p.selrow).City;
-                    $("#City")
-                            .html("<option value=''>Loading cities...</option>")
+                function updateRawMaterialCallBack(RawMaterialTypeId, setselected) {
+                    var current = $("#jqGrid").jqGrid('getRowData', $("#jqGrid")[0].p.selrow).RawMaterialID;
+                    //console.log(current);
+                    $("#RawMaterialName")
+                            .html("<option value=''>Loading Raw Materials...</option>")
                             .attr("disabled", "disabled");
                     $.ajax({
-                        url: country + ".html",
+                        url: "/business-admin/raw-materials/jsonMaterialsByType?RawMaterialTypeId=" + RawMaterialTypeId,
                         type: "GET",
-                        success: function (citiesHtml) {
-                            $("#City")
+                        success: function (data) {
+                            var selectHtml = '<select>';
+                            for (var x = 0; x < data.rawMaterials.length; x++) {
+                                selectHtml += '<option value="' + data.rawMaterials[x]['RawMaterialID'] + '">' + data.rawMaterials[x]['RawMaterialName'] + '</option>';
+                            }
+                            selectHtml += '</select>';
+                            $("#RawMaterialName")
                                     .removeAttr("disabled")
-                                    .html(citiesHtml);
+                                    .html(selectHtml);
                             if (setselected) {
-                                $("#City").val(current);
+                                $("#RawMaterialName").val(current);
                             }
                         }
                     });
@@ -242,7 +301,6 @@ $form->prepare();
 
     <fieldset>
         <legend>Labour</legend>
-
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->

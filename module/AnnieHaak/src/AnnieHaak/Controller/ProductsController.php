@@ -92,8 +92,7 @@ class ProductsController extends AbstractActionController {
             }
         }
         return array(
-            'form' => $form,
-            'rawMaterials' => $rawMaterials
+            'form' => $form
         );
     }
 

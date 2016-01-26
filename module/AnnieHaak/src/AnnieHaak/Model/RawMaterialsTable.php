@@ -152,10 +152,24 @@ class RawMaterialsTable {
         $select = new Select();
         $select->from(array('RML' => 'rawmateriallookup'));
         $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'RMTypeID'));
-        $select->join(array('RMPL' => 'RawMaterialPicklists'), 'RMPL.RawMaterialID = RML.RawMaterialID', array());
+        $select->join(array('RMPL' => 'RawMaterialPicklists'), 'RMPL.RawMaterialID = RML.RawMaterialID', array('RawMaterialQty', 'Subtotal' => 'RawMaterialQty * RawMaterialUnitCost'));
         $select->join(array('RMT' => 'rawmaterialtypelookup'), 'RMT.RMTypeID = RML.RMTypeID', array('RMTypeName'));
         $select->join(array('SUPP' => 'rawmaterialsupplierlookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
         $select->where(array('RMPL.ProductID' => $productId));
+
+        #echo $select->getSqlString();
+        #exit();
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        return $resultSet;
+    }
+
+    public function fetchMaterialsByType($RawMaterialTypeId) {
+        $select = new Select();
+        $select->from(array('RML' => 'rawmateriallookup'));
+        $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost'));
+        $select->join(array('SUPP' => 'rawmaterialsupplierlookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
+        $select->where(array('RML.RMTypeID' => $RawMaterialTypeId));
 
         #echo $select->getSqlString();
         #exit();

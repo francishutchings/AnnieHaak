@@ -33,6 +33,17 @@ class RawMaterialsController extends AbstractActionController {
         return $result;
     }
 
+    public function jsonMaterialsByTypeAction() {
+        $RawMaterialTypeId = (int) $this->params()->fromQuery('RawMaterialTypeId', 0);
+        $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByType($RawMaterialTypeId);
+        #dump($rawMaterials);
+        #exit();
+        $result = new JsonModel(array(
+            'rawMaterials' => $rawMaterials->toArray()
+        ));
+        return $result;
+    }
+
     public function jsonDataAction() {
         $currentPage = (int) $this->params()->fromQuery('page', 1);
         $sortColumn = $this->params()->fromQuery('sidx', 'ProductName');

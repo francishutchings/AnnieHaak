@@ -18,13 +18,12 @@ class RawMaterialTypesController extends AbstractActionController {
     }
 
     public function jsonFetchAllAction() {
-        $rawMaterials = $this->getRawMaterialTypesTable()->fetchAll();
-        $data = '';
-        foreach ($rawMaterials as $value) {
-            $data[] = $value->RMTypeID . ':' . $value->RMTypeName;
+        $rawMaterialTypes = $this->getRawMaterialTypesTable()->fetchAll();
+        foreach ($rawMaterialTypes as $value) {
+            $data[] = array('id' => $value->RMTypeID, 'value' => $value->RMTypeName);
         }
         $result = new JsonModel(array(
-            'rows' => $data
+            'rawMaterialTypes' => $data
         ));
         return $result;
     }
