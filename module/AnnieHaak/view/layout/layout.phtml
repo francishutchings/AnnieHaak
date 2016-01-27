@@ -26,6 +26,7 @@
         echo $this->headScript()
                 ->prependFile($this->basePath('js/bootstrap.min.js'))
                 ->prependFile($this->basePath('js/jquery-ui/jquery-ui.min.js'))
+                ->prependFile($this->basePath('js/numericInput.min.js'))
                 ->prependFile($this->basePath('js/jquery.min.js'))
                 ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
                 ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))

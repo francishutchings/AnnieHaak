@@ -68,17 +68,18 @@ $form->prepare();
 
         <div class="row">
             <div class="col-lg-10 col-lg-offset-2">
-                <table id="jqGrid"></table>
-                <div id="jqGridPager"></div>
+                <table id="rawMaterialGrid"></table>
+                <div id="rawMaterialGridPager"></div>
             </div>
         </div>
         <script type="text/javascript">
             $(document).ready(function () {
-                var rawMaterialTypes = function () {
+                var rawMaterialsCurrentData = [];
+                var rawMaterialTypesData = function () {
                     var rtnData = null;
                     $.ajax({
                         async: false,
-                        url: "/business-admin/raw-material-types/jsonFetchAll",
+                        url: "/business-admin/raw-material-types/jsonAllMaterialTypes",
                         success: function (data, result) {
                             rtnData = '0:Select ...;';
                             if (!result) {
@@ -87,7 +88,7 @@ $form->prepare();
                                 for (var x = 0; x < data.rawMaterialTypes.length; x++) {
                                     rtnData += data.rawMaterialTypes[x]['id'] + ':' + data.rawMaterialTypes[x]['value'];
                                     if (data.rawMaterialTypes.length - 1 > x) {
-                                        rtnData += ';'
+                                        rtnData += ';';
                                     }
                                 }
                             }
@@ -95,19 +96,18 @@ $form->prepare();
                     });
                     return rtnData;
                 }();
-                var rawMaterials = function () {
+                var rawMaterialsData = function () {
                     var rtnData = null;
                     $.ajax({
                         async: false,
-                        url: "/business-admin/raw-materials/jsonMaterialsByType",
-                        data: {RawMaterialTypeId: 35},
+                        url: "/business-admin/raw-materials/jsonAllMaterials",
                         success: function (data, result) {
                             rtnData = '0:Select ...;';
                             if (!result) {
                                 alert('ERROR');
                             } else {
                                 for (var x = 0; x < data.rawMaterials.length; x++) {
-                                    rtnData += data.rawMaterials[x]['RawMaterialID'] + ':' + data.rawMaterials[x]['RawMaterialName'];
+                                    rtnData += data.rawMaterials[x]['id'] + ':' + data.rawMaterials[x]['value'];
                                     if (data.rawMaterials.length - 1 > x) {
                                         rtnData += ';'
                                     }
@@ -118,7 +118,6 @@ $form->prepare();
                     return rtnData;
                 }();
                 onclickSubmitLocal = function (options, postdata) {
-                    console.log(options);
                     console.log(postdata);
                     this.processing = true;
                     return {};
@@ -126,77 +125,71 @@ $form->prepare();
 
                 $.jgrid.defaults.responsive = true;
                 $.jgrid.defaults.styleUI = 'Bootstrap';
-                $("#jqGrid").jqGrid({
+                $("#rawMaterialGrid").jqGrid({
                     url: '/business-admin/raw-materials/jsonMaterialsByProduct?productid=1855',
                     mtype: "GET",
-                    styleUI: 'Bootstrap',
                     datatype: "json",
+                    styleUI: 'Bootstrap',
                     viewrecords: true,
                     loadonce: false,
-                    sortname: 'RMTypeName',
+                    sortname: '',
                     height: 'auto',
-                    viewsortcols: [true, 'vertical', true],
-                    pager: "#jqGridPager",
+                    viewsortcols: [false, 'vertical', false],
+                    pager: "#rawMaterialGridPager",
                     editurl: 'clientArray',
                     loadComplete: function () {
-                        $("#jqGrid").setColProp('RMTypeName', {editoptions: {value: rawMaterialTypes}});
-                        $("#jqGrid").setColProp('RawMaterialName', {editoptions: {value: rawMaterials}});
                     },
+                    colNames: ['Raw Material Type', 'Raw Material Name', 'Code', 'Supplier', 'Quantity', 'Cost', 'Subtotal'],
                     colModel: [
                         {
                             name: 'RMTypeID',
-                            hidden: true
-                        },
-                        {
-                            label: 'Raw Material Type',
-                            name: 'RMTypeName',
                             width: 200,
                             editable: true,
                             edittype: 'select',
+                            formatter: 'select',
                             editoptions: {
-                                readonly: true,
-                                size: 0
-                            },
-                        },
-                        {
-                            name: 'RawMaterialID',
-                            hidden: true
-                        },
-                        {
-                            label: 'Raw Material Name',
-                            name: 'RawMaterialName',
-                            width: 200,
-                            editable: true,
-                            edittype: "select",
-                            editoptions: {
-                                value: "Select a City"
+                                value: rawMaterialTypesData
                             }
                         },
                         {
-                            label: 'Code',
+                            name: 'RawMaterialID',
+                            width: 200,
+                            editable: true,
+                            edittype: "select",
+                            formatter: 'select',
+                            editoptions: {
+                                value: rawMaterialsData
+                            },
+                            editrules: {
+                                required: true,
+                                number: true
+                            }
+                        },
+                        {
                             name: 'RawMaterialCode',
-                            width: 75,
-                            editable: false
-                        },
-                        {
-                            name: 'RMSupplierID',
-                            hidden: true
-                        },
-                        {
-                            label: 'Supplier',
-                            name: 'RMSupplierName',
-                            width: 150,
-                            editable: false
-                        },
-                        {
-                            label: 'Qty',
-                            name: 'RawMaterialQty',
                             width: 75,
                             edittype: "text",
                             editable: true,
+                            editoptions: {
+                                readonly: true
+                            }
                         },
                         {
-                            label: 'Cost',
+                            name: 'RMSupplierName',
+                            width: 150,
+                            edittype: "text",
+                            editable: true,
+                            editoptions: {
+                                readonly: true
+                            }
+                        },
+                        {
+                            name: 'RawMaterialQty',
+                            width: 75,
+                            edittype: "text",
+                            editable: true
+                        },
+                        {
                             name: 'RawMaterialUnitCost',
                             width: 75,
                             edittype: "text",
@@ -206,18 +199,19 @@ $form->prepare();
                             }
                         },
                         {
-                            label: 'Subtotal',
                             name: 'Subtotal',
                             width: 75,
                             edittype: "text",
                             editable: true,
                             editoptions: {
                                 readonly: true,
+                                size: 15,
+                                maxlengh: 10,
                             }
                         }
                     ]
                 });
-                $('#jqGrid').navGrid('#jqGridPager', {
+                $('#rawMaterialGrid').navGrid('#rawMaterialGridPager', {
                     edit: true,
                     add: true,
                     del: true,
@@ -237,7 +231,7 @@ $form->prepare();
                     errorTextFormat: function (data) {
                         return 'Error: ' + data.responseText
                     },
-                    reloadAfterSubmit: false,
+                    reloadAfterSubmit: true,
                     closeOnEscape: true,
                     savekey: [true, 13],
                     onclickSubmit: onclickSubmitLocal
@@ -258,39 +252,65 @@ $form->prepare();
                 });
 
                 function RawMaterialData() {
-                    updateRawMaterialCallBack($("#RMTypeName").val(), true);
-                    $("#RMTypeName").bind("change", function (e) {
-                        updateRawMaterialCallBack($("#RMTypeName").val(), false);
+                    $("#RawMaterialQty").unbind('keyup change');
+                    $('#RawMaterialQty').numericInput(false, false);
+                    $('#RawMaterialQty').on('keyup change', function () {
+                        $('#Subtotal').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
+                    });
+                    updateRawMaterialCallBack($("#RMTypeID").val(), true);
+                    $("#RMTypeID").bind("change", function (e) {
+                        updateRawMaterialCallBack($("#RMTypeID").val(), false);
+                        $('#RawMaterialCode').val('');
+                        $('#RMSupplierName').val('');
+                        $('#RawMaterialQty').val(1);
+                        $('#RawMaterialUnitCost').val(0);
+                        $('#RawMaterialQty').val(0);
+                        $('#Subtotal').val(0);
                     });
                     return false;
                 }
 
                 function updateRawMaterialCallBack(RawMaterialTypeId, setselected) {
-                    var current = $("#jqGrid").jqGrid('getRowData', $("#jqGrid")[0].p.selrow).RawMaterialID;
-                    //console.log(current);
-                    $("#RawMaterialName")
-                            .html("<option value=''>Loading Raw Materials...</option>")
+                    var current = $("#rawMaterialGrid").jqGrid('getRowData', $("#rawMaterialGrid")[0].p.selrow).RawMaterialID;
+                    $("#RawMaterialID")
+                            .html('<option value="">Loading Raw Materials...</option>')
                             .attr("disabled", "disabled");
                     $.ajax({
                         url: "/business-admin/raw-materials/jsonMaterialsByType?RawMaterialTypeId=" + RawMaterialTypeId,
                         type: "GET",
                         success: function (data) {
-                            var selectHtml = '<select>';
+                            rawMaterialsCurrentData = data.rawMaterials;
+
+                            var selectHtml = '<select><option value="0">Select ...</option>';
                             for (var x = 0; x < data.rawMaterials.length; x++) {
                                 selectHtml += '<option value="' + data.rawMaterials[x]['RawMaterialID'] + '">' + data.rawMaterials[x]['RawMaterialName'] + '</option>';
                             }
                             selectHtml += '</select>';
-                            $("#RawMaterialName")
+                            $("#RawMaterialID")
                                     .removeAttr("disabled")
                                     .html(selectHtml);
                             if (setselected) {
-                                $("#RawMaterialName").val(current);
+                                $("#RawMaterialID").val(current);
                             }
+                            $("#RawMaterialID").bind("change", function (e) {
+                                rmObject = null;
+                                for (var i = 0, len = rawMaterialsCurrentData.length; i < len; i++) {
+                                    if (rawMaterialsCurrentData[i].RawMaterialID === e.currentTarget.value)
+                                        rmObject = rawMaterialsCurrentData[i];
+                                }
+                                $('#RawMaterialQty').val(1);
+                                $('#RawMaterialUnitCost').val(0);
+                                $('#RawMaterialCode').val(rmObject.RawMaterialCode);
+                                $('#RMSupplierName').val(rmObject.RMSupplierName);
+                                $('#RawMaterialUnitCost').val(rmObject.RawMaterialUnitCost);
+                                $('#Subtotal').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
+                            });
                         }
                     });
                 }
 
-            });</script>
+            });
+        </script>
         <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
         <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
 
@@ -422,59 +442,6 @@ $form->prepare();
                 });
                 $('#buildProductName').on('hidden.bs.modal', function () {
                     $('#SKU').focus();
-                });
-                //=============================================
-                var rawMaterialArr = [];
-                rawMaterialEdit = function (editDataId) {
-                    console.log(editDataId);
-                    if (editDataId > 0) {
-                        console.log(rawMaterialArr[editDataId]);
-                    }
-                    return false;
-                }
-                rawMaterialAdd = function () {
-                    var rawMaterialData = {"RawMaterialData":
-                                [{
-                                        "RawMaterialType": $('#testSelect').val(),
-                                        "RawMaterialName": "RawMaterialName",
-                                        "Code": "Code",
-                                        "Supplier": "Supplier",
-                                        "Qty": "Qty",
-                                        "Cost": "Cost",
-                                        "Subtotal": "Subtotal"
-                                    }]};
-                    rawMaterialArr.push(rawMaterialData);
-                    console.log(rawMaterialArr);
-                    newRowMaterial = '<tr>';
-                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['RawMaterialType'] + '</td>';
-                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['RawMaterialName'] + '</td>';
-                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Code'] + '</td>';
-                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Supplier'] + '</td>';
-                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Qty'] + '</td>';
-                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Cost'] + '</td>';
-                    newRowMaterial += '<td>' + rawMaterialData['RawMaterialData'][0]['Subtotal'] + '</td>';
-                    newRowMaterial += '<td><button onclick="rawMaterialEdit(' + (rawMaterialArr.length - 1) + ')" type="button" class="btn btn-warning btn-sm margin-right-5"><span class="glyphicon glyphicon-pencil"></span></button>';
-                    newRowMaterial += '<button onclick="rawMaterialDelete(this)" type="button" id="rmD_' + (rawMaterialArr.length - 1) + '" class="btn btn-danger btn-sm"><span class="glyphicon glyphicon-trash"></span></button></td>';
-                    newRowMaterial += '</tr>';
-                    $("#rawMaterialsTable tbody").append(newRowMaterial);
-                    return false;
-                };
-                rawMaterialDelete = function (elem) {
-                    var rmDataId = elem.id.split('_');
-                    elem.closest('tr').remove();
-                    console.log(rmDataId[1]);
-                    rawMaterialArr.splice(rmDataId[1], 1);
-                    console.log(rawMaterialArr);
-                    return false;
-                };
-                $('#addRawMaterialAction').click(function () {
-                    $('#manageRawMaterials').modal('show');
-                    return false;
-                });
-                $('#addRawMaterialSave').click(function () {
-                    rawMaterialAdd();
-                    $('#manageRawMaterials').modal('hide');
-                    return false;
                 });
                 //=============================================
                 $("#IntroDate").datepicker({

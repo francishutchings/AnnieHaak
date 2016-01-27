@@ -24,7 +24,7 @@ class RawMaterialsTable {
         return $resultSet;
     }
 
-    public function getRawMaterial($ids) {
+    public function getRawMaterials($ids) {
         $select = new Select();
         $select->from(array('RM' => 'rawmateriallookup'));
         $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
