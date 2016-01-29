@@ -14,6 +14,9 @@ class RawMaterialTypesForm extends Form {
         $this->add(array(
             'name' => 'RMTypeID',
             'type' => 'Hidden',
+            'attributes' => array(
+                'value' => 0
+            ),
         ));
 
         $this->add(array(
@@ -29,7 +32,7 @@ class RawMaterialTypesForm extends Form {
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
                 'class' => 'btn btn-success',
             ),

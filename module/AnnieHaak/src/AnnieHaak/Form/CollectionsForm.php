@@ -14,6 +14,9 @@ class CollectionsForm extends Form {
         $this->add(array(
             'name' => 'ProductCollectionID',
             'type' => 'Hidden',
+            'attributes' => array(
+                'value' => 0
+            ),
         ));
 
         $this->add(array(

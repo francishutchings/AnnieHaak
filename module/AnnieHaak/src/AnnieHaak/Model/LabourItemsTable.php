@@ -49,6 +49,35 @@ class LabourItemsTable {
         }
     }
 
+    public function getLabourItemsByProduct($productId) {
+        $select = new Select();
+        $select->from(array('LL' => 'LabourLookup'));
+        $select->columns(array('LabourID', 'LabourName', 'LabourUnitCost', 'LabourCode'));
+        $select->join(array('LT' => 'LabourTime'), 'LT.LabourID = LL.LabourID', array('LabourTimeID', 'LabourQty', 'SubtotalLabour' => 'LabourQty * LabourUnitCost'));
+        $select->where(array('LT.ProductID' => $productId));
+        $select->order('LL.LabourName');
+
+        #echo $select->getSqlString();
+        #exit();
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        return $resultSet;
+    }
+
+    public function fetchLabourItemByType($LabourTimeId) {
+        $select = new Select();
+        $select->from(array('LL' => 'LabourLookup'));
+        $select->columns(array('LabourID', 'LabourName', 'LabourUnitCost', 'LabourCode'));
+        $select->join(array('LT' => 'LabourTime'), 'LT.LabourID = LL.LabourID', array('LabourTimeID', 'LabourQty', 'SubtotalLabour' => 'LabourQty * LabourUnitCost'));
+        $select->where(array('LT.LabourTimeID' => $LabourTimeId));
+
+        #echo $select->getSqlString();
+        #exit();
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        return $resultSet;
+    }
+
     public function deleteLabourItems($id) {
         $this->tableGateway->delete(array('LabourID' => (int) $id));
     }

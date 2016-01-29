@@ -1,73 +1,246 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
-
+$productId = 2570;
 $form->setAttribute('action', $this->url('business-admin/products', array('action' => 'add')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
+
+echo $this->form()->openTag($form)
 ?>
 
 <div class="well bs-component">
 
-    <?php echo$this->form()->openTag($form) ?>
-
     <fieldset>
+
         <legend>Add New Product</legend>
-        <div id="NewProductBlock" class="in ">
 
-            <?php echo $this->formHidden($form->get('ProductID')->setValue(0)) ?>
+        <?php echo $this->formHidden($form->get('ProductID')) ?>
 
-            <div class="form-group">
-                <label class="col-lg-2 control-label" for="ProductName">Product Name:</label>
-                <div class="col-lg-10">
-                    <?php echo $this->formRow($form->get('ProductName')); ?>
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="ProductName">Product Name:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('ProductName')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="SKU">SKU:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('SKU')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="CollectionID">Collection:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('CollectionID')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('ProductTypeID')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="Strands">Strands:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('Strands')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d'))); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="MinsToBuild">Mins To Build:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('MinsToBuild')->setValue(1)); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="QtyOrderedLastPeriod">Sold Last Period:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('QtyOrderedLastPeriod')->setValue(0)); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="CurrentURL">Current URL:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('CurrentURL')); ?>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="OldURL">Old URL:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('OldURL')); ?>
+            </div>
+        </div>
+
+        <div class="form-group" id="DescBlock">
+            <label class="col-lg-2 control-label" for="Description">Description:</label>
+            <div class="col-lg-10">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <?php echo $this->formRow($form->get('Description')); ?>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="radio radio-danger">
+                            <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
+                            <label for="DescRadio1">
+                                <span class="label label-danger">Needs Description</span>
+                            </label>
+                        </div>
+                        <div class="radio radio-warning">
+                            <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
+                            <label for="DescRadio2">
+                                <span class="label label-default">Pending Approval</span>
+                            </label>
+                        </div>
+                        <div class="radio radio-success">
+                            <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
+                            <label for="DescRadio3">
+                                <span class="label label-default">Approved</span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="form-group">
-                <label class="col-lg-2 control-label" for="SKU">SKU:</label>
-                <div class="col-lg-10">
-                    <?php echo $this->formRow($form->get('SKU')); ?>
-                </div>
-            </div>
+        <div class="form-group">
 
-            <div class="form-group">
-                <label class="col-lg-2 control-label" for="CollectionID">Collection:</label>
-                <div class="col-lg-10">
-                    <?php echo $this->formRow($form->get('CollectionID')); ?>
-                </div>
-            </div>
+            <label class="col-lg-2 control-label" for="Description">Options:</label>
 
-            <div class="form-group">
-                <label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label>
-                <div class="col-lg-10">
-                    <?php echo $this->formRow($form->get('ProductTypeID')); ?>
-                </div>
-            </div>
+            <div class="col-lg-10">
 
-            <div class="form-group">
-                <label class="col-lg-2 control-label" for="Strands">Strands:</label>
-                <div class="col-lg-10">
-                    <?php echo $this->formRow($form->get('Strands')); ?>
-                </div>
-            </div>
+                <div class="row" id="optionsBlock">
 
-            <div class="form-group">
-                <label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label>
-                <div class="col-lg-10">
-                    <?php echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d'))); ?>
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('KeyPiece')); ?>
+                            <label for="KeyPiece">
+                                <span class="label label-default">Key Piece</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Accessories')); ?>
+                            <label for="Accessories">
+                                <span class="label label-default">Accessories</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Friendship')); ?>
+                            <label for="Friendship">
+                                <span class="label label-default">Friendship</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Stacks')); ?>
+                            <label for="Stacks">
+                                <span class="label label-default">Stacks</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('PremiumStacks')); ?>
+                            <label for="PremiumStacks">
+                                <span class="label label-default">Premium Stacks</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Charm')); ?>
+                            <label for="Charm">
+                                <span class="label label-default">Charm</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Gold')); ?>
+                            <label for="Gold">
+                                <span class="label label-default">Gold</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('SterlingSilver')); ?>
+                            <label for="SterlingSilver">
+                                <span class="label label-default">SterlingSilver</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Personalisable')); ?>
+                            <label for="Personalisable">
+                                <span class="label label-default">Personalisable</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2">
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Engraved')); ?>
+                            <label for="Engraved">
+                                <span class="label label-default">Engraved</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Weddings')); ?>
+                            <label for="Weddings">
+                                <span class="label label-default">Weddings</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('Birthdays')); ?>
+                            <label for="Birthdays">
+                                <span class="label label-default">Birthdays</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('ExcludeFromTrade')); ?>
+                            <label for="ExcludeFromTrade">
+                                <span class="label label-default">Exclude Trade</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('PartOfTradePack')); ?>
+                            <label for="PartOfTradePack">
+                                <span class="label label-default">Trade Pack Quantity</span>
+                            </label>
+                        </div>
+                        <?php echo $this->formRow($form->get('QtyInTradePack')->setValue(0)); ?>
+                    </div>
+
                 </div>
+
             </div>
 
         </div>
 
+
     </fieldset>
+
 
     <fieldset>
         <legend>Raw Materials</legend>
-        <?php #echo $this->UIProductRawMaterialsManager(TRUE, $this->rawMaterials)['rmReturnBlock']; ?>
-
-        <div class="row">
-            <div class="col-lg-10 col-lg-offset-2">
+        <input type="hidden" name="rawMaterialsGridData" id="rawMaterialsGridData" />
+        <label class="col-lg-2 control-label">Add, Edit, Delete Materials:</label>
+        <div class="col-lg-10">
+            <div class="table-responsive">
                 <table id="rawMaterialGrid"></table>
                 <div id="rawMaterialGridPager"></div>
             </div>
@@ -117,29 +290,92 @@ $form->prepare();
                     });
                     return rtnData;
                 }();
-                onclickSubmitLocal = function (options, postdata) {
-                    console.log(postdata);
-                    this.processing = true;
-                    return {};
+                function RawMaterialData() {
+                    $("#RawMaterialQty").unbind('keyup change');
+                    $('#RawMaterialQty').numericInput(false, false);
+                    $('#RawMaterialQty').on('keyup change', function () {
+                        $('#SubtotalRM').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
+                    });
+                    updateRawMaterialCallBack($("#RMTypeID").val(), true);
+                    $("#RMTypeID").bind("change", function (e) {
+                        updateRawMaterialCallBack($("#RMTypeID").val(), false);
+                        $('#RawMaterialCode').val('');
+                        $('#RMSupplierName').val('');
+                        $('#RawMaterialQty').val(1);
+                        $('#RawMaterialUnitCost').val(0);
+                        $('#RawMaterialQty').val(0);
+                        $('#SubtotalRM').val(0);
+                    });
+                    return false;
+                }
+                function updateRawMaterialCallBack(RawMaterialTypeId, setselected) {
+                    var current = $("#rawMaterialGrid").jqGrid('getRowData', $("#rawMaterialGrid")[0].p.selrow).RawMaterialID;
+                    $("#RawMaterialID")
+                            .html('<option value="">Loading Raw Materials...</option>')
+                            .attr("disabled", "disabled");
+                    $.ajax({
+                        url: "/business-admin/raw-materials/jsonMaterialsByType?RawMaterialTypeId=" + RawMaterialTypeId,
+                        type: "GET",
+                        async: true,
+                        success: function (data) {
+                            rawMaterialsCurrentData = data.rawMaterials;
+                            var selectHtml = '<select><option value="0">Select ...</option>';
+                            for (var x = 0; x < data.rawMaterials.length; x++) {
+                                selectHtml += '<option value="' + data.rawMaterials[x]['RawMaterialID'] + '">' + data.rawMaterials[x]['RawMaterialName'] + '</option>';
+                            }
+                            selectHtml += '</select>';
+                            $("#RawMaterialID")
+                                    .removeAttr("disabled")
+                                    .html(selectHtml);
+                            if (setselected) {
+                                $("#RawMaterialID").val(current);
+                            }
+                            $("#RawMaterialID").bind("change", function (e) {
+                                rmObject = null;
+                                for (var i = 0, len = rawMaterialsCurrentData.length; i < len; i++) {
+                                    if (rawMaterialsCurrentData[i].RawMaterialID === e.currentTarget.value)
+                                        rmObject = rawMaterialsCurrentData[i];
+                                }
+                                $('#RawMaterialQty').val(1);
+                                $('#RawMaterialUnitCost').val(0);
+                                $('#RawMaterialCode').val(rmObject.RawMaterialCode);
+                                $('#RMSupplierName').val(rmObject.RMSupplierName);
+                                $('#RawMaterialUnitCost').val(rmObject.RawMaterialUnitCost);
+                                $('#SubtotalRM').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
+                            });
+                        }
+                    });
                 }
 
-                $.jgrid.defaults.responsive = true;
-                $.jgrid.defaults.styleUI = 'Bootstrap';
                 $("#rawMaterialGrid").jqGrid({
-                    url: '/business-admin/raw-materials/jsonMaterialsByProduct?productid=1855',
+                    url: '/business-admin/raw-materials/jsonMaterialsByProduct?productid=<?php echo $productId; ?>',
+                    async: true,
                     mtype: "GET",
                     datatype: "json",
                     styleUI: 'Bootstrap',
+                    responsive: true,
                     viewrecords: true,
-                    loadonce: false,
-                    sortname: '',
+                    loadonce: true,
                     height: 'auto',
                     viewsortcols: [false, 'vertical', false],
                     pager: "#rawMaterialGridPager",
                     editurl: 'clientArray',
+                    autowidth: true,
+                    shrinkToFit: true,
+                    altRows: true,
+                    altclass: 'altTableRowBackColour',
                     loadComplete: function () {
+                        $('#rawMaterialGridPager_center').remove()
                     },
-                    colNames: ['Raw Material Type', 'Raw Material Name', 'Code', 'Supplier', 'Quantity', 'Cost', 'Subtotal'],
+                    colNames: [
+                        'Raw Material Type',
+                        'Raw Material Name',
+                        'Code',
+                        'Supplier',
+                        'Quantity',
+                        'Cost',
+                        'Subtotal'
+                    ],
                     colModel: [
                         {
                             name: 'RMTypeID',
@@ -199,7 +435,7 @@ $form->prepare();
                             }
                         },
                         {
-                            name: 'Subtotal',
+                            name: 'SubtotalRM',
                             width: 75,
                             edittype: "text",
                             editable: true,
@@ -227,100 +463,246 @@ $form->prepare();
                     recreateForm: false,
                     closeAfterEdit: true,
                     viewPagerButtons: false,
-                    afterShowForm: RawMaterialData,
-                    errorTextFormat: function (data) {
-                        return 'Error: ' + data.responseText
-                    },
-                    reloadAfterSubmit: true,
+                    reloadAfterSubmit: false,
                     closeOnEscape: true,
                     savekey: [true, 13],
-                    onclickSubmit: onclickSubmitLocal
+                    afterShowForm: RawMaterialData,
+                    onclickSubmit: onclickSubmitLocal,
+                    errorTextFormat: function (data) {
+                        return 'Error: ' + data.responseText
+                    }
                 },
                 {
                     // ADD
                     closeAfterAdd: true,
                     recreateForm: false,
+                    afterShowForm: RawMaterialData,
+                    onclickSubmit: onclickSubmitLocal,
                     errorTextFormat: function (data) {
                         return 'Error: ' + data.responseText
                     }
                 },
                 {
                     // DELETE
+                    onclickSubmit: onclickSubmitLocal,
                     errorTextFormat: function (data) {
                         return 'Error: ' + data.responseText
                     }
                 });
-
-                function RawMaterialData() {
-                    $("#RawMaterialQty").unbind('keyup change');
-                    $('#RawMaterialQty').numericInput(false, false);
-                    $('#RawMaterialQty').on('keyup change', function () {
-                        $('#Subtotal').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
-                    });
-                    updateRawMaterialCallBack($("#RMTypeID").val(), true);
-                    $("#RMTypeID").bind("change", function (e) {
-                        updateRawMaterialCallBack($("#RMTypeID").val(), false);
-                        $('#RawMaterialCode').val('');
-                        $('#RMSupplierName').val('');
-                        $('#RawMaterialQty').val(1);
-                        $('#RawMaterialUnitCost').val(0);
-                        $('#RawMaterialQty').val(0);
-                        $('#Subtotal').val(0);
-                    });
-                    return false;
-                }
-
-                function updateRawMaterialCallBack(RawMaterialTypeId, setselected) {
-                    var current = $("#rawMaterialGrid").jqGrid('getRowData', $("#rawMaterialGrid")[0].p.selrow).RawMaterialID;
-                    $("#RawMaterialID")
-                            .html('<option value="">Loading Raw Materials...</option>')
-                            .attr("disabled", "disabled");
-                    $.ajax({
-                        url: "/business-admin/raw-materials/jsonMaterialsByType?RawMaterialTypeId=" + RawMaterialTypeId,
-                        type: "GET",
-                        success: function (data) {
-                            rawMaterialsCurrentData = data.rawMaterials;
-
-                            var selectHtml = '<select><option value="0">Select ...</option>';
-                            for (var x = 0; x < data.rawMaterials.length; x++) {
-                                selectHtml += '<option value="' + data.rawMaterials[x]['RawMaterialID'] + '">' + data.rawMaterials[x]['RawMaterialName'] + '</option>';
-                            }
-                            selectHtml += '</select>';
-                            $("#RawMaterialID")
-                                    .removeAttr("disabled")
-                                    .html(selectHtml);
-                            if (setselected) {
-                                $("#RawMaterialID").val(current);
-                            }
-                            $("#RawMaterialID").bind("change", function (e) {
-                                rmObject = null;
-                                for (var i = 0, len = rawMaterialsCurrentData.length; i < len; i++) {
-                                    if (rawMaterialsCurrentData[i].RawMaterialID === e.currentTarget.value)
-                                        rmObject = rawMaterialsCurrentData[i];
-                                }
-                                $('#RawMaterialQty').val(1);
-                                $('#RawMaterialUnitCost').val(0);
-                                $('#RawMaterialCode').val(rmObject.RawMaterialCode);
-                                $('#RMSupplierName').val(rmObject.RMSupplierName);
-                                $('#RawMaterialUnitCost').val(rmObject.RawMaterialUnitCost);
-                                $('#Subtotal').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
-                            });
-                        }
-                    });
-                }
-
             });
         </script>
-        <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
-        <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
-
-
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
     <fieldset>
         <legend>Labour</legend>
+        <input type="hidden" name="labourItemsGridData" id="labourItemsGridData" />
+        <label class="col-lg-2 control-label">Add, Edit, Delete Labour:</label>
+        <div class="col-lg-10">
+            <div class="table-responsive">
+                <table id="labourItemsGrid"></table>
+                <div id="labourItemsGridPager"></div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function () {
+                var LabourLookupData = function () {
+                    var rtnData = null;
+                    $.ajax({
+                        async: false,
+                        url: "/business-admin/labour-items/jsonAllLaboutItems",
+                        success: function (data, result) {
+                            rtnData = '0:Select ...;';
+                            if (!result) {
+                                alert('ERROR');
+                            } else {
+                                for (var x = 0; x < data.labourItems.length; x++) {
+                                    rtnData += data.labourItems[x]['id'] + ':' + data.labourItems[x]['value'];
+                                    if (data.labourItems.length - 1 > x) {
+                                        rtnData += ';';
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    return rtnData;
+                }();
+
+                function LabourItemsData() {
+                    $("#LabourQty").unbind('keyup change');
+                    $('#LabourQty').numericInput(false, false);
+                    $('#LabourQty').on('keyup change', function () {
+                        $('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * parseInt($("#LabourQty").val())).toFixed(4)));
+                    });
+                    updateLabourItemCallBack($("#LabourTimeID").val(), true);
+                    $("#LabourTimeID").bind("change", function (e) {
+                        updateLabourItemCallBack($("#LabourTimeID").val(), false);
+                        $('#LabourCode').val('');
+                        $('#LabourQty').val(1);
+                        $('#LabourUnitCost').val(0);
+                        $('#SubtotalLabour').val(0);
+                    });
+                    return false;
+                }
+
+                function updateLabourItemCallBack(LabourID, setselected) {
+                    var current = $("#labourItemsGrid").jqGrid('getRowData', $("#labourItemsGrid")[0].p.selrow).LabourTimeID;
+                    $("#LabourTimeID")
+                            .html('<option value="">Loading Labour Items ...</option>')
+                            .attr("disabled", "disabled");
+                    $.ajax({
+                        url: "/business-admin/labour-items/jsonLabourItemByType?jsonAllLaboutItems",
+                        type: "GET",
+                        async: true,
+                        success: function (data) {
+                            var selectHtml = '<select><option value="0">Select ...</option>';
+                            for (var x = 0; x < data.labourItems.length; x++) {
+                                selectHtml += '<option value="' + data.labourItems[x]['id'] + '">' + data.labourItems[x]['LabourName'] + '</option>';
+                            }
+                            selectHtml += '</select>';
+                            $("#LabourTimeID")
+                                    .removeAttr("disabled")
+                                    .html(selectHtml);
+                            if (setselected) {
+                                $("#LabourTimeID").val(current);
+                            }
+                            $("#RawMaterialID").bind("change", function (e) {
+                                rmObject = null;
+                                for (var i = 0, len = labourItemsCurrentData.length; i < len; i++) {
+                                    if (labourItemsCurrentData[i].RawMaterialID === e.currentTarget.value)
+                                        rmObject = labourItemsCurrentData[i];
+                                }
+                                $('#RawMaterialQty').val(1);
+                                $('#RawMaterialUnitCost').val(0);
+                                $('#RawMaterialCode').val(rmObject.RawMaterialCode);
+                                $('#RMSupplierName').val(rmObject.RMSupplierName);
+                                $('#RawMaterialUnitCost').val(rmObject.RawMaterialUnitCost);
+                                $('#SubtotalRM').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
+                            });
+                        }
+                    });
+                }
+
+                $("#labourItemsGrid").jqGrid({
+                    url: '/business-admin/labour-items/jsonLabourItemsByProduct?productId=<?php echo $productId; ?>',
+                    async: true,
+                    mtype: "GET",
+                    datatype: "json",
+                    styleUI: 'Bootstrap',
+                    responsive: true,
+                    viewrecords: true,
+                    loadonce: true,
+                    height: 'auto',
+                    viewsortcols: [false, 'vertical', false],
+                    pager: "#labourItemsGridPager",
+                    editurl: 'clientArray',
+                    autowidth: true,
+                    shrinkToFit: true,
+                    altRows: true,
+                    altclass: 'altTableRowBackColour',
+                    loadComplete: function () {
+                        $('#labourItemsGridPager_center').remove()
+                    },
+                    colNames: [
+                        'Labour Name',
+                        'Code',
+                        'Quantity',
+                        'Unit Cost',
+                        'Subtotal'
+                    ],
+                    colModel: [
+                        {
+                            name: 'LabourTimeID',
+                            width: 200,
+                            editable: true,
+                            edittype: 'select',
+                            formatter: 'select',
+                            editoptions: {
+                                value: LabourLookupData
+                            }
+                        },
+                        {
+                            name: 'LabourCode',
+                            width: 75,
+                            edittype: "text",
+                            editable: true,
+                            editoptions: {
+                                readonly: true
+                            }
+                        },
+                        {
+                            name: 'LabourQty',
+                            width: 75,
+                            edittype: "text",
+                            editable: true
+                        },
+                        {
+                            name: 'LabourUnitCost',
+                            width: 75,
+                            edittype: "text",
+                            editable: true,
+                            editoptions: {
+                                readonly: true
+                            }
+                        },
+                        {
+                            name: 'SubtotalLabour',
+                            width: 75,
+                            edittype: "text",
+                            editable: true,
+                            editoptions: {
+                                readonly: true,
+                                size: 15,
+                                maxlengh: 10,
+                            }
+                        }
+                    ]
+                });
+                $('#labourItemsGrid').navGrid('#labourItemsGridPager', {
+                    edit: true,
+                    add: true,
+                    del: true,
+                    search: false,
+                    refresh: false,
+                    view: false,
+                    position: "left",
+                    cloneToTop: true
+                },
+                {
+                    // EDIT
+                    editCaption: "Edit this Labour Item",
+                    recreateForm: false,
+                    closeAfterEdit: true,
+                    viewPagerButtons: false,
+                    reloadAfterSubmit: false,
+                    closeOnEscape: true,
+                    savekey: [true, 13],
+                    afterShowForm: LabourItemsData,
+                    onclickSubmit: onclickSubmitLocal,
+                    errorTextFormat: function (data) {
+                        return 'Error: ' + data.responseText
+                    }
+                },
+                {
+                    // ADD
+                    closeAfterAdd: true,
+                    recreateForm: false,
+                    afterShowForm: LabourLookupData,
+                    onclickSubmit: onclickSubmitLocal,
+                    errorTextFormat: function (data) {
+                        return 'Error: ' + data.responseText
+                    }
+                },
+                {
+                    // DELETE
+                    onclickSubmit: onclickSubmitLocal,
+                    errorTextFormat: function (data) {
+                        return 'Error: ' + data.responseText
+                    }
+                });
+            });
+        </script>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
@@ -340,7 +722,7 @@ $form->prepare();
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
     <fieldset>
-        <legend>Financial</legend>
+        <legend>Financials</legend>
 
     </fieldset>
 
@@ -403,39 +785,51 @@ $form->prepare();
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
-    <div class="modal fade" id="manageRawMaterials" tabindex="-1" role="dialog" aria-labelledby="manageRawMaterialsLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="manageRawMaterialsLabel">Add Raw Material</h4>
-                </div>
-                <div class="modal-body">
-                    <select name="testSelect" id="testSelect">
-                        <option value="1">testSelect - 1</option>
-                        <option value="2">testSelect - 2</option>
-                        <option value="3">testSelect - 3</option>
-                        <option value="4">testSelect - 4</option>
-                        <option value="5">testSelect - 5</option>
-                    </select>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="addRawMaterialSave" class="btn btn-success" data-dismiss="modal">Add</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
-
     <?php echo $this->form()->closeTag(); ?>
 
 </div>
 
+<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
+<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
 <script>
+            onclickSubmitLocal = function (options, postdata) {
+                console.log(postdata);
+                this.processing = true;
+                return {};
+            }
+
             $(document).ready(function () {
+                $('#products').submit(function () {
+                    $('#rawMaterialsGridData').val(JSON.stringify($("#rawMaterialGrid").jqGrid('getGridParam', 'data')));
+                });
+                //=============================================
+                $('#DescRadio1,#DescRadio2,#DescRadio3').change(function (elem) {
+                    $('#DescBlock').find("span").each(function (index) {
+                        $(this).removeClass().addClass('label label-default');
+                    });
+                    switch (elem.currentTarget.id) {
+                        case 'DescRadio1':
+                            $(elem.currentTarget).next().children().switchClass('label-default', 'label-danger', 500, 'easeInOutQuad');
+                            break;
+                        case 'DescRadio2':
+                            $(elem.currentTarget).next().children().switchClass('label-default', 'label-warning', 500, 'easeInOutQuad');
+                            break;
+                        case 'DescRadio3':
+                            $(elem.currentTarget).next().children().switchClass('label-default', 'label-success', 500, 'easeInOutQuad');
+                            break;
+                    }
+                });
+                //=============================================
+                $('#optionsBlock input:checkbox').each(function () {
+                    $(this).change(function () {
+                        if ($(this).is(':checked')) {
+                            $(this).next().children().switchClass('label-default', 'label-success', 500, 'easeInOutQuad');
+                        } else {
+                            $(this).next().children().switchClass('label-success', 'label-default', 500, 'easeInOutQuad');
+                        }
+                    });
+                });
+                //=============================================
                 $('#ProductName').focus(function () {
                     $('#buildProductName').modal('show');
                     $('#Name').focus();

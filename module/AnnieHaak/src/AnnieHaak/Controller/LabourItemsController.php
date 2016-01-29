@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\LabourItems;
 use AnnieHaak\Form\LabourItemsForm;
+use Zend\View\Model\JsonModel;
 
 class LabourItemsController extends AbstractActionController {
 
@@ -15,6 +16,40 @@ class LabourItemsController extends AbstractActionController {
         return new ViewModel(array(
             'labourItems' => $this->getLabourItemsTable()->fetchAll(),
         ));
+    }
+
+    public function jsonAllLaboutItemsAction() {
+        $labourItems = $this->getLabourItemsTable()->fetchAll();
+        foreach ($labourItems->toArray() as $value) {
+            $data[] = array('id' => $value['LabourID'], 'value' => $value['LabourName']);
+        }
+        $result = new JsonModel(array(
+            'labourItems' => $data
+        ));
+        return $result;
+    }
+
+    public function jsonLabourItemsByProductAction() {
+        $productId = (int) $this->params()->fromQuery('productId', 0);
+        $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($productId);
+        $result = new JsonModel(array(
+            'records' => $labourItems->count(),
+            'page' => 1,
+            'total' => $labourItems->count(),
+            'rows' => $labourItems->toArray()
+        ));
+        return $result;
+    }
+
+    public function jsonLabourItemByTypeAction() {
+        $LabourTimeId = (int) $this->params()->fromQuery('LabourTimeId', 0);
+        $labourItems = $this->getLabourItemsTable()->fetchLabourItemByType($LabourTimeId);
+        #dump($labourItems);
+        #exit();
+        $result = new JsonModel(array(
+            'labourItems' => $labourItems->toArray()
+        ));
+        return $result;
     }
 
     public function addAction() {

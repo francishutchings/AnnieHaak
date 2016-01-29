@@ -152,7 +152,7 @@ class RawMaterialsTable {
         $select = new Select();
         $select->from(array('RML' => 'rawmateriallookup'));
         $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'RMTypeID'));
-        $select->join(array('RMPL' => 'RawMaterialPicklists'), 'RMPL.RawMaterialID = RML.RawMaterialID', array('RawMaterialQty', 'Subtotal' => 'RawMaterialQty * RawMaterialUnitCost'));
+        $select->join(array('RMPL' => 'RawMaterialPicklists'), 'RMPL.RawMaterialID = RML.RawMaterialID', array('RawMaterialQty', 'SubtotalRM' => 'RawMaterialQty * RawMaterialUnitCost'));
         $select->join(array('RMT' => 'rawmaterialtypelookup'), 'RMT.RMTypeID = RML.RMTypeID', array('RMTypeName'));
         $select->join(array('SUPP' => 'rawmaterialsupplierlookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
         $select->where(array('RMPL.ProductID' => $productId));

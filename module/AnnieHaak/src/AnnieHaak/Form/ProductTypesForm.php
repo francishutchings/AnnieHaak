@@ -14,6 +14,9 @@ class ProductTypesForm extends Form {
         $this->add(array(
             'name' => 'ProductTypeId',
             'type' => 'Hidden',
+            'attributes' => array(
+                'value' => 0
+            ),
         ));
 
         $this->add(array(

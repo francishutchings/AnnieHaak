@@ -20,7 +20,13 @@ echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']
                     <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/user-admin/edit/' . $user->id, 'Edit'); ?>
                 </td>
                 <td>
-                    <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/user-admin/delete/' . $user->id, 'Delete'); ?>
+                    <?php
+                    if (count($users) > 1) {
+                        echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'delete', '/user-admin/delete/' . $user->id, 'Delete');
+                    } else {
+                        echo '&nbsp;';
+                    }
+                    ?>
                 </td>
             </tr>
         <?php endforeach; ?>

@@ -12,6 +12,9 @@ class LabourItems implements InputFilterAwareInterface {
     public $LabourName;
     public $LabourUnitCost;
     public $LabourCode;
+    public $LabourQty;
+    public $SubtotalLabour;
+    public $LabourTimeID;
     protected $inputFilter;
 
     public function exchangeArray($data) {
@@ -19,6 +22,9 @@ class LabourItems implements InputFilterAwareInterface {
         $this->LabourName = (!empty($data['LabourName'])) ? $data['LabourName'] : null;
         $this->LabourUnitCost = (!empty($data['LabourUnitCost'])) ? $data['LabourUnitCost'] : null;
         $this->LabourCode = (!empty($data['LabourCode'])) ? $data['LabourCode'] : null;
+        $this->LabourQty = (!empty($data['LabourQty'])) ? $data['LabourQty'] : null;
+        $this->SubtotalLabour = (!empty($data['SubtotalLabour'])) ? $data['SubtotalLabour'] : null;
+        $this->LabourTimeID = (!empty($data['LabourTimeID'])) ? $data['LabourTimeID'] : null;
     }
 
     public function getArrayCopy() {

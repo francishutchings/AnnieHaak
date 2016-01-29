@@ -76,10 +76,10 @@ class ProductsController extends AbstractActionController {
         $form->get('CollectionID')->setValueOptions($selectData['collectionsData']);
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
 
-
-
         $request = $this->getRequest();
         if ($request->isPost()) {
+            dump($request);
+            exit();
             $products = new Products();
             $form->setInputFilter($products->getInputFilter());
             $form->setData($request->getPost());

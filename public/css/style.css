@@ -217,6 +217,16 @@ body {
     font-weight: normal;
 }
 
+/** jqGrid Overrides **/
+
+.altTableRowBackColour{
+    background-color: #238DB0;
+}
+.ui-jqgrid-labels {
+    background-color: #c0c0c0;
+    color: #000000;
+}
+
 
 @media (max-width: 767px) {
 

@@ -14,6 +14,9 @@ class SuppliersForm extends Form {
         $this->add(array(
             'name' => 'RMSupplierID',
             'type' => 'Hidden',
+            'attributes' => array(
+                'value' => 0
+            ),
         ));
 
         $this->add(array(

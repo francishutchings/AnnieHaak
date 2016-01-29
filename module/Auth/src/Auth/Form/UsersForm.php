@@ -37,7 +37,7 @@ class UsersForm extends Form {
         ));
         $this->add(array(
             'name' => 'username',
-            'type' => 'text',
+            'type' => 'Email',
             'attributes' => array(
                 'id' => 'username',
                 'class' => 'form-control',
@@ -75,15 +75,16 @@ class UsersForm extends Form {
                 'autocomplete' => 'off',
                 'pattern' => '.{5,25}',
                 'maxlength' => '25',
-                'required' => true,
+                'required' => true
             ),
         ));
         $this->add(array(
             'name' => 'submit',
             'type' => 'Submit',
             'attributes' => array(
-                'value' => 'Go',
+                'value' => 'Add',
                 'id' => 'submitbutton',
+                'class' => 'btn btn-success'
             ),
         ));
     }

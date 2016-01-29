@@ -15,6 +15,7 @@
         $version = 1;
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
                 ->prependStylesheet($this->basePath('css/style.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('css/awesome-bootstrap-checkbox.css?v=' . $version), 'all')
                 ->prependStylesheet($this->basePath('js/jquery-ui/jquery-ui.css?v=' . $version), 'all')
                 ->prependStylesheet($this->basePath('js/jqGrid/css/trirand/ui.jqgrid-bootstrap.css?v=' . $version), 'all')
                 ->prependStylesheet($this->basePath('css/font-awesome.min.css?v=' . $version), 'all')

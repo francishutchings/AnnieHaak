@@ -14,6 +14,9 @@ class PackagingForm extends Form {
         $this->add(array(
             'name' => 'PackagingID',
             'type' => 'Hidden',
+            'attributes' => array(
+                'value' => 0
+            ),
         ));
 
         $this->add(array(

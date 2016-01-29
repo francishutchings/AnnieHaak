@@ -17,7 +17,7 @@ class RawMaterials implements InputFilterAwareInterface {
     public $RMTypeID;
     public $RMTypeName;
     public $RawMaterialQty;
-    public $Subtotal;
+    public $SubtotalRM;
     public $DateLastChecked;
     public $LastInvoiceNumber;
     protected $inputFilter;
@@ -32,7 +32,7 @@ class RawMaterials implements InputFilterAwareInterface {
         $this->RMTypeID = (!empty($data['RMTypeID'])) ? $data['RMTypeID'] : null;
         $this->RMTypeName = (!empty($data['RMTypeName'])) ? $data['RMTypeName'] : null;
         $this->RawMaterialQty = (!empty($data['RawMaterialQty'])) ? $data['RawMaterialQty'] : null;
-        $this->Subtotal = (!empty($data['Subtotal'])) ? $data['Subtotal'] : null;
+        $this->SubtotalRM = (!empty($data['SubtotalRM'])) ? $data['SubtotalRM'] : null;
         $this->DateLastChecked = (!empty($data['DateLastChecked'])) ? $data['DateLastChecked'] : null;
         $this->LastInvoiceNumber = (!empty($data['LastInvoiceNumber'])) ? $data['LastInvoiceNumber'] : null;
     }

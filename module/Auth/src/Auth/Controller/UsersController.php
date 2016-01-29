@@ -20,7 +20,6 @@ class UsersController extends AbstractActionController {
 
     public function addAction() {
         $form = new UsersForm();
-        $form->get('submit')->setValue('Add');
 
         $request = $this->getRequest();
         if ($request->isPost()) {

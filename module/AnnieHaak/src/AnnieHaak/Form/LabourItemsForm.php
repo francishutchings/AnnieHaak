@@ -14,6 +14,9 @@ class LabourItemsForm extends Form {
         $this->add(array(
             'name' => 'LabourID',
             'type' => 'Hidden',
+            'attributes' => array(
+                'value' => 0
+            ),
         ));
 
         $this->add(array(
