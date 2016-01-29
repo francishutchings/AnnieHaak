@@ -42,8 +42,8 @@ class LabourItemsController extends AbstractActionController {
     }
 
     public function jsonLabourItemByTypeAction() {
-        $LabourTimeId = (int) $this->params()->fromQuery('LabourTimeId', 0);
-        $labourItems = $this->getLabourItemsTable()->fetchLabourItemByType($LabourTimeId);
+        $LabourId = (int) $this->params()->fromQuery('LabourId', 0);
+        $labourItems = $this->getLabourItemsTable()->fetchLabourItemByType($LabourId);
         #dump($labourItems);
         #exit();
         $result = new JsonModel(array(

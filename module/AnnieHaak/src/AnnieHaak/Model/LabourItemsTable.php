@@ -64,12 +64,11 @@ class LabourItemsTable {
         return $resultSet;
     }
 
-    public function fetchLabourItemByType($LabourTimeId) {
+    public function fetchLabourItemByType($LabourId) {
         $select = new Select();
         $select->from(array('LL' => 'LabourLookup'));
-        $select->columns(array('LabourID', 'LabourName', 'LabourUnitCost', 'LabourCode'));
-        $select->join(array('LT' => 'LabourTime'), 'LT.LabourID = LL.LabourID', array('LabourTimeID', 'LabourQty', 'SubtotalLabour' => 'LabourQty * LabourUnitCost'));
-        $select->where(array('LT.LabourTimeID' => $LabourTimeId));
+        $select->columns(array('LabourUnitCost', 'LabourCode'));
+        $select->where(array('LabourID' => $LabourId));
 
         #echo $select->getSqlString();
         #exit();

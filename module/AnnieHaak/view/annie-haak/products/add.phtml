@@ -364,8 +364,11 @@ echo $this->form()->openTag($form)
                     shrinkToFit: true,
                     altRows: true,
                     altclass: 'altTableRowBackColour',
-                    loadComplete: function () {
-                        $('#rawMaterialGridPager_center').remove()
+                    loadComplete: function (data) {
+                        $('#rawMaterialGridPager_center').remove();
+                        for (var x = 0; x < data.rows.length; x++) {
+                            subtotals.rawMaterials += parseFloat(data.rows[x]['SubtotalRM']);
+                        }
                     },
                     colNames: [
                         'Raw Material Type',
@@ -535,51 +538,29 @@ echo $this->form()->openTag($form)
                     $('#LabourQty').on('keyup change', function () {
                         $('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * parseInt($("#LabourQty").val())).toFixed(4)));
                     });
-                    updateLabourItemCallBack($("#LabourTimeID").val(), true);
-                    $("#LabourTimeID").bind("change", function (e) {
-                        updateLabourItemCallBack($("#LabourTimeID").val(), false);
+                    $("#LabourID").bind("change", function (e) {
                         $('#LabourCode').val('');
                         $('#LabourQty').val(1);
                         $('#LabourUnitCost').val(0);
                         $('#SubtotalLabour').val(0);
+                        console.log($(this).val());
+                        updateLabourItemCallBack($(this).val(), false);
                     });
                     return false;
                 }
 
                 function updateLabourItemCallBack(LabourID, setselected) {
-                    var current = $("#labourItemsGrid").jqGrid('getRowData', $("#labourItemsGrid")[0].p.selrow).LabourTimeID;
-                    $("#LabourTimeID")
-                            .html('<option value="">Loading Labour Items ...</option>')
-                            .attr("disabled", "disabled");
                     $.ajax({
-                        url: "/business-admin/labour-items/jsonLabourItemByType?jsonAllLaboutItems",
+                        url: "/business-admin/labour-items/jsonLabourItemByType?LabourId=" + LabourID,
                         type: "GET",
                         async: true,
                         success: function (data) {
-                            var selectHtml = '<select><option value="0">Select ...</option>';
-                            for (var x = 0; x < data.labourItems.length; x++) {
-                                selectHtml += '<option value="' + data.labourItems[x]['id'] + '">' + data.labourItems[x]['LabourName'] + '</option>';
-                            }
-                            selectHtml += '</select>';
-                            $("#LabourTimeID")
-                                    .removeAttr("disabled")
-                                    .html(selectHtml);
-                            if (setselected) {
-                                $("#LabourTimeID").val(current);
-                            }
-                            $("#RawMaterialID").bind("change", function (e) {
-                                rmObject = null;
-                                for (var i = 0, len = labourItemsCurrentData.length; i < len; i++) {
-                                    if (labourItemsCurrentData[i].RawMaterialID === e.currentTarget.value)
-                                        rmObject = labourItemsCurrentData[i];
-                                }
-                                $('#RawMaterialQty').val(1);
-                                $('#RawMaterialUnitCost').val(0);
-                                $('#RawMaterialCode').val(rmObject.RawMaterialCode);
-                                $('#RMSupplierName').val(rmObject.RMSupplierName);
-                                $('#RawMaterialUnitCost').val(rmObject.RawMaterialUnitCost);
-                                $('#SubtotalRM').val(parseFloat((parseFloat($("#RawMaterialUnitCost").val()) * parseInt($("#RawMaterialQty").val())).toFixed(4)));
-                            });
+                            console.log(data.labourItems[0]['LabourCode']);
+                            $('#LabourQty').val(1);
+                            $('#LabourUnitCost').val(0);
+                            $('#LabourCode').val(data.labourItems[0]['LabourCode']);
+                            $('#LabourUnitCost').val(data.labourItems[0]['LabourUnitCost']);
+                            $('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * parseInt($("#LabourQty").val())).toFixed(4)));
                         }
                     });
                 }
@@ -601,8 +582,12 @@ echo $this->form()->openTag($form)
                     shrinkToFit: true,
                     altRows: true,
                     altclass: 'altTableRowBackColour',
-                    loadComplete: function () {
-                        $('#labourItemsGridPager_center').remove()
+                    loadComplete: function (data) {
+                        $('#labourItemsGridPager_center').remove();
+                        for (var x = 0; x < data.rows.length; x++) {
+                            subtotals.labour += parseFloat(data.rows[x]['SubtotalLabour']);
+                        }
+                        console.log(subtotals);
                     },
                     colNames: [
                         'Labour Name',
@@ -613,7 +598,7 @@ echo $this->form()->openTag($form)
                     ],
                     colModel: [
                         {
-                            name: 'LabourTimeID',
+                            name: 'LabourID',
                             width: 200,
                             editable: true,
                             edittype: 'select',
@@ -688,7 +673,7 @@ echo $this->form()->openTag($form)
                     // ADD
                     closeAfterAdd: true,
                     recreateForm: false,
-                    afterShowForm: LabourLookupData,
+                    afterShowForm: LabourItemsData,
                     onclickSubmit: onclickSubmitLocal,
                     errorTextFormat: function (data) {
                         return 'Error: ' + data.responseText
@@ -792,11 +777,15 @@ echo $this->form()->openTag($form)
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
 <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
 <script>
+            subtotals = {};
+            subtotals.rawMaterials = 0;
+            subtotals.labour = 0;
+            subtotals.dispatchPack = 0;
             onclickSubmitLocal = function (options, postdata) {
                 console.log(postdata);
                 this.processing = true;
                 return {};
-            }
+            };
 
             $(document).ready(function () {
                 $('#products').submit(function () {
