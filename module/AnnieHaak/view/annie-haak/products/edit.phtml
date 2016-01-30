@@ -1,7 +1,14 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
-$productId = 0;
-$form->setAttribute('action', $this->url('business-admin/products', array('action' => 'edit')));
+
+#dump($form->getObject());
+#exit();
+
+$productId = $form->getObject()->ProductID;
+$currentUrl = ($form->getObject()->CurrentURL) ? $form->getObject()->CurrentURL : '';
+$oldUrl = ($form->getObject()->OldURL) ? $form->getObject()->OldURL : '';
+
+$form->setAttribute('action', $this->url('business-admin/products', array('action' => 'add')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
 
@@ -15,6 +22,20 @@ echo $this->form()->openTag($form)
         <legend>Edit Product</legend>
 
         <?php echo $this->formHidden($form->get('ProductID')) ?>
+
+        <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+                <?php if ($form->getObject()->Current == 0) : ?>
+                    <div class="alert alert-danger text-center bold">
+                        Not Live
+                    </div>
+                <?php else: ?>
+                    <div class="alert alert-success text-center bold">
+                        Currently Live
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="col-lg-2 control-label" for="ProductName">Product Name:</label>
@@ -54,66 +75,94 @@ echo $this->form()->openTag($form)
         <div class="form-group">
             <label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label>
             <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d'))); ?>
+                <?php echo $this->formRow($form->get('IntroDate')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-lg-2 control-label" for="MinsToBuild">Mins To Build:</label>
             <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('MinsToBuild')->setValue(1)); ?>
+                <?php echo $this->formRow($form->get('MinsToBuild')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-lg-2 control-label" for="QtyOrderedLastPeriod">Sold Last Period:</label>
             <div class="col-lg-10">
-                <?php echo $this->formRow($form->get('QtyOrderedLastPeriod')->setValue(0)); ?>
+                <?php echo $this->formRow($form->get('QtyOrderedLastPeriod')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-lg-2 control-label" for="CurrentURL">Current URL:</label>
-            <div class="col-lg-10">
+            <div class="col-lg-9">
                 <?php echo $this->formRow($form->get('CurrentURL')); ?>
+            </div>
+            <div class="col-lg-1">
+                <a href="#" title="View image">
+                    <img src="<?php echo $currentUrl; ?>" id="currentUrlThumb" class="img-thumbnail"  />
+                </a>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-lg-2 control-label" for="OldURL">Old URL:</label>
-            <div class="col-lg-10">
+            <div class="col-lg-9">
                 <?php echo $this->formRow($form->get('OldURL')); ?>
+            </div>
+            <div class="col-lg-1">
+                <a href="#" title="View image">
+                    <img src="<?php echo $oldUrl; ?>" id="oldUrlThumb" class="img-thumbnail"  />
+                </a>
             </div>
         </div>
 
         <div class="form-group" id="DescBlock">
             <label class="col-lg-2 control-label" for="Description">Description:</label>
             <div class="col-lg-10">
-                <div class="row">
-                    <div class="col-lg-10">
-                        <?php echo $this->formRow($form->get('Description')); ?>
-                    </div>
-                    <div class="col-lg-2">
-                        <div class="radio radio-danger">
-                            <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
-                            <label for="DescRadio1">
-                                <span class="label label-danger">Needs Description</span>
-                            </label>
-                        </div>
-                        <div class="radio radio-warning">
-                            <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
-                            <label for="DescRadio2">
-                                <span class="label label-default">Pending Approval</span>
-                            </label>
-                        </div>
-                        <div class="radio radio-success">
-                            <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
-                            <label for="DescRadio3">
-                                <span class="label label-default">Approved</span>
-                            </label>
-                        </div>
-                    </div>
+                <?php echo $this->formRow($form->get('Description')); ?>
+            </div>
+            <div class="col-lg-10 col-lg-offset-2">
+                <div class="radio radio-danger pull-left margin-right-5">
+                    <?php if ($form->getObject()->DescriptionStatus == 0) : ?>
+                        <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
+                        <label for="DescRadio1">
+                            <span class="label label-danger">Needs Description</span>
+                        </label>
+                    <?php else: ?>
+                        <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" />
+                        <label for="DescRadio1">
+                            <span class="label label-default">Needs Description</span>
+                        </label>
+                    <?php endif; ?>
                 </div>
+                <div class="radio radio-warning pull-left margin-right-5">
+                    <?php if ($form->getObject()->DescriptionStatus == 1) : ?>
+                        <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" checked="checked" />
+                        <label for="DescRadio2">
+                            <span class="label label-warning">Pending Approval</span>
+                        </label>
+                    <?php else: ?>
+                        <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
+                        <label for="DescRadio2">
+                            <span class="label label-default">Pending Approval</span>
+                        </label>
+                    <?php endif; ?>
+                </div>
+                <div class="radio radio-success pull-left">
+                    <?php if ($form->getObject()->DescriptionStatus == 2) : ?>
+                        <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" checked="checked" />
+                        <label for="DescRadio3">
+                            <span class="label label-success">Approved</span>
+                        </label>
+                    <?php else: ?>
+                        <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
+                        <label for="DescRadio3">
+                            <span class="label label-default">Approved</span>
+                        </label>
+                    <?php endif; ?>
+                </div>
+
             </div>
         </div>
 
@@ -222,7 +271,7 @@ echo $this->form()->openTag($form)
                                 <span class="label label-default">Trade Pack Quantity</span>
                             </label>
                         </div>
-                        <?php echo $this->formRow($form->get('QtyInTradePack')->setValue(0)); ?>
+                        <?php echo $this->formRow($form->get('QtyInTradePack')); ?>
                     </div>
 
                 </div>
@@ -319,6 +368,29 @@ echo $this->form()->openTag($form)
                 </div>
                 <div class="modal-footer">
                     <button type="button" id="buildProductNameSave" class="btn btn-success" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
+    <div class="modal fade" id="currentUlrModal" tabindex="-1" role="dialog" aria-labelledby="currentUlrLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="currentUlrLabel">Current Image</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="center-margin">
+                        <img src="" id="currentUlrDisplay" class="img-responsive"  />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -427,5 +499,17 @@ echo $this->form()->openTag($form)
                 $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength").val());
             }
         };
+        //=============================================
+        $("#currentUrlThumb").click(function () {
+            $('#currentUlrDisplay').attr("src", $('#CurrentURL').val());
+            $('#currentUlrModal').modal('show');
+            return false;
+        });
+        $("#oldUrlThumb").click(function () {
+            $('#currentUlrDisplay').attr("src", $('#OldURL').val());
+            $('#currentUlrModal').modal('show');
+            return false;
+        });
+
     });
 </script>

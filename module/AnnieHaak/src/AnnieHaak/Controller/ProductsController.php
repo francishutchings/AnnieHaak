@@ -96,6 +96,50 @@ class ProductsController extends AbstractActionController {
         );
     }
 
+    public function editAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('business-admin/products', array(
+                        'action' => 'add'
+            ));
+        }
+
+        try {
+            $products = $this->getProductsTable()->getProducts($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('business-admin/products', array(
+                        'action' => 'index'
+            ));
+        }
+
+        #dump($products);
+        #exit();
+
+        $form = new ProductsForm();
+
+        $selectData = $this->popSelectMenus();
+        $form->get('CollectionID')->setValueOptions($selectData['collectionsData']);
+        $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
+
+        $form->bind($products);
+        $form->get('submit')->setAttribute('value', 'Update');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($products->getInputFilter());
+            $form->setData($request->getPost());
+            if ($form->isValid()) {
+                $this->getProductsTable()->saveProducts($products);
+                $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $rawMaterials->ProductName . ' - updated.');
+                return $this->redirect()->toRoute('business-admin/products');
+            }
+        }
+
+        return array(
+            'form' => $form
+        );
+    }
+
     private function popSelectMenus() {
         $collections = $this->getCollectionsTable()->fetchAll();
         $productTypes = $this->getProductTypesTable()->fetchAll();

@@ -81,6 +81,58 @@ class ProductsTable {
         return $paginator;
     }
 
+    public function getProducts($id) {
+        $id = (int) $id;
+        $select = new Select();
+        $select->from(array('P' => 'Products'));
+        $select->columns(array(
+            'Accessories',
+            'Birthdays',
+            'Charm',
+            'CollectionID',
+            'CurrentURL',
+            'Description',
+            'DescriptionStatus',
+            'Engraved',
+            'ExcludeFromTrade',
+            'Friendship',
+            'Gold',
+            'IntroDate',
+            'KeyPiece',
+            'MinsToBuild',
+            'Name',
+            'NameCharm',
+            'NameColour',
+            'NameCrystal',
+            'NameLength',
+            'OldURL',
+            'PartOfTradePack',
+            'Personalisable',
+            'PremiumStacks',
+            'ProductID',
+            'ProductName',
+            'ProductTypeID',
+            'QtyInTradePack',
+            'QtyOrderedLastPeriod',
+            'RequiresAssay',
+            'RRP',
+            'SKU',
+            'Stacks',
+            'SterlingSilver',
+            'Strands',
+            'Weddings'
+        ));
+        $select->join(array('C' => 'ProductCollections'), 'C.ProductCollectionID = P.CollectionID', array('Current'));
+        $select->where(array('P.ProductID' => $id));
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        $row = $resultSet->current();
+        if (!$row) {
+            throw new \Exception("Could not find row $id");
+        }
+        return $row;
+    }
+
     public function fetchProductsByMaterial($rawMaterialIn) {
         $rawMaterial = (int) $rawMaterialIn;
         $select = new Select();

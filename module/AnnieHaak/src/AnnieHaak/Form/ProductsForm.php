@@ -256,6 +256,17 @@ class ProductsForm extends Form {
          */
         $this->add(array(
             'type' => 'Radio',
+            'name' => 'Current',
+            'options' => array(
+                'value_options' => array(
+                    '0' => 'Not Live',
+                    '1' => 'Currently Live',
+                ),
+            ),
+        ));
+
+        $this->add(array(
+            'type' => 'Radio',
             'name' => 'DescriptionStatus',
             'options' => array(
                 'value_options' => array(
@@ -265,7 +276,6 @@ class ProductsForm extends Form {
                 ),
             ),
         ));
-
 
         $this->add(array(
             'type' => 'Checkbox',

@@ -56,8 +56,8 @@ class Products implements InputFilterAwareInterface {
         $this->CollectionID = (!empty($data['CollectionID'])) ? $data['CollectionID'] : 0;
         $this->ProductCollectionName = (!empty($data['ProductCollectionName'])) ? $data['ProductCollectionName'] : 0;
         $this->Current = (!empty($data['Current'])) ? $data['Current'] : 0;
-        $this->CurrentURL = (!empty($data['CurrentURL'])) ? $data['CurrentURL'] : 0;
-        $this->Description = (!empty($data['Description'])) ? $data['Description'] : 0;
+        $this->CurrentURL = (!empty($data['CurrentURL'])) ? $data['CurrentURL'] : '';
+        $this->Description = (!empty($data['Description'])) ? $data['Description'] : '';
         $this->DescriptionStatus = (!empty($data['DescriptionStatus'])) ? $data['DescriptionStatus'] : 0;
         $this->Engraved = (!empty($data['Engraved'])) ? $data['Engraved'] : 0;
         $this->ExcludeFromTrade = (!empty($data['ExcludeFromTrade'])) ? $data['ExcludeFromTrade'] : 0;
@@ -72,7 +72,7 @@ class Products implements InputFilterAwareInterface {
         $this->NameColour = (!empty($data['NameColour'])) ? $data['NameColour'] : 0;
         $this->NameCrystal = (!empty($data['NameCrystal'])) ? $data['NameCrystal'] : 0;
         $this->NameLength = (!empty($data['NameLength'])) ? $data['NameLength'] : 0;
-        $this->OldURL = (!empty($data['OldURL'])) ? $data['OldURL'] : 0;
+        $this->OldURL = (!empty($data['OldURL'])) ? $data['OldURL'] : '';
         $this->PartOfTradePack = (!empty($data['PartOfTradePack'])) ? $data['PartOfTradePack'] : 0;
         $this->Personalisable = (!empty($data['Personalisable'])) ? $data['Personalisable'] : 0;
         $this->PremiumStacks = (!empty($data['PremiumStacks'])) ? $data['PremiumStacks'] : 0;
@@ -84,7 +84,7 @@ class Products implements InputFilterAwareInterface {
         $this->QtyOrderedLastPeriod = (!empty($data['QtyOrderedLastPeriod'])) ? $data['QtyOrderedLastPeriod'] : 0;
         $this->RequiresAssay = (!empty($data['RequiresAssay'])) ? $data['RequiresAssay'] : 0;
         $this->RRP = (!empty($data['RRP'])) ? $data['RRP'] : 0;
-        $this->SKU = (!empty($data['SKU'])) ? $data['SKU'] : 0;
+        $this->SKU = (!empty($data['SKU'])) ? $data['SKU'] : '';
         $this->Stacks = (!empty($data['Stacks'])) ? $data['Stacks'] : 0;
         $this->SterlingSilver = (!empty($data['SterlingSilver'])) ? $data['SterlingSilver'] : 0;
         $this->Strands = (!empty($data['Strands'])) ? $data['Strands'] : 0;
