@@ -130,7 +130,9 @@ return array(
             'UIAccessControlButtons' => 'AnnieHaak\View\Helpers\UIAccessControlButtons',
             'UICurrencyFormatter' => 'AnnieHaak\View\Helpers\UICurrencyFormatter',
             'UIPageTitleFormatter' => 'AnnieHaak\View\Helpers\UIPageTitleFormatter',
-            'UIProductRawMaterialsManager' => 'AnnieHaak\View\Helpers\UIProductRawMaterialsManager'
+            'UIProductRawMaterialsManager' => 'AnnieHaak\View\Helpers\UIProductRawMaterialsManager',
+            'UIProductLabourManager' => 'AnnieHaak\View\Helpers\UIProductLabourManager',
+            'UIProductPackagingManager' => 'AnnieHaak\View\Helpers\UIProductPackagingManager'
         )
     ),
 );
