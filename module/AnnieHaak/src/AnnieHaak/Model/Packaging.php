@@ -8,11 +8,13 @@ use Zend\InputFilter\InputFilterInterface;
 
 class Packaging implements InputFilterAwareInterface {
 
-    public $PackagingID;        # INT(11) NOT NULL AUTO_INCREMENT,
-    public $PackagingName;      # VARCHAR(255) NOT NULL,
-    public $PackagingUnitCost;  # DOUBLE NOT NULL DEFAULT '0',
-    public $PackagingCode;      # VARCHAR(50) NOT NULL,
-    public $PackagingType;      # INT(11) NULL DEFAULT NULL
+    public $PackagingID;
+    public $PackagingName;
+    public $PackagingUnitCost;
+    public $PackagingCode;
+    public $PackagingType;
+    public $PackagingQty;
+    public $SubtotalPackaging;
     protected $inputFilter;
 
     public function exchangeArray($data) {
@@ -21,6 +23,8 @@ class Packaging implements InputFilterAwareInterface {
         $this->PackagingUnitCost = (!empty($data['PackagingUnitCost'])) ? $data['PackagingUnitCost'] : null;
         $this->PackagingCode = (!empty($data['PackagingCode'])) ? $data['PackagingCode'] : null;
         $this->PackagingType = (!empty($data['PackagingType'])) ? $data['PackagingType'] : null;
+        $this->PackagingQty = (!empty($data['PackagingQty'])) ? $data['PackagingQty'] : null;
+        $this->SubtotalPackaging = (!empty($data['SubtotalPackaging'])) ? $data['SubtotalPackaging'] : null;
     }
 
     public function getArrayCopy() {

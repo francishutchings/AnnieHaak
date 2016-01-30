@@ -30,6 +30,34 @@ class PackagingTable {
         return $row;
     }
 
+    public function getPackagingByProduct($productId) {
+        $select = new Select();
+        $select->from(array('PLU' => 'PackagingLookup'));
+        $select->columns(array('PackagingID', 'PackagingName', 'PackagingCode', 'PackagingUnitCost'));
+        $select->join(array('PL' => 'PackagingPicklists'), 'PL.PackagingID = PLU.PackagingID', array('PackagingQty', 'SubtotalPackaging' => 'PackagingQty * PackagingUnitCost'));
+        $select->where(array('PL.ProductID' => $productId));
+        $select->order('PLU.PackagingName');
+
+        #echo $select->getSqlString();
+        #exit();
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        return $resultSet;
+    }
+
+    public function fetchPackagingByType($packagingId) {
+        $select = new Select();
+        $select->from(array('PL' => 'PackagingLookup'));
+        $select->columns(array('PackagingUnitCost', 'PackagingCode'));
+        $select->where(array('PackagingID' => $packagingId));
+
+        #echo $select->getSqlString();
+        #exit();
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        return $resultSet;
+    }
+
     public function savePackaging(Packaging $Packaging) {
         $data = array(
             'PackagingName' => $Packaging->PackagingName,

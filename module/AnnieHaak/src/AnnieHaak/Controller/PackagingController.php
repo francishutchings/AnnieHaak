@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\Packaging;
 use AnnieHaak\Form\PackagingForm;
+use Zend\View\Model\JsonModel;
 
 class PackagingController extends AbstractActionController {
 
@@ -15,6 +16,40 @@ class PackagingController extends AbstractActionController {
         return new ViewModel(array(
             'packaging' => $this->getPackagingTable()->fetchAll(),
         ));
+    }
+
+    public function jsonAllPackagingAction() {
+        $packaging = $this->getPackagingTable()->fetchAll();
+        foreach ($packaging->toArray() as $value) {
+            $data[] = array('id' => $value['PackagingID'], 'value' => $value['PackagingName']);
+        }
+        $result = new JsonModel(array(
+            'packaging' => $data
+        ));
+        return $result;
+    }
+
+    public function jsonPackagingByTypeAction() {
+        $packagingId = (int) $this->params()->fromQuery('PackagingID', 0);
+        $packaging = $this->getPackagingTable()->fetchPackagingByType($packagingId);
+        #dump($packaging);
+        #exit();
+        $result = new JsonModel(array(
+            'packaging' => $packaging->toArray()
+        ));
+        return $result;
+    }
+
+    public function jsonPackagingByProductAction() {
+        $productId = (int) $this->params()->fromQuery('productId', 0);
+        $packaging = $this->getPackagingTable()->getPackagingByProduct($productId);
+        $result = new JsonModel(array(
+            'records' => $packaging->count(),
+            'page' => 1,
+            'total' => $packaging->count(),
+            'rows' => $packaging->toArray()
+        ));
+        return $result;
     }
 
     public function addAction() {

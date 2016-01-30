@@ -59,14 +59,14 @@ SQL;
 
     public function fetchAll() {
         $data = array(
-            "ControlValue" => 0
-            , "AssayRateUnitCost" => 0
-            , "ImportPercentage" => 0
-            , "MerchantChargePercentage" => 0
-            , "PackageAndDispatchUnitCost" => 0
-            , "PostageCostUnitCost" => 0
-            , "PostageForProfitUnitCost" => 0
-            , "VATPercentage" => 0
+            "ControlValue" => 0,
+            "AssayRateUnitCost" => 0,
+            "ImportPercentage" => 0,
+            "MerchantChargePercentage" => 0,
+            "PackageAndDispatchUnitCost" => 0,
+            "PostageCostUnitCost" => 0,
+            "PostageForProfitUnitCost" => 0,
+            "VATPercentage" => 0
         );
 
         $DBH = $this->adapter;
@@ -89,14 +89,14 @@ SQL;
 
     public function saveRatesPercents(RatesPercentages $RatesPercentages) {
         $data = array(
-            "ControlValue" => 1
-            , "AssayRateUnitCost" => $RatesPercentages->AssayRateUnitCost
-            , "ImportPercentage" => $RatesPercentages->ImportPercentage
-            , "MerchantChargePercentage" => $RatesPercentages->MerchantChargePercentage
-            , "PackageAndDispatchUnitCost" => $RatesPercentages->PackageAndDispatchUnitCost
-            , "PostageCostUnitCost" => $RatesPercentages->PostageCostUnitCost
-            , "PostageForProfitUnitCost" => $RatesPercentages->PostageForProfitUnitCost
-            , "VATPercentage" => $RatesPercentages->VATPercentage
+            "ControlValue" => 1,
+            "AssayRateUnitCost" => $RatesPercentages->AssayRateUnitCost,
+            "ImportPercentage" => $RatesPercentages->ImportPercentage,
+            "MerchantChargePercentage" => $RatesPercentages->MerchantChargePercentage,
+            "PackageAndDispatchUnitCost" => $RatesPercentages->PackageAndDispatchUnitCost,
+            "PostageCostUnitCost" => $RatesPercentages->PostageCostUnitCost,
+            "PostageForProfitUnitCost" => $RatesPercentages->PostageForProfitUnitCost,
+            "VATPercentage" => $RatesPercentages->VATPercentage
         );
         $DBH = $this->adapter;
         $STH = $DBH->createStatement();
