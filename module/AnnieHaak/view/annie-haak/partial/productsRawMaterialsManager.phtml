@@ -131,8 +131,7 @@
                 for (var x = 0; x < data.rows.length; x++) {
                     temp += parseFloat(data.rows[x]['SubtotalRM']);
                 }
-                console.log('SubtotalRM UPDATE: ' + temp);
-                $("#financialCalculator").data('SubtotalRM', temp);
+                $("#financialCalculator").data('SubtotalRM', parseFloat(temp).toFixed(4));
             },
             colNames: [
                 'Raw Material Type',

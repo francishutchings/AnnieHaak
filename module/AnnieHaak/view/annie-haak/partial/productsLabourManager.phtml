@@ -29,7 +29,6 @@
             });
             return rtnData;
         }();
-
         function LabourItemsData() {
             $("#LabourQty").unbind('keyup change');
             $('#LabourQty').numericInput(false, false);
@@ -46,7 +45,7 @@
             return false;
         }
 
-        function updateLabourItemCallBack(LabourID, setselected) {
+        function updateLabourItemCallBack(LabourID) {
             $.ajax({
                 url: "/business-admin/labour-items/jsonLabourItemByType?LabourId=" + LabourID,
                 type: "GET",
@@ -84,8 +83,7 @@
                 for (var x = 0; x < data.rows.length; x++) {
                     temp += parseFloat(data.rows[x]['SubtotalLabour']);
                 }
-                console.log('SubtotalLabour UPDATE: ' + temp);
-                $("#financialCalculator").data('SubtotalLabour', temp);
+                $("#financialCalculator").data('SubtotalLabour', parseFloat(temp).toFixed(4));
             },
             colNames: [
                 'Labour Name',
@@ -154,7 +152,7 @@
         },
         {
             // EDIT
-            editCaption: "Edit this Labour Item",
+            editCaption: "Edit Labour Item",
             recreateForm: false,
             closeAfterEdit: true,
             viewPagerButtons: false,
@@ -169,6 +167,7 @@
         },
         {
             // ADD
+            addCaption: "Add Labour Item",
             closeAfterAdd: true,
             recreateForm: false,
             afterShowForm: LabourItemsData,
@@ -179,6 +178,8 @@
         },
         {
             // DELETE
+            caption: "Delete Labour Item",
+            afterShowForm: LabourItemsData,
             onclickSubmit: onclickSubmitLocal,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText

@@ -1,28 +1,42 @@
 var onclickSubmitLocal = function (options, postdata) {
-    console.log(postdata);
-    // update subtotals
+
+    console.log(options.caption);
+    //console.log(postdata);
+
+
+    switch (options.caption) {
+        case 'Add Labour Item':
+            temp = parseFloat($('#financialCalculator').data('SubtotalLabour'));
+            temp += parseFloat(postdata.SubtotalLabour);
+            console.log(temp);
+            $('#financialCalculator').data('SubtotalLabour', temp);
+            break;
+        case 'Edit Labour Item':
+
+            break;
+        case 'Delete Labour Item':
+
+            break;
+    }
+    updateFinancialSubTots();
 
     this.processing = true;
     return {};
 };
-
 var updateFinancialSubTots = function () {
 
     console.log('#financialCalculator RAN:');
     console.log($('#financialCalculator').data());
-
     temp = 0;
     temp += $('#financialCalculator').data('SubtotalRM');
     temp += $('#financialCalculator').data('SubtotalLabour');
-    temp += 1.1;//$('#financialCalculator').data('SubtotalDispatch');
+    temp += 1.1; //$('#financialCalculator').data('SubtotalDispatch');
 
     $('#subRawMaterialDsp').text($('#financialCalculator').data('SubtotalRM'));
     $('#subLabourDsp').text($('#financialCalculator').data('SubtotalLabour'));
     $('#subDispatchDsp').text(1.1);
-    $('#subTotalsDsp').text(temp);
-
+    $('#subTotalsDsp').text(parseFloat(temp).toFixed(4));
 };
-
 function sum(obj) {
     var sum = 0;
     for (var el in obj) {
@@ -38,13 +52,11 @@ $("#financialCalculator").data("SubtotalRM", 0);
 $("#financialCalculator").data("SubtotalLabour", 0);
 $("#financialCalculator").data("SubtotalDispatchPack", 0);
 $("#financialCalculator").data("SubtotalPackaging", 0);
-
 $(document).ready(function () {
 
     $("#RRP").change(function () {
         updateFinancials();
     });
-
     //=============================================
     $('#products').submit(function () {
         $('#rawMaterialsGridData').val(JSON.stringify($("#rawMaterialGrid").jqGrid('getGridParam', 'data')));

@@ -84,8 +84,7 @@
                 for (var x = 0; x < data.rows.length; x++) {
                     temp += parseFloat(data.rows[x]['SubtotalPackaging']);
                 }
-                console.log('SubtotalPackaging UPDATE: ' + temp);
-                $("#financialCalculator").data('SubtotalPackaging', temp);
+                $("#financialCalculator").data('SubtotalPackaging', parseFloat(temp).toFixed(4));
                 // Populate #financialCalculator
                 updateFinancialSubTots();
             },
