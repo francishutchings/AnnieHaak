@@ -11,7 +11,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
             <legend>Delete Supplier?</legend>
 
             <div class="form-group">
-                <div class="col-lg-10">
+                <div class="col-md-10">
                     <div class="panel panel-warning">
                         <div class="panel-heading">
                             <h3 class="panel-title">Warning!</h3>
@@ -25,7 +25,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
 
             <input type="hidden" name="id" value="<?php echo (int) $suppliers->RMSupplierID; ?>" />
             <div class="form-group">
-                <div class="col-lg-3 col-lg-offset-7">
+                <div class="col-md-3 col-md-offset-7">
                     <a href="/business-admin/suppliers" type="reset" class="btn btn-default">Cancel</a>
                     <button type="submit" class="btn btn-danger" name="del" value="Yes">Delete</button>
                 </div>

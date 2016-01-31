@@ -11,7 +11,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
             <legend>Delete Raw Material Type</legend>
 
             <div class="form-group">
-                <div class="col-lg-10">
+                <div class="col-md-10">
                     <div class="panel panel-warning">
                         <div class="panel-heading">
                             <h3 class="panel-title">Warning</h3>
@@ -25,7 +25,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
 
             <input type="hidden" name="id" value="<?php echo (int) $rawMaterialTypes->RMTypeID; ?>" />
             <div class="form-group">
-                <div class="col-lg-10 col-lg-offset-1">
+                <div class="col-md-10 col-md-offset-1">
                     <a href="/business-admin/raw-material-types" type="reset" class="btn btn-default btn-sm">Cancel</a>
                     <button type="submit" class="btn btn-danger btn-sm" name="del" value="Yes">Delete</button>
                 </div>

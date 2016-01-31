@@ -32,7 +32,6 @@ class AuthController extends AbstractActionController {
             $builder = new AnnotationBuilder();
             $this->form = $builder->createForm($user);
         }
-
         return $this->form;
     }
 

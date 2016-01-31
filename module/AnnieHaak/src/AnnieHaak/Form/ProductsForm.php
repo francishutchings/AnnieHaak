@@ -187,6 +187,18 @@ class ProductsForm extends Form {
         ));
 
         $this->add(array(
+            'name' => 'RRP',
+            'type' => 'Number',
+            'attributes' => array(
+                'id' => 'RRP',
+                'style' => 'width:60%',
+                'step' => '1',
+                'min' => 1,
+                'required' => true,
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'MinsToBuild',
             'type' => 'Number',
             'attributes' => array(

@@ -1,7 +1,6 @@
 <?php
 
 use Zend\Form\Element;
-use Zend\Form\Element\Captcha;
 use Zend\Captcha\Image as CaptchaImage;
 
 $form = $this->form;
@@ -56,37 +55,71 @@ $form->add(array(
 ));
 
 $form->prepare();
+?>
 
-echo '<div class="col-lg-8"><div class="well bs-component">';
+<div class="col-lg-9">
+    <div class="bs-component">
 
-echo $this->form()->openTag($form);
+        <?php echo $this->form()->openTag($form); ?>
 
-echo '<fieldset><legend>Login</legend>';
+        <fieldset>
+            <legend>Login</legend>
 
-echo '<div class="form-group"><label class="col-lg-2 control-label" for="username">Username:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('username'));
-echo '</div></div>';
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="username">Username:</label>
+                <div class="col-lg-9">
+                    <?php echo $this->formRow($form->get('username')); ?>
+                </div>
+            </div>
 
-echo '<div class="form-group"><label class="col-lg-2 control-label" for="password">Password:</label><div class="col-lg-10">';
-echo $this->formRow($form->get('password'));
-echo '</div></div>';
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="password">Password:</label>
+                <div class="col-lg-9">
+                    <?php echo $this->formRow($form->get('password')); ?>
+                </div>
+            </div>
 
-echo '<div class="form-group"><label class="col-lg-2 control-label" for="rememberme">Remember device?</label><div class="col-lg-10">';
-echo $this->formRow($form->get('rememberme'));
-echo '</div></div>';
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="rememberme">Remember device?</label>
+                <div class="col-lg-9">
+                    <?php echo $this->formRow($form->get('rememberme')); ?>
+                    <button
+                        title=""
+                        data-original-title=""
+                        type="button"
+                        class="btn btn-info margin-left-10"
+                        data-container="body"
+                        data-toggle="popover"
+                        data-placement="top"
+                        data-content="Enabling this will keep you logged in on this device until you deliberately log out. Do not enable this on public devices!">
+                        What does this mean?
+                    </button>
+                </div>
+            </div>
 
-echo '<div class="form-group"><label class="col-lg-2 control-label" for="captcha">Are you human?</label><div class="col-lg-10">';
-echo $this->formRow($form->get('captcha'));
-echo '</div></div>';
+            <div class="form-group">
+                <label class="col-lg-3 control-label" for="captcha">Are you human?</label>
+                <div class="col-lg-9">
+                    <?php echo $this->formRow($form->get('captcha')); ?>
+                </div>
+            </div>
 
-echo $this->formRow($form->get('security'));
+            <?php echo $this->formRow($form->get('security')); ?>
 
-echo '<div class="form-group"><div class="col-sm-offset-2 col-sm-10">';
-echo $this->formSubmit($form->get('submit'));
-echo '</div></div>';
+            <div class="form-group">
+                <div class="col-lg-offset-3 col-lg-9">
+                    <?php echo $this->formSubmit($form->get('submit')); ?>
+                </div>
+            </div>
 
-echo '</fieldset>';
+        </fieldset>
 
-echo $this->form()->closeTag();
+        <?php echo $this->form()->closeTag(); ?>
 
-echo '</div></div>';
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover();
+    });
+</script>

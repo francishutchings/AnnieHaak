@@ -16,15 +16,15 @@ $form->prepare();
         <?php echo $this->formHidden($form->get('LabourID')); ?>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="LabourName">Item Name:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="LabourName">Item Name:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('LabourName')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="LabourUnitCost">Unit Cost:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="LabourUnitCost">Unit Cost:</label>
+            <div class="col-md-10">
                 <div class="input-group">
                     <div class="input-group-addon">£</div>
                     <?php echo $this->formRow($form->get('LabourUnitCost')); ?>
@@ -33,14 +33,14 @@ $form->prepare();
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="LabourCode">Code:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="LabourCode">Code:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('LabourCode')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-lg-3 col-lg-offset-9">
+            <div class="col-md-3 col-md-offset-9">
                 <a href="/business-admin/labour-items" type="reset" class="btn btn-warning btn-default margin-right-10">Cancel</a>
                 <?php echo $this->formSubmit($form->get('submit')); ?>
             </div>

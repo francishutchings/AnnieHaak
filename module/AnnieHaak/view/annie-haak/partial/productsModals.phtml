@@ -1,0 +1,70 @@
+<div class="modal fade" id="buildProductName" tabindex="-1" role="dialog" aria-labelledby="buildProductNameLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="buildProductNameLabel">Build Product Name</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="Name">Name:</label>
+                    <div class="col-md-9">
+                        <?php echo $this->formRow($form->get('Name')); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="NameCharm">Choose Charm:</label>
+                    <div class="col-md-9">
+                        <?php echo $this->formRow($form->get('NameCharm')); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="NameCrystal">Choose Crystal:</label>
+                    <div class="col-md-9">
+                        <?php echo $this->formRow($form->get('NameCrystal')); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="NameColour">Choose Colour:</label>
+                    <div class="col-md-9">
+                        <?php echo $this->formRow($form->get('NameColour')); ?>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="NameLength">Choose Length:</label>
+                    <div class="col-md-9">
+                        <?php echo $this->formRow($form->get('NameLength')); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="buildProductNameSave" class="btn btn-success" data-dismiss="modal">Done</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
+<div class="modal fade" id="currentUlrModal" tabindex="-1" role="dialog" aria-labelledby="currentUlrLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="currentUlrLabel">Current Image</h4>
+            </div>
+            <div class="modal-body">
+                <div class="center-margin">
+                    <img src="" id="currentUlrDisplay" class="img-responsive"  />
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

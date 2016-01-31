@@ -1,4 +1,6 @@
 <?php
+echo $this->partial('annie-haak/partial/productsNavbar.phtml');
+
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
 #dump($form->getObject());
@@ -24,7 +26,7 @@ echo $this->form()->openTag($form)
         <?php echo $this->formHidden($form->get('ProductID')) ?>
 
         <div class="form-group">
-            <div class="col-lg-10 col-lg-offset-2">
+            <div class="col-md-10 col-md-offset-2">
                 <?php if ($form->getObject()->Current == 0) : ?>
                     <div class="alert alert-danger text-center bold">
                         Not Live
@@ -38,67 +40,67 @@ echo $this->form()->openTag($form)
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="ProductName">Product Name:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="ProductName">Product Name:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('ProductName')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="SKU">SKU:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="SKU">SKU:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('SKU')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="CollectionID">Collection:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="CollectionID">Collection:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('CollectionID')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="ProductTypeID">Product Type:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="ProductTypeID">Product Type:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('ProductTypeID')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="Strands">Strands:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="Strands">Strands:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('Strands')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="IntroDate">Date Introduced:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="IntroDate">Date Introduced:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('IntroDate')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="MinsToBuild">Mins To Build:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="MinsToBuild">Mins To Build:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('MinsToBuild')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="QtyOrderedLastPeriod">Sold Last Period:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="QtyOrderedLastPeriod">Sold Last Period:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('QtyOrderedLastPeriod')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="CurrentURL">Current URL:</label>
-            <div class="col-lg-9">
+            <label class="col-md-2 control-label" for="CurrentURL">Current URL:</label>
+            <div class="col-md-9">
                 <?php echo $this->formRow($form->get('CurrentURL')); ?>
             </div>
-            <div class="col-lg-1">
+            <div class="col-md-1">
                 <a href="#" title="View image">
                     <img src="<?php echo $currentUrl; ?>" id="currentUrlThumb" class="img-thumbnail"  />
                 </a>
@@ -106,11 +108,11 @@ echo $this->form()->openTag($form)
         </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="OldURL">Old URL:</label>
-            <div class="col-lg-9">
+            <label class="col-md-2 control-label" for="OldURL">Old URL:</label>
+            <div class="col-md-9">
                 <?php echo $this->formRow($form->get('OldURL')); ?>
             </div>
-            <div class="col-lg-1">
+            <div class="col-md-1">
                 <a href="#" title="View image">
                     <img src="<?php echo $oldUrl; ?>" id="oldUrlThumb" class="img-thumbnail"  />
                 </a>
@@ -118,11 +120,11 @@ echo $this->form()->openTag($form)
         </div>
 
         <div class="form-group" id="DescBlock">
-            <label class="col-lg-2 control-label" for="Description">Description:</label>
-            <div class="col-lg-10">
+            <label class="col-md-2 control-label" for="Description">Description:</label>
+            <div class="col-md-10">
                 <?php echo $this->formRow($form->get('Description')); ?>
             </div>
-            <div class="col-lg-10 col-lg-offset-2">
+            <div class="col-md-10 col-md-offset-2">
                 <div class="radio radio-danger pull-left margin-right-5">
                     <?php if ($form->getObject()->DescriptionStatus == 0) : ?>
                         <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
@@ -168,13 +170,13 @@ echo $this->form()->openTag($form)
 
         <div class="form-group">
 
-            <label class="col-lg-2 control-label" for="Description">Options:</label>
+            <label class="col-md-2 control-label" for="Description">Options:</label>
 
-            <div class="col-lg-10">
+            <div class="col-md-10">
 
                 <div class="row" id="optionsBlock">
 
-                    <div class="col-lg-2">
+                    <div class="col-md-2">
                         <div class="checkbox checkbox-success">
                             <?php echo $this->formRow($form->get('KeyPiece')); ?>
                             <label for="KeyPiece">
@@ -195,7 +197,7 @@ echo $this->form()->openTag($form)
                         </div>
                     </div>
 
-                    <div class="col-lg-2">
+                    <div class="col-md-2">
                         <div class="checkbox checkbox-success">
                             <?php echo $this->formRow($form->get('Stacks')); ?>
                             <label for="Stacks">
@@ -216,7 +218,7 @@ echo $this->form()->openTag($form)
                         </div>
                     </div>
 
-                    <div class="col-lg-2">
+                    <div class="col-md-2">
                         <div class="checkbox checkbox-success">
                             <?php echo $this->formRow($form->get('Gold')); ?>
                             <label for="Gold">
@@ -237,7 +239,7 @@ echo $this->form()->openTag($form)
                         </div>
                     </div>
 
-                    <div class="col-lg-2">
+                    <div class="col-md-2">
                         <div class="checkbox checkbox-success">
                             <?php echo $this->formRow($form->get('Engraved')); ?>
                             <label for="Engraved">
@@ -258,7 +260,7 @@ echo $this->form()->openTag($form)
                         </div>
                     </div>
 
-                    <div class="col-lg-4">
+                    <div class="col-md-4">
                         <div class="checkbox checkbox-success">
                             <?php echo $this->formRow($form->get('ExcludeFromTrade')); ?>
                             <label for="ExcludeFromTrade">
@@ -286,14 +288,14 @@ echo $this->form()->openTag($form)
 
     <fieldset>
         <legend>Raw Materials</legend>
-        <?php echo $this->UIProductRawMaterialsManager($productId); ?>
+        <?php echo $this->partial('annie-haak/partial/productsRawMaterialsManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
     <fieldset>
         <legend>Labour</legend>
-        <?php echo $this->UIProductLabourManager($productId); ?>
+        <?php echo $this->partial('annie-haak/partial/productsLabourManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
@@ -306,18 +308,18 @@ echo $this->form()->openTag($form)
 
     <fieldset>
         <legend>Packaging</legend>
-        <?php echo $this->UIProductPackagingManager($productId); ?>
+        <?php echo $this->partial('annie-haak/partial/productsPackagingManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
     <fieldset>
         <legend>Financials</legend>
-
+        <?php echo $this->partial('annie-haak/partial/productsFinancials.phtml'); ?>
     </fieldset>
 
     <div class="form-group">
-        <div class="col-lg-3 col-lg-offset-9">
+        <div class="col-md-3 col-md-offset-9">
             <a href="/business-admin/raw-material-types" type="reset" class="btn btn-default">Cancel</a>
             <?php echo $this->formSubmit($form->get('submit')); ?>
         </div>
@@ -325,76 +327,7 @@ echo $this->form()->openTag($form)
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
-    <div class="modal fade" id="buildProductName" tabindex="-1" role="dialog" aria-labelledby="buildProductNameLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="buildProductNameLabel">Build Product Name</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="Name">Name:</label>
-                        <div class="col-lg-9">
-                            <?php echo $this->formRow($form->get('Name')); ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="NameCharm">Choose Charm:</label>
-                        <div class="col-lg-9">
-                            <?php echo $this->formRow($form->get('NameCharm')); ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="NameCrystal">Choose Crystal:</label>
-                        <div class="col-lg-9">
-                            <?php echo $this->formRow($form->get('NameCrystal')); ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="NameColour">Choose Colour:</label>
-                        <div class="col-lg-9">
-                            <?php echo $this->formRow($form->get('NameColour')); ?>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-lg-3 control-label" for="NameLength">Choose Length:</label>
-                        <div class="col-lg-9">
-                            <?php echo $this->formRow($form->get('NameLength')); ?>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" id="buildProductNameSave" class="btn btn-success" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
-
-    <div class="modal fade" id="currentUlrModal" tabindex="-1" role="dialog" aria-labelledby="currentUlrLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="currentUlrLabel">Current Image</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="center-margin">
-                        <img src="" id="currentUlrDisplay" class="img-responsive"  />
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php echo $this->partial('annie-haak/partial/productsModals.phtml'); ?>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
@@ -403,113 +336,6 @@ echo $this->form()->openTag($form)
 </div>
 
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
-<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
-<script>
-    subtotals = {};
-    subtotals.rawMaterials = 0;
-    subtotals.labour = 0;
-    subtotals.dispatchPack = 0;
-    subtotals.packaging = 0;
-    onclickSubmitLocal = function (options, postdata) {
-        console.log(postdata);
-        this.processing = true;
-        return {};
-    };
+<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js?v=1"></script>
+<script type="application/javascript" src="/js/productsAddEdit.js?v=1"></script>
 
-    $(document).ready(function () {
-        $('#products').submit(function () {
-            $('#rawMaterialsGridData').val(JSON.stringify($("#rawMaterialGrid").jqGrid('getGridParam', 'data')));
-        });
-        //=============================================
-        $('#DescRadio1,#DescRadio2,#DescRadio3').change(function (elem) {
-            $('#DescBlock').find("span").each(function (index) {
-                $(this).removeClass().addClass('label label-default');
-            });
-            switch (elem.currentTarget.id) {
-                case 'DescRadio1':
-                    $(elem.currentTarget).next().children().switchClass('label-default', 'label-danger', 500, 'easeInOutQuad');
-                    break;
-                case 'DescRadio2':
-                    $(elem.currentTarget).next().children().switchClass('label-default', 'label-warning', 500, 'easeInOutQuad');
-                    break;
-                case 'DescRadio3':
-                    $(elem.currentTarget).next().children().switchClass('label-default', 'label-success', 500, 'easeInOutQuad');
-                    break;
-            }
-        });
-        //=============================================
-        $('#optionsBlock input:checkbox').each(function () {
-            $(this).change(function () {
-                if ($(this).is(':checked')) {
-                    $(this).next().children().switchClass('label-default', 'label-success', 500, 'easeInOutQuad');
-                } else {
-                    $(this).next().children().switchClass('label-success', 'label-default', 500, 'easeInOutQuad');
-                }
-            });
-        });
-        //=============================================
-        $('#ProductName').focus(function () {
-            $('#buildProductName').modal('show');
-            $('#Name').focus();
-        });
-        $('#buildProductName').on('hidden.bs.modal', function () {
-            $('#SKU').focus();
-        });
-        //=============================================
-        $("#IntroDate").datepicker({
-            autoclose: true,
-            dateFormat: "yy-mm-dd",
-            format: 'dd-mm-yy',
-            altFormat: "yy-mm-dd",
-            orientation: 'bottom',
-            changeMonth: true,
-            changeYear: true
-        });
-        //=============================================
-        $("#Name").bind('keyup', function () {
-            concatName();
-        });
-        $("#Charm").bind('change', function () {
-            concatName();
-        });
-        $("#Chrystal").bind('change', function () {
-            concatName();
-        });
-        $("#Colour").bind('change', function () {
-            concatName();
-        });
-        $("#Length").bind('change', function () {
-            concatName();
-        });
-        $("#buildProductNameSave").click(function () {
-            concatName();
-        });
-        concatName = function () {
-            $("#ProductName").val($("#Name").val());
-            if ($("#NameCharm").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm").val());
-            }
-            if ($("#NameCrystal").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCrystal").val());
-            }
-            if ($("#NameColour").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour").val());
-            }
-            if ($("#NameLength").val()) {
-                $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength").val());
-            }
-        };
-        //=============================================
-        $("#currentUrlThumb").click(function () {
-            $('#currentUlrDisplay').attr("src", $('#CurrentURL').val());
-            $('#currentUlrModal').modal('show');
-            return false;
-        });
-        $("#oldUrlThumb").click(function () {
-            $('#currentUlrDisplay').attr("src", $('#OldURL').val());
-            $('#currentUlrModal').modal('show');
-            return false;
-        });
-
-    });
-</script>

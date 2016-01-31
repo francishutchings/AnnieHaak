@@ -1,0 +1,234 @@
+<style type="text/css">
+    #financialBlock .row {
+        border-bottom: 1px dotted #c0c0c0;
+    }
+    .currSymbol::before{
+        content: " £";
+    }
+    .percSymbol::after{
+        content: "%";
+    }
+</style>
+
+<div id="financialCalculator">
+
+    <div class="row-fluid">
+        <div class="col-md-10 col-md-offset-2 altTableRowBackColour">
+
+            <h4>Subtotals:</h4>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Raw Material Cost</div>
+                    <div class="col-md-2 currSymbol" id="subRawMaterialDsp">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Labour Cost</div>
+                    <div class="col-md-2 currSymbol" id="subLabourDsp">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Dispatch</div>
+                    <div class="col-md-2 currSymbol" id="subDispatchDsp">00:00</div>
+                </div>
+            </div>
+
+            <div class="row bold text-primary">
+                <div class="col-md-12">
+                    <div class="col-md-3">Total of Above</div>
+                    <div class="col-md-2 currSymbol" id="subTotalsDsp">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Imports &AMP; Charges (12%)</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                </div>
+            </div>
+
+            <div class="row bold text-primary">
+                <div class="col-md-12">
+                    <div class="col-md-3">Total for Mark Up</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-7 currSymbol">00:00 (x4)</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Box Cost (Not for Trade)</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-7 currSymbol">00:00 (x4)</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Box Cost</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-7 currSymbol">00:00 (x4)</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Assay Cost</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-7 currSymbol">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Merchant Charge (5%)</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-7 currSymbol">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">Postage</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-7 text-muted">No charge</div>
+                </div>
+            </div>
+
+            <div class="row bold text-primary">
+                <div class="col-md-12">
+                    <div class="col-md-3">Ex VAT Cost</div>
+                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-7 currSymbol">00:00</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="col-md-10 col-md-offset-2 altTableRowBackColour">
+
+            <h4>Retail:</h4>
+
+            <div class="row">
+                <div class="col-md-3 col-md-offset-8 text-right">Budget without post</div>
+                <div class="col-md-1 percSymbol">00</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 ">RRP Initial</div>
+                <div class="col-md-2 currSymbol">
+                    <?php echo $this->formRow($form->get('RRP')); ?>
+                </div>
+                <div class="col-md-2 currSymbol">00:00</div>
+                <div class="col-md-2 currSymbol">00:00</div>
+                <div class="col-md-2 currSymbol">00:00</div>
+                <div class="col-md-1 percSymbol">00</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3 ">Auto add postage in price</div>
+                <div class="col-md-2 currSymbol">00:00</div>
+                <div class="col-md-2">Less VAT</div>
+                <div class="col-md-2">Cost</div>
+                <div class="col-md-2">Retail Profit</div>
+                <div class="col-md-1 percSymbol">00</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3  text-primary bold">New RRP</div>
+                <div class="col-md-2 currSymbol text-primary bold">00:00</div>
+                <div class="col-md-2">00:00</div>
+                <div class="col-md-2 currSymbol">00:00</div>
+                <div class="col-md-2 currSymbol">00:00</div>
+                <div class="col-md-1 percSymbol">00</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-9"></div>
+                <div class="col-md-2 text-right">Target</div>
+                <div class="col-md-1 percSymbol">00</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row-fluid">
+        <div class="col-md-10 col-md-offset-2 altTableRowBackColour">
+
+            <h4>Trade:</h4>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="col-md-12">RRP</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-12">Ex VAT</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="col-md-12">Trade Price</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-12">Cost</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-12">Sub Total</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-12">Add Back</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-12">Trade Profit</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+                <div class="col-md-2">
+                    <div class="col-md-12">Actual</div>
+                    <div class="col-md-12 currSymbol">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-2 col-md-offset-9 text-right">Budget</div>
+                <div class="col-md-1 percSymbol">00</div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<div class="clearfix margin-bottom-20"></div>
