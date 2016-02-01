@@ -132,6 +132,7 @@
                     temp += parseFloat(data.rows[x]['SubtotalRM']);
                 }
                 $("#financialCalculator").data('SubtotalRM', parseFloat(temp).toFixed(4));
+                updateFinancialSubTots();
             },
             colNames: [
                 'Raw Material Type',
@@ -233,7 +234,7 @@
             closeOnEscape: true,
             savekey: [true, 13],
             afterShowForm: RawMaterialData,
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompleteRawMaterials,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }
@@ -243,14 +244,14 @@
             closeAfterAdd: true,
             recreateForm: false,
             afterShowForm: RawMaterialData,
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompleteRawMaterials,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }
         },
         {
             // DELETE
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompleteRawMaterials,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }

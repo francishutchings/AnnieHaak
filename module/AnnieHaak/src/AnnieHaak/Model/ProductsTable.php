@@ -5,6 +5,7 @@ namespace AnnieHaak\Model;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
+use Zend\Db\Adapter\Adapter;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
 
@@ -143,6 +144,45 @@ class ProductsTable {
         $select->order('P.ProductName ASC');
         $resultSet = $this->tableGateway->selectWith($select);
         return $resultSet;
+    }
+
+    public function getProductNameElements(Adapter $dbAdapter) {
+        #http://codingexplained.com/coding/php/zend-framework/multiple-result-sets-from-stored-procedure-in-zf2
+
+        $driver = $dbAdapter->getDriver();
+        $connection = $driver->getConnection();
+        $result = $connection->execute('CALL productNameElements');
+        $statement = $result->getResource();
+
+        $resultSet1 = $statement->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($resultSet1 as $row) {
+            $charms[$row->CharmIdx] = $row->CharmName;
+        }
+
+        $statement->nextRowSet();
+        $resultSet2 = $statement->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($resultSet2 as $row) {
+            $colours[$row->ColourIdx] = $row->ColourName;
+        }
+
+        $statement->nextRowSet();
+        $resultSet3 = $statement->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($resultSet3 as $row) {
+            $crystals[$row->CrystalIdx] = $row->CrystalName;
+        }
+
+        $statement->nextRowSet();
+        $resultSet4 = $statement->fetchAll(\PDO::FETCH_OBJ);
+        foreach ($resultSet4 as $row) {
+            $lengths[$row->LengthId] = $row->Length . 'cm';
+        }
+
+        return array(
+            'charms' => $charms,
+            'colours' => $colours,
+            'crystals' => $crystals,
+            'lengths' => $lengths
+        );
     }
 
 }

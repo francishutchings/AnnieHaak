@@ -85,7 +85,6 @@
                     temp += parseFloat(data.rows[x]['SubtotalPackaging']);
                 }
                 $("#financialCalculator").data('SubtotalPackaging', parseFloat(temp).toFixed(4));
-                // Populate #financialCalculator
                 updateFinancialSubTots();
             },
             colNames: [
@@ -163,7 +162,7 @@
             closeOnEscape: true,
             savekey: [true, 13],
             afterShowForm: PackagingData,
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompletePackaging,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }
@@ -173,14 +172,14 @@
             closeAfterAdd: true,
             recreateForm: false,
             afterShowForm: PackagingData,
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompletePackaging,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }
         },
         {
             // DELETE
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompletePackaging,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }

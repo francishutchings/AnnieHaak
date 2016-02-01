@@ -45,11 +45,7 @@ class ProductsForm extends Form {
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Charm ...',
-                'value_options' => array(
-                    'Charm 1' => 'Charm 1',
-                    'Charm 2' => 'Charm 2',
-                    'Charm 3' => 'Charm 3'
-                ),
+                'value_options' => array(),
             ),
             'attributes' => array(
                 'id' => 'NameCharm',
@@ -62,11 +58,7 @@ class ProductsForm extends Form {
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Crystal ...',
-                'value_options' => array(
-                    'Crystal 1' => 'Crystal 1',
-                    'Crystal 2' => 'Crystal 2',
-                    'Crystal 3' => 'Crystal 3'
-                ),
+                'value_options' => array(),
             ),
             'attributes' => array(
                 'id' => 'NameCrystal',
@@ -79,11 +71,7 @@ class ProductsForm extends Form {
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Colour ...',
-                'value_options' => array(
-                    'Colour 1' => 'Colour 1',
-                    'Colour 2' => 'Colour 2',
-                    'Colour 3' => 'Colour 3'
-                ),
+                'value_options' => array(),
             ),
             'attributes' => array(
                 'id' => 'NameColour',
@@ -96,13 +84,7 @@ class ProductsForm extends Form {
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Length ...',
-                'value_options' => array(
-                    '14cm' => '14cm',
-                    '17cm' => '17cm',
-                    '19cm' => '19cm',
-                    '41cm' => '41cm',
-                    '46cm' => '46cm'
-                ),
+                'value_options' => array(),
             ),
             'attributes' => array(
                 'id' => 'NameLength',
@@ -194,6 +176,7 @@ class ProductsForm extends Form {
                 'style' => 'width:60%',
                 'step' => '1',
                 'min' => 1,
+                'value' => 0,
                 'required' => true,
             ),
         ));

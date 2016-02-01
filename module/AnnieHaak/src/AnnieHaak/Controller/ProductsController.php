@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\Products;
 use AnnieHaak\Form\ProductsForm;
+use AnnieHaak\Model\RatesPercentages;
 use Zend\View\Model\JsonModel;
 
 class ProductsController extends AbstractActionController {
@@ -14,6 +15,7 @@ class ProductsController extends AbstractActionController {
     protected $collectionsTable;
     protected $productTypesTable;
     protected $rawMaterialsTable;
+    protected $ratesPercentagesObj;
 
     public function indexAction() {
         return new ViewModel(array(
@@ -72,6 +74,22 @@ class ProductsController extends AbstractActionController {
     public function addAction() {
         $form = new ProductsForm();
 
+        $sm = $this->getServiceLocator();
+        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+        $productNameElemes = $this->getProductsTable()->getProductNameElements($dbAdapter);
+
+        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
+        $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
+        foreach ($ratesPercentages as $key => $value) {
+            $ratesPercentagesData[$key] = $value;
+        }
+
+
+        $form->get('NameCharm')->setValueOptions($productNameElemes['charms']);
+        $form->get('NameCrystal')->setValueOptions($productNameElemes['crystals']);
+        $form->get('NameColour')->setValueOptions($productNameElemes['colours']);
+        $form->get('NameLength')->setValueOptions($productNameElemes['lengths']);
+
         $selectData = $this->popSelectMenus();
         $form->get('CollectionID')->setValueOptions($selectData['collectionsData']);
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
@@ -92,7 +110,8 @@ class ProductsController extends AbstractActionController {
             }
         }
         return array(
-            'form' => $form
+            'form' => $form,
+            'ratesPercentages' => $ratesPercentagesData
         );
     }
 

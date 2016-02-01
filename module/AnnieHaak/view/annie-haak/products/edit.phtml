@@ -327,7 +327,15 @@ echo $this->form()->openTag($form)
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
-    <?php echo $this->partial('annie-haak/partial/productsModals.phtml'); ?>
+    <?php
+    echo $this->partial('annie-haak/partial/productsModals.phtml', array(
+        'Name' => $form->get('Name'),
+        'NameCharm' => $form->get('NameCharm'),
+        'NameCrystal' => $form->get('NameCrystal'),
+        'NameColour' => $form->get('NameColour'),
+        'NameLength' => $form->get('NameLength')
+    ));
+    ?>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 

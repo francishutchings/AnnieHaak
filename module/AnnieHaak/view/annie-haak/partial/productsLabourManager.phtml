@@ -84,6 +84,7 @@
                     temp += parseFloat(data.rows[x]['SubtotalLabour']);
                 }
                 $("#financialCalculator").data('SubtotalLabour', parseFloat(temp).toFixed(4));
+                updateFinancialSubTots();
             },
             colNames: [
                 'Labour Name',
@@ -160,7 +161,7 @@
             closeOnEscape: true,
             savekey: [true, 13],
             afterShowForm: LabourItemsData,
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompleteLabour,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }
@@ -171,7 +172,7 @@
             closeAfterAdd: true,
             recreateForm: false,
             afterShowForm: LabourItemsData,
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompleteLabour,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }
@@ -180,7 +181,7 @@
             // DELETE
             caption: "Delete Labour Item",
             afterShowForm: LabourItemsData,
-            onclickSubmit: onclickSubmitLocal,
+            afterComplete: afterCompleteLabour,
             errorTextFormat: function (data) {
                 return 'Error: ' + data.responseText
             }

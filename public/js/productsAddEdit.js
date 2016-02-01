@@ -1,61 +1,84 @@
-var onclickSubmitLocal = function (options, postdata) {
+console.log('financialCalculator - INI ASSIGN');
+$("#financialCalculator").data("SubtotalRM", 0);
+$("#financialCalculator").data("SubtotalLabour", 0);
+$("#financialCalculator").data("SubtotalDispatch", '1.1');
+$("#financialCalculator").data("SubtotalPackaging", 0);
 
-    console.log(options.caption);
-    //console.log(postdata);
-
-
-    switch (options.caption) {
-        case 'Add Labour Item':
-            temp = parseFloat($('#financialCalculator').data('SubtotalLabour'));
-            temp += parseFloat(postdata.SubtotalLabour);
-            console.log(temp);
-            $('#financialCalculator').data('SubtotalLabour', temp);
-            break;
-        case 'Edit Labour Item':
-
-            break;
-        case 'Delete Labour Item':
-
-            break;
+//===========================================================================================
+var afterCompleteRawMaterials = function (options, postdata) {
+    rawMaterialGridData = $("#rawMaterialGrid").jqGrid("getGridParam", "data");
+    subtotalRawMaterialAll = $.map(rawMaterialGridData, function (item) {
+        return item.SubtotalRM;
+    });
+    var subTotal = 0;
+    for (var i in subtotalRawMaterialAll) {
+        subTotal = parseFloat(subTotal) + parseFloat(subtotalRawMaterialAll[i]);
     }
+    $('#financialCalculator').data('SubtotalRM', parseFloat(subTotal).toFixed(4));
     updateFinancialSubTots();
-
     this.processing = true;
     return {};
 };
+
+var afterCompleteLabour = function (options, postdata) {
+    labourItemsGridData = $("#labourItemsGrid").jqGrid("getGridParam", "data");
+    subtotalLabourAll = $.map(labourItemsGridData, function (item) {
+        return item.SubtotalLabour;
+    });
+    var subTotal = 0;
+    for (var i in subtotalLabourAll) {
+        subTotal = parseFloat(subTotal) + parseFloat(subtotalLabourAll[i]);
+    }
+    $('#financialCalculator').data('SubtotalLabour', parseFloat(subTotal).toFixed(4));
+    updateFinancialSubTots();
+    this.processing = true;
+    return {};
+};
+
+var afterCompletePackaging = function (options, postdata) {
+    packagingItemsGridData = $("#packagingGrid").jqGrid("getGridParam", "data");
+    subtotalPackagingAll = $.map(packagingItemsGridData, function (item) {
+        return item.SubtotalPackaging;
+    });
+    var subTotal = 0;
+    for (var i in subtotalPackagingAll) {
+        subTotal = parseFloat(subTotal) + parseFloat(subtotalPackagingAll[i]);
+    }
+    $('#financialCalculator').data('SubtotalPackaging', parseFloat(subTotal).toFixed(4));
+    updateFinancialSubTots();
+    this.processing = true;
+    return {};
+};
+
+//===========================================================================================
 var updateFinancialSubTots = function () {
 
-    console.log('#financialCalculator RAN:');
-    console.log($('#financialCalculator').data());
+    //console.log('updateFinancialSubTots() - RAN:');
+    //console.log($('#financialCalculator').data());
+
     temp = 0;
-    temp += $('#financialCalculator').data('SubtotalRM');
-    temp += $('#financialCalculator').data('SubtotalLabour');
-    temp += 1.1; //$('#financialCalculator').data('SubtotalDispatch');
+    subTotal = '0.0';
+
+    temp = $('#financialCalculator').data('SubtotalRM');
+    subTotal = parseFloat(subTotal) + parseFloat(temp);
+
+    temp = $('#financialCalculator').data('SubtotalLabour');
+    subTotal = parseFloat(subTotal) + parseFloat(temp);
+
+    temp = $('#financialCalculator').data('SubtotalDispatch');
+    subTotal = parseFloat(subTotal) + parseFloat(temp);
 
     $('#subRawMaterialDsp').text($('#financialCalculator').data('SubtotalRM'));
     $('#subLabourDsp').text($('#financialCalculator').data('SubtotalLabour'));
-    $('#subDispatchDsp').text(1.1);
-    $('#subTotalsDsp').text(parseFloat(temp).toFixed(4));
+    $('#subDispatchDsp').text($('#financialCalculator').data('SubtotalDispatch'));
+    $('#subTotalsDsp').text(parseFloat(subTotal).toFixed(4));
 };
-function sum(obj) {
-    var sum = 0;
-    for (var el in obj) {
-        if (obj.hasOwnProperty(el)) {
-            sum += parseFloat(obj[el]);
-        }
-    }
-    return sum;
-}
 
-console.log('financialCalculator - ASSIGN');
-$("#financialCalculator").data("SubtotalRM", 0);
-$("#financialCalculator").data("SubtotalLabour", 0);
-$("#financialCalculator").data("SubtotalDispatchPack", 0);
-$("#financialCalculator").data("SubtotalPackaging", 0);
+//===========================================================================================
 $(document).ready(function () {
 
     $("#RRP").change(function () {
-        updateFinancials();
+        //updateFinancialSubTots();
     });
     //=============================================
     $('#products').submit(function () {
@@ -128,16 +151,16 @@ $(document).ready(function () {
     concatProductName = function () {
         $("#ProductName").val($("#Name").val());
         if ($("#NameCharm").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm").val());
+            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm option:selected").text());
         }
         if ($("#NameCrystal").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCrystal").val());
+            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCrystal option:selected").text());
         }
         if ($("#NameColour").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour").val());
+            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour option:selected").text());
         }
         if ($("#NameLength").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength").val());
+            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength option:selected").text());
         }
     };
     //=============================================
