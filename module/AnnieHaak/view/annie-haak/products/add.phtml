@@ -251,6 +251,11 @@ echo $this->form()->openTag($form)
 
     <fieldset>
         <legend>Dispatch</legend>
+        <?php
+        echo $this->partial('annie-haak/partial/productsDispatchManager.phtml', array(
+            'packageAndDispatchUnitCost' => $ratesPercentages['PackageAndDispatchUnitCost']
+        ));
+        ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->

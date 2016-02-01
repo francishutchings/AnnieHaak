@@ -1,7 +1,7 @@
 console.log('financialCalculator - INI ASSIGN');
 $("#financialCalculator").data("SubtotalRM", 0);
 $("#financialCalculator").data("SubtotalLabour", 0);
-$("#financialCalculator").data("SubtotalDispatch", '1.1');
+$("#financialCalculator").data("SubtotalDispatch", 0);
 $("#financialCalculator").data("SubtotalPackaging", 0);
 
 //===========================================================================================
@@ -72,6 +72,9 @@ var updateFinancialSubTots = function () {
     $('#subLabourDsp').text($('#financialCalculator').data('SubtotalLabour'));
     $('#subDispatchDsp').text($('#financialCalculator').data('SubtotalDispatch'));
     $('#subTotalsDsp').text(parseFloat(subTotal).toFixed(4));
+
+    //$('#subImportCharges').text(parseFloat(subTotal).toFixed(4));
+
 };
 
 //===========================================================================================

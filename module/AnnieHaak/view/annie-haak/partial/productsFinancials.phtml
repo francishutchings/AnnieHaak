@@ -10,7 +10,7 @@
     }
 </style>
 
-<?php dump($ratesPercentages); ?>
+<?php #dump($ratesPercentages); ?>
 
 <div id="financialCalculator">
 
@@ -18,6 +18,8 @@
         <div class="col-md-10 col-md-offset-2 altTableRowBackColour">
 
             <h4>Subtotals:</h4>
+
+            <input type="text" style="border:none;width: 60%;background-color: #f5f0e5;" value="00:00" />
 
             <div class="row">
                 <div class="col-md-12">
@@ -53,8 +55,8 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-3">Imports &AMP; Charges (12%)</div>
-                    <div class="col-md-2 currSymbol">00:00</div>
+                    <div class="col-md-3">Import &AMP; Charges (<?php echo $ratesPercentages['ImportPercentage']; ?>%)</div>
+                    <div class="col-md-2 currSymbol" id="subImportCharges">00:00</div>
                 </div>
             </div>
 
@@ -92,7 +94,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-3">Merchant Charge (5%)</div>
+                    <div class="col-md-3">Merchant Charge (<?php echo $ratesPercentages['MerchantChargePercentage']; ?>%)</div>
                     <div class="col-md-2 currSymbol">00:00</div>
                     <div class="col-md-7 currSymbol">00:00</div>
                 </div>
@@ -148,7 +150,7 @@
                 <div class="col-md-2">Less VAT</div>
                 <div class="col-md-2">Cost</div>
                 <div class="col-md-2">Retail Profit</div>
-                <div class="col-md-1 percSymbol">00</div>
+                <div class="col-md-1">Actual</div>
             </div>
 
             <div class="row">

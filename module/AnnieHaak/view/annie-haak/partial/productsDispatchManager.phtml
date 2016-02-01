@@ -1,0 +1,94 @@
+<input type="hidden" name="dispatchGridData" id="dispatchGridData" />
+<div class="col-md-10 col-md-offset-2">
+    <div class="table-responsive">
+        <table id="dispatchGrid"></table>
+        <div id="dispatchGridPager"></div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        'use strict';
+        $("#dispatchGrid").jqGrid({
+            colNames: [
+                'Name',
+                'Code',
+                'Quantity',
+                'Unit Cost',
+                'Subtotal'
+            ],
+            colModel: [
+                {
+                    name: 'Name',
+                    width: 200,
+                    editable: false,
+                },
+                {
+                    name: 'DispatchCode',
+                    width: 75,
+                    editable: false,
+                },
+                {
+                    name: 'DispatchQty',
+                    width: 75,
+                    editable: false
+                },
+                {
+                    name: 'DispatchUnitCost',
+                    width: 75,
+                    editable: false
+                },
+                {
+                    name: 'SubtotalDispatch',
+                    width: 75,
+                    editable: false
+                }
+            ],
+            styleUI: 'Bootstrap',
+            responsive: true,
+            loadonce: true,
+            pager: '#dispatchGridPager',
+            datatype: "local",
+            autowidth: true,
+            shrinkToFit: true,
+            altRows: true,
+            altclass: 'altTableRowBackColour',
+            loadComplete: function () {
+                $('#dispatchGridPager_center').remove();
+                $('#dispatchGridPager_left').remove();
+            },
+            jsonReader: {
+                repeatitems: false
+            },
+            rowNum: 1,
+            viewrecords: true,
+            height: "auto",
+            ignoreCase: true
+        });
+        $("#dispatchGrid").jqGrid('navGrid', '#dispatchGridPager',
+                {
+                    add: false,
+                    edit: false,
+                    del: false,
+                },
+                {},
+                {},
+                {},
+                {
+                    multipleSearch: false,
+                    multipleGroup: false
+                });
+        var dispatchData = [
+            {
+                "Name": "Packing & Dispatch",
+                "DispatchCode": "UKPACK",
+                "DispatchQty": "1",
+                "DispatchUnitCost": "<?php echo $this->packageAndDispatchUnitCost; ?>",
+                "SubtotalDispatch": "<?php echo $this->packageAndDispatchUnitCost; ?>"
+            }
+        ];
+        for (var i = 0; i <= dispatchData.length; i++) {
+            jQuery("#dispatchGrid").jqGrid('addRowData', i + 1, dispatchData[i]);
+        }
+        $("#financialCalculator").data('SubtotalDispatch', parseFloat(<?php echo $this->packageAndDispatchUnitCost; ?>).toFixed(4));
+    });
+</script>
