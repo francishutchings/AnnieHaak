@@ -80,11 +80,22 @@
             altclass: 'altTableRowBackColour',
             loadComplete: function (data) {
                 $('#packagingGridPager_center').remove();
-                temp = 0;
+                tempBx = 0;
+                tempBg = 0;
                 for (var x = 0; x < data.rows.length; x++) {
-                    temp += parseFloat(data.rows[x]['SubtotalPackaging']);
+                    switch (data.rows[x]['PackagingCode']) {
+                        case 'SBOX':
+                        case 'LBOX':
+                            tempBx += parseFloat(data.rows[x]['SubtotalPackaging']);
+                            break
+                        case 'SBAG':
+                        case 'LBAG':
+                            tempBg += parseFloat(data.rows[x]['SubtotalPackaging']);
+                            break
+                    }
                 }
-                $("#financialCalculator").data('SubtotalPackaging', parseFloat(temp).toFixed(4));
+                $("#financialCalcSubTotals").data("SubtotalBoxCost", parseFloat(tempBx).toFixed(4));
+                $("#financialCalcSubTotals").data("SubtotalBagCost", parseFloat(tempBg).toFixed(4));
                 updateFinancialSubTots();
             },
             colNames: [

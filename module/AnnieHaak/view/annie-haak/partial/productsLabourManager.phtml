@@ -83,7 +83,7 @@
                 for (var x = 0; x < data.rows.length; x++) {
                     temp += parseFloat(data.rows[x]['SubtotalLabour']);
                 }
-                $("#financialCalculator").data('SubtotalLabour', parseFloat(temp).toFixed(4));
+                $("#financialCalcSubTotals").data('SubtotalLabour', parseFloat(temp).toFixed(4));
                 updateFinancialSubTots();
             },
             colNames: [

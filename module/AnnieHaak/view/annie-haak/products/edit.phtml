@@ -262,6 +262,12 @@ echo $this->form()->openTag($form)
 
                     <div class="col-md-4">
                         <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('RequiresAssay')); ?>
+                            <label for="RequiresAssay">
+                                <span class="label label-default">Requires Assay</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
                             <?php echo $this->formRow($form->get('ExcludeFromTrade')); ?>
                             <label for="ExcludeFromTrade">
                                 <span class="label label-default">Exclude Trade</span>
@@ -346,4 +352,15 @@ echo $this->form()->openTag($form)
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
 <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js?v=1"></script>
 <script type="application/javascript" src="/js/productsAddEdit.js?v=1"></script>
-
+<?php
+$temp = '<script type="application/javascript">financialCalcIni(';
+$temp .= ($form->getObject()) ? $form->getObject()->RequiresAssay : 0;
+$temp .= ',' . $ratesPercentages['AssayRateUnitCost'];
+$temp .= ',' . $ratesPercentages['ImportPercentage'];
+$temp .= ',' . $ratesPercentages['MerchantChargePercentage'];
+$temp .= ',' . $ratesPercentages['PostageCostUnitCost'];
+$temp .= ',' . $ratesPercentages['PostageForProfitUnitCost'];
+$temp .= ',' . $ratesPercentages['VATPercentage'];
+$temp .= ');</script>';
+echo $temp;
+?>

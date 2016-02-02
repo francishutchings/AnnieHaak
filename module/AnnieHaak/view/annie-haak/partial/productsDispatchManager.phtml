@@ -89,6 +89,6 @@
         for (var i = 0; i <= dispatchData.length; i++) {
             jQuery("#dispatchGrid").jqGrid('addRowData', i + 1, dispatchData[i]);
         }
-        $("#financialCalculator").data('SubtotalDispatch', parseFloat(<?php echo $this->packageAndDispatchUnitCost; ?>).toFixed(4));
+        $("#financialCalcSubTotals").data('SubtotalDispatch', parseFloat(<?php echo $this->packageAndDispatchUnitCost; ?>).toFixed(4));
     });
 </script>

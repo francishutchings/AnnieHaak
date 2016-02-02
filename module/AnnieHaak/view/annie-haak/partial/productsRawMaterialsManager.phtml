@@ -131,7 +131,7 @@
                 for (var x = 0; x < data.rows.length; x++) {
                     temp += parseFloat(data.rows[x]['SubtotalRM']);
                 }
-                $("#financialCalculator").data('SubtotalRM', parseFloat(temp).toFixed(4));
+                $("#financialCalcSubTotals").data('SubtotalRM', parseFloat(temp).toFixed(4));
                 updateFinancialSubTots();
             },
             colNames: [

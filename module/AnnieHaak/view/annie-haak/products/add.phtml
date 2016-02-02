@@ -89,31 +89,28 @@ echo $this->form()->openTag($form)
         <div class="form-group" id="DescBlock">
             <label class="col-md-2 control-label" for="Description">Description:</label>
             <div class="col-md-10">
-                <div class="row">
-                    <div class="col-md-10">
-                        <?php echo $this->formRow($form->get('Description')); ?>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="radio radio-danger">
-                            <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
-                            <label for="DescRadio1">
-                                <span class="label label-danger">Needs Description</span>
-                            </label>
-                        </div>
-                        <div class="radio radio-warning">
-                            <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
-                            <label for="DescRadio2">
-                                <span class="label label-default">Pending Approval</span>
-                            </label>
-                        </div>
-                        <div class="radio radio-success">
-                            <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
-                            <label for="DescRadio3">
-                                <span class="label label-default">Approved</span>
-                            </label>
-                        </div>
-                    </div>
+                <?php echo $this->formRow($form->get('Description')); ?>
+            </div>
+            <div class="col-md-10 col-md-offset-2">
+                <div class="radio radio-danger pull-left margin-right-5">
+                    <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
+                    <label for="DescRadio1">
+                        <span class="label label-danger">Needs Description</span>
+                    </label>
                 </div>
+                <div class="radio radio-warning pull-left margin-right-5">
+                    <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
+                    <label for="DescRadio2">
+                        <span class="label label-default">Pending Approval</span>
+                    </label>
+                </div>
+                <div class="radio radio-success pull-left">
+                    <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
+                    <label for="DescRadio3">
+                        <span class="label label-default">Approved</span>
+                    </label>
+                </div>
+
             </div>
         </div>
 
@@ -211,6 +208,12 @@ echo $this->form()->openTag($form)
 
                     <div class="col-md-4">
                         <div class="checkbox checkbox-success">
+                            <?php echo $this->formRow($form->get('RequiresAssay')); ?>
+                            <label for="RequiresAssay">
+                                <span class="label label-default">Requires Assay</span>
+                            </label>
+                        </div>
+                        <div class="checkbox checkbox-success">
                             <?php echo $this->formRow($form->get('ExcludeFromTrade')); ?>
                             <label for="ExcludeFromTrade">
                                 <span class="label label-default">Exclude Trade</span>
@@ -221,6 +224,7 @@ echo $this->form()->openTag($form)
                             <label for="PartOfTradePack">
                                 <span class="label label-default">Trade Pack Quantity</span>
                             </label>
+
                         </div>
                         <?php echo $this->formRow($form->get('QtyInTradePack')->setValue(0)); ?>
                     </div>
@@ -300,3 +304,16 @@ echo $this->form()->openTag($form)
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
 <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js?v=1"></script>
 <script type="application/javascript" src="/js/productsAddEdit.js?v=1"></script>
+
+<?php
+$temp = '<script type="application/javascript">financialCalcIni(';
+$temp .= ($form->getObject()) ? $form->getObject()->RequiresAssay : 0;
+$temp .= ',' . $ratesPercentages['AssayRateUnitCost'];
+$temp .= ',' . $ratesPercentages['ImportPercentage'];
+$temp .= ',' . $ratesPercentages['MerchantChargePercentage'];
+$temp .= ',' . $ratesPercentages['PostageCostUnitCost'];
+$temp .= ',' . $ratesPercentages['PostageForProfitUnitCost'];
+$temp .= ',' . $ratesPercentages['VATPercentage'];
+$temp .= ');</script>';
+echo $temp;
+?>

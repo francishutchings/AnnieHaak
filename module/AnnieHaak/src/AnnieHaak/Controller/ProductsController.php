@@ -84,7 +84,6 @@ class ProductsController extends AbstractActionController {
             $ratesPercentagesData[$key] = $value;
         }
 
-
         $form->get('NameCharm')->setValueOptions($productNameElemes['charms']);
         $form->get('NameCrystal')->setValueOptions($productNameElemes['crystals']);
         $form->get('NameColour')->setValueOptions($productNameElemes['colours']);
@@ -136,6 +135,21 @@ class ProductsController extends AbstractActionController {
 
         $form = new ProductsForm();
 
+        $sm = $this->getServiceLocator();
+        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+        $productNameElemes = $this->getProductsTable()->getProductNameElements($dbAdapter);
+
+        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
+        $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
+        foreach ($ratesPercentages as $key => $value) {
+            $ratesPercentagesData[$key] = $value;
+        }
+
+        $form->get('NameCharm')->setValueOptions($productNameElemes['charms']);
+        $form->get('NameCrystal')->setValueOptions($productNameElemes['crystals']);
+        $form->get('NameColour')->setValueOptions($productNameElemes['colours']);
+        $form->get('NameLength')->setValueOptions($productNameElemes['lengths']);
+
         $selectData = $this->popSelectMenus();
         $form->get('CollectionID')->setValueOptions($selectData['collectionsData']);
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
@@ -155,7 +169,8 @@ class ProductsController extends AbstractActionController {
         }
 
         return array(
-            'form' => $form
+            'form' => $form,
+            'ratesPercentages' => $ratesPercentagesData
         );
     }
 
