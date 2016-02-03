@@ -36,7 +36,7 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="col-md-3">Dispatch</div>
+                    <div class="col-md-3">Packing &AMP; Dispatch</div>
                     <div class="col-md-2 currSymbol" id="subDispatchDsp">00:00</div>
                 </div>
             </div>
@@ -107,6 +107,18 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-3">&nbsp;</div>
+                    <div class="col-md-2 text-primary bold currSymbol" id="subTotsAllDsp">00:00</div>
+                    <div class="col-md-7 text-primary bold currSymbol" id="subTotsAllX4Dsp">00:00</div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">&nbsp;</div>
+            </div>
+
             <div class="row bold text-primary">
                 <div class="col-md-12">
                     <div class="col-md-3">Ex VAT Cost</div>
@@ -125,7 +137,7 @@
 
             <div class="row">
                 <div class="col-md-3 col-md-offset-8 text-right">Budget without post</div>
-                <div class="col-md-1 percSymbol">00</div>
+                <div class="col-md-1 bold text-primary percSymbol">59.78</div>
             </div>
 
             <div class="row">
@@ -137,10 +149,10 @@
                 <div class="col-md-2 currSymbol">
                     <?php echo $this->formRow($form->get('RRP')); ?>
                 </div>
-                <div class="col-md-2 currSymbol">00:00</div>
-                <div class="col-md-2 currSymbol">00:00</div>
-                <div class="col-md-2 currSymbol">00:00</div>
-                <div class="col-md-1 percSymbol">00</div>
+                <div class="col-md-2 currSymbol" id="retailRRPLessVATDsp">00:00</div>
+                <div class="col-md-2 currSymbol" id="retailCostDsp">00:00</div>
+                <div class="col-md-2 currSymbol" id="retailProfitDsp">00:00</div>
+                <div class="col-md-1 bold percSymbol" id="retailActualDsp">00</div>
             </div>
 
             <div class="row">
@@ -155,10 +167,10 @@
             <div class="row">
                 <div class="col-md-3  text-primary bold">New RRP</div>
                 <div class="col-md-2 currSymbol text-primary bold" id="retailNewRRPDsp">00:00</div>
-                <div class="col-md-2">00:00</div>
-                <div class="col-md-2 currSymbol">00:00</div>
-                <div class="col-md-2 currSymbol">00:00</div>
-                <div class="col-md-1 percSymbol">00</div>
+                <div class="col-md-2 currSymbol" id="retailNewRRPLessVATDsp">00:00</div>
+                <div class="col-md-2 currSymbol" id="retailNewCostDsp">00:00</div>
+                <div class="col-md-2 currSymbol" id="retailNewProfitDsp">00:00</div>
+                <div class="col-md-1 bold text-primary percSymbol" id="retailNewActualDsp">00</div>
             </div>
 
             <div class="row">
@@ -168,7 +180,7 @@
             <div class="row">
                 <div class="col-md-9"></div>
                 <div class="col-md-2 text-right">Target</div>
-                <div class="col-md-1 percSymbol">00</div>
+                <div class="col-md-1 bold text-primary percSymbol">62.00</div>
             </div>
 
         </div>
@@ -182,11 +194,11 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="col-md-12">RRP</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 currSymbol" id="tradeRRPDsp">00:00</div>
                 </div>
                 <div class="col-md-2">
                     <div class="col-md-12">Ex VAT</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 currSymbol" id="tradeExVATDsp">00:00</div>
                 </div>
             </div>
 
@@ -195,29 +207,33 @@
             </div>
 
             <div class="row">
+                <div class="col-md-12">60% off:</div>
+            </div>
+
+            <div class="row">
                 <div class="col-md-2">
                     <div class="col-md-12">Trade Price</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 currSymbol" id="tradePriceDsp">00:00</div>
                 </div>
                 <div class="col-md-2">
                     <div class="col-md-12">Cost</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 currSymbol" id="tradeCostDsp">00:00</div>
                 </div>
                 <div class="col-md-2">
                     <div class="col-md-12">Sub Total</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 currSymbol" id="tradeSubTotalDsp">00:00</div>
                 </div>
                 <div class="col-md-2">
                     <div class="col-md-12">Add Back</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 currSymbol" id="tradeAddBackDsp">00:00</div>
                 </div>
                 <div class="col-md-2">
                     <div class="col-md-12">Trade Profit</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 currSymbol" id="tradeProfitDsp">00:00</div>
                 </div>
                 <div class="col-md-2">
                     <div class="col-md-12">Actual</div>
-                    <div class="col-md-12 currSymbol">00:00</div>
+                    <div class="col-md-12 bold text-primary percSymbol" id="tradeActualDsp">00:00</div>
                 </div>
             </div>
 
@@ -227,7 +243,7 @@
 
             <div class="row">
                 <div class="col-md-2 col-md-offset-9 text-right">Budget</div>
-                <div class="col-md-1 percSymbol">00</div>
+                <div class="col-md-1 bold text-primary percSymbol">40.00</div>
             </div>
 
         </div>
@@ -235,3 +251,21 @@
 
 </div>
 <div class="clearfix margin-bottom-20" id="financialCalcAdjustors"></div>
+
+<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
+<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js?v=1"></script>
+<script type="application/javascript" src="/js/productsAddEdit.js?v=1"></script>
+<script type="application/javascript">
+<?php
+$temp = 'financialCalcIni(';
+$temp .= ($form->getObject()) ? $form->getObject()->RequiresAssay : 0;
+$temp .= ',' . $ratesPercentages['AssayRateUnitCost'];
+$temp .= ',' . $ratesPercentages['ImportPercentage'];
+$temp .= ',' . $ratesPercentages['MerchantChargePercentage'];
+$temp .= ',' . $ratesPercentages['PostageCostUnitCost'];
+$temp .= ',' . $ratesPercentages['PostageForProfitUnitCost'];
+$temp .= ',' . $ratesPercentages['VATPercentage'];
+$temp .= ');';
+echo $temp;
+?>
+</script>

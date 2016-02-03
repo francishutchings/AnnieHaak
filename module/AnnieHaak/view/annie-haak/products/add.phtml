@@ -300,21 +300,3 @@ echo $this->form()->openTag($form)
     <?php echo $this->form()->closeTag(); ?>
 
 </div>
-
-<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
-<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js?v=1"></script>
-<script type="application/javascript" src="/js/productsAddEdit.js?v=1"></script>
-<script type="application/javascript">
-<?php
-$temp = 'financialCalcIni(';
-$temp .= ($form->getObject()) ? $form->getObject()->RequiresAssay : 0;
-$temp .= ',' . $ratesPercentages['AssayRateUnitCost'];
-$temp .= ',' . $ratesPercentages['ImportPercentage'];
-$temp .= ',' . $ratesPercentages['MerchantChargePercentage'];
-$temp .= ',' . $ratesPercentages['PostageCostUnitCost'];
-$temp .= ',' . $ratesPercentages['PostageForProfitUnitCost'];
-$temp .= ',' . $ratesPercentages['VATPercentage'];
-$temp .= ');';
-echo $temp;
-?>
-</script>
