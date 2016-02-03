@@ -304,9 +304,9 @@ echo $this->form()->openTag($form)
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
 <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js?v=1"></script>
 <script type="application/javascript" src="/js/productsAddEdit.js?v=1"></script>
-
+<script type="application/javascript">
 <?php
-$temp = '<script type="application/javascript">financialCalcIni(';
+$temp = 'financialCalcIni(';
 $temp .= ($form->getObject()) ? $form->getObject()->RequiresAssay : 0;
 $temp .= ',' . $ratesPercentages['AssayRateUnitCost'];
 $temp .= ',' . $ratesPercentages['ImportPercentage'];
@@ -314,6 +314,7 @@ $temp .= ',' . $ratesPercentages['MerchantChargePercentage'];
 $temp .= ',' . $ratesPercentages['PostageCostUnitCost'];
 $temp .= ',' . $ratesPercentages['PostageForProfitUnitCost'];
 $temp .= ',' . $ratesPercentages['VATPercentage'];
-$temp .= ');</script>';
+$temp .= ');';
 echo $temp;
 ?>
+</script>

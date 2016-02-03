@@ -27,7 +27,7 @@ class RawMaterialsTable {
     public function getRawMaterials($ids) {
         $select = new Select();
         $select->from(array('RM' => 'rawmateriallookup'));
-        $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
+        $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RMTypeID', 'RMSupplierID', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
         $select->join(array('Supp' => 'rawmaterialsupplierlookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
         $select->join(array('RMType' => 'rawmaterialtypelookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
         $select->where(array('RM.RawMaterialID' => array($ids)));

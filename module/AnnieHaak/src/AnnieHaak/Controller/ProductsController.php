@@ -7,6 +7,7 @@ use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\Products;
 use AnnieHaak\Form\ProductsForm;
 use AnnieHaak\Model\RatesPercentages;
+use AnnieHaak\Model\RRPCalculator;
 use Zend\View\Model\JsonModel;
 
 class ProductsController extends AbstractActionController {
@@ -219,6 +220,17 @@ class ProductsController extends AbstractActionController {
             $this->rawMaterialsTable = $sm->get('AnnieHaak\Model\RawMaterialsTable');
         }
         return $this->rawMaterialsTable;
+    }
+
+    private function objectToArray($data) {
+        if (is_array($data) || is_object($data)) {
+            $result = array();
+            foreach ($data as $key => $value) {
+                $result[$key] = $this->objectToArray($value);
+            }
+            return json_encode($result);
+        }
+        return $data;
     }
 
 }

@@ -1,7 +1,6 @@
 var financialCalcIni = function () {
 
-    //console.log('financialCalc - INI ASSIGN: ');
-    //console.log(arguments);
+//SUBTOTAL
 
     $("#financialCalcAdjustors").data("AssayRateUnitCost", arguments[1].toFixed(4));
     $("#financialCalcAdjustors").data("ImportPercentage", arguments[2].toFixed(4));
@@ -9,8 +8,6 @@ var financialCalcIni = function () {
     $("#financialCalcAdjustors").data("PostageCostUnitCost", arguments[4].toFixed(4));
     $("#financialCalcAdjustors").data("PostageForProfitUnitCost", arguments[5].toFixed(4));
     $("#financialCalcAdjustors").data("VATPercentage", arguments[5].toFixed(6));
-
-    console.log($("#financialCalcAdjustors").data());
 
     $("#financialCalcSubTotals").data("SubtotalRM", 0);
     $("#financialCalcSubTotals").data("SubtotalLabour", 0);
@@ -25,56 +22,91 @@ var financialCalcIni = function () {
 
     $("#financialCalcSubTotals").data("SubtotalBoxCost", 0);
     $("#financialCalcSubTotals").data("SubtotalBoxCostX4", 0);
+    $("#financialCalcSubTotals").data("SubtotalBoxCostTxt", '');
 
     $("#financialCalcSubTotals").data("SubtotalBagCost", 0);
     $("#financialCalcSubTotals").data("SubtotalBagCostX4", 0);
 
     if (arguments[0]) {
         $("#financialCalcSubTotals").data("SubtotalAssayCost", $("#financialCalcAdjustors").data("AssayRateUnitCost"));
-        $("#financialCalcSubTotals").data("SubtotalAssayCostX4", ($("#financialCalcAdjustors").data("AssayRateUnitCost") * 4));
     } else {
         $("#financialCalcSubTotals").data("SubtotalAssayCost", 0);
-        $("#financialCalcSubTotals").data("SubtotalAssayCostX4", 0);
     }
+
+    $("#financialCalcSubTotals").data("SubtotalMechCharge", 0);
 
     $("#financialCalcSubTotals").data("SubtotalPostage", 0);
 
     $("#financialCalcSubTotals").data("SubtotalExVAT", 0);
     $("#financialCalcSubTotals").data("SubtotalExVATX4", 0);
 
-    console.log($("#financialCalcSubTotals").data());
+//RETAIL
+    $("#financialCalcSubTotals").data("RetailNewRRP", 0);
+
+
 
 }
 
 //===========================================================================================
 var updateFinancialSubTots = function () {
 
-    //console.log('updateFinancialSubTots() - RAN:');
-    //console.log($('#financialCalcSubTotals').data());
+//SUBTOTAL
 
     temp = 0;
-    subTotal = '0.0';
+    subTotal = 0;
+    RRPPostage = 0;
 
+    //Raw Mats
     temp = $('#financialCalcSubTotals').data('SubtotalRM');
     subTotal = parseFloat(subTotal) + parseFloat(temp);
-
+    //Labour
     temp = $('#financialCalcSubTotals').data('SubtotalLabour');
     subTotal = parseFloat(subTotal) + parseFloat(temp);
-
+    //Disp
     temp = $('#financialCalcSubTotals').data('SubtotalDispatch');
     subTotal = parseFloat(subTotal) + parseFloat(temp);
 
     $("#financialCalcSubTotals").data("SubtotalProductManufac", parseFloat(subTotal).toFixed(4));
 
-    temp = parseFloat(subTotal) * ($("#financialCalcAdjustors").data("ImportPercentage") / 100);
+    temp = parseFloat($('#financialCalcSubTotals').data('SubtotalRM')) * ($("#financialCalcAdjustors").data("ImportPercentage") / 100);
     $("#financialCalcSubTotals").data("SubtotalImportCharges", parseFloat(temp).toFixed(4));
 
-    temp = parseFloat(subTotal) + parseFloat($("#financialCalcSubTotals").data("SubtotalImportCharges"));
+    temp = parseFloat($("#financialCalcSubTotals").data("SubtotalProductManufac")) + parseFloat($("#financialCalcSubTotals").data("SubtotalImportCharges"));
+
     $("#financialCalcSubTotals").data("SubtotalMarkUp", temp.toFixed(4));
     $("#financialCalcSubTotals").data("SubtotalMarkUpX4", (temp * 4).toFixed(4));
 
     $("#financialCalcSubTotals").data("SubtotalBoxCostX4", ($("#financialCalcSubTotals").data("SubtotalBoxCost") * 4));
     $("#financialCalcSubTotals").data("SubtotalBagCostX4", ($("#financialCalcSubTotals").data("SubtotalBagCost") * 4));
+
+    RRPPostage = parseFloat($('#RRP').val()) + parseFloat($("#financialCalcAdjustors").data("PostageForProfitUnitCost"));
+
+    if (RRPPostage > 49) {
+        $("#financialCalcSubTotals").data("SubtotalBoxCostTxt", '(Inc for Trade)');
+    } else {
+        $("#financialCalcSubTotals").data("SubtotalBoxCostTxt", '(Not for Trade)');
+    }
+
+    temp = RRPPostage * ($("#financialCalcAdjustors").data("MerchantChargePercentage") / 100);
+    $("#financialCalcSubTotals").data("SubtotalMechCharge", temp);
+
+    temp = parseFloat($("#financialCalcSubTotals").data("SubtotalBoxCost")) + parseFloat($("#financialCalcSubTotals").data("SubtotalBagCost"));
+    temp += parseFloat($("#financialCalcSubTotals").data("SubtotalAssayCost"));
+    temp += parseFloat($("#financialCalcSubTotals").data("SubtotalMechCharge"));
+    temp += parseFloat($("#financialCalcAdjustors").data("PostageCostUnitCost"));
+    temp += parseFloat($("#financialCalcSubTotals").data("SubtotalMarkUp"));
+    $("#financialCalcSubTotals").data("SubtotalExVAT", temp);
+
+    temp = parseFloat($("#financialCalcSubTotals").data("SubtotalBoxCostX4")) + parseFloat($("#financialCalcSubTotals").data("SubtotalBagCostX4"));
+    temp += parseFloat($("#financialCalcSubTotals").data("SubtotalAssayCost"));
+    temp += parseFloat($("#financialCalcSubTotals").data("SubtotalMechCharge"));
+    temp += parseFloat($("#financialCalcSubTotals").data("SubtotalMarkUpX4"));
+    $("#financialCalcSubTotals").data("SubtotalExVATX4", temp);
+
+
+//RETAIL
+    temp = parseFloat($('#RRP').val()) + parseFloat($("#financialCalcAdjustors").data("PostageForProfitUnitCost"));
+    $("#financialCalcSubTotals").data("RetailNewRRP", temp);
 
 
     updateDisplayFinancialSubTots();
@@ -82,6 +114,8 @@ var updateFinancialSubTots = function () {
 
 //===========================================================================================
 var updateDisplayFinancialSubTots = function () {
+
+//SUBTOTAL
 
     $('#subRawMaterialDsp').text($('#financialCalcSubTotals').data('SubtotalRM'));
     $('#subLabourDsp').text($('#financialCalcSubTotals').data('SubtotalLabour'));
@@ -96,12 +130,32 @@ var updateDisplayFinancialSubTots = function () {
 
     $('#subBoxCostDsp').text($("#financialCalcSubTotals").data("SubtotalBoxCost"));
     $('#subBoxCostX4Dsp').text($("#financialCalcSubTotals").data("SubtotalBoxCostX4"));
+    $('#subBoxCostTxtDsp').text($("#financialCalcSubTotals").data("SubtotalBoxCostTxt"));
 
     $('#subBagCostDsp').text($("#financialCalcSubTotals").data("SubtotalBagCost"));
     $('#subBagCostX4Dsp').text($("#financialCalcSubTotals").data("SubtotalBagCostX4"));
 
     $('#subAssayCostDsp').text(parseFloat($("#financialCalcSubTotals").data("SubtotalAssayCost")).toFixed(4));
-    $('#subAssayCostX4Dsp').text(parseFloat($("#financialCalcSubTotals").data("SubtotalAssayCostX4")).toFixed(4));
+    $('#subAssayCostX4Dsp').text(parseFloat($("#financialCalcSubTotals").data("SubtotalAssayCost")).toFixed(4));
+
+    $('#subMerchChargeDsp').text(parseFloat($("#financialCalcSubTotals").data("SubtotalMechCharge")).toFixed(4));
+    $('#subMerchChargeX4Dsp').text(parseFloat($("#financialCalcSubTotals").data("SubtotalMechCharge")).toFixed(4));
+
+    $('#subPostageDsp').text(parseFloat($("#financialCalcAdjustors").data("PostageCostUnitCost")).toFixed(4));
+
+    $('#subExVATCostDsp').text(parseFloat($("#financialCalcSubTotals").data("SubtotalExVAT")).toFixed(4));
+    $('#subExVATCostX4Dsp').text(parseFloat($("#financialCalcSubTotals").data("SubtotalExVATX4")).toFixed(4));
+
+
+
+
+//RETAIL
+
+    $('#retailPostageProfitDsp').text(parseFloat($("#financialCalcAdjustors").data("PostageForProfitUnitCost")).toFixed(4));
+    $('#retailNewRRPDsp').text(parseFloat($("#financialCalcSubTotals").data("RetailNewRRP")).toFixed(4));
+
+
+
 
 }
 
@@ -141,7 +195,6 @@ var afterCompletePackaging = function (options, postdata) {
     var subTotalBx = 0;
     var subTotalBg = 0;
     for (var i in packagingItemsGridData) {
-        console.log(packagingItemsGridData[i]['PackagingCode']);
         switch (packagingItemsGridData[i]['PackagingCode']) {
             case 'SBOX':
             case 'LBOX':
@@ -166,16 +219,14 @@ $(document).ready(function () {
     $("#RequiresAssay").change(function () {
         if ($(this).prop('checked')) {
             $("#financialCalcSubTotals").data("SubtotalAssayCost", $("#financialCalcAdjustors").data("AssayRateUnitCost"));
-            $("#financialCalcSubTotals").data("SubtotalAssayCostX4", ($("#financialCalcAdjustors").data("AssayRateUnitCost") * 4));
         } else {
             $("#financialCalcSubTotals").data("SubtotalAssayCost", 0);
-            $("#financialCalcSubTotals").data("SubtotalAssayCostX4", 0);
         }
         updateFinancialSubTots();
     });
     //=============================================
     $("#RRP").change(function () {
-        //updateFinancialSubTots();
+        updateFinancialSubTots();
     });
     //=============================================
     $('#products').submit(function () {

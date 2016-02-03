@@ -141,6 +141,9 @@ class RawMaterialsController extends AbstractActionController {
             ));
         }
 
+        #dump($rawMaterials);
+        #exit();
+
         $form = new RawMaterialsForm();
 
         $selectMenusData = $this->popSelectMenus();
