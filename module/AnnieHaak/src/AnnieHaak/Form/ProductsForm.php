@@ -62,7 +62,7 @@ class ProductsForm extends Form {
             ),
             'attributes' => array(
                 'id' => 'NameCrystal',
-                'class' => 'form-control'
+                'class' => 'form-control',
             ),
         ));
 
@@ -146,6 +146,8 @@ class ProductsForm extends Form {
                     '10' => '10',
                     '11' => '11',
                     '12' => '12',
+                    '13' => '13',
+                    '14' => '14'
                 ),
             ),
             'attributes' => array(
@@ -174,7 +176,7 @@ class ProductsForm extends Form {
             'attributes' => array(
                 'id' => 'RRP',
                 'style' => 'width:60%',
-                'step' => '1',
+                'step' => 1,
                 'min' => 1,
                 'value' => 0,
                 'required' => true,
@@ -187,7 +189,7 @@ class ProductsForm extends Form {
             'attributes' => array(
                 'id' => 'MinsToBuild',
                 'class' => 'form-control',
-                'step' => '1',
+                'step' => 1,
                 'min' => 1,
                 'required' => true,
             ),
@@ -199,8 +201,8 @@ class ProductsForm extends Form {
             'attributes' => array(
                 'id' => 'QtyInTradePack',
                 'class' => 'input-xs',
-                'step' => '1',
-                'min' => 1
+                'step' => 1,
+                'min' => 0
             ),
         ));
 
@@ -210,8 +212,8 @@ class ProductsForm extends Form {
             'attributes' => array(
                 'id' => 'QtyOrderedLastPeriod',
                 'class' => 'form-control',
-                'step' => '1',
-                'min' => 0,
+                'step' => 1,
+                'min' => 0
             ),
         ));
 

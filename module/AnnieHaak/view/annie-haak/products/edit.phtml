@@ -1,16 +1,19 @@
 <?php
+/*
+  dump($form->getObject());
+  dump($form);
+  exit();
+ */
+
 echo $this->partial('annie-haak/partial/productsNavbar.phtml');
 
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
-
-#dump($form->getObject());
-#exit();
 
 $productId = $form->getObject()->ProductID;
 $currentUrl = ($form->getObject()->CurrentURL) ? $form->getObject()->CurrentURL : '';
 $oldUrl = ($form->getObject()->OldURL) ? $form->getObject()->OldURL : '';
 
-$form->setAttribute('action', $this->url('business-admin/products', array('action' => 'add')));
+$form->setAttribute('action', $this->url('business-admin/products', array('action' => 'edit', 'id' => $this->id,)));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
 

@@ -174,7 +174,7 @@ class ProductsTable {
         $statement->nextRowSet();
         $resultSet4 = $statement->fetchAll(\PDO::FETCH_OBJ);
         foreach ($resultSet4 as $row) {
-            $lengths[$row->LengthId] = $row->Length . 'cm';
+            $lengths[$row->LengthIdx] = $row->Length . 'cm';
         }
 
         return array(

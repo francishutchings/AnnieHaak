@@ -97,12 +97,19 @@ class ProductsController extends AbstractActionController {
         $request = $this->getRequest();
         if ($request->isPost()) {
             dump($request);
-            exit();
+
             $products = new Products();
             $form->setInputFilter($products->getInputFilter());
             $form->setData($request->getPost());
 
+            dump($form->isValid());
+            dump($form->getMessages());
+            #exit();
+
             if ($form->isValid()) {
+                dump($form->getData());
+                exit();
+
                 $products->exchangeArray($form->getData());
                 $this->getProductsTable()->saveProducts($products);
                 $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->productName . ' - added.');
@@ -115,6 +122,7 @@ class ProductsController extends AbstractActionController {
         );
     }
 
+//==================================================================================================================
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -162,14 +170,47 @@ class ProductsController extends AbstractActionController {
         if ($request->isPost()) {
             $form->setInputFilter($products->getInputFilter());
             $form->setData($request->getPost());
+
             if ($form->isValid()) {
-                $this->getProductsTable()->saveProducts($products);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $rawMaterials->ProductName . ' - updated.');
+                //dump($form->getData());
+                dump($request->getPost('rawMaterialsGridData'));
+                dump($request->getPost('labourItemsGridData'));
+                dump($request->getPost('packagingGridData'));
+
+                $rawMaterialsGridData = json_decode($request->getPost('rawMaterialsGridData'));
+                $labourItemsGridData = json_decode($request->getPost('labourItemsGridData'));
+                $packagingGridData = json_decode($request->getPost('packagingGridData'));
+
+                dump($rawMaterialsGridData);
+                //ProductID
+                //RawMaterialID
+                //RawMaterialQty
+
+                exit();
+                $this->getAdapter()->getDriver()->getConnection()->beginTransaction();
+                try {
+
+                    $this->getProductsTable()->saveProducts($products);
+
+                    #rawMaterialsGridData
+                    #labourItemsGridData
+                    #packagingGridData
+                } catch (\Exception $ex) {
+                    $this->getAdapter()->getDriver()->getConnection()->rollback();
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/products', array(
+                                'action' => 'index'
+                    ));
+                }
+                $this->getAdapter()->getDriver()->getConnection()->commit();
+
+                $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $products->ProductName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/products');
             }
         }
 
         return array(
+            'id' => $id,
             'form' => $form,
             'ratesPercentages' => $ratesPercentagesData
         );

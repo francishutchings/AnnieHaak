@@ -54,7 +54,7 @@ class Products implements InputFilterAwareInterface {
         $this->Birthdays = (!empty($data['Birthdays'])) ? $data['Birthdays'] : 0;
         $this->Charm = (!empty($data['Charm'])) ? $data['Charm'] : 0;
         $this->CollectionID = (!empty($data['CollectionID'])) ? $data['CollectionID'] : 0;
-        $this->ProductCollectionName = (!empty($data['ProductCollectionName'])) ? $data['ProductCollectionName'] : 0;
+        $this->ProductCollectionName = (!empty($data['ProductCollectionName'])) ? $data['ProductCollectionName'] : '';
         $this->Current = (!empty($data['Current'])) ? $data['Current'] : 0;
         $this->CurrentURL = (!empty($data['CurrentURL'])) ? $data['CurrentURL'] : '';
         $this->Description = (!empty($data['Description'])) ? $data['Description'] : '';
@@ -63,11 +63,11 @@ class Products implements InputFilterAwareInterface {
         $this->ExcludeFromTrade = (!empty($data['ExcludeFromTrade'])) ? $data['ExcludeFromTrade'] : 0;
         $this->Friendship = (!empty($data['Friendship'])) ? $data['Friendship'] : 0;
         $this->Gold = (!empty($data['Gold'])) ? $data['Gold'] : 0;
-        $this->ImagePath = (!empty($data['ImagePath'])) ? $data['ImagePath'] : 0;
-        $this->IntroDate = (!empty($data['IntroDate'])) ? $data['IntroDate'] : 0;
+        $this->ImagePath = (!empty($data['ImagePath'])) ? $data['ImagePath'] : '';
+        $this->IntroDate = (!empty($data['IntroDate'])) ? $data['IntroDate'] : '';
         $this->KeyPiece = (!empty($data['KeyPiece'])) ? $data['KeyPiece'] : 0;
         $this->MinsToBuild = (!empty($data['MinsToBuild'])) ? $data['MinsToBuild'] : 0;
-        $this->Name = (!empty($data['Name'])) ? $data['Name'] : 0;
+        $this->Name = (!empty($data['Name'])) ? $data['Name'] : '';
         $this->NameCharm = (!empty($data['NameCharm'])) ? $data['NameCharm'] : 0;
         $this->NameColour = (!empty($data['NameColour'])) ? $data['NameColour'] : 0;
         $this->NameCrystal = (!empty($data['NameCrystal'])) ? $data['NameCrystal'] : 0;
@@ -77,9 +77,9 @@ class Products implements InputFilterAwareInterface {
         $this->Personalisable = (!empty($data['Personalisable'])) ? $data['Personalisable'] : 0;
         $this->PremiumStacks = (!empty($data['PremiumStacks'])) ? $data['PremiumStacks'] : 0;
         $this->ProductID = (!empty($data['ProductID'])) ? $data['ProductID'] : 0;
-        $this->ProductName = (!empty($data['ProductName'])) ? $data['ProductName'] : 0;
+        $this->ProductName = (!empty($data['ProductName'])) ? $data['ProductName'] : '';
         $this->ProductTypeID = (!empty($data['ProductTypeID'])) ? $data['ProductTypeID'] : 0;
-        $this->ProductTypeName = (!empty($data['ProductTypeName'])) ? $data['ProductTypeName'] : 0;
+        $this->ProductTypeName = (!empty($data['ProductTypeName'])) ? $data['ProductTypeName'] : '';
         $this->QtyInTradePack = (!empty($data['QtyInTradePack'])) ? $data['QtyInTradePack'] : 0;
         $this->QtyOrderedLastPeriod = (!empty($data['QtyOrderedLastPeriod'])) ? $data['QtyOrderedLastPeriod'] : 0;
         $this->RequiresAssay = (!empty($data['RequiresAssay'])) ? $data['RequiresAssay'] : 0;
@@ -124,11 +124,393 @@ class Products implements InputFilterAwareInterface {
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 50,
+                            'max' => 255,
                         ),
                     ),
                 ),
             ));
+
+            $inputFilter->add(array(
+                'name' => 'Name',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 100,
+                        ),
+                    ),
+                ),
+            ));
+            $inputFilter->add(array(
+                'name' => 'NameCharm',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+            $inputFilter->add(array(
+                'name' => 'NameCrystal',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+            $inputFilter->add(array(
+                'name' => 'NameColour',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+            $inputFilter->add(array(
+                'name' => 'NameLength',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'SKU',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 255,
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'CollectionID',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'ProductTypeID',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Strands',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'IntroDate',
+                'required' => false,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array('name' => 'Date'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RRP',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'MinsToBuild',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'QtyInTradePack',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'QtyOrderedLastPeriod',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Current',
+                'required' => false,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+
+            $inputFilter->add(array(
+                'name' => 'CurrentURL',
+                'required' => false,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8'
+                        ),
+                    ),
+                ),
+            ));
+            $inputFilter->add(array(
+                'name' => 'OldURL',
+                'required' => false,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8'
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Description',
+                'required' => false,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8'
+                        ),
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'DescriptionStatus',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'PartOfTradePack',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'KeyPiece',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Personalisable',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'RequiresAssay',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'ExcludeFromTrade',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Friendship',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Stacks',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'PremiumStacks',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'SterlingSilver',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Gold',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Weddings',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Birthdays',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Accessories',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Engraved',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'Charm',
+                'required' => false,
+                'validators' => array(
+                    array(
+                        'name' => 'Int',
+                        'min' => 0,
+                        'max' => 1
+                    ),
+                ),
+            ));
+
             $this->inputFilter = $inputFilter;
         }
 
