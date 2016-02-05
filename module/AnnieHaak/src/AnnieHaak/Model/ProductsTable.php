@@ -228,7 +228,7 @@ class ProductsTable {
         #dump($id);
         #dump($data);
         #dump($products);
-        #dump($productAssocData);
+        dump($productAssocData);
 
         $auditingProducts = clone($productAssocData['auditingObj']);
         $auditingRawMaterials = clone($productAssocData['auditingObj']);
@@ -276,10 +276,6 @@ class ProductsTable {
             $sql_RMIn = "INSERT INTO RawMaterialPickLists (ProductID, RawMaterialID, RawMaterialQty) VALUES (:ProductID, :RawMaterialID, :RawMaterialQty)";
             $stmt_RMIn = $productAssocData['dbAdapter']->query($sql_RMIn);
 
-            dump($auditingRawMaterials);
-            dump($stmt_RMDel);
-            dump($stmt_RMIn);
-
             // Packaging Current
             //===========================================
             $sql_P = "SELECT ProductID, PackagingID, PackagingQty FROM PackagingPickLists WHERE ProductID = :ProductID";
@@ -300,10 +296,6 @@ class ProductsTable {
             // Packaging Insert
             $sql_PIn = "INSERT INTO PackagingPickLists (ProductID, PackagingID, PackagingQty) VALUES (:ProductID, :PackagingID, :PackagingID)";
             $stmt_PIn = $productAssocData['dbAdapter']->query($sql_PIn);
-
-            dump($auditingPackaging);
-            dump($stmt_PDel);
-            dump($stmt_PIn);
 
             // Labout Items
             //===========================================
@@ -326,11 +318,7 @@ class ProductsTable {
             $sql_LIIn = "INSERT INTO LabourTime (ProductID, LabourID, LabourQty) VALUES (:ProductID, :LabourID, :LabourQty)";
             $stmt_LIIn = $productAssocData['dbAdapter']->query($sql_LIIn);
 
-            dump($auditingLabourItems);
-            dump($stmt_LIDel);
-            dump($stmt_LIIn);
-            exit();
-
+            echo 'START<BR>';
             // SAVE ALL CURRENT DATA
             //===========================================
             $productAssocData['dbAdapter']->getDriver()->getConnection()->beginTransaction();
@@ -340,31 +328,39 @@ class ProductsTable {
                 $productAssocData['auditingObj']->saveAuditAction($auditingPackaging);
                 $productAssocData['auditingObj']->saveAuditAction($auditingLabourItems);
 
+                echo 'AUDIT<BR>';
+
                 $stmt_RMDel->execute(array('ProductID' => $id));
                 $stmt_PDel->execute(array('ProductID' => $id));
                 $stmt_LIDel->execute(array('ProductID' => $id));
 
+                echo 'DEL<BR>';
+
                 foreach ($productAssocData['rawMaterialsData'] as $value) {
                     $stmt_RMIn->execute($value);
                 }
+                echo 'INSERT<BR>';
 
                 foreach ($productAssocData['packagingData'] as $value) {
                     $stmt_PIn->execute($value);
                 }
+                echo 'INSERT<BR>';
 
                 foreach ($productAssocData['labourItemsData'] as $value) {
                     $stmt_LIIn->execute($value);
                 }
+                echo 'INSERT<BR>';
 
                 $this->tableGateway->update($data, array('ProductID' => $id));
+                echo 'UPDATE<BR>';
             } catch (Exception $e) {
                 $productAssocData['dbAdapter']->getDriver()->getConnection()->rollback();
                 dump($e);
-                exit();
                 echo 'Caught exception: ', $e->getMessage(), "\n";
             }
             $productAssocData['dbAdapter']->getDriver()->getConnection()->commit();
-
+            dump($productAssocData['dbAdapter']->getDriver()->getConnection()->beginTransaction());
+            echo 'END';
             exit();
         }
     }
