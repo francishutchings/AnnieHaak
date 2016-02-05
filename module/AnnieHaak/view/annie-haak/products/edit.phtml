@@ -334,8 +334,11 @@ echo $this->form()->openTag($form)
 
     <div class="form-group">
         <div class="col-md-3 col-md-offset-9">
-            <a href="/business-admin/raw-material-types" type="reset" class="btn btn-default">Cancel</a>
-            <?php echo $this->formSubmit($form->get('submit')); ?>
+            <a href="/business-admin/products" type="reset" class="btn btn-default margin-right-10">Cancel</a>
+            <?php
+            echo '<a href="/business-admin/products/print/' . $productId . '" type="reset" class="btn btn-info margin-right-10">Print</a>';
+            echo $this->formSubmit($form->get('submit'));
+            ?>
         </div>
     </div>
 

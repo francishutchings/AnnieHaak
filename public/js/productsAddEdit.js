@@ -269,6 +269,14 @@ $(document).ready(function () {
         updateFinancialSubTots();
     });
     //=============================================
+    $("#PartOfTradePack").change(function () {
+        if ($(this).prop('checked')) {
+            $("#QtyInTradePack").val(1);
+        } else {
+            $("#QtyInTradePack").val(0);
+        }
+    });
+    //=============================================
     $("#RequiresAssay").change(function () {
         if ($(this).prop('checked')) {
             $("#financialCalcSubTotals").data("SubtotalAssayCost", $("#financialCalcAdjustors").data("AssayRateUnitCost"));
@@ -353,7 +361,7 @@ $(document).ready(function () {
         concatProductName();
     });
     concatProductName = function () {
-        $("#ProductName").val($("#Name").val());
+        $("#ProductName").val($.trim($("#Name").val()));
         if ($("#NameCharm").val()) {
             $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm option:selected").text());
         }
@@ -367,6 +375,10 @@ $(document).ready(function () {
             $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength option:selected").text());
         }
     };
+    $('#buildProductName').on('hidden.bs.modal', function () {
+        $("#Name").val($.trim($("#Name").val()));
+    })
+
     //=============================================
     $("#currentUrlThumb").click(function () {
         $('#currentUlrDisplay').attr("src", $('#CurrentURL').val());

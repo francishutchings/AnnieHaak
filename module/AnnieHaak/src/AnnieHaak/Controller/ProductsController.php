@@ -8,6 +8,7 @@ use AnnieHaak\Model\Products;
 use AnnieHaak\Form\ProductsForm;
 use AnnieHaak\Model\RatesPercentages;
 use AnnieHaak\Model\RRPCalculator;
+use AnnieHaak\Model\Auditing;
 use Zend\View\Model\JsonModel;
 
 class ProductsController extends AbstractActionController {
@@ -172,39 +173,51 @@ class ProductsController extends AbstractActionController {
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                //dump($form->getData());
-                dump($request->getPost('rawMaterialsGridData'));
-                dump($request->getPost('labourItemsGridData'));
-                dump($request->getPost('packagingGridData'));
+                #dump($request);
+                #dump($form->getData());
+                #exit();
 
-                $rawMaterialsGridData = json_decode($request->getPost('rawMaterialsGridData'));
-                $labourItemsGridData = json_decode($request->getPost('labourItemsGridData'));
-                $packagingGridData = json_decode($request->getPost('packagingGridData'));
+                foreach (json_decode($request->getPost('rawMaterialsGridData')) as $value) {
+                    $rawMaterialsData[] = array(
+                        'ProductID' => $id,
+                        'RawMaterialID' => $value->RawMaterialID,
+                        'RawMaterialQty' => $value->RawMaterialQty
+                    );
+                }
+                foreach (json_decode($request->getPost('packagingGridData')) as $value) {
+                    $packagingData[] = array(
+                        'ProductID' => $id,
+                        'PackagingID' => $value->PackagingID,
+                        'PackagingQty' => $value->PackagingQty
+                    );
+                }
+                foreach (json_decode($request->getPost('labourItemsGridData')) as $value) {
+                    $labourItemsData[] = array(
+                        'ProductID' => $id,
+                        'LabourID' => $value->LabourID,
+                        'LabourQty' => $value->LabourQty
+                    );
+                }
+                $auditingObj = new Auditing($dbAdapter);
 
-                dump($rawMaterialsGridData);
-                //ProductID
-                //RawMaterialID
-                //RawMaterialQty
+                $productAssocData = array(
+                    'user' => $_SESSION['AnnieHaak']['storage']['userInfo'],
+                    'rawMaterialsData' => $rawMaterialsData,
+                    'packagingData' => $packagingData,
+                    'labourItemsData' => $labourItemsData,
+                    'auditingObj' => $auditingObj,
+                    'dbAdapter' => $dbAdapter
+                );
 
-                exit();
-                $this->getAdapter()->getDriver()->getConnection()->beginTransaction();
                 try {
-
-                    $this->getProductsTable()->saveProducts($products);
-
-                    #rawMaterialsGridData
-                    #labourItemsGridData
-                    #packagingGridData
+                    $this->getProductsTable()->saveProducts($products, $productAssocData);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $products->ProductName . ' - updated.');
                 } catch (\Exception $ex) {
-                    $this->getAdapter()->getDriver()->getConnection()->rollback();
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
                     return $this->redirect()->toRoute('business-admin/products', array(
                                 'action' => 'index'
                     ));
                 }
-                $this->getAdapter()->getDriver()->getConnection()->commit();
-
-                $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $products->ProductName . ' - updated.');
                 return $this->redirect()->toRoute('business-admin/products');
             }
         }

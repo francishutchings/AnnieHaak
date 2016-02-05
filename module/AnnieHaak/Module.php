@@ -94,11 +94,9 @@ class Module {
                 'AuthService' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'users', 'username', 'password', 'MD5(?)');
-
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbTableAuthAdapter);
                     $authService->setStorage($sm->get('Auth\Model\MyAuthStorage'));
-
                     return $authService;
                 },
                 'AnnieHaak\Model\CollectionsTable' => function($sm) {

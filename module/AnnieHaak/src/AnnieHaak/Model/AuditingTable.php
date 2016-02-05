@@ -4,7 +4,7 @@ namespace AnnieHaak\Model;
 
 use Zend\Db\TableGateway\TableGateway;
 
-class RatesPercentagesTable {
+class AuditingTable {
 
     protected $tableGateway;
 

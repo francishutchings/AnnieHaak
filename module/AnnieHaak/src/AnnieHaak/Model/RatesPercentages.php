@@ -1,11 +1,5 @@
 <?php
 
-/*
- * exchangeArray() method is a requirement for form hydrators;
- * specifically the Zend\Stdlib\Hydrator\ArraySerializable hydrator
- * so it can access the domain object's protected properties when binding from form fields.
- */
-
 namespace AnnieHaak\Model;
 
 use Zend\InputFilter\InputFilter;
@@ -44,13 +38,13 @@ SQL;
     }
 
     public function exchangeArray($data) {
-        $this->AssayRateUnitCost = (!empty($data['AssayRateUnitCost'])) ? $data['AssayRateUnitCost'] : null;
-        $this->ImportPercentage = (!empty($data['ImportPercentage'])) ? $data['ImportPercentage'] : null;
-        $this->MerchantChargePercentage = (!empty($data['MerchantChargePercentage'])) ? $data['MerchantChargePercentage'] : null;
-        $this->PackageAndDispatchUnitCost = (!empty($data['PackageAndDispatchUnitCost'])) ? $data['PackageAndDispatchUnitCost'] : null;
-        $this->PostageCostUnitCost = (!empty($data['PostageCostUnitCost'])) ? $data['PostageCostUnitCost'] : null;
-        $this->PostageForProfitUnitCost = (!empty($data['PostageForProfitUnitCost'])) ? $data['PostageForProfitUnitCost'] : null;
-        $this->VATPercentage = (!empty($data['VATPercentage'])) ? $data['VATPercentage'] : null;
+        $this->AssayRateUnitCost = (!empty($data['AssayRateUnitCost'])) ? $data['AssayRateUnitCost'] : 0;
+        $this->ImportPercentage = (!empty($data['ImportPercentage'])) ? $data['ImportPercentage'] : 0;
+        $this->MerchantChargePercentage = (!empty($data['MerchantChargePercentage'])) ? $data['MerchantChargePercentage'] : 0;
+        $this->PackageAndDispatchUnitCost = (!empty($data['PackageAndDispatchUnitCost'])) ? $data['PackageAndDispatchUnitCost'] : 0;
+        $this->PostageCostUnitCost = (!empty($data['PostageCostUnitCost'])) ? $data['PostageCostUnitCost'] : 0;
+        $this->PostageForProfitUnitCost = (!empty($data['PostageForProfitUnitCost'])) ? $data['PostageForProfitUnitCost'] : 0;
+        $this->VATPercentage = (!empty($data['VATPercentage'])) ? $data['VATPercentage'] : 0;
     }
 
     public function getArrayCopy() {
