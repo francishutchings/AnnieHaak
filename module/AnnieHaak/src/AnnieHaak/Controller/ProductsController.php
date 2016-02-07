@@ -20,6 +20,7 @@ class ProductsController extends AbstractActionController {
     protected $labourItemsTable;
     protected $packagingTable;
     protected $ratesPercentagesObj;
+    protected $auditingObj;
 
     public function indexAction() {
         return new ViewModel(array(
@@ -140,18 +141,18 @@ class ProductsController extends AbstractActionController {
                         'LabourQty' => $value->LabourQty
                     );
                 }
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
 
                 $productAssocData = array(
-                    'user' => $_SESSION['AnnieHaak']['storage']['userInfo'],
                     'rawMaterialsData' => $rawMaterialsData,
                     'packagingData' => $packagingData,
-                    'labourItemsData' => $labourItemsData,
-                    'auditingObj' => $this->getAuditing()
+                    'labourItemsData' => $labourItemsData
                 );
 
                 try {
                     $products->exchangeArray($form->getData());
-                    $this->getProductsTable()->saveProducts($products, $productAssocData);
+                    $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
                     $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->productName . ' - added.');
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -230,17 +231,17 @@ class ProductsController extends AbstractActionController {
                         'LabourQty' => $value->LabourQty
                     );
                 }
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
 
                 $productAssocData = array(
-                    'user' => $_SESSION['AnnieHaak']['storage']['userInfo'],
                     'rawMaterialsData' => $rawMaterialsData,
                     'packagingData' => $packagingData,
-                    'labourItemsData' => $labourItemsData,
-                    'auditingObj' => $this->getAuditing()
+                    'labourItemsData' => $labourItemsData
                 );
 
                 try {
-                    $this->getProductsTable()->saveProducts($products, $productAssocData);
+                    $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
                     $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $products->ProductName . ' - updated.');
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
