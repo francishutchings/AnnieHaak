@@ -324,16 +324,19 @@ $(document).ready(function () {
         if ($("#rawMaterialGrid").jqGrid('getGridParam', 'data').length == 0) {
             $('#modalFeedBackMess').text('No Raw Materials Picked?');
             $('#feedBackModal').modal('show');
+            $('html, body').animate({scrollTop: $("#anchorRawMaterials").offset().top}, 1500);
             return false;
         }
         if ($("#labourItemsGrid").jqGrid('getGridParam', 'data').length == 0) {
             $('#modalFeedBackMess').text('No Labour Items Picked?');
             $('#feedBackModal').modal('show');
+            $('html, body').animate({scrollTop: $("#anchorLabour").offset().top}, 1500);
             return false;
         }
         if ($("#packagingGrid").jqGrid('getGridParam', 'data').length == 0) {
             $('#modalFeedBackMess').text('No Packaging Picked?');
             $('#feedBackModal').modal('show');
+            $('html, body').animate({scrollTop: $("#anchorPackaging").offset().top}, 1500);
             return false;
         }
         $('#rawMaterialsGridData').val(JSON.stringify($("#rawMaterialGrid").jqGrid('getGridParam', 'data')));

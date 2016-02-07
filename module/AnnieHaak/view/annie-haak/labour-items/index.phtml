@@ -21,7 +21,7 @@ echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']
                     <?php echo $this->escapeHtml($labourItem->LabourName); ?>
                 </td>
                 <td>
-                    <?php echo $this->UICurrencyFormatter($labourItem->LabourUnitCost, true); ?>
+                    <?php echo '£' . number_format($labourItem->LabourUnitCost, 4); ?>
                 </td>
                 <td>
                     <?php echo $labourItem->LabourCode; ?>

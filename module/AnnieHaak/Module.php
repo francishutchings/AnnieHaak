@@ -174,7 +174,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RawMaterialTypes());
-                    return new TableGateway('rawmaterialtypelookup', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('RawMaterialTypeLookup', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\SuppliersTable' => function($sm) {
                     $tableGateway = $sm->get('SuppliersGateway');

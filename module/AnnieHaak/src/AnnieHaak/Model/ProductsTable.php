@@ -147,11 +147,10 @@ class ProductsTable {
         return $resultSet;
     }
 
-    public function getProductNameElements(Adapter $dbAdapter) {
-#http://codingexplained.com/coding/php/zend-framework/multiple-result-sets-from-stored-procedure-in-zf2
+    public function getProductNameElements() {
+        #http://codingexplained.com/coding/php/zend-framework/multiple-result-sets-from-stored-procedure-in-zf2
 
-        $driver = $dbAdapter->getDriver();
-        $connection = $driver->getConnection();
+        $connection = $this->tableGateway->getAdapter()->getDriver()->getConnection();
         $result = $connection->execute('CALL productNameElements');
         $statement = $result->getResource();
 
@@ -248,31 +247,28 @@ class ProductsTable {
         $sql_LIIn = "INSERT INTO LabourTime (ProductID, LabourID, LabourQty) VALUES (:ProductID, :LabourID, :LabourQty)";
         $stmt_LIIn = $productAssocData['dbAdapter']->query($sql_LIIn);
 
-#dump($productAssocData);
-#exit();
-
         if ($id == 0) {
             $auditingProducts->UserName = $productAssocData['user']['username'];
-            $auditingProducts->Action = 'insert';
-            $auditingProducts->TableName = 'products';
+            $auditingProducts->Action = 'Insert';
+            $auditingProducts->TableName = 'Products';
             $auditingProducts->OldDataJSON = '';
 
             $auditingRawMaterials->UserName = $productAssocData['user']['username'];
-            $auditingRawMaterials->Action = 'insert';
+            $auditingRawMaterials->Action = 'Insert';
             $auditingRawMaterials->TableName = 'RawMaterialPickLists';
             $auditingRawMaterials->OldDataJSON = '';
 
             $auditingPackaging->UserName = $productAssocData['user']['username'];
-            $auditingPackaging->Action = 'insert';
+            $auditingPackaging->Action = 'Insert';
             $auditingPackaging->TableName = 'PackagingPickLists';
             $auditingPackaging->OldDataJSON = '';
 
             $auditingLabourItems->UserName = $productAssocData['user']['username'];
-            $auditingLabourItems->Action = 'insert';
+            $auditingLabourItems->Action = 'Insert';
             $auditingLabourItems->TableName = 'LabourTime';
             $auditingLabourItems->OldDataJSON = '';
 
-            $connectCntrl = $productAssocData['dbAdapter']->getDriver()->getConnection();
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
             $connectCntrl->beginTransaction();
             try {
                 $this->tableGateway->insert($data);
@@ -307,8 +303,8 @@ class ProductsTable {
             $productsCurrentData = $this->getProducts($id);
             $productsCurrentArr = (Array) $productsCurrentData;
             $auditingProducts->UserName = $productAssocData['user']['username'];
-            $auditingProducts->Action = 'update';
-            $auditingProducts->TableName = 'products';
+            $auditingProducts->Action = 'Update';
+            $auditingProducts->TableName = 'Products';
             $auditingProducts->OldDataJSON = json_encode($productsCurrentArr);
 
             // Raw Materials Current
@@ -320,7 +316,7 @@ class ProductsTable {
                 $rawMaterialsCurrentArr[] = $value;
             }
             $auditingRawMaterials->UserName = $productAssocData['user']['username'];
-            $auditingRawMaterials->Action = 'delete - insert';
+            $auditingRawMaterials->Action = 'Delete - Insert';
             $auditingRawMaterials->TableName = 'RawMaterialPickLists';
             $auditingRawMaterials->OldDataJSON = json_encode($rawMaterialsCurrentArr);
 
@@ -337,7 +333,7 @@ class ProductsTable {
                 $packagingCurrentArr[] = $value;
             }
             $auditingPackaging->UserName = $productAssocData['user']['username'];
-            $auditingPackaging->Action = 'delete - insert';
+            $auditingPackaging->Action = 'Delete - Insert';
             $auditingPackaging->TableName = 'PackagingPickLists';
             $auditingPackaging->OldDataJSON = json_encode($packagingCurrentArr);
 
@@ -354,7 +350,7 @@ class ProductsTable {
                 $labourItemsCurrentArr[] = $value;
             }
             $auditingLabourItems->UserName = $productAssocData['user']['username'];
-            $auditingLabourItems->Action = 'delete - insert';
+            $auditingLabourItems->Action = 'Delete - Insert';
             $auditingLabourItems->TableName = 'LabourTime';
             $auditingLabourItems->OldDataJSON = json_encode($labourItemsCurrentArr);
 
@@ -364,7 +360,7 @@ class ProductsTable {
 
             // SAVE ALL CURRENT DATA
             //===========================================
-            $connectCntrl = $productAssocData['dbAdapter']->getDriver()->getConnection();
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
             $connectCntrl->beginTransaction();
             try {
                 //Record action
@@ -397,7 +393,7 @@ class ProductsTable {
         }
     }
 
-    public function deleteRawMaterials($id) {
+    public function deleteProducts($id) {
         $this->tableGateway->delete(array('RawMaterialID' => (int) $id));
     }
 

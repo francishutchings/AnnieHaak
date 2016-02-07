@@ -27,6 +27,7 @@ class RawMaterialsForm extends Form {
                 'class' => 'form-control',
                 'required' => true,
                 'maxlength' => 50,
+                'placeholder' => 'Code'
             ),
         ));
 
@@ -38,6 +39,7 @@ class RawMaterialsForm extends Form {
                 'class' => 'form-control',
                 'required' => true,
                 'maxlength' => 150,
+                'placeholder' => 'Name'
             ),
         ));
 
@@ -99,6 +101,7 @@ class RawMaterialsForm extends Form {
                 'id' => 'LastInvoiceNumber',
                 'class' => 'form-control',
                 'maxlength' => 20,
+                'placeholder' => 'Invoice #'
             ),
         ));
 

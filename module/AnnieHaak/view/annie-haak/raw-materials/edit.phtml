@@ -16,16 +16,16 @@ $form->prepare();
         <?php echo $this->formHidden($form->get('RawMaterialID')); ?>
 
         <div class="form-group">
-            <label class="col-md-2 control-label" for="RawMaterialCode">Raw Material Code:</label>
+            <label class="col-md-2 control-label" for="RawMaterialName">Raw Material Name:</label>
             <div class="col-md-10">
-                <?php echo $this->formRow($form->get('RawMaterialCode')); ?>
+                <?php echo $this->formRow($form->get('RawMaterialName')); ?>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="col-md-2 control-label" for="RawMaterialName">Raw Material Name:</label>
+            <label class="col-md-2 control-label" for="RawMaterialCode">Raw Material Code:</label>
             <div class="col-md-10">
-                <?php echo $this->formRow($form->get('RawMaterialName')); ?>
+                <?php echo $this->formRow($form->get('RawMaterialCode')); ?>
             </div>
         </div>
 

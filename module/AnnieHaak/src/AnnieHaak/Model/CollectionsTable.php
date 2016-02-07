@@ -30,31 +30,73 @@ class CollectionsTable {
         return $row;
     }
 
-    public function saveCollections(Collections $Collections, array $collectionsAssocData) {
+    public function saveCollections(Collections $Collections, Auditing $auditingObj) {
         $data = array(
             'ProductCollectionName' => $Collections->ProductCollectionName,
             'ProductCollectionCode' => $Collections->ProductCollectionCode,
             'Current' => $Collections->Current
         );
-
         $id = (int) $Collections->ProductCollectionID;
         if ($id == 0) {
-            $this->tableGateway->insert($data);
-            $auditingProducts->UserName = $productAssocData['user']['username'];
-            $auditingProducts->Action = 'insert';
-            $auditingProducts->TableName = 'products';
-            $auditingProducts->OldDataJSON = '';
-        } else {
-            if ($this->getCollections($id)) {
-                $this->tableGateway->update($data, array('ProductCollectionID' => $id));
-            } else {
-                throw new \Exception('Product Type id does not exist');
+            $auditingObj->Action = 'Insert';
+            $auditingObj->TableName = 'ProductCollections';
+            $auditingObj->OldDataJSON = '';
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->insert($data);
+                $newID = $this->tableGateway->lastInsertValue;
+                $auditingObj->TableIndex = $newID;
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not add new Collection. ERROR: " . $ex->getMessage());
             }
+            $connectCntrl->commit();
+        } else {
+            $collectionsCurrentData = new Collections();
+            $collectionsCurrentData = $this->getCollections($id);
+            $collectionsCurrentArr = (Array) $collectionsCurrentData;
+
+            $auditingObj->Action = 'Update';
+            $auditingObj->TableName = 'ProductCollections';
+            $auditingObj->TableIndex = $id;
+            $auditingObj->OldDataJSON = json_encode($collectionsCurrentArr);
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->update($data, array('ProductCollectionID' => $id));
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not update Collection. ERROR: " . $ex->getMessage());
+            }
+            $connectCntrl->commit();
         }
     }
 
-    public function deleteCollections($id) {
-        $this->tableGateway->delete(array('ProductCollectionID' => (int) $id));
+    public function deleteCollections($id, Auditing $auditingObj) {
+        $collectionsCurrentData = new Collections();
+        $collectionsCurrentData = $this->getCollections($id);
+        $collectionsCurrentArr = (Array) $collectionsCurrentData;
+
+        $auditingObj->Action = 'Delete';
+        $auditingObj->TableName = 'ProductCollections';
+        $auditingObj->TableIndex = $id;
+        $auditingObj->OldDataJSON = json_encode($collectionsCurrentArr);
+
+        $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $this->tableGateway->delete(array('ProductCollectionID' => (int) $id));
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Collection. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
 }

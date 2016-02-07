@@ -12,6 +12,7 @@ class Auditing implements InputFilterAwareInterface {
     public $UserName;
     public $Action;
     public $TableName;
+    public $TableIndex;
     public $OldDataJSON;
     protected $inputFilter;
     protected $adapter;
@@ -25,6 +26,7 @@ class Auditing implements InputFilterAwareInterface {
             :UserName
             ,:Action
             ,:TableName
+            ,:TableIndex
             ,:OldDataJSON
         )
 SQL;
@@ -34,6 +36,7 @@ SQL;
         $this->UserName = (!empty($data['UserName'])) ? $data['UserName'] : '';
         $this->Action = (!empty($data['Action'])) ? $data['Action'] : '';
         $this->TableName = (!empty($data['TableName'])) ? $data['TableName'] : '';
+        $this->TableIndex = (!empty($data['TableIndex'])) ? $data['TableIndex'] : '';
         $this->OldDataJSON = (!empty($data['OldDataJSON'])) ? $data['OldDataJSON'] : '';
     }
 
@@ -41,12 +44,13 @@ SQL;
         return get_object_vars($this);
     }
 
-    public function saveAuditAction(Auditing $Audit) {
+    public function saveAuditAction() {
         $data = array(
-            "UserName" => $Audit->UserName,
-            "Action" => $Audit->Action,
-            "TableName" => $Audit->TableName,
-            "OldDataJSON" => $Audit->OldDataJSON
+            "UserName" => $this->UserName,
+            "Action" => $this->Action,
+            "TableName" => $this->TableName,
+            "TableIndex" => $this->TableIndex,
+            "OldDataJSON" => $this->OldDataJSON
         );
         $DBH = $this->adapter;
         $STH = $DBH->createStatement();
@@ -113,6 +117,14 @@ SQL;
                             'max' => 255,
                         ),
                     ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'TableIndex',
+                'required' => true,
+                'validators' => array(
+                    array('name' => 'Int'),
                 ),
             ));
             $inputFilter->add(array(

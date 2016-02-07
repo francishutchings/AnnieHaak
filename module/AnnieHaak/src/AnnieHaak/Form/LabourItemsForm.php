@@ -40,6 +40,7 @@ class LabourItemsForm extends Form {
                 'min' => 0.0001,
                 'placeholder' => 'Amount',
                 'required' => true,
+                'value' => 0.0001
             ),
         ));
 

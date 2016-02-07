@@ -46,7 +46,7 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
             datatype: "json",
             viewrecords: true,
             loadonce: false,
-            sortname: 'RawMaterialCode',
+            sortname: 'RawMaterialName',
             height: 'auto',
             viewsortcols: [true, 'vertical', true],
             colModel: [
@@ -57,11 +57,11 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
                     hidden: true
                 },
                 {
-                    label: 'Code',
-                    name: 'RawMaterialCode',
+                    label: 'Name',
+                    name: 'RawMaterialName',
                     align: 'left',
                     sortable: true,
-                    width: 125,
+                    width: 250,
                     search: true,
                     searchrules: {
                         required: true
@@ -71,11 +71,11 @@ echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-le
                     }
                 },
                 {
-                    label: 'Name',
-                    name: 'RawMaterialName',
+                    label: 'Code',
+                    name: 'RawMaterialCode',
                     align: 'left',
                     sortable: true,
-                    width: 250,
+                    width: 125,
                     search: true,
                     searchrules: {
                         required: true

@@ -244,21 +244,22 @@ echo $this->form()->openTag($form)
 
     </fieldset>
 
-
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+    <div id="anchorRawMaterials"></div>
     <fieldset>
         <legend>Raw Materials</legend>
         <?php echo $this->partial('annie-haak/partial/productsRawMaterialsManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
-
+    <div id="anchorLabour"></div>
     <fieldset>
         <legend>Labour</legend>
         <?php echo $this->partial('annie-haak/partial/productsLabourManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
-
+    <div id="anchorDispatch"></div>
     <fieldset>
         <legend>Dispatch</legend>
         <?php
@@ -269,7 +270,7 @@ echo $this->form()->openTag($form)
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
-
+    <div id="anchorPackaging"></div>
     <fieldset>
         <legend>Packaging</legend>
         <?php echo $this->partial('annie-haak/partial/productsPackagingManager.phtml', array('productId' => $productId)); ?>

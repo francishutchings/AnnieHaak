@@ -30,25 +30,72 @@ class SuppliersTable {
         return $row;
     }
 
-    public function saveSuppliers(Suppliers $Supplier) {
+    public function saveSuppliers(Suppliers $Supplier, Auditing $auditingObj) {
         $data = array(
             'RMSupplierName' => $Supplier->RMSupplierName
         );
-
         $id = (int) $Supplier->RMSupplierID;
+
         if ($id == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->getSuppliers($id)) {
-                $this->tableGateway->update($data, array('RMSupplierID' => $id));
-            } else {
-                throw new \Exception('Product Type id does not exist');
+            $auditingObj->Action = 'Insert';
+            $auditingObj->TableName = 'RawMaterialSupplierLookup';
+            $auditingObj->OldDataJSON = '';
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->insert($data);
+                $newID = $this->tableGateway->lastInsertValue;
+                $auditingObj->TableIndex = $newID;
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not add new Supplier. ERROR: " . $ex->getMessage());
             }
+            $connectCntrl->commit();
+        } else {
+            $suppliersCurrentData = new Suppliers();
+            $suppliersCurrentData = $this->getSuppliers($id);
+            $suppliersCurrentArr = (Array) $suppliersCurrentData;
+
+            $auditingObj->Action = 'Update';
+            $auditingObj->TableName = 'RawMaterialSupplierLookup';
+            $auditingObj->TableIndex = $id;
+            $auditingObj->OldDataJSON = json_encode($suppliersCurrentArr);
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->update($data, array('RMSupplierID' => $id));
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not update Supplier. ERROR: " . $ex->getMessage());
+            }
+            $connectCntrl->commit();
         }
     }
 
-    public function deleteSuppliers($id) {
-        $this->tableGateway->delete(array('RMSupplierID' => (int) $id));
+    public function deleteSuppliers($id, Auditing $auditingObj) {
+        $suppliersCurrentData = new Suppliers();
+        $suppliersCurrentData = $this->getSuppliers($id);
+        $suppliersCurrentArr = (Array) $suppliersCurrentData;
+
+        $auditingObj->Action = 'Delete';
+        $auditingObj->TableName = 'RawMaterialSupplierLookup';
+        $auditingObj->TableIndex = $id;
+        $auditingObj->OldDataJSON = json_encode($suppliersCurrentArr);
+
+        $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $this->tableGateway->delete(array('RMSupplierID' => (int) $id));
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Collection. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
 }

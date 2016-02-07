@@ -27,6 +27,7 @@ class SuppliersForm extends Form {
                 'class' => 'form-control',
                 'maxlength' => 255,
                 'required' => true,
+                'placeholder' => 'Name'
             ),
         ));
 

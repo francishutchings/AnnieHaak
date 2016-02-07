@@ -80,14 +80,13 @@ class ProductsController extends AbstractActionController {
 
         $sm = $this->getServiceLocator();
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-        $productNameElemes = $this->getProductsTable()->getProductNameElements($dbAdapter);
-
         $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
         $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
 
+        $productNameElemes = $this->getProductsTable()->getProductNameElements();
         $form->get('NameCharm')->setValueOptions($productNameElemes['charms']);
         $form->get('NameCrystal')->setValueOptions($productNameElemes['crystals']);
         $form->get('NameColour')->setValueOptions($productNameElemes['colours']);
@@ -141,15 +140,13 @@ class ProductsController extends AbstractActionController {
                         'LabourQty' => $value->LabourQty
                     );
                 }
-                $auditingObj = new Auditing($dbAdapter);
 
                 $productAssocData = array(
                     'user' => $_SESSION['AnnieHaak']['storage']['userInfo'],
                     'rawMaterialsData' => $rawMaterialsData,
                     'packagingData' => $packagingData,
                     'labourItemsData' => $labourItemsData,
-                    'auditingObj' => $auditingObj,
-                    'dbAdapter' => $dbAdapter
+                    'auditingObj' => $this->getAuditing()
                 );
 
                 try {
@@ -157,11 +154,8 @@ class ProductsController extends AbstractActionController {
                     $this->getProductsTable()->saveProducts($products, $productAssocData);
                     $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->productName . ' - added.');
                 } catch (\Exception $ex) {
-                    #dump($ex->getMessage());
-                    #exit();
-
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
-                    #return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
+                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'add'));
                 }
             }
         }
@@ -176,34 +170,26 @@ class ProductsController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/products', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('business-admin/products', array('action' => 'add'));
         }
 
         try {
             $products = $this->getProductsTable()->getProducts($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/products', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
-
-        #dump($products);
-        #exit();
 
         $form = new ProductsForm();
 
         $sm = $this->getServiceLocator();
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-        $productNameElemes = $this->getProductsTable()->getProductNameElements($dbAdapter);
-
         $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
         $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
 
+        $productNameElemes = $this->getProductsTable()->getProductNameElements();
         $form->get('NameCharm')->setValueOptions($productNameElemes['charms']);
         $form->get('NameCrystal')->setValueOptions($productNameElemes['crystals']);
         $form->get('NameColour')->setValueOptions($productNameElemes['colours']);
@@ -222,9 +208,6 @@ class ProductsController extends AbstractActionController {
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                #dump($request);
-                #dump($form->getData());
-                #exit();
 
                 foreach (json_decode($request->getPost('rawMaterialsGridData')) as $value) {
                     $rawMaterialsData[] = array(
@@ -247,15 +230,13 @@ class ProductsController extends AbstractActionController {
                         'LabourQty' => $value->LabourQty
                     );
                 }
-                $auditingObj = new Auditing($dbAdapter);
 
                 $productAssocData = array(
                     'user' => $_SESSION['AnnieHaak']['storage']['userInfo'],
                     'rawMaterialsData' => $rawMaterialsData,
                     'packagingData' => $packagingData,
                     'labourItemsData' => $labourItemsData,
-                    'auditingObj' => $auditingObj,
-                    'dbAdapter' => $dbAdapter
+                    'auditingObj' => $this->getAuditing()
                 );
 
                 try {
@@ -263,9 +244,7 @@ class ProductsController extends AbstractActionController {
                     $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $products->ProductName . ' - updated.');
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
-                    return $this->redirect()->toRoute('business-admin/products', array(
-                                'action' => 'index'
-                    ));
+                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'edit', 'id' => $id));
                 }
                 return $this->redirect()->toRoute('business-admin/products');
             }
@@ -406,6 +385,15 @@ class ProductsController extends AbstractActionController {
             $this->packagingTable = $sm->get('AnnieHaak\Model\PackagingTable');
         }
         return $this->packagingTable;
+    }
+
+    private function getAuditing() {
+        if (!$this->auditingObj) {
+            $sm = $this->getServiceLocator();
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $this->auditingObj = new Auditing($dbAdapter);
+        }
+        return $this->auditingObj;
     }
 
     private function objectToArray($data) {

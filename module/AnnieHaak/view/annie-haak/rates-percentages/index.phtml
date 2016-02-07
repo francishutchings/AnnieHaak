@@ -14,13 +14,13 @@ echo '<p class="pull-right">' . $this->UIAccessControlButtons($_SESSION['AnnieHa
     </thead>
     <tbody>
         <?php
-        echo '<tr><td>Assay Cost</td><td>&pound; ' . number_format($ratesPercentages->AssayRateUnitCost, 2) . '</td></tr>';
-        echo '<tr><td>Import Rate</td><td>' . number_format($ratesPercentages->ImportPercentage, 2) . ' &#37;</td></tr>';
-        echo '<tr><td>Merchant Charge</td><td>' . number_format($ratesPercentages->MerchantChargePercentage, 2) . ' &#37;</td></tr>';
-        echo '<tr><td>Packaging and Dispatch Cost</td><td>&pound ' . number_format($ratesPercentages->PackageAndDispatchUnitCost, 2) . '</td></tr>';
-        echo '<tr><td>Post Cost</td><td>&pound; ' . number_format($ratesPercentages->PostageCostUnitCost, 2) . '</td></tr>';
-        echo '<tr><td>Post For Profit Cost</td><td>&pound; ' . number_format($ratesPercentages->PostageForProfitUnitCost, 2) . '</td></tr>';
-        echo '<tr><td>VAT Rate</td><td>' . number_format($ratesPercentages->VATPercentage, 2) . ' &#37;</td></tr>';
+        echo '<tr><td>Assay Cost</td><td>£' . number_format($ratesPercentages->AssayRateUnitCost, 4) . '</td></tr>';
+        echo '<tr><td>Import Rate</td><td>' . number_format($ratesPercentages->ImportPercentage, 2) . ' %</td></tr>';
+        echo '<tr><td>Merchant Charge</td><td>' . number_format($ratesPercentages->MerchantChargePercentage, 2) . ' %</td></tr>';
+        echo '<tr><td>Packaging and Dispatch Cost</td><td>£' . number_format($ratesPercentages->PackageAndDispatchUnitCost, 4) . '</td></tr>';
+        echo '<tr><td>Post Cost</td><td>£' . number_format($ratesPercentages->PostageCostUnitCost, 4) . '</td></tr>';
+        echo '<tr><td>Post For Profit Cost</td><td>£' . number_format($ratesPercentages->PostageForProfitUnitCost, 4) . '</td></tr>';
+        echo '<tr><td>VAT Rate</td><td>' . number_format($ratesPercentages->VATPercentage, 2) . ' %</td></tr>';
         ?>
     </tbody>
 </table>

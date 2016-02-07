@@ -5,12 +5,14 @@ namespace AnnieHaak\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\RawMaterialTypes;
+use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\RawMaterialTypesForm;
 use Zend\View\Model\JsonModel;
 
 class RawMaterialTypesController extends AbstractActionController {
 
     protected $rawMaterialTypesTable;
+    protected $auditingObj;
 
     public function indexAction() {
 
@@ -30,31 +32,6 @@ class RawMaterialTypesController extends AbstractActionController {
 
     public function jsonDataAction() {
 
-        /*
-         * /business-admin/raw-materials/jsonData
-         * ?_search=false
-         * &nd=1452974065193
-         * &rows=15
-         * &page=1
-         * &sidx=RMSupplierName
-         * &sord=asc
-         *
-         * ##SEARCH
-         * _search=true
-         * &nd=1453035449910
-         * &rows=15
-         * &page=1
-         * &sidx=RawMaterialCode
-         * &sord=asc
-         * &searchOper=eq
-         * &searchString=B3X2.5FRCRM
-         * &searchField=RawMaterialCode
-         * &filters=
-         */
-
-        #dump($this->params());
-        #exit();
-
         $currentPage = (int) $this->params()->fromQuery('page', 1);
         $sortColumn = $this->params()->fromQuery('sidx', 'RMTypeName');
         $sortOrder = $this->params()->fromQuery('sord', 'asc');
@@ -73,12 +50,15 @@ class RawMaterialTypesController extends AbstractActionController {
         $paginator->setCurrentPageNumber($currentPage);
         $paginator->setItemCountPerPage($rows);
 
-
-        foreach ($paginator->getItemsByPage($currentPage) as $value) {
-            $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-material-types/edit/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
-            $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-material-types/edit/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-trash"></span></a>';
-            $rawData[] = $value;
-        }
+        if ($paginator->count() > 0) {
+            foreach ($paginator->getItemsByPage($currentPage) as $value) {
+                $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-material-types/edit/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
+                $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-material-types/delete/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-trash"></span></a>';
+                $rawData[] = $value;
+            }
+        } else {
+            $rawData[] = '[]';
+        };
 
         $result = new JsonModel(array(
             'records' => $paginator->getPages()->totalItemCount,
@@ -99,9 +79,16 @@ class RawMaterialTypesController extends AbstractActionController {
             $form->setData($request->getPost());
             if ($form->isValid()) {
                 $rawMaterialTypes->exchangeArray($form->getData());
-                $this->getRawMaterialTypesTable()->saveRawMaterialTypes($rawMaterialTypes);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - added.');
-                return $this->redirect()->toRoute('business-admin/raw-material-types');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getRawMaterialTypesTable()->saveRawMaterialTypes($rawMaterialTypes, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - added.');
+                    return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'add'));
+                }
             }
         }
         return array('form' => $form);
@@ -110,17 +97,13 @@ class RawMaterialTypesController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/raw-material-types', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'add'));
         }
 
         try {
             $rawMaterialTypes = $this->getRawMaterialTypesTable()->getRawMaterialTypes($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/raw-material-types', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'index'));
         }
 
         $form = new RawMaterialTypesForm();
@@ -128,14 +111,20 @@ class RawMaterialTypesController extends AbstractActionController {
         $form->get('submit')->setAttribute('value', 'Update');
 
         $request = $this->getRequest();
-
         if ($request->isPost()) {
             $form->setInputFilter($rawMaterialTypes->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $this->getRawMaterialTypesTable()->saveRawMaterialTypes($rawMaterialTypes);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - updated.');
-                return $this->redirect()->toRoute('business-admin/raw-material-types');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getRawMaterialTypesTable()->saveRawMaterialTypes($rawMaterialTypes, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - updated.');
+                    return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'edit', 'id' => $id));
+                }
             }
         }
 
@@ -156,10 +145,17 @@ class RawMaterialTypesController extends AbstractActionController {
             $del = $request->getPost('del', 'No');
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getRawMaterialTypesTable()->deleteRawMaterialTypes($id);
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getRawMaterialTypesTable()->deleteRawMaterialTypes($id, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type deleted.');
+                    return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/raw-material-types', array('action' => 'delete', 'id' => $id));
+                }
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material Type - ' . $rawMaterialTypes->RMTypeName . ' - deleted.');
-            return $this->redirect()->toRoute('business-admin/raw-material-types');
         }
 
         return array(
@@ -174,6 +170,15 @@ class RawMaterialTypesController extends AbstractActionController {
             $this->rawMaterialTypesTable = $sm->get('AnnieHaak\Model\RawMaterialTypesTable');
         }
         return $this->rawMaterialTypesTable;
+    }
+
+    private function getAuditing() {
+        if (!$this->auditingObj) {
+            $sm = $this->getServiceLocator();
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $this->auditingObj = new Auditing($dbAdapter);
+        }
+        return $this->auditingObj;
     }
 
 }

@@ -5,12 +5,14 @@ namespace AnnieHaak\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\Packaging;
+use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\PackagingForm;
 use Zend\View\Model\JsonModel;
 
 class PackagingController extends AbstractActionController {
 
     protected $packagingTable;
+    protected $auditingObj;
 
     public function indexAction() {
         return new ViewModel(array(
@@ -68,9 +70,16 @@ class PackagingController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $packaging->exchangeArray($form->getData());
-                $this->getPackagingTable()->savePackaging($packaging);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $packaging->PackagingName . ' - added.');
-                return $this->redirect()->toRoute('business-admin/packaging');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getPackagingTable()->savePackaging($packaging, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $packaging->PackagingName . ' - added.');
+                    return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'add'));
+                }
             }
         }
 
@@ -80,17 +89,13 @@ class PackagingController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/packaging', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'add'));
         }
 
         try {
             $packaging = $this->getPackagingTable()->getPackaging($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/packaging', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'index'));
         }
 
         $form = new PackagingForm();
@@ -102,9 +107,16 @@ class PackagingController extends AbstractActionController {
             $form->setInputFilter($packaging->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $this->getPackagingTable()->savePackaging($packaging);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $packaging->PackagingName . ' - updated.');
-                return $this->redirect()->toRoute('business-admin/packaging');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getPackagingTable()->savePackaging($packaging, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Packaging - ' . $packaging->PackagingName . ' - updated.');
+                    return $this->redirect()->toRoute('business-admin/packaging');
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'edit', 'id' => $id));
+                }
             }
         }
 
@@ -126,10 +138,18 @@ class PackagingController extends AbstractActionController {
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getPackagingTable()->deletePackaging($id);
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+
+                try {
+                    $this->getPackagingTable()->deletePackaging($id, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Packaging deleted.');
+                    return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'delete', 'id' => $id));
+                }
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Packaging deleted.');
-            return $this->redirect()->toRoute('business-admin/packaging');
         }
 
         return array(
@@ -144,6 +164,15 @@ class PackagingController extends AbstractActionController {
             $this->packagingTable = $sm->get('AnnieHaak\Model\PackagingTable');
         }
         return $this->packagingTable;
+    }
+
+    private function getAuditing() {
+        if (!$this->auditingObj) {
+            $sm = $this->getServiceLocator();
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $this->auditingObj = new Auditing($dbAdapter);
+        }
+        return $this->auditingObj;
     }
 
 }

@@ -69,7 +69,7 @@ class RawMaterialTypesTable {
         }
         $select->order($sortBy);
 
-        #dump($select->getSqlString());
+        #echo $select->getSqlString();
         #exit();
 
         $resultSetPrototype = new ResultSet();
@@ -79,25 +79,72 @@ class RawMaterialTypesTable {
         return $paginator;
     }
 
-    public function saveRawMaterialTypes(RawMaterialTypes $RawMaterialTypes) {
+    public function saveRawMaterialTypes(RawMaterialTypes $RawMaterialTypes, Auditing $auditingObj) {
         $data = array(
             'RMTypeName' => $RawMaterialTypes->RMTypeName
         );
-
         $id = (int) $RawMaterialTypes->RMTypeID;
+
         if ($id == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->getRawMaterialTypes($id)) {
-                $this->tableGateway->update($data, array('RMTypeID' => $id));
-            } else {
-                throw new \Exception('Product Type id does not exist');
+            $auditingObj->Action = 'Insert';
+            $auditingObj->TableName = 'RawMaterialTypeLookup';
+            $auditingObj->OldDataJSON = '';
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->insert($data);
+                $newID = $this->tableGateway->lastInsertValue;
+                $auditingObj->TableIndex = $newID;
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not add new Raw Material Type. ERROR: " . $ex->getMessage());
             }
+            $connectCntrl->commit();
+        } else {
+            $rawMaterialTypesCurrentData = new ProductTypes();
+            $rawMaterialTypesCurrentData = $this->getRawMaterialTypes($id);
+            $rawMaterialTypesCurrentArr = (Array) $rawMaterialTypesCurrentData;
+
+            $auditingObj->Action = 'Update';
+            $auditingObj->TableName = 'RawMaterialTypeLookup';
+            $auditingObj->TableIndex = $id;
+            $auditingObj->OldDataJSON = json_encode($rawMaterialTypesCurrentArr);
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->update($data, array('RMTypeID' => $id));
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not update Raw Material Type. ERROR: " . $ex->getMessage());
+            }
+            $connectCntrl->commit();
         }
     }
 
-    public function deleteRawMaterialTypes($id) {
-        $this->tableGateway->delete(array('RMTypeID' => (int) $id));
+    public function deleteRawMaterialTypes($id, Auditing $auditingObj) {
+        $rawMaterialTypesCurrentData = new ProductTypes();
+        $rawMaterialTypesCurrentData = $this->getRawMaterialTypes($id);
+        $rawMaterialTypesCurrentArr = (Array) $rawMaterialTypesCurrentData;
+
+        $auditingObj->Action = 'Delete';
+        $auditingObj->TableName = 'RawMaterialTypeLookup';
+        $auditingObj->TableIndex = $id;
+        $auditingObj->OldDataJSON = json_encode($rawMaterialTypesCurrentArr);
+
+        $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $this->tableGateway->delete(array('RMTypeID' => (int) $id));
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Packaging. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
 }

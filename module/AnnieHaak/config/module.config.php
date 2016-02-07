@@ -400,7 +400,6 @@ return array(
     'view_helpers' => array(
         'invokables' => array(
             'UIAccessControlButtons' => 'AnnieHaak\View\Helpers\UIAccessControlButtons',
-            'UICurrencyFormatter' => 'AnnieHaak\View\Helpers\UICurrencyFormatter',
             'UIPageTitleFormatter' => 'AnnieHaak\View\Helpers\UIPageTitleFormatter'
         )
     ),

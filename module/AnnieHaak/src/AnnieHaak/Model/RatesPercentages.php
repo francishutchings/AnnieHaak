@@ -81,7 +81,7 @@ SQL;
         return $this;
     }
 
-    public function saveRatesPercents(RatesPercentages $RatesPercentages) {
+    public function saveRatesPercents(RatesPercentages $RatesPercentages, Auditing $auditingObj) {
         $data = array(
             "ControlValue" => 1,
             "AssayRateUnitCost" => $RatesPercentages->AssayRateUnitCost,
@@ -92,10 +92,25 @@ SQL;
             "PostageForProfitUnitCost" => $RatesPercentages->PostageForProfitUnitCost,
             "VATPercentage" => $RatesPercentages->VATPercentage
         );
-        $DBH = $this->adapter;
-        $STH = $DBH->createStatement();
-        $STH->prepare($this->sql);
-        $STH->execute($data);
+        $productTypesCurrentArr = (Array) $this->fetchAll();
+        $auditingObj->Action = 'Update';
+        $auditingObj->TableName = 'RatesPercents';
+        $auditingObj->TableIndex = 0;
+        $auditingObj->OldDataJSON = json_encode($productTypesCurrentArr);
+
+        $connectCntrl = $this->adapter->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $DBH = $this->adapter;
+            $STH = $DBH->createStatement();
+            $STH->prepare($this->sql);
+            $STH->execute($data);
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Rates Percents. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
     public function setInputFilter(InputFilterInterface $inputFilter) {

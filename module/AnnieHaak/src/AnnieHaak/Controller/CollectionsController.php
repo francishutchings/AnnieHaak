@@ -5,14 +5,15 @@ namespace AnnieHaak\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\Collections;
+use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\CollectionsForm;
 
 class CollectionsController extends AbstractActionController {
 
     protected $collectionsTable;
+    protected $auditingObj;
 
     public function indexAction() {
-
         return new ViewModel(array(
             'collections' => $this->getCollectionsTable()->fetchAll(),
         ));
@@ -34,9 +35,17 @@ class CollectionsController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $collections->exchangeArray($form->getData());
-                $this->getCollectionsTable()->saveCollections($collections);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Collection - ' . $collections->ProductCollectionName . ' - added.');
-                return $this->redirect()->toRoute('business-admin/collections');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+
+                try {
+                    $this->getCollectionsTable()->saveCollections($collections, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $collections->ProductCollectionName . ' - added.');
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'add'));
+                }
             }
         }
         return array('form' => $form);
@@ -45,17 +54,13 @@ class CollectionsController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/collections', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('business-admin/collections', array('action' => 'add'));
         }
 
         try {
             $collections = $this->getCollectionsTable()->getCollections($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/collections', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
         }
 
         $form = new CollectionsForm();
@@ -66,11 +71,17 @@ class CollectionsController extends AbstractActionController {
         if ($request->isPost()) {
             $form->setInputFilter($collections->getInputFilter());
             $form->setData($request->getPost());
-
             if ($form->isValid()) {
-                $this->getCollectionsTable()->saveCollections($collections);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Collection - ' . $collections->ProductCollectionName . ' - updated.');
-                return $this->redirect()->toRoute('business-admin/collections');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getCollectionsTable()->saveCollections($collections, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $collections->ProductCollectionName . ' - updated.');
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'edit', 'id' => $id));
+                }
             }
         }
 
@@ -83,19 +94,24 @@ class CollectionsController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/collections');
+            return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
         }
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
-
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getCollectionsTable()->deleteCollections($id);
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getCollectionsTable()->deleteCollections($id, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Collection - deleted.');
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
+                } catch (Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'delete', 'id' => $id));
+                }
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Collection - ' . $collections->ProductCollectionName . ' - deleted.');
-            return $this->redirect()->toRoute('business-admin/collections');
         }
 
         return array(
@@ -110,6 +126,15 @@ class CollectionsController extends AbstractActionController {
             $this->collectionsTable = $sm->get('AnnieHaak\Model\CollectionsTable');
         }
         return $this->collectionsTable;
+    }
+
+    private function getAuditing() {
+        if (!$this->auditingObj) {
+            $sm = $this->getServiceLocator();
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $this->auditingObj = new Auditing($dbAdapter);
+        }
+        return $this->auditingObj;
     }
 
 }

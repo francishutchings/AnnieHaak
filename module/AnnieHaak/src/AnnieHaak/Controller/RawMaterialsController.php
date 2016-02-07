@@ -5,6 +5,7 @@ namespace AnnieHaak\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\RawMaterials;
+use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\RawMaterialsForm;
 use Zend\View\Model\JsonModel;
 
@@ -14,6 +15,7 @@ class RawMaterialsController extends AbstractActionController {
     protected $rawMaterialTypesTable;
     protected $suppliersTable;
     protected $productsTable;
+    protected $auditingObj;
 
     public function indexAction() {
         return new ViewModel();
@@ -120,9 +122,16 @@ class RawMaterialsController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $rawMaterials->exchangeArray($form->getData());
-                $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - added.');
-                return $this->redirect()->toRoute('business-admin/raw-materials');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - added.');
+                    return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'add'));
+                }
             }
         }
         return array('form' => $form);
@@ -131,21 +140,14 @@ class RawMaterialsController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/raw-materials', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'add'));
         }
 
         try {
             $rawMaterials = $this->getRawMaterialsTable()->getRawMaterials($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/raw-materials', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'index'));
         }
-
-        #dump($rawMaterials);
-        #exit();
 
         $form = new RawMaterialsForm();
 
@@ -162,9 +164,16 @@ class RawMaterialsController extends AbstractActionController {
             $form->setInputFilter($rawMaterials->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
-                $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - updated.');
-                return $this->redirect()->toRoute('business-admin/raw-materials');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - updated.');
+                    return $this->redirect()->toRoute('business-admin/raw-materials');
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'edit', 'id' => $id));
+                }
             }
         }
 
@@ -188,9 +197,18 @@ class RawMaterialsController extends AbstractActionController {
             $del = $request->getPost('del', 'No');
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getRawMaterialsTable()->deleteRawMaterials($id);
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getRawMaterialsTable()->deleteRawMaterials($id, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material deleted.');
+                    return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'delete', 'id' => $id));
+                }
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - deleted.');
+            $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material deleted.');
             return $this->redirect()->toRoute('business-admin/raw-materials');
         }
 
@@ -243,6 +261,15 @@ class RawMaterialsController extends AbstractActionController {
             $this->productsTable = $sm->get('AnnieHaak\Model\ProductsTable');
         }
         return $this->productsTable;
+    }
+
+    private function getAuditing() {
+        if (!$this->auditingObj) {
+            $sm = $this->getServiceLocator();
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $this->auditingObj = new Auditing($dbAdapter);
+        }
+        return $this->auditingObj;
     }
 
 }

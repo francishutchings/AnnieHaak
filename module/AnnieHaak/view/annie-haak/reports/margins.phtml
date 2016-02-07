@@ -32,10 +32,10 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
                     echo '<td>' . $value['Collection'] . '</td>';
                     echo '<td>' . $value['Current'] . '</td>';
                     echo '<td>' . $value['TradePack'] . '</td>';
-                    echo '<td>' . $this->UICurrencyFormatter($value['RRP'], TRUE) . '</td>';
-                    echo '<td>' . $this->UICurrencyFormatter($value['RetailProfit'], TRUE) . '</td>';
+                    echo '<td>£' . number_format($value['RRP'], 4) . '</td>';
+                    echo '<td>£' . number_format($value['RetailProfit'], 4) . '</td>';
                     echo '<td>' . round($value['RetailMargin'], 2) . '%</td>';
-                    echo '<td>' . $this->UICurrencyFormatter($value['TradeProfit'], TRUE) . '</td>';
+                    echo '<td>£' . number_format($value['TradeProfit'], 4) . '</td>';
                     echo '<td>' . round($value['TradeMargin'], 2) . '%</td></tr>';
                     echo '</tr>';
                 }

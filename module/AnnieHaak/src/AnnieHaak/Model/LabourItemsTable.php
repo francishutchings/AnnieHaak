@@ -30,22 +30,51 @@ class LabourItemsTable {
         return $row;
     }
 
-    public function saveLabourItems(LabourItems $labourItems) {
+    public function saveLabourItems(LabourItems $labourItems, Auditing $auditingObj) {
         $data = array(
             'LabourName' => $labourItems->LabourName,
             'LabourUnitCost' => $labourItems->LabourUnitCost,
             'LabourCode' => $labourItems->LabourCode
         );
-
         $id = (int) $labourItems->LabourID;
+
         if ($id == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->getLabourItems($id)) {
-                $this->tableGateway->update($data, array('LabourID' => $id));
-            } else {
-                throw new \Exception('Labour Item id does not exist');
+            $auditingObj->Action = 'Insert';
+            $auditingObj->TableName = 'LabourLookup';
+            $auditingObj->OldDataJSON = '';
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->insert($data);
+                $newID = $this->tableGateway->lastInsertValue;
+                $auditingObj->TableIndex = $newID;
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not add new Labour Item. ERROR: " . $ex->getMessage());
             }
+            $connectCntrl->commit();
+        } else {
+            $labourItemsCurrentData = new LabourItems();
+            $labourItemsCurrentData = $this->getLabourItems($id);
+            $labourItemsCurrentArr = (Array) $labourItemsCurrentData;
+
+            $auditingObj->Action = 'Update';
+            $auditingObj->TableName = 'LabourLookup';
+            $auditingObj->TableIndex = $id;
+            $auditingObj->OldDataJSON = json_encode($labourItemsCurrentArr);
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->update($data, array('LabourID' => $id));
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not update Labour Item. ERROR: " . $ex->getMessage());
+            }
+            $connectCntrl->commit();
         }
     }
 
@@ -56,10 +85,6 @@ class LabourItemsTable {
         $select->join(array('LT' => 'LabourTime'), 'LT.LabourID = LL.LabourID', array('LabourTimeID', 'LabourQty', 'SubtotalLabour' => 'LabourQty * LabourUnitCost'));
         $select->where(array('LT.ProductID' => $productId));
         $select->order('LL.LabourName');
-
-        #echo $select->getSqlString();
-        #exit();
-
         $resultSet = $this->tableGateway->selectWith($select);
         return $resultSet;
     }
@@ -69,16 +94,30 @@ class LabourItemsTable {
         $select->from(array('LL' => 'LabourLookup'));
         $select->columns(array('LabourUnitCost', 'LabourCode'));
         $select->where(array('LabourID' => $LabourId));
-
-        #echo $select->getSqlString();
-        #exit();
-
         $resultSet = $this->tableGateway->selectWith($select);
         return $resultSet;
     }
 
-    public function deleteLabourItems($id) {
-        $this->tableGateway->delete(array('LabourID' => (int) $id));
+    public function deleteLabourItems($id, Auditing $auditingObj) {
+        $labourItemsCurrentData = new LabourItems();
+        $labourItemsCurrentData = $this->getLabourItems($id);
+        $labourItemsCurrentArr = (Array) $labourItemsCurrentData;
+
+        $auditingObj->Action = 'Delete';
+        $auditingObj->TableName = 'LabourLookup';
+        $auditingObj->TableIndex = $id;
+        $auditingObj->OldDataJSON = json_encode($labourItemsCurrentArr);
+
+        $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $this->tableGateway->delete(array('LabourID' => (int) $id));
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Labour Item. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
 }

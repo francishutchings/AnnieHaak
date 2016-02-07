@@ -121,7 +121,7 @@ class RawMaterialsTable {
         return $paginator;
     }
 
-    public function saveRawMaterials(RawMaterials $RawMaterials) {
+    public function saveRawMaterials(RawMaterials $RawMaterials, Auditing $auditingObj) {
         $data = array(
             'RawMaterialCode' => $RawMaterials->RawMaterialCode,
             'RawMaterialName' => $RawMaterials->RawMaterialName,
@@ -131,21 +131,68 @@ class RawMaterialsTable {
             'DateLastChecked' => $RawMaterials->DateLastChecked,
             'LastInvoiceNumber' => $RawMaterials->LastInvoiceNumber
         );
-
         $id = (int) $RawMaterials->RawMaterialID;
+
         if ($id == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->getRawMaterials($id)) {
-                $this->tableGateway->update($data, array('RawMaterialID' => $id));
-            } else {
-                throw new \Exception('Product Type id does not exist');
+            $auditingObj->Action = 'Insert';
+            $auditingObj->TableName = 'RawMaterialLookup';
+            $auditingObj->OldDataJSON = '';
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->insert($data);
+                $newID = $this->tableGateway->lastInsertValue;
+                $auditingObj->TableIndex = $newID;
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not add new Raw Material. ERROR: " . $ex->getMessage());
             }
+            $connectCntrl->commit();
+        } else {
+            $rawMaterialCurrentData = new RawMaterials();
+            $rawMaterialCurrentData = $this->getRawMaterials($id);
+            $rawMaterialCurrentArr = (Array) $rawMaterialCurrentData;
+
+            $auditingObj->Action = 'Update';
+            $auditingObj->TableName = 'RawMaterialLookup';
+            $auditingObj->TableIndex = $id;
+            $auditingObj->OldDataJSON = json_encode($rawMaterialCurrentArr);
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->update($data, array('RawMaterialID' => $id));
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not update Raw Material. ERROR: " . $ex->getMessage());
+            }
+            $connectCntrl->commit();
         }
     }
 
-    public function deleteRawMaterials($id) {
-        $this->tableGateway->delete(array('RawMaterialID' => (int) $id));
+    public function deleteRawMaterials($id, Auditing $auditingObj) {
+        $rawMaterialCurrentData = new RawMaterials();
+        $rawMaterialCurrentData = $this->getRawMaterials($id);
+        $rawMaterialCurrentArr = (Array) $rawMaterialCurrentData;
+
+        $auditingObj->Action = 'Delete';
+        $auditingObj->TableName = 'RawMaterialLookup';
+        $auditingObj->TableIndex = $id;
+        $auditingObj->OldDataJSON = json_encode($rawMaterialCurrentArr);
+
+        $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $this->tableGateway->delete(array('RawMaterialID' => (int) $id));
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Raw Material. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
     public function fetchMaterialsByProduct($productId) {

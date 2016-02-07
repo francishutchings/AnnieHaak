@@ -14,7 +14,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
                 <div class="col-md-10">
                     <div class="panel panel-warning">
                         <div class="panel-heading">
-                            <h3 class="panel-title">Warning</h3>
+                            <h3 class="panel-title">Warning!</h3>
                         </div>
                         <div class="panel-body">
                             Are you sure that you want to delete <span class="text-warning bold">"<?php echo $this->escapeHtml($rawMaterialTypes->RMTypeName); ?>"</span>?
@@ -25,7 +25,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
 
             <input type="hidden" name="id" value="<?php echo (int) $rawMaterialTypes->RMTypeID; ?>" />
             <div class="form-group">
-                <div class="col-md-10 col-md-offset-1">
+                <div class="col-md-3 col-md-offset-7">
                     <a href="/business-admin/raw-material-types" type="reset" class="btn btn-default btn-sm">Cancel</a>
                     <button type="submit" class="btn btn-danger btn-sm" name="del" value="Yes">Delete</button>
                 </div>

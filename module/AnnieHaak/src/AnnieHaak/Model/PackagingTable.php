@@ -58,28 +58,75 @@ class PackagingTable {
         return $resultSet;
     }
 
-    public function savePackaging(Packaging $Packaging) {
+    public function savePackaging(Packaging $Packaging, Auditing $auditingObj) {
         $data = array(
             'PackagingName' => $Packaging->PackagingName,
             'PackagingUnitCost' => $Packaging->PackagingUnitCost,
             'PackagingCode' => $Packaging->PackagingCode,
             'PackagingType' => $Packaging->PackagingType
         );
-
         $id = (int) $Packaging->PackagingID;
+
         if ($id == 0) {
-            $this->tableGateway->insert($data);
-        } else {
-            if ($this->getPackaging($id)) {
-                $this->tableGateway->update($data, array('PackagingID' => $id));
-            } else {
-                throw new \Exception('Product Type id does not exist');
+            $auditingObj->Action = 'Insert';
+            $auditingObj->TableName = 'PackagingLookup';
+            $auditingObj->OldDataJSON = '';
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->insert($data);
+                $newID = $this->tableGateway->lastInsertValue;
+                $auditingObj->TableIndex = $newID;
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not add new Packaging. ERROR: " . $ex->getMessage());
             }
+            $connectCntrl->commit();
+        } else {
+            $packagingCurrentData = new Packaging();
+            $packagingCurrentData = $this->getPackaging($id);
+            $packagingCurrentArr = (Array) $packagingCurrentData;
+
+            $auditingObj->Action = 'Update';
+            $auditingObj->TableName = 'PackagingLookup';
+            $auditingObj->TableIndex = $id;
+            $auditingObj->OldDataJSON = json_encode($packagingCurrentArr);
+
+            $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->update($data, array('PackagingID' => $id));
+                $auditingObj->saveAuditAction();
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not update Packaging. ERROR: " . $ex->getMessage());
+            }
+            $connectCntrl->commit();
         }
     }
 
-    public function deletePackaging($id) {
-        $this->tableGateway->delete(array('PackagingID' => (int) $id));
+    public function deletePackaging($id, Auditing $auditingObj) {
+        $packagingCurrentData = new Packaging();
+        $packagingCurrentData = $this->getPackaging($id);
+        $packagingCurrentArr = (Array) $packagingCurrentData;
+
+        $auditingObj->Action = 'Delete';
+        $auditingObj->TableName = 'PackagingLookup';
+        $auditingObj->TableIndex = $id;
+        $auditingObj->OldDataJSON = json_encode($packagingCurrentArr);
+
+        $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $this->tableGateway->delete(array('PackagingID' => (int) $id));
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Packaging. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
 }

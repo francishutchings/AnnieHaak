@@ -5,11 +5,13 @@ namespace AnnieHaak\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\ProductTypes;
+use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\ProductTypesForm;
 
 class ProductTypesController extends AbstractActionController {
 
     protected $productTypesTable;
+    protected $auditingObj;
 
     public function indexAction() {
 
@@ -29,9 +31,16 @@ class ProductTypesController extends AbstractActionController {
 
             if ($form->isValid()) {
                 $productTypes->exchangeArray($form->getData());
-                $this->getProductTypesTable()->saveProductTypes($productTypes);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - added.');
-                return $this->redirect()->toRoute('business-admin/product-types');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getProductTypesTable()->saveProductTypes($productTypes, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - added.');
+                    return $this->redirect()->toRoute('business-admin/product-types');
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'add'));
+                }
             }
         }
         return array('form' => $form);
@@ -40,17 +49,13 @@ class ProductTypesController extends AbstractActionController {
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/product-types', array(
-                        'action' => 'add'
-            ));
+            return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'add'));
         }
 
         try {
             $productTypes = $this->getProductTypesTable()->getProductTypes($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/product-types', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'index'));
         }
 
         $form = new ProductTypesForm();
@@ -63,9 +68,16 @@ class ProductTypesController extends AbstractActionController {
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getProductTypesTable()->saveProductTypes($productTypes);
-                $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - updated.');
-                return $this->redirect()->toRoute('business-admin/product-types');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getProductTypesTable()->saveProductTypes($productTypes, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - updated.');
+                    return $this->redirect()->toRoute('business-admin/product-types');
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'edit', 'id' => $id));
+                }
             }
         }
 
@@ -78,7 +90,7 @@ class ProductTypesController extends AbstractActionController {
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/product-types');
+            return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'index'));
         }
 
         $request = $this->getRequest();
@@ -87,10 +99,17 @@ class ProductTypesController extends AbstractActionController {
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getProductTypesTable()->deleteProductTypes($id);
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getProductTypesTable()->deleteProductTypes($id, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type deleted.');
+                    return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'index'));
+                } catch (\Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'delete', 'id' => $id));
+                }
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Product Type deleted.');
-            return $this->redirect()->toRoute('business-admin/product-types');
         }
 
         return array(
@@ -105,6 +124,15 @@ class ProductTypesController extends AbstractActionController {
             $this->productTypesTable = $sm->get('AnnieHaak\Model\ProductTypesTable');
         }
         return $this->productTypesTable;
+    }
+
+    private function getAuditing() {
+        if (!$this->auditingObj) {
+            $sm = $this->getServiceLocator();
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $this->auditingObj = new Auditing($dbAdapter);
+        }
+        return $this->auditingObj;
     }
 
 }
