@@ -30,7 +30,7 @@ class CollectionsTable {
         return $row;
     }
 
-    public function saveCollections(Collections $Collections) {
+    public function saveCollections(Collections $Collections, array $collectionsAssocData) {
         $data = array(
             'ProductCollectionName' => $Collections->ProductCollectionName,
             'ProductCollectionCode' => $Collections->ProductCollectionCode,
@@ -40,6 +40,10 @@ class CollectionsTable {
         $id = (int) $Collections->ProductCollectionID;
         if ($id == 0) {
             $this->tableGateway->insert($data);
+            $auditingProducts->UserName = $productAssocData['user']['username'];
+            $auditingProducts->Action = 'insert';
+            $auditingProducts->TableName = 'products';
+            $auditingProducts->OldDataJSON = '';
         } else {
             if ($this->getCollections($id)) {
                 $this->tableGateway->update($data, array('ProductCollectionID' => $id));

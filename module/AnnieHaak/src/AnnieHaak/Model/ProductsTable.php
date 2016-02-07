@@ -72,8 +72,8 @@ class ProductsTable {
         }
         $select->order($sortBy);
 
-        #echo $select->getSqlString();
-        #exit();
+#echo $select->getSqlString();
+#exit();
 
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Products());
@@ -123,7 +123,8 @@ class ProductsTable {
             'Strands',
             'Weddings'
         ));
-        $select->join(array('C' => 'ProductCollections'), 'C.ProductCollectionID = P.CollectionID', array('Current'));
+        $select->join(array('C' => 'ProductCollections'), 'C.ProductCollectionID = P.CollectionID', array('Current', 'ProductCollectionName'));
+        $select->join(array('PT' => 'ProductTypes'), 'PT.ProductTypeId = P.ProductTypeID', array('ProductTypeName'));
         $select->where(array('P.ProductID' => $id));
 
         $resultSet = $this->tableGateway->selectWith($select);
@@ -147,7 +148,7 @@ class ProductsTable {
     }
 
     public function getProductNameElements(Adapter $dbAdapter) {
-        #http://codingexplained.com/coding/php/zend-framework/multiple-result-sets-from-stored-procedure-in-zf2
+#http://codingexplained.com/coding/php/zend-framework/multiple-result-sets-from-stored-procedure-in-zf2
 
         $driver = $dbAdapter->getDriver();
         $connection = $driver->getConnection();
@@ -191,7 +192,6 @@ class ProductsTable {
             'Birthdays' => $products->Birthdays,
             'Charm' => $products->Charm,
             'CollectionID' => $products->CollectionID,
-            'ProductCollectionName' => trim($products->ProductCollectionName),
             'CurrentURL' => trim($products->CurrentURL),
             'Description' => trim($products->Description),
             'DescriptionStatus' => $products->DescriptionStatus,
@@ -225,25 +225,81 @@ class ProductsTable {
         );
         $id = (int) $products->ProductID;
 
-        #dump($id);
-        #dump($data);
-        #dump($products);
-        dump($productAssocData);
+#dump($id);
+#dump($data);
+#dump($products);
+#exit();
+#dump($productAssocData);
 
         $auditingProducts = clone($productAssocData['auditingObj']);
         $auditingRawMaterials = clone($productAssocData['auditingObj']);
         $auditingPackaging = clone($productAssocData['auditingObj']);
         $auditingLabourItems = clone($productAssocData['auditingObj']);
 
+// Raw Materials Insert
+        $sql_RMIn = "INSERT INTO RawMaterialPickLists (ProductID, RawMaterialID, RawMaterialQty) VALUES (:ProductID, :RawMaterialID, :RawMaterialQty)";
+        $stmt_RMIn = $productAssocData['dbAdapter']->query($sql_RMIn);
+
+// Packaging Insert
+        $sql_PIn = "INSERT INTO PackagingPickLists (ProductID, PackagingID, PackagingQty) VALUES (:ProductID, :PackagingID, :PackagingID)";
+        $stmt_PIn = $productAssocData['dbAdapter']->query($sql_PIn);
+
+// Labout Items Insert
+        $sql_LIIn = "INSERT INTO LabourTime (ProductID, LabourID, LabourQty) VALUES (:ProductID, :LabourID, :LabourQty)";
+        $stmt_LIIn = $productAssocData['dbAdapter']->query($sql_LIIn);
+
+#dump($productAssocData);
+#exit();
+
         if ($id == 0) {
-            $productAssocData->Auditing->UserName = $productAssocData->user['username'];
-            $productAssocData->Auditing->Action = 'insert';
-            $productAssocData->Auditing->TableName = 'products';
-            $productAssocData->Auditing->OldDataJSON = '';
+            $auditingProducts->UserName = $productAssocData['user']['username'];
+            $auditingProducts->Action = 'insert';
+            $auditingProducts->TableName = 'products';
+            $auditingProducts->OldDataJSON = '';
 
-            $productAssocData->Auditing->saveAuditAction();
+            $auditingRawMaterials->UserName = $productAssocData['user']['username'];
+            $auditingRawMaterials->Action = 'insert';
+            $auditingRawMaterials->TableName = 'RawMaterialPickLists';
+            $auditingRawMaterials->OldDataJSON = '';
 
-            #$this->tableGateway->insert($data);
+            $auditingPackaging->UserName = $productAssocData['user']['username'];
+            $auditingPackaging->Action = 'insert';
+            $auditingPackaging->TableName = 'PackagingPickLists';
+            $auditingPackaging->OldDataJSON = '';
+
+            $auditingLabourItems->UserName = $productAssocData['user']['username'];
+            $auditingLabourItems->Action = 'insert';
+            $auditingLabourItems->TableName = 'LabourTime';
+            $auditingLabourItems->OldDataJSON = '';
+
+            $connectCntrl = $productAssocData['dbAdapter']->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
+            try {
+                $this->tableGateway->insert($data);
+                $newProductID = $this->tableGateway->lastInsertValue;
+
+                //Insert + Update new data
+                foreach ($productAssocData['rawMaterialsData'] as $key => $value) {
+                    $value['ProductID'] = $newProductID;
+                    $stmt_RMIn->execute($value);
+                }
+                foreach ($productAssocData['packagingData'] as $key => $value) {
+                    $value['ProductID'] = $newProductID;
+                    $stmt_PIn->execute($value);
+                }
+                foreach ($productAssocData['labourItemsData'] as $key => $value) {
+                    $value['ProductID'] = $newProductID;
+                    $stmt_LIIn->execute($value);
+                }
+                $productAssocData['auditingObj']->saveAuditAction($auditingProducts);
+                $productAssocData['auditingObj']->saveAuditAction($auditingRawMaterials);
+                $productAssocData['auditingObj']->saveAuditAction($auditingPackaging);
+                $productAssocData['auditingObj']->saveAuditAction($auditingLabourItems);
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not add new Product. ERROR: " . $ex->getMessage());
+            }
+            $connectCntrl->commit();
         } else {
             // GET CURRENT DATA
             // Product Current
@@ -264,17 +320,13 @@ class ProductsTable {
                 $rawMaterialsCurrentArr[] = $value;
             }
             $auditingRawMaterials->UserName = $productAssocData['user']['username'];
-            $auditingRawMaterials->Action = 'update';
+            $auditingRawMaterials->Action = 'delete - insert';
             $auditingRawMaterials->TableName = 'RawMaterialPickLists';
             $auditingRawMaterials->OldDataJSON = json_encode($rawMaterialsCurrentArr);
 
             // Raw Materials Delete
             $sql_RMDel = "DELETE FROM RawMaterialPickLists WHERE ProductID = :ProductID";
             $stmt_RMDel = $productAssocData['dbAdapter']->query($sql_RMDel);
-
-            // Raw Materials Insert
-            $sql_RMIn = "INSERT INTO RawMaterialPickLists (ProductID, RawMaterialID, RawMaterialQty) VALUES (:ProductID, :RawMaterialID, :RawMaterialQty)";
-            $stmt_RMIn = $productAssocData['dbAdapter']->query($sql_RMIn);
 
             // Packaging Current
             //===========================================
@@ -285,17 +337,13 @@ class ProductsTable {
                 $packagingCurrentArr[] = $value;
             }
             $auditingPackaging->UserName = $productAssocData['user']['username'];
-            $auditingPackaging->Action = 'update';
+            $auditingPackaging->Action = 'delete - insert';
             $auditingPackaging->TableName = 'PackagingPickLists';
             $auditingPackaging->OldDataJSON = json_encode($packagingCurrentArr);
 
             // Packaging Delete
             $sql_PDel = "DELETE FROM PackagingPickLists WHERE ProductID = :ProductID";
             $stmt_PDel = $productAssocData['dbAdapter']->query($sql_PDel);
-
-            // Packaging Insert
-            $sql_PIn = "INSERT INTO PackagingPickLists (ProductID, PackagingID, PackagingQty) VALUES (:ProductID, :PackagingID, :PackagingID)";
-            $stmt_PIn = $productAssocData['dbAdapter']->query($sql_PIn);
 
             // Labout Items
             //===========================================
@@ -306,7 +354,7 @@ class ProductsTable {
                 $labourItemsCurrentArr[] = $value;
             }
             $auditingLabourItems->UserName = $productAssocData['user']['username'];
-            $auditingLabourItems->Action = 'update';
+            $auditingLabourItems->Action = 'delete - insert';
             $auditingLabourItems->TableName = 'LabourTime';
             $auditingLabourItems->OldDataJSON = json_encode($labourItemsCurrentArr);
 
@@ -314,54 +362,38 @@ class ProductsTable {
             $sql_LIDel = "DELETE FROM LabourTime WHERE ProductID = :ProductID";
             $stmt_LIDel = $productAssocData['dbAdapter']->query($sql_LIDel);
 
-            // Labout Items Insert
-            $sql_LIIn = "INSERT INTO LabourTime (ProductID, LabourID, LabourQty) VALUES (:ProductID, :LabourID, :LabourQty)";
-            $stmt_LIIn = $productAssocData['dbAdapter']->query($sql_LIIn);
-
-            echo 'START<BR>';
             // SAVE ALL CURRENT DATA
             //===========================================
-            $productAssocData['dbAdapter']->getDriver()->getConnection()->beginTransaction();
+            $connectCntrl = $productAssocData['dbAdapter']->getDriver()->getConnection();
+            $connectCntrl->beginTransaction();
             try {
+                //Record action
                 $productAssocData['auditingObj']->saveAuditAction($auditingProducts);
                 $productAssocData['auditingObj']->saveAuditAction($auditingRawMaterials);
                 $productAssocData['auditingObj']->saveAuditAction($auditingPackaging);
                 $productAssocData['auditingObj']->saveAuditAction($auditingLabourItems);
 
-                echo 'AUDIT<BR>';
-
+                //Delete related Product data
                 $stmt_RMDel->execute(array('ProductID' => $id));
                 $stmt_PDel->execute(array('ProductID' => $id));
                 $stmt_LIDel->execute(array('ProductID' => $id));
 
-                echo 'DEL<BR>';
-
+                //Insert + Update new data
                 foreach ($productAssocData['rawMaterialsData'] as $value) {
                     $stmt_RMIn->execute($value);
                 }
-                echo 'INSERT<BR>';
-
                 foreach ($productAssocData['packagingData'] as $value) {
                     $stmt_PIn->execute($value);
                 }
-                echo 'INSERT<BR>';
-
                 foreach ($productAssocData['labourItemsData'] as $value) {
                     $stmt_LIIn->execute($value);
                 }
-                echo 'INSERT<BR>';
-
                 $this->tableGateway->update($data, array('ProductID' => $id));
-                echo 'UPDATE<BR>';
-            } catch (Exception $e) {
-                $productAssocData['dbAdapter']->getDriver()->getConnection()->rollback();
-                dump($e);
-                echo 'Caught exception: ', $e->getMessage(), "\n";
+            } catch (\Exception $ex) {
+                $connectCntrl->rollback();
+                throw new \Exception("Could not update Product. ERROR: " . $ex->getMessage() . "\n");
             }
-            $productAssocData['dbAdapter']->getDriver()->getConnection()->commit();
-            dump($productAssocData['dbAdapter']->getDriver()->getConnection()->beginTransaction());
-            echo 'END';
-            exit();
+            $connectCntrl->commit();
         }
     }
 

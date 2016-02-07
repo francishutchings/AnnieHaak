@@ -43,11 +43,16 @@ class PackagingController extends AbstractActionController {
     public function jsonPackagingByProductAction() {
         $productId = (int) $this->params()->fromQuery('productId', 0);
         $packaging = $this->getPackagingTable()->getPackagingByProduct($productId);
+        $packaging = $packaging->toArray();
+        foreach ($packaging as $key => $value) {
+            $packaging[$key]["PackagingUnitCost"] = number_format((float) $value["PackagingUnitCost"], 4, '.', '');
+            $packaging[$key]["SubtotalPackaging"] = number_format((float) $value["SubtotalPackaging"], 4, '.', '');
+        }
         $result = new JsonModel(array(
-            'records' => $packaging->count(),
+            'records' => count($packaging),
             'page' => 1,
-            'total' => $packaging->count(),
-            'rows' => $packaging->toArray()
+            'total' => count($packaging),
+            'rows' => $packaging
         ));
         return $result;
     }

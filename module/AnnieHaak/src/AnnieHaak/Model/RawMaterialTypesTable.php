@@ -39,16 +39,6 @@ class RawMaterialTypesTable {
         $select->columns(array('RMTypeID', 'RMTypeName'));
 
         if (isset($search)) {
-            /*
-              {oper: 'eq', text: 'equal'},
-              {oper: 'cn', text: 'contains'},
-              {oper: 'bw', text: 'begins with'},
-              {oper: 'ew', text: 'ends with'},
-              {oper: 'lt', text: 'less than'},
-              {oper: 'le', text: 'less or equal to'},
-              {oper: 'gt', text: 'greater than'},
-              {oper: 'ge', text: 'greater or equal to'}
-             */
             $search['searchString'] = str_replace(array("+"), array(" "), $search['searchString']);
             switch ($search['searchOper']) {
                 case 'eq':

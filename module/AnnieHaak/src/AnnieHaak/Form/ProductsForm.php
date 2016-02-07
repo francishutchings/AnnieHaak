@@ -15,6 +15,7 @@ class ProductsForm extends Form {
             'name' => 'ProductID',
             'type' => 'Hidden',
             'attributes' => array(
+                'id' => 'ProductID',
                 'value' => 0
             ),
         ));

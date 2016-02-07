@@ -146,7 +146,7 @@
             colModel: [
                 {
                     name: 'RMTypeID',
-                    width: 200,
+                    width: 150,
                     editable: true,
                     edittype: 'select',
                     formatter: 'select',
@@ -156,7 +156,7 @@
                 },
                 {
                     name: 'RawMaterialID',
-                    width: 200,
+                    width: 250,
                     editable: true,
                     edittype: "select",
                     formatter: 'select',
@@ -190,13 +190,15 @@
                     name: 'RawMaterialQty',
                     width: 75,
                     edittype: "text",
-                    editable: true
+                    editable: true,
+                    align: 'right'
                 },
                 {
                     name: 'RawMaterialUnitCost',
                     width: 75,
                     edittype: "text",
                     editable: true,
+                    align: 'right',
                     editoptions: {
                         readonly: true
                     }
@@ -206,6 +208,7 @@
                     width: 75,
                     edittype: "text",
                     editable: true,
+                    align: 'right',
                     editoptions: {
                         readonly: true,
                         size: 15,

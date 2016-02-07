@@ -1,0 +1,349 @@
+<?php
+#dump($products);
+#dump($subtotals);
+#dump($rawMaterials);
+#dump($labourItems);
+#dump($packaging);
+#dump($financialCalcSubTotals);
+?>
+<style>
+    table {page-break-after: auto;}
+    th{font-weight: bold; font-size: 1.25em;}
+</style>
+
+<button class="btn btn-info hidden-print" onclick="window.print();">Print</button>
+
+<h4>Product:</h4>
+<table class="table table-bordered">
+    <tbody>
+        <?php
+        echo '<tr>';
+        echo '<th>Name</th>';
+        echo '<td>' . $products['ProductName'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Currently Live</th>';
+        echo ($products['Current']) ? '<td>Yes</td>' : '<td>No</td>';
+        echo '</tr><tr>';
+        echo '<th>SKU</th>';
+        echo '<td>' . $products['SKU'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Collection</th>';
+        echo '<td>' . $products['ProductCollectionName'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Product Type</th>';
+        echo '<td>' . $products['ProductTypeName'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Strands</th>';
+        echo '<td>' . $products['Strands'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Date Introduced</th>';
+        echo '<td>' . $products['IntroDate'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Mins To Build</th>';
+        echo '<td>' . $products['MinsToBuild'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Sold Last Period</th>';
+        echo '<td>' . $products['QtyOrderedLastPeriod'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Current URL</th>';
+        echo '<td>' . $products['CurrentURL'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Old URL</th>';
+        echo '<td>' . $products['OldURL'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Description</th>';
+        echo '<td>' . $products['Description'] . '</td>';
+        echo '</tr><tr>';
+        echo '<th>Desc. Status</th>';
+        switch ($products['DescriptionStatus']) {
+            case 0:
+                echo '<td>Needs Description</td>';
+                break;
+            case 1:
+                echo '<td>Pending Approval</td>';
+                break;
+            case 2:
+                echo '<td>Approved</td>';
+                break;
+        }
+        echo '</tr><tr>';
+        echo '<td colspan="2">';
+
+        echo '<table class="table" style="margin-bottom:0;"><tr>';
+        echo ($products['KeyPiece']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Key Piece</span></td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Key Piece</td>';
+        echo ($products['Stacks']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Stacks</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Stacks</td>';
+        echo ($products['Gold']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Gold</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Gold</td>';
+        echo ($products['Engraved']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Engraved</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Engraved</td>';
+        echo ($products['RequiresAssay']) ? '<td><span class="glyphicon glyphicon-check"></span>&nbsp;Requires Assay</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Requires Assay</td>';
+        echo '</tr><tr>';
+        echo ($products['Accessories']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Accessories</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Accessories</td>';
+        echo ($products['PremiumStacks']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Premium Stacks</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Premium Stacks</td>';
+        echo ($products['SterlingSilver']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Sterling Silver-</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Sterling Silver Stacks</td>';
+        echo ($products['Weddings']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Weddings</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Weddings Stacks</td>';
+        echo ($products['ExcludeFromTrade']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Exclude Trade</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Exclude Trade Stacks</td>';
+        echo '</tr><tr>';
+        echo ($products['Friendship']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Friendship</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Friendship</td>';
+        echo ($products['Charm']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Charm</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Charm</td>';
+        echo ($products['Personalisable']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Personalisable</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Personalisable</td>';
+        echo ($products['Birthdays']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Birthdays</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Birthdays</td>';
+        echo ($products['PartOfTradePack']) ? '<td><span class="glyphicon glyphicon-check"></span>&nbsp;Trade Pack Quantity = ' . $products['PartOfTradePack'] . '</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Trade Pack Quantity</td>';
+        echo '</tr></table>';
+
+        echo '</td></tr>';
+        ?>
+    </tbody>
+</table>
+
+<div style="page-break-after:always;"></div>
+<h4>Raw Materials:</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th style="width:30%;">Name</th>
+            <th>Code</th>
+            <th>Supplier</th>
+            <th>Type</th>
+            <th class="text-right">Unit Cost</th>
+            <th class="text-right">Quantity</th>
+            <th class="text-right">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($rawMaterials as $value) {
+            echo '<tr>';
+            echo '<td>' . $value['RawMaterialName'] . '</td>';
+            echo '<td>' . $value['RawMaterialCode'] . '</td>';
+            echo '<td>' . $value['RMSupplierName'] . '</td>';
+            echo '<td>' . $value['RMTypeName'] . '</td>';
+            echo '<td class="text-right">£' . $value['RawMaterialUnitCost'] . '</td>';
+            echo '<td class="text-right">' . $value['RawMaterialQty'] . '</td>';
+            echo '<td class="text-right">&pound;' . $value['SubtotalRM'] . '</td>';
+            echo '</tr>';
+        }
+        echo '<tr class="bold"><td colspan="6">&nbsp;</td><td class="text-right">&pound;' . $subtotals['RawMaterials'] . '</td></tr>';
+        ?>
+    </tbody>
+</table>
+
+<h4>Labour:</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th style="width:40%;">Name</th>
+            <th style="width:15%;">Code</th>
+            <th style="width:15%;" class="text-right">Unit Cost</th>
+            <th style="width:15%;" class="text-right">Quantity</th>
+            <th style="width:15%;" class="text-right">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($labourItems as $value) {
+            echo '<tr>';
+            echo '<td>' . $value['LabourName'] . '</td>';
+            echo '<td>' . $value['LabourCode'] . '</td>';
+            echo '<td class="text-right">£' . $value['LabourUnitCost'] . '</td>';
+            echo '<td class="text-right">' . $value['LabourQty'] . '</td>';
+            echo '<td class="text-right">&pound;' . $value['SubtotalLabour'] . '</td>';
+            echo '</tr>';
+        }
+        echo '<tr class="bold"><td colspan="4">&nbsp;</td><td class="text-right">&pound;' . $subtotals['LabourItems'] . '</td></tr>';
+        ?>
+    </tbody>
+</table>
+
+<h4>Packaging:</h4>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th style="width:40%;">Name</th>
+            <th style="width:15%;">Code</th>
+            <th style="width:15%;" class="text-right">Unit Cost</th>
+            <th style="width:15%;" class="text-right">Quantity</th>
+            <th style="width:15%;" class="text-right">Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+        foreach ($packaging as $value) {
+            echo '<tr>';
+            echo '<td>' . $value['PackagingName'] . '</td>';
+            echo '<td>' . $value['PackagingCode'] . '</td>';
+            echo '<td class="text-right">£' . $value['PackagingUnitCost'] . '</td>';
+            echo '<td class="text-right">' . $value['PackagingQty'] . '</td>';
+            echo '<td class="text-right">&pound;' . $value['SubtotalPackaging'] . '</td>';
+            echo '</tr>';
+        }
+        echo '<tr class="bold"><td colspan="4">&nbsp;</td><td class="text-right">&pound;' . $subtotals['Packaging'] . '</td></tr>';
+        ?>
+    </tbody>
+</table>
+
+<div style="page-break-after:always;"></div>
+<h4>Financials:</h4>
+<table class="table table-bordered">
+    <tbody>
+        <tr>
+            <th colspan="6">Subtotals</th>
+        </tr>
+        <tr  class="text-right">
+            <th class="text-right">Raw Material Cost</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalRM']; ?></td>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Labour Cost</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalLabour']; ?></td>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Packing & Dispatch</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalDispatch']; ?></td>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Total of Above</th>
+            <td class="bold">£<?php echo $financialCalcSubTotals['SubtotalProductManufac']; ?></td>
+            <td colspan="4">&nbsp;</td>
+        </tr>
+        <!-- ////////////////////////////////////////////////////////////////////// -->
+        <!-- ////////////////////////////////////////////////////////////////////// -->
+        <tr class="text-right">
+            <th class="text-right">Import & Charges (<?php echo (Int) $financialCalcSubTotals['ImportPercentage']; ?>%)</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalImportCharges']; ?></td>
+            <th class="text-right">4 x mark up</th>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Total for Mark Up</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalMarkUp']; ?></td>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalMarkUpX4']; ?></td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Box Cost <?php echo $financialCalcSubTotals['SubtotalBoxCostTxt']; ?></th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalBoxCost']; ?></td>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalBoxCostX4']; ?></td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Bag Cost</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalBagCost']; ?></td>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalBagCostX4']; ?></td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Assay Cost</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalAssayCost']; ?></td>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalAssayCost']; ?></td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Merchant Charge (<?php echo (Int) $financialCalcSubTotals['MerchantChargePercentage']; ?>%)</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalMechCharge']; ?></td>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalMechCharge']; ?></td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Postage</th>
+            <td>£<?php echo $financialCalcSubTotals['PostageCostUnitCost']; ?></td>
+            <td>No charge</td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right bold">
+            <th>&nbsp;</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalAll']; ?></td>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalAllX4']; ?></td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">Ex VAT Cost</th>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalExVAT']; ?></td>
+            <td>£<?php echo $financialCalcSubTotals['SubtotalExVATX4']; ?></td>
+            <td colspan="3">&nbsp;</td>
+        </tr>
+        <!-- ////////////////////////////////////////////////////////////////////// -->
+        <!-- ////////////////////////////////////////////////////////////////////// -->
+        <tr>
+            <th colspan="6">Retail</th>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-right">Budget without post</th>
+            <td class="text-right bold">59.78%</td>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">RRP Initial</th>
+            <?php
+            echo '<td>£' . $financialCalcSubTotals['RRP'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['RetailRRPLessVAT'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['RetailCost'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['RetailProfit'] . '</td>';
+            echo '<td class="bold">' . number_format((float) $financialCalcSubTotals['RetailActualPerc'], 2, '.', '') . '%</td>';
+            ?>
+        </tr>
+        <tr>
+            <th class="text-right">Auto add postage in price</th>
+            <?php echo '<td class="text-right">£' . $financialCalcSubTotals['PostageForProfitUnitCost'] . '</td>'; ?>
+            <th class="text-right">Less VAT</th>
+            <th class="text-right">Cost</th>
+            <th class="text-right">Retail Profit</th>
+            <th class="text-right">Actual</th>
+        </tr>
+        <tr class="text-right">
+            <th class="text-right">New RRP</th>
+            <?php
+            echo '<td>£' . $financialCalcSubTotals['RetailNewRRP'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['RetailNewRRPLessVAT'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['RetailNewCost'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['RetailNewProfit'] . '</td>';
+            echo '<td class="bold">' . number_format((float) $financialCalcSubTotals['RetailNewActualPerc'], 2, '.', '') . '%</td>';
+            ?>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-right">Target</th>
+            <td class="text-right bold">62.00%</td>
+        </tr>
+        <!-- ////////////////////////////////////////////////////////////////////// -->
+        <!-- ////////////////////////////////////////////////////////////////////// -->
+        <tr>
+            <th colspan="6">Trade &mdash; 60% off</th>
+        </tr>
+        <tr>
+            <?php
+            echo '<th class="text-right">RRP</th>';
+            echo '<th class="text-right">Ex VAT</th>';
+            ?>
+            <td colspan="4"></td>
+        </tr>
+        <tr class="text-right">
+            <?php
+            echo '<td>£' . $financialCalcSubTotals['RetailNewRRP'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['RetailNewRRPLessVAT'] . '</td>';
+            ?>
+            <td colspan="4"></td>
+        </tr>
+        <tr>
+            <th class="text-right">Trade Price</th>
+            <th class="text-right">Cost</th>
+            <th class="text-right">Sub Total</th>
+            <th class="text-right">Add Back</th>
+            <th class="text-right">Trade Profit</th>
+            <th class="text-right">Actual</th>
+        </tr>
+        <tr class="text-right">
+            <?php
+            echo '<td>£' . $financialCalcSubTotals['TradePrice'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['SubtotalExVAT'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['TradeSubTotal'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['TradeAddBack'] . '</td>';
+            echo '<td>£' . $financialCalcSubTotals['TradeProfit'] . '</td>';
+            echo '<td class="bold">£' . number_format((float) $financialCalcSubTotals['TradeActual'], 2, '.', '') . '%</td>';
+            ?>
+        </tr>
+        <tr>
+            <th colspan="5" class="text-right">Budget</th>
+            <td class="text-right bold">40.00%</td>
+        </tr>
+    </tbody>
+</table>

@@ -32,11 +32,16 @@ class LabourItemsController extends AbstractActionController {
     public function jsonLabourItemsByProductAction() {
         $productId = (int) $this->params()->fromQuery('productId', 0);
         $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($productId);
+        $labourItems = $labourItems->toArray();
+        foreach ($labourItems as $key => $value) {
+            $labourItems[$key]["LabourUnitCost"] = number_format((float) $value["LabourUnitCost"], 4, '.', '');
+            $labourItems[$key]["SubtotalLabour"] = number_format((float) $value["SubtotalLabour"], 4, '.', '');
+        }
         $result = new JsonModel(array(
-            'records' => $labourItems->count(),
+            'records' => count($labourItems),
             'page' => 1,
-            'total' => $labourItems->count(),
-            'rows' => $labourItems->toArray()
+            'total' => count($labourItems),
+            'rows' => $labourItems
         ));
         return $result;
     }

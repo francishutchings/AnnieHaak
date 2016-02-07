@@ -30,17 +30,20 @@
                 {
                     name: 'DispatchQty',
                     width: 75,
-                    editable: false
+                    editable: false,
+                    align: 'right'
                 },
                 {
                     name: 'DispatchUnitCost',
                     width: 75,
-                    editable: false
+                    editable: false,
+                    align: 'right'
                 },
                 {
                     name: 'SubtotalDispatch',
                     width: 75,
-                    editable: false
+                    editable: false,
+                    align: 'right'
                 }
             ],
             styleUI: 'Bootstrap',
@@ -82,8 +85,8 @@
                 "Name": "Packing & Dispatch",
                 "DispatchCode": "UKPACK",
                 "DispatchQty": "1",
-                "DispatchUnitCost": "<?php echo $this->packageAndDispatchUnitCost; ?>",
-                "SubtotalDispatch": "<?php echo $this->packageAndDispatchUnitCost; ?>"
+                "DispatchUnitCost": "<?php echo number_format((float) $this->packageAndDispatchUnitCost, 4, '.', ''); ?>",
+                "SubtotalDispatch": "<?php echo number_format((float) $this->packageAndDispatchUnitCost, 4, '.', ''); ?>"
             }
         ];
         for (var i = 0; i <= dispatchData.length; i++) {

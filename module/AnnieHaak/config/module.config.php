@@ -308,7 +308,7 @@ return array(
                     ),
                 ),
             ),
-            // The following is a route to simplify getting started creating
+// The following is a route to simplify getting started creating
 // new controllers and actions without needing to create a new
 // module. Simply drop new controllers in, and you can access them
 // using the path /application/:controller/:action
@@ -541,6 +541,13 @@ return array(
                                 'contoller' => 'ProductsController',
                                 'action' => 'delete',
                                 'order' => 30,
+                            ),
+                            array(
+                                'label' => 'Products',
+                                'route' => 'business-admin/products',
+                                'contoller' => 'ProductsController',
+                                'action' => 'print',
+                                'order' => 40,
                             ),
                         ),
                     ),

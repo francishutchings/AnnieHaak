@@ -33,13 +33,16 @@ class RawMaterialsController extends AbstractActionController {
     public function jsonMaterialsByProductAction() {
         $productid = (int) $this->params()->fromQuery('productid', 0);
         $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByProduct($productid);
-        #dump($rawMaterials);
-        #exit();
+        $rawMaterials = $rawMaterials->toArray();
+        foreach ($rawMaterials as $key => $value) {
+            $rawMaterials[$key]["SubtotalRM"] = number_format((float) $value["SubtotalRM"], 4, '.', '');
+            $rawMaterials[$key]["RawMaterialUnitCost"] = number_format((float) $value["RawMaterialUnitCost"], 4, '.', '');
+        }
         $result = new JsonModel(array(
-            'records' => $rawMaterials->count(),
+            'records' => count($rawMaterials),
             'page' => 1,
-            'total' => $rawMaterials->count(),
-            'rows' => $rawMaterials->toArray()
+            'total' => count($rawMaterials),
+            'rows' => $rawMaterials
         ));
         return $result;
     }

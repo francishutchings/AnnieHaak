@@ -1,9 +1,15 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 $productId = 0;
-$form->setAttribute('action', $this->url('business-admin/products', array('action' => 'edit')));
+$form->setAttribute('action', $this->url('business-admin/products', array('action' => 'add')));
 $form->setAttributes(array('class' => 'form-horizontal'));
 $form->prepare();
+
+if (strlen($errorMessage)) {
+    echo '<div class = "bs-component"><div class = "alert alert-dismissible alert-danger"><button type = "button" class = "close" data-dismiss = "alert">×</button>';
+    echo '<span class="bold">' . $errorMessage . '</span>';
+    echo '</div></div>';
+}
 
 echo $this->form()->openTag($form)
 ?>

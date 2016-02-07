@@ -17,6 +17,8 @@ class ProductsController extends AbstractActionController {
     protected $collectionsTable;
     protected $productTypesTable;
     protected $rawMaterialsTable;
+    protected $labourItemsTable;
+    protected $packagingTable;
     protected $ratesPercentagesObj;
 
     public function indexAction() {
@@ -95,31 +97,78 @@ class ProductsController extends AbstractActionController {
         $form->get('CollectionID')->setValueOptions($selectData['collectionsData']);
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
 
+        $errorMessage = '';
         $request = $this->getRequest();
         if ($request->isPost()) {
-            dump($request);
-
             $products = new Products();
             $form->setInputFilter($products->getInputFilter());
             $form->setData($request->getPost());
 
-            dump($form->isValid());
-            dump($form->getMessages());
-            #exit();
+            $dataTestFail = FALSE;
+            if (count(json_decode($request->getPost('rawMaterialsGridData'))) == 0) {
+                $errorMessage = 'No Raw Materials Picked?';
+                $dataTestFail = TRUE;
+            }
+            if (count(json_decode($request->getPost('packagingGridData'))) == 0) {
+                $errorMessage = 'No Packaging Picked?';
+                $dataTestFail = TRUE;
+            }
+            if (count(json_decode($request->getPost('labourItemsGridData'))) == 0) {
+                $errorMessage = 'No Labour Items Picked?';
+                $dataTestFail = TRUE;
+            }
 
-            if ($form->isValid()) {
-                dump($form->getData());
-                exit();
+            if ($form->isValid() && !$dataTestFail) {
 
-                $products->exchangeArray($form->getData());
-                $this->getProductsTable()->saveProducts($products);
-                $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->productName . ' - added.');
-                return $this->redirect()->toRoute('business-admin/products');
+                foreach (json_decode($request->getPost('rawMaterialsGridData')) as $value) {
+                    $rawMaterialsData[] = array(
+                        'ProductID' => 0,
+                        'RawMaterialID' => $value->RawMaterialID,
+                        'RawMaterialQty' => $value->RawMaterialQty
+                    );
+                }
+                foreach (json_decode($request->getPost('packagingGridData')) as $value) {
+                    $packagingData[] = array(
+                        'ProductID' => 0,
+                        'PackagingID' => $value->PackagingID,
+                        'PackagingQty' => $value->PackagingQty
+                    );
+                }
+                foreach (json_decode($request->getPost('labourItemsGridData')) as $value) {
+                    $labourItemsData[] = array(
+                        'ProductID' => 0,
+                        'LabourID' => $value->LabourID,
+                        'LabourQty' => $value->LabourQty
+                    );
+                }
+                $auditingObj = new Auditing($dbAdapter);
+
+                $productAssocData = array(
+                    'user' => $_SESSION['AnnieHaak']['storage']['userInfo'],
+                    'rawMaterialsData' => $rawMaterialsData,
+                    'packagingData' => $packagingData,
+                    'labourItemsData' => $labourItemsData,
+                    'auditingObj' => $auditingObj,
+                    'dbAdapter' => $dbAdapter
+                );
+
+                try {
+                    $products->exchangeArray($form->getData());
+                    $this->getProductsTable()->saveProducts($products, $productAssocData);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->productName . ' - added.');
+                } catch (\Exception $ex) {
+                    #dump($ex->getMessage());
+                    #exit();
+
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    #return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
+                }
             }
         }
         return array(
             'form' => $form,
-            'ratesPercentages' => $ratesPercentagesData
+            'ratesPercentages' => $ratesPercentagesData,
+            'errorMessage' => $errorMessage
         );
     }
 
@@ -229,6 +278,73 @@ class ProductsController extends AbstractActionController {
         );
     }
 
+    //==================================================================================================================
+    public function printAction() {
+        $request = $this->getRequest();
+        $id = (int) $request->getPost('ProductID');
+        if (!$id) {
+            return $this->redirect()->toRoute('business-admin/products', array(
+                        'action' => 'index'
+            ));
+        }
+        try {
+            $products = $this->getProductsTable()->getProducts($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('business-admin/products', array(
+                        'action' => 'index'
+            ));
+        }
+        $products = (Array) $products;
+        $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByProduct($id);
+        $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($id);
+        $packaging = $this->getPackagingTable()->getPackagingByProduct($id);
+        $financialCalcSubTotals = (Array) json_decode($request->getPost('financialCalcSubTotals'));
+        $financialCalcSubTotals['RRP'] = (Int) $request->getPost('RRP');
+        $cntrlFloatPos = (Int) $request->getPost('cntrlFloatPos');
+
+        $rawMaterials = $rawMaterials->toArray();
+        $subtotal = 0;
+        foreach ($rawMaterials as $key => $value) {
+            $rawMaterials[$key]["RawMaterialUnitCost"] = number_format((float) $value["RawMaterialUnitCost"], $cntrlFloatPos, '.', '');
+            $rawMaterials[$key]["SubtotalRM"] = number_format((float) $value["SubtotalRM"], $cntrlFloatPos, '.', '');
+            $subtotal += $rawMaterials[$key]["SubtotalRM"];
+        }
+        $subtotals['RawMaterials'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
+
+        $labourItems = $labourItems->toArray();
+        $subtotal = 0;
+        foreach ($labourItems as $key => $value) {
+            $labourItems[$key]["LabourUnitCost"] = number_format((float) $value["LabourUnitCost"], $cntrlFloatPos, '.', '');
+            $labourItems[$key]["SubtotalLabour"] = number_format((float) $value["SubtotalLabour"], $cntrlFloatPos, '.', '');
+            $subtotal += $labourItems[$key]["SubtotalLabour"];
+        }
+        $subtotals['LabourItems'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
+
+        $packaging = $packaging->toArray();
+        $subtotal = 0;
+        foreach ($packaging as $key => $value) {
+            $packaging[$key]["PackagingUnitCost"] = number_format((float) $value["PackagingUnitCost"], $cntrlFloatPos, '.', '');
+            $packaging[$key]["SubtotalPackaging"] = number_format((float) $value["SubtotalPackaging"], $cntrlFloatPos, '.', '');
+            $subtotal += $packaging[$key]["SubtotalPackaging"];
+        }
+        $subtotals['Packaging'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
+
+        foreach ($financialCalcSubTotals as $key => $value) {
+            if ($key != "SubtotalBoxCostTxt") {
+                $financialCalcSubTotals[$key] = number_format((float) $value, $cntrlFloatPos, '.', '');
+            }
+        }
+        return array(
+            'id' => $id,
+            'products' => $products,
+            'subtotals' => $subtotals,
+            'rawMaterials' => $rawMaterials,
+            'labourItems' => $labourItems,
+            'packaging' => $packaging,
+            'financialCalcSubTotals' => $financialCalcSubTotals
+        );
+    }
+
     private function popSelectMenus() {
         $collections = $this->getCollectionsTable()->fetchAll();
         $productTypes = $this->getProductTypesTable()->fetchAll();
@@ -274,6 +390,22 @@ class ProductsController extends AbstractActionController {
             $this->rawMaterialsTable = $sm->get('AnnieHaak\Model\RawMaterialsTable');
         }
         return $this->rawMaterialsTable;
+    }
+
+    public function getLabourItemsTable() {
+        if (!$this->labourItemsTable) {
+            $sm = $this->getServiceLocator();
+            $this->labourItemsTable = $sm->get('AnnieHaak\Model\LabourItemsTable');
+        }
+        return $this->labourItemsTable;
+    }
+
+    public function getPackagingTable() {
+        if (!$this->packagingTable) {
+            $sm = $this->getServiceLocator();
+            $this->packagingTable = $sm->get('AnnieHaak\Model\PackagingTable');
+        }
+        return $this->packagingTable;
     }
 
     private function objectToArray($data) {
