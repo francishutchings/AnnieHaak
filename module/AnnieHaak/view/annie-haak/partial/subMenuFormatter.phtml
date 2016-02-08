@@ -16,7 +16,7 @@ echo '<div class = "panel-body">';
 echo '<div class = "list-group table-of-contents">';
 
 foreach ($subPages as $page) {
-    echo '<a class = "list-group-item" href = "' . $page->get('route') . '"><span class="glyphicon glyphicon-list"></span>&nbsp;&nbsp;' . $page->get('label') . '</a>';
+    echo '<a class = "list-group-item" href = "' . $page->get('route') . '">' . $page->get('label') . '</a>';
 }
 
 echo '</div></div></div></div>';

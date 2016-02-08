@@ -37,15 +37,17 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
             }
         }
         $("#jqGrid").jqGrid({
-            url: '/business-admin/products/jsonData',
+            url: '/business-admin/products/jsonData<?php echo $productActioned; ?>',
+            sortname: 'ProductName',
             mtype: "GET",
             styleUI: 'Bootstrap',
             datatype: "json",
             viewrecords: true,
             loadonce: false,
-            sortname: 'ProductName',
             height: 'auto',
             viewsortcols: [true, 'vertical', true],
+            loadComplete: function (data) {
+            },
             colModel: [
                 {
                     label: 'ID',
@@ -58,7 +60,7 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                     name: 'ProductName',
                     align: 'left',
                     sortable: true,
-                    width: 450,
+                    width: 375,
                     search: true,
                     searchrules: {
                         required: true
@@ -135,6 +137,15 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                         sopt: ["eq", "lt", "gt"],
                         placeholder: 'yyyy-mm-dd'
                     },
+                },
+                {
+                    label: 'Copy',
+                    name: 'DuplicateHTML',
+                    align: 'center',
+                    title: 'Copy',
+                    width: 75,
+                    sortable: false,
+                    search: false
                 },
                 {
                     label: 'Edit',

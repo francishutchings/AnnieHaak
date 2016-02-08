@@ -13,71 +13,99 @@ class RatesPercentagesForm extends Form {
 
         $this->add(array(
             'name' => 'AssayRateUnitCost',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'AssayRateUnitCost',
                 'class' => 'form-control',
                 'placeholder' => '£',
+                'step' => 1,
+                'min' => 1,
+                'value' => 0,
+                'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'ImportPercentage',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'ImportPercentage',
                 'class' => 'form-control',
                 'placeholder' => '%',
+                'step' => 1,
+                'min' => 1,
+                'value' => 0,
+                'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'MerchantChargePercentage',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'MerchantChargePercentage',
                 'class' => 'form-control',
                 'placeholder' => '%',
+                'step' => 1,
+                'min' => 1,
+                'value' => 0,
+                'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'PackageAndDispatchUnitCost',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'PackageAndDispatchUnitCost',
                 'class' => 'form-control',
                 'placeholder' => '£',
+                'step' => 0.01,
+                'min' => 0.01,
+                'value' => 0,
+                'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'PostageCostUnitCost',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'PostageCostUnitCost',
                 'class' => 'form-control',
                 'placeholder' => '£',
+                'step' => 0.01,
+                'min' => 0.01,
+                'value' => 0,
+                'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'PostageForProfitUnitCost',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'PostageForProfitUnitCost',
                 'class' => 'form-control',
                 'placeholder' => '£',
+                'step' => 1,
+                'min' => 1,
+                'value' => 0,
+                'required' => true,
             ),
         ));
 
         $this->add(array(
             'name' => 'VATPercentage',
-            'type' => 'Text',
+            'type' => 'Number',
             'attributes' => array(
                 'id' => 'VATPercentage',
                 'class' => 'form-control',
                 'placeholder' => '%',
+                'step' => 1,
+                'min' => 1,
+                'value' => 0,
+                'required' => true,
             ),
         ));
 

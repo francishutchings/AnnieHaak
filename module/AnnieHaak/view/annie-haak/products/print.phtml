@@ -11,7 +11,7 @@
     th{font-weight: bold; font-size: 1.25em;}
 </style>
 
-<button class="btn btn-info hidden-print" onclick="window.print();">Print</button>
+<button class="btn btn-info hidden-print" onclick="window.print();"><span class="glyphicon glyphicon-print"></span> Print Page</button>
 
 <h4>Product:</h4>
 <table class="table table-bordered">
@@ -248,7 +248,7 @@
         <tr class="text-right">
             <th class="text-right">Postage</th>
             <td>£<?php echo $financialCalcSubTotals['PostageCostUnitCost']; ?></td>
-            <td>No charge</td>
+            <td class="italic">No charge</td>
             <td colspan="3">&nbsp;</td>
         </tr>
         <tr class="text-right bold">

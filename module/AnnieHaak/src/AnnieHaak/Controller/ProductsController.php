@@ -7,7 +7,6 @@ use Zend\View\Model\ViewModel;
 use AnnieHaak\Model\Products;
 use AnnieHaak\Form\ProductsForm;
 use AnnieHaak\Model\RatesPercentages;
-use AnnieHaak\Model\RRPCalculator;
 use AnnieHaak\Model\Auditing;
 use Zend\View\Model\JsonModel;
 
@@ -23,8 +22,16 @@ class ProductsController extends AbstractActionController {
     protected $auditingObj;
 
     public function indexAction() {
+        $productActioned = '';
+        if (isset($_SESSION['AnnieHaak']['storage']['ProductActioned'])) {
+            $productActioned = str_replace(' ', '+', $_SESSION['AnnieHaak']['storage']['ProductActioned']);
+            $productActioned = '?_search=true&nd=1454932951823&rows=15&page=1&sidx=ProductName&sord=asc&filters={"groupOp":"AND","rules":[{"field":"ProductName","op":"eq","data":"' . $productActioned . '"}]}&searchField=&searchString=&searchOper=';
+            unset($_SESSION['AnnieHaak']['storage']['ProductActioned']);
+        }
+
         return new ViewModel(array(
             'products' => $this->getProductsTable()->fetchAll(),
+            'productActioned' => $productActioned
         ));
     }
 
@@ -58,9 +65,10 @@ class ProductsController extends AbstractActionController {
 
         if ($paginator->count() > 0) {
             foreach ($paginator->getItemsByPage($currentPage) as $value) {
+                $value->DuplicateHTML = '<a class="btn btn-info btn-sm" href="/business-admin/products/duplicate/' . $value->ProductID . '"><span class="glyphicon glyphicon-copy" style="font-size:1.2em;"></span></a>';
                 $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/products/edit/' . $value->ProductID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
                 $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/products/delete/' . $value->ProductID . '"><span class="glyphicon glyphicon-trash"></span></a>';
-                $value->CurrentHTML = ($value->Current) ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>';
+                $value->CurrentHTML = ($value->Current) ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
                 $rawData[] = $value;
             }
         } else {
@@ -76,6 +84,8 @@ class ProductsController extends AbstractActionController {
         return $result;
     }
 
+    //==================================================================================================================
+    //==================================================================================================================
     public function addAction() {
         $form = new ProductsForm();
 
@@ -153,7 +163,8 @@ class ProductsController extends AbstractActionController {
                 try {
                     $products->exchangeArray($form->getData());
                     $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->productName . ' - added.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->ProductName . ' - added.');
+                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
                     return $this->redirect()->toRoute('business-admin/products', array('action' => 'add'));
@@ -167,7 +178,58 @@ class ProductsController extends AbstractActionController {
         );
     }
 
-//==================================================================================================================
+    //==================================================================================================================
+    //==================================================================================================================
+    public function duplicateAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('business-admin/products', array('action' => 'add'));
+        }
+
+        try {
+            $products = $this->getProductsTable()->getProducts($id);
+        } catch (\Exception $ex) {
+            return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
+        }
+
+        $form = new ProductsForm();
+
+        $sm = $this->getServiceLocator();
+        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
+        $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
+        foreach ($ratesPercentages as $key => $value) {
+            $ratesPercentagesData[$key] = $value;
+        }
+
+        $productNameElemes = $this->getProductsTable()->getProductNameElements();
+        $form->get('NameCharm')->setValueOptions($productNameElemes['charms']);
+        $form->get('NameCrystal')->setValueOptions($productNameElemes['crystals']);
+        $form->get('NameColour')->setValueOptions($productNameElemes['colours']);
+        $form->get('NameLength')->setValueOptions($productNameElemes['lengths']);
+
+        $selectData = $this->popSelectMenus();
+        $form->get('CollectionID')->setValueOptions($selectData['collectionsData']);
+        $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
+
+        $form->bind($products);
+        $form->get('submit')->setAttribute('value', 'Update');
+
+        //Declare New Product
+        $form->get('ProductID')->setValue(0);
+        $form->setAttribute('action', '/business-admin/products/add');
+
+        $view = new ViewModel(array(
+            'id' => 0,
+            'form' => $form,
+            'ratesPercentages' => $ratesPercentagesData
+        ));
+        $view->setTemplate('annie-haak/products/edit.phtml');
+        return $view;
+    }
+
+    //==================================================================================================================
+    //==================================================================================================================
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -243,6 +305,8 @@ class ProductsController extends AbstractActionController {
                 try {
                     $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
                     $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $products->ProductName . ' - updated.');
+                    $_SESSION['AnnieHaak']['storage']['ProductActioned'] = $products->ProductName;
+                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
                     return $this->redirect()->toRoute('business-admin/products', array('action' => 'edit', 'id' => $id));
@@ -251,6 +315,7 @@ class ProductsController extends AbstractActionController {
             }
         }
 
+        $form->setAttribute('action', '/business-admin/products/edit/' . $id);
         return array(
             'id' => $id,
             'form' => $form,
@@ -258,6 +323,7 @@ class ProductsController extends AbstractActionController {
         );
     }
 
+    //==================================================================================================================
     //==================================================================================================================
     public function printAction() {
         $request = $this->getRequest();
@@ -314,6 +380,9 @@ class ProductsController extends AbstractActionController {
                 $financialCalcSubTotals[$key] = number_format((float) $value, $cntrlFloatPos, '.', '');
             }
         }
+
+        $this->layout('layout/print');
+
         return array(
             'id' => $id,
             'products' => $products,
@@ -325,6 +394,39 @@ class ProductsController extends AbstractActionController {
         );
     }
 
+    //==================================================================================================================
+    //==================================================================================================================
+    public function deleteAction() {
+        $id = (int) $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
+        }
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+            if ($del == 'Yes') {
+                $id = (int) $request->getPost('id');
+                $auditingObj = $this->getAuditing();
+                $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
+                try {
+                    $this->getCollectionsTable()->deleteCollections($id, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Collection - deleted.');
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
+                } catch (Exception $ex) {
+                    $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'delete', 'id' => $id));
+                }
+            }
+        }
+
+        return array(
+            'id' => $id,
+            'collections' => $this->getCollectionsTable()->getCollections($id)
+        );
+    }
+
+    //==================================================================================================================
+    //==================================================================================================================
     private function popSelectMenus() {
         $collections = $this->getCollectionsTable()->fetchAll();
         $productTypes = $this->getProductTypesTable()->fetchAll();

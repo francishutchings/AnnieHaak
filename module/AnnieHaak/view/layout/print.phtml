@@ -1,0 +1,53 @@
+<?php echo $this->doctype(); ?>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <?php echo $this->headTitle($this->translate('Edith Administration'))->setSeparator(' - ')->setAutoEscape(false) ?>
+
+        <?php
+        echo $this->headMeta()
+                ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+                ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+
+        <!-- Styles -->
+        <?php
+        $version = 1;
+        echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
+                ->prependStylesheet($this->basePath('css/style.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('css/awesome-bootstrap-checkbox.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('js/jquery-ui/jquery-ui.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('js/jqGrid/css/trirand/ui.jqgrid-bootstrap.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('css/font-awesome.min.css?v=' . $version), 'all')
+                ->prependStylesheet($this->basePath('css/bootstrap.css?v=' . $version), 'all')
+        ?>
+
+        <!-- Scripts -->
+        <?php
+        echo $this->headScript()
+                ->prependFile($this->basePath('js/bootstrap.min.js'))
+                ->prependFile($this->basePath('js/jquery-ui/jquery-ui.min.js'))
+                ->prependFile($this->basePath('js/numericInput.min.js'))
+                ->prependFile($this->basePath('js/jquery.min.js'))
+                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+        ;
+        ?>
+        <style>
+            html, body{
+                background-color: #ffffff;
+                color: #000;
+            }
+            table, tr, td, .table{
+                background-color: #ffffff;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="container" id="container">
+            <?php echo $this->content; ?>
+        </div>
+
+    </body>
+</html>

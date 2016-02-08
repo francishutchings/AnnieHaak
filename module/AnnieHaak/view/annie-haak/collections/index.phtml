@@ -20,7 +20,7 @@ echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']
                     <?php echo $this->escapeHtml($collection->ProductCollectionName); ?>
                 </td>
                 <td>
-                    <?php echo ($this->escapeHtml($collection->Current)) ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>'; ?>
+                    <?php echo ($this->escapeHtml($collection->Current)) ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>'; ?>
                 </td>
                 <td>
                     <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/collections/edit/' . $collection->ProductCollectionID, 'Edit'); ?>

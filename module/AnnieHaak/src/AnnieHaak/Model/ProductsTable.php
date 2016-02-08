@@ -255,17 +255,14 @@ class ProductsTable {
 
             $auditingRawMaterials->Action = 'Insert';
             $auditingRawMaterials->TableName = 'RawMaterialPickLists';
-            $auditingRawMaterials->TableIndex = 0;
             $auditingRawMaterials->OldDataJSON = '';
 
             $auditingPackaging->Action = 'Insert';
             $auditingPackaging->TableName = 'PackagingPickLists';
-            $auditingPackaging->TableIndex = 0;
             $auditingPackaging->OldDataJSON = '';
 
             $auditingLabourItems->Action = 'Insert';
             $auditingLabourItems->TableName = 'LabourTime';
-            $auditingLabourItems->TableIndex = 0;
             $auditingLabourItems->OldDataJSON = '';
 
             $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
@@ -288,6 +285,10 @@ class ProductsTable {
                     $stmt_LIIn->execute($value);
                 }
                 $auditingProducts->TableIndex = $newProductID;
+                $auditingRawMaterials->TableIndex = $newProductID;
+                $auditingPackaging->TableIndex = $newProductID;
+                $auditingLabourItems->TableIndex = $newProductID;
+
                 $auditingProducts->saveAuditAction();
                 $auditingRawMaterials->saveAuditAction();
                 $auditingPackaging->saveAuditAction();
@@ -319,7 +320,7 @@ class ProductsTable {
             }
             $auditingRawMaterials->Action = 'Delete - Insert';
             $auditingRawMaterials->TableName = 'RawMaterialPickLists';
-            $auditingRawMaterials->TableIndex = 0;
+            $auditingRawMaterials->TableIndex = $id;
             $auditingRawMaterials->OldDataJSON = json_encode($rawMaterialsCurrentArr);
 
             // Raw Materials Delete
@@ -336,7 +337,7 @@ class ProductsTable {
             }
             $auditingPackaging->Action = 'Delete - Insert';
             $auditingPackaging->TableName = 'PackagingPickLists';
-            $auditingPackaging->TableIndex = 0;
+            $auditingPackaging->TableIndex = $id;
             $auditingPackaging->OldDataJSON = json_encode($packagingCurrentArr);
 
             // Packaging Delete
@@ -353,7 +354,7 @@ class ProductsTable {
             }
             $auditingLabourItems->Action = 'Delete - Insert';
             $auditingLabourItems->TableName = 'LabourTime';
-            $auditingLabourItems->TableIndex = 0;
+            $auditingLabourItems->TableIndex = $id;
             $auditingLabourItems->OldDataJSON = json_encode($labourItemsCurrentArr);
 
             // Labout Items Delete
@@ -395,8 +396,26 @@ class ProductsTable {
         }
     }
 
-    public function deleteProducts($id) {
-        $this->tableGateway->delete(array('RawMaterialID' => (int) $id));
+    public function deleteProducts($id, Auditing $auditingObj) {
+        $collectionsCurrentData = new Collections();
+        $collectionsCurrentData = $this->getCollections($id);
+        $collectionsCurrentArr = (Array) $collectionsCurrentData;
+
+        $auditingObj->Action = 'Delete';
+        $auditingObj->TableName = 'ProductCollections';
+        $auditingObj->TableIndex = $id;
+        $auditingObj->OldDataJSON = json_encode($collectionsCurrentArr);
+
+        $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
+        $connectCntrl->beginTransaction();
+        try {
+            $this->tableGateway->delete(array('ProductID' => (int) $id));
+            $auditingObj->saveAuditAction();
+        } catch (\Exception $ex) {
+            $connectCntrl->rollback();
+            throw new \Exception("Could not delete Collection. ERROR: " . $ex->getMessage());
+        }
+        $connectCntrl->commit();
     }
 
 }
