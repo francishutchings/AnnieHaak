@@ -49,7 +49,7 @@ class ProductTypesTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not add new Packaging. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not add new Packaging. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         } else {
@@ -69,7 +69,7 @@ class ProductTypesTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not update Packaging. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not update Packaging. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         }
@@ -92,7 +92,7 @@ class ProductTypesTable {
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Packaging. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Packaging. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

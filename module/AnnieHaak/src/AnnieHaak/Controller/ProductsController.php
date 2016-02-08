@@ -108,11 +108,14 @@ class ProductsController extends AbstractActionController {
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
 
         $errorMessage = '';
+        $duplicationId = 0;
         $request = $this->getRequest();
         if ($request->isPost()) {
             $products = new Products();
             $form->setInputFilter($products->getInputFilter());
             $form->setData($request->getPost());
+
+            $duplicationId = $request->getPost('DuplicationID');
 
             $dataTestFail = FALSE;
             if (count(json_decode($request->getPost('rawMaterialsGridData'))) == 0) {
@@ -163,11 +166,16 @@ class ProductsController extends AbstractActionController {
                 try {
                     $products->exchangeArray($form->getData());
                     $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $products->ProductName . ' - added.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('New product - ' . $products->ProductName . ' - added.');
+                    $_SESSION['AnnieHaak']['storage']['ProductActioned'] = $products->ProductName;
                     return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
-                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'add'));
+                    if ($duplicationId) {
+                        return $this->redirect()->toRoute('business-admin/products', array('action' => 'duplicate', 'id' => $duplicationId));
+                    } else {
+                        return $this->redirect()->toRoute('business-admin/products', array('action' => 'add'));
+                    }
                 }
             }
         }
@@ -217,6 +225,8 @@ class ProductsController extends AbstractActionController {
 
         //Declare New Product
         $form->get('ProductID')->setValue(0);
+        $form->get('DuplicationID')->setValue($id);
+
         $form->setAttribute('action', '/business-admin/products/add');
 
         $view = new ViewModel(array(

@@ -99,7 +99,7 @@ class RawMaterialTypesTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not add new Raw Material Type. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not add new Raw Material Type. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         } else {
@@ -119,7 +119,7 @@ class RawMaterialTypesTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not update Raw Material Type. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not update Raw Material Type. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         }
@@ -142,7 +142,7 @@ class RawMaterialTypesTable {
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Packaging. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Packaging. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

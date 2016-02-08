@@ -96,7 +96,7 @@ SQL;
                         'options' => array(
                             'encoding' => 'UTF-8',
                             'min' => 1,
-                            'max' => 10,
+                            'max' => 25,
                         ),
                     ),
                 ),

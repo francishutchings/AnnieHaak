@@ -1,6 +1,6 @@
 <?php
 #dump($form->getObject());
-#dump($form);
+#dump($form->get('DuplicationID')->getValue());
 #exit();
 #echo $this->partial('annie-haak/partial/productsNavbar.phtml');
 
@@ -20,82 +20,83 @@ echo $this->form()->openTag($form)
 
     <fieldset>
 
-<?php echo $this->formHidden($form->get('ProductID')) ?>
+        <?php echo $this->formHidden($form->get('ProductID')) ?>
+        <?php echo $this->formHidden($form->get('DuplicationID')) ?>
 
         <div class="form-group">
             <div class="col-md-10 col-md-offset-2">
-<?php if ($form->getObject()->Current == 0) : ?>
+                <?php if ($form->getObject()->Current == 0) : ?>
                     <div class="alert alert-danger text-center bold">
                         Not Live
                     </div>
-<?php else: ?>
+                <?php else: ?>
                     <div class="alert alert-success text-center bold">
                         Currently Live
                     </div>
-<?php endif; ?>
+                <?php endif; ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="ProductName">Product Name:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('ProductName')); ?>
+                <?php echo $this->formRow($form->get('ProductName')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="SKU">SKU:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('SKU')); ?>
+                <?php echo $this->formRow($form->get('SKU')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="CollectionID">Collection:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('CollectionID')); ?>
+                <?php echo $this->formRow($form->get('CollectionID')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="ProductTypeID">Product Type:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('ProductTypeID')); ?>
+                <?php echo $this->formRow($form->get('ProductTypeID')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="Strands">Strands:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('Strands')); ?>
+                <?php echo $this->formRow($form->get('Strands')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="IntroDate">Date Introduced:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('IntroDate')); ?>
+                <?php echo $this->formRow($form->get('IntroDate')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="MinsToBuild">Mins To Build:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('MinsToBuild')); ?>
+                <?php echo $this->formRow($form->get('MinsToBuild')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="QtyOrderedLastPeriod">Sold Last Period:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('QtyOrderedLastPeriod')); ?>
+                <?php echo $this->formRow($form->get('QtyOrderedLastPeriod')); ?>
             </div>
         </div>
 
         <div class="form-group">
             <label class="col-md-2 control-label" for="CurrentURL">Current URL:</label>
             <div class="col-md-9">
-<?php echo $this->formRow($form->get('CurrentURL')); ?>
+                <?php echo $this->formRow($form->get('CurrentURL')); ?>
             </div>
             <div class="col-md-1">
                 <a href="#" title="View image">
@@ -107,7 +108,7 @@ echo $this->form()->openTag($form)
         <div class="form-group">
             <label class="col-md-2 control-label" for="OldURL">Old URL:</label>
             <div class="col-md-9">
-<?php echo $this->formRow($form->get('OldURL')); ?>
+                <?php echo $this->formRow($form->get('OldURL')); ?>
             </div>
             <div class="col-md-1">
                 <a href="#" title="View image">
@@ -119,47 +120,47 @@ echo $this->form()->openTag($form)
         <div class="form-group" id="DescBlock">
             <label class="col-md-2 control-label" for="Description">Description:</label>
             <div class="col-md-10">
-<?php echo $this->formRow($form->get('Description')); ?>
+                <?php echo $this->formRow($form->get('Description')); ?>
             </div>
             <div class="col-md-10 col-md-offset-2">
                 <div class="radio radio-danger pull-left margin-right-5">
-<?php if ($form->getObject()->DescriptionStatus == 0) : ?>
+                    <?php if ($form->getObject()->DescriptionStatus == 0) : ?>
                         <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
                         <label for="DescRadio1">
                             <span class="label label-danger">Needs Description</span>
                         </label>
-<?php else: ?>
+                    <?php else: ?>
                         <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" />
                         <label for="DescRadio1">
                             <span class="label label-default">Needs Description</span>
                         </label>
-<?php endif; ?>
+                    <?php endif; ?>
                 </div>
                 <div class="radio radio-warning pull-left margin-right-5">
-<?php if ($form->getObject()->DescriptionStatus == 1) : ?>
+                    <?php if ($form->getObject()->DescriptionStatus == 1) : ?>
                         <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" checked="checked" />
                         <label for="DescRadio2">
                             <span class="label label-warning">Pending Approval</span>
                         </label>
-<?php else: ?>
+                    <?php else: ?>
                         <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
                         <label for="DescRadio2">
                             <span class="label label-default">Pending Approval</span>
                         </label>
-<?php endif; ?>
+                    <?php endif; ?>
                 </div>
                 <div class="radio radio-success pull-left">
-<?php if ($form->getObject()->DescriptionStatus == 2) : ?>
+                    <?php if ($form->getObject()->DescriptionStatus == 2) : ?>
                         <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" checked="checked" />
                         <label for="DescRadio3">
                             <span class="label label-success">Approved</span>
                         </label>
-<?php else: ?>
+                    <?php else: ?>
                         <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
                         <label for="DescRadio3">
                             <span class="label label-default">Approved</span>
                         </label>
-<?php endif; ?>
+                    <?php endif; ?>
                 </div>
 
             </div>
@@ -175,213 +176,213 @@ echo $this->form()->openTag($form)
 
                     <div class="col-md-2">
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->KeyPiece) : ?>
+                            <?php if ($form->getObject()->KeyPiece) : ?>
                                 <?php echo $this->formRow($form->get('KeyPiece')); ?>
                                 <label for="KeyPiece">
                                     <span class="label label-success">Key Piece</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('KeyPiece')); ?>
                                 <label for="KeyPiece">
                                     <span class="label label-default">Key Piece</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Accessories) : ?>
+                            <?php if ($form->getObject()->Accessories) : ?>
                                 <?php echo $this->formRow($form->get('Accessories')); ?>
                                 <label for="Accessories">
                                     <span class="label label-success">Accessories</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Accessories')); ?>
                                 <label for="Accessories">
                                     <span class="label label-default">Accessories</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Friendship) : ?>
+                            <?php if ($form->getObject()->Friendship) : ?>
                                 <?php echo $this->formRow($form->get('Friendship')); ?>
                                 <label for="Friendship">
                                     <span class="label label-success">Friendship</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Friendship')); ?>
                                 <label for="Friendship">
                                     <span class="label label-default">Friendship</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="col-md-2">
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Stacks) : ?>
+                            <?php if ($form->getObject()->Stacks) : ?>
                                 <?php echo $this->formRow($form->get('Stacks')); ?>
                                 <label for="Stacks">
                                     <span class="label label-success">Stacks</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Stacks')); ?>
                                 <label for="Stacks">
                                     <span class="label label-default">Stacks</span>
                                 </label>
                             </div>
-<?php endif; ?>
+                        <?php endif; ?>
                         <div class="checkbox checkbox-success">
-                        <?php if ($form->getObject()->PremiumStacks) : ?>
+                            <?php if ($form->getObject()->PremiumStacks) : ?>
                                 <?php echo $this->formRow($form->get('PremiumStacks')); ?>
                                 <label for="PremiumStacks">
                                     <span class="label label-success">Premium Stacks</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('PremiumStacks')); ?>
                                 <label for="PremiumStacks">
                                     <span class="label label-default">Premium Stacks</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Charm) : ?>
+                            <?php if ($form->getObject()->Charm) : ?>
                                 <?php echo $this->formRow($form->get('Charm')); ?>
                                 <label for="Charm">
                                     <span class="label label-success">Charm</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Charm')); ?>
                                 <label for="Charm">
                                     <span class="label label-default">Charm</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="col-md-2">
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Gold) : ?>
+                            <?php if ($form->getObject()->Gold) : ?>
                                 <?php echo $this->formRow($form->get('Gold')); ?>
                                 <label for="Gold">
                                     <span class="label label-success">Gold</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Gold')); ?>
                                 <label for="Gold">
                                     <span class="label label-default">Gold</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->SterlingSilver) : ?>
+                            <?php if ($form->getObject()->SterlingSilver) : ?>
                                 <?php echo $this->formRow($form->get('SterlingSilver')); ?>
                                 <label for="SterlingSilver">
                                     <span class="label label-success">Sterling Silver</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('SterlingSilver')); ?>
                                 <label for="SterlingSilver">
                                     <span class="label label-default">Sterling Silver</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Personalisable) : ?>
+                            <?php if ($form->getObject()->Personalisable) : ?>
                                 <?php echo $this->formRow($form->get('Personalisable')); ?>
                                 <label for="Personalisable">
                                     <span class="label label-success">Personalisable</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Personalisable')); ?>
                                 <label for="Personalisable">
                                     <span class="label label-default">Personalisable</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="col-md-2">
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Engraved) : ?>
+                            <?php if ($form->getObject()->Engraved) : ?>
                                 <?php echo $this->formRow($form->get('Engraved')); ?>
                                 <label for="Engraved">
                                     <span class="label label-success">Engraved</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Engraved')); ?>
                                 <label for="Engraved">
                                     <span class="label label-default">Engraved</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Weddings) : ?>
+                            <?php if ($form->getObject()->Weddings) : ?>
                                 <?php echo $this->formRow($form->get('Weddings')); ?>
                                 <label for="Weddings">
                                     <span class="label label-success">Weddings</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Weddings')); ?>
                                 <label for="Weddings">
                                     <span class="label label-default">Weddings</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->Birthdays) : ?>
+                            <?php if ($form->getObject()->Birthdays) : ?>
                                 <?php echo $this->formRow($form->get('Birthdays')); ?>
                                 <label for="Birthdays">
                                     <span class="label label-success">Birthdays</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('Birthdays')); ?>
                                 <label for="Birthdays">
                                     <span class="label label-default">Birthdays</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="col-md-4">
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->RequiresAssay) : ?>
+                            <?php if ($form->getObject()->RequiresAssay) : ?>
                                 <?php echo $this->formRow($form->get('RequiresAssay')); ?>
                                 <label for="RequiresAssay">
                                     <span class="label label-success">Requires Assay</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('RequiresAssay')); ?>
                                 <label for="RequiresAssay">
                                     <span class="label label-default">Requires Assay</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->ExcludeFromTrade) : ?>
+                            <?php if ($form->getObject()->ExcludeFromTrade) : ?>
                                 <?php echo $this->formRow($form->get('ExcludeFromTrade')); ?>
                                 <label for="ExcludeFromTrade">
                                     <span class="label label-success">Exclude Trade</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('ExcludeFromTrade')); ?>
                                 <label for="ExcludeFromTrade">
                                     <span class="label label-default">Exclude Trade</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
                         <div class="checkbox checkbox-success">
-<?php if ($form->getObject()->PartOfTradePack) : ?>
+                            <?php if ($form->getObject()->PartOfTradePack) : ?>
                                 <?php echo $this->formRow($form->get('PartOfTradePack')); ?>
                                 <label for="PartOfTradePack">
                                     <span class="label label-success">Trade Pack Quantity</span>
                                 </label>
-<?php else: ?>
+                            <?php else: ?>
                                 <?php echo $this->formRow($form->get('PartOfTradePack')); ?>
                                 <label for="PartOfTradePack">
                                     <span class="label label-default">Trade Pack Quantity</span>
                                 </label>
-<?php endif; ?>
+                            <?php endif; ?>
                         </div>
-                            <?php echo $this->formRow($form->get('QtyInTradePack')); ?>
+                        <?php echo $this->formRow($form->get('QtyInTradePack')); ?>
                     </div>
 
                 </div>
@@ -397,63 +398,69 @@ echo $this->form()->openTag($form)
     <div id="anchorRawMaterials"></div>
     <fieldset>
         <legend>Raw Materials</legend>
-<?php echo $this->partial('annie-haak/partial/productsRawMaterialsManager.phtml', array('productId' => $productId)); ?>
+        <?php echo $this->partial('annie-haak/partial/productsRawMaterialsManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
     <div id="anchorLabour"></div>
     <fieldset>
         <legend>Labour</legend>
-<?php echo $this->partial('annie-haak/partial/productsLabourManager.phtml', array('productId' => $productId)); ?>
+        <?php echo $this->partial('annie-haak/partial/productsLabourManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
     <div id="anchorDispatch"></div>
     <fieldset>
         <legend>Dispatch</legend>
-<?php
-echo $this->partial('annie-haak/partial/productsDispatchManager.phtml', array(
-    'packageAndDispatchUnitCost' => $ratesPercentages['PackageAndDispatchUnitCost']
-));
-?>
+        <?php
+        echo $this->partial('annie-haak/partial/productsDispatchManager.phtml', array(
+            'packageAndDispatchUnitCost' => $ratesPercentages['PackageAndDispatchUnitCost']
+        ));
+        ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
     <div id="anchorPackaging"></div>
     <fieldset>
         <legend>Packaging</legend>
-<?php echo $this->partial('annie-haak/partial/productsPackagingManager.phtml', array('productId' => $productId)); ?>
+        <?php echo $this->partial('annie-haak/partial/productsPackagingManager.phtml', array('productId' => $productId)); ?>
     </fieldset>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
     <fieldset>
         <legend>Financials</legend>
-<?php echo $this->partial('annie-haak/partial/productsFinancials.phtml'); ?>
+        <?php echo $this->partial('annie-haak/partial/productsFinancials.phtml'); ?>
     </fieldset>
 
     <div class="form-group">
         <div class="col-md-4 col-md-offset-8">
             <a href="/business-admin/products" type="reset" class="btn btn-default margin-right-10">Cancel</a>
-            <button type="button" id="printViewAction" class="btn btn-info margin-right-10">Print View</button>
-<?php echo $this->formSubmit($form->get('submit')); ?>
+            <?php
+            if ($form->get('DuplicationID')->getValue() == 0) {
+                echo '<button type="button" id="printViewAction" class="btn btn-info margin-right-10">Print View</button>';
+                echo $this->formSubmit($form->get('submit'));
+            } else {
+                echo $this->formSubmit($form->get('submit')->setValue('Create Duplicate'));
+            }
+            ?>
         </div>
     </div>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
-<?php
-echo $this->partial('annie-haak/partial/productsModals.phtml', array(
-    'Name' => $form->get('Name'),
-    'NameCharm' => $form->get('NameCharm'),
-    'NameCrystal' => $form->get('NameCrystal'),
-    'NameColour' => $form->get('NameColour'),
-    'NameLength' => $form->get('NameLength')
-));
-?>
+    <?php
+    echo $this->partial('annie-haak/partial/productsModals.phtml', array(
+        'Name' => $form->get('Name'),
+        'NameCharm' => $form->get('NameCharm'),
+        'NameCrystal' => $form->get('NameCrystal'),
+        'NameColour' => $form->get('NameColour'),
+        'NameLength' => $form->get('NameLength')
+    ));
+    ?>
 
     <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
 
-<?php echo $this->form()->closeTag(); ?>
+    <?php echo $this->form()->closeTag(); ?>
 
 </div>

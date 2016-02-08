@@ -1,7 +1,7 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/products/add', 'Add new Product');
-echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Refresh Page</a>';
+echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Reload All</a>';
 ?>
 <div class="clearfix"></div>
 <p>&nbsp;</p>
@@ -45,8 +45,12 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
             viewrecords: true,
             loadonce: false,
             height: 'auto',
+            loadui: 'enable',
             viewsortcols: [true, 'vertical', true],
             loadComplete: function (data) {
+<?php if (strlen($productActioned)): ?>
+                    $("#jqGrid").setSelection(data.rows[0]['ProductID'], true);
+<?php endif; ?>
             },
             colModel: [
                 {
@@ -187,7 +191,6 @@ echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><
                     multipleSearch: true
                 }
         );
-    });
-</script>
+    });</script>
 <script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
 <script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>

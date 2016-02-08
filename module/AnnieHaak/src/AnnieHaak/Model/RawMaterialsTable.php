@@ -147,7 +147,7 @@ class RawMaterialsTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not add new Raw Material. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not add new Raw Material. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         } else {
@@ -167,7 +167,7 @@ class RawMaterialsTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not update Raw Material. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not update Raw Material. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         }
@@ -190,7 +190,7 @@ class RawMaterialsTable {
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Raw Material. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Raw Material. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

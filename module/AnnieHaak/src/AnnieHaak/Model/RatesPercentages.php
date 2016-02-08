@@ -108,7 +108,7 @@ SQL;
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Rates Percents. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Rates Percents. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

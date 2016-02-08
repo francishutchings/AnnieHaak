@@ -228,6 +228,9 @@ body {
     color: #000000;
 }
 
+.ui-jqgrid .loading {
+    background-color: #000000;
+}
 
 @media (max-width: 767px) {
 

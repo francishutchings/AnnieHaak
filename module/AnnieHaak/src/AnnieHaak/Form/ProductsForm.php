@@ -19,6 +19,14 @@ class ProductsForm extends Form {
                 'value' => 0
             ),
         ));
+        $this->add(array(
+            'name' => 'DuplicationID',
+            'type' => 'Hidden',
+            'attributes' => array(
+                'id' => 'DuplicationID',
+                'value' => 0
+            ),
+        ));
 
         $this->add(array(
             'name' => 'ProductName',

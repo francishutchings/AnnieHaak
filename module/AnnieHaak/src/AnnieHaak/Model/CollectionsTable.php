@@ -51,7 +51,7 @@ class CollectionsTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not add new Collection. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not add new Collection. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         } else {
@@ -71,7 +71,7 @@ class CollectionsTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not update Collection. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not update Collection. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         }
@@ -94,7 +94,7 @@ class CollectionsTable {
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Collection. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Collection. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

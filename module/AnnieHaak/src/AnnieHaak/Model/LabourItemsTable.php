@@ -52,7 +52,7 @@ class LabourItemsTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not add new Labour Item. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not add new Labour Item. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         } else {
@@ -72,7 +72,7 @@ class LabourItemsTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not update Labour Item. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not update Labour Item. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         }
@@ -115,7 +115,7 @@ class LabourItemsTable {
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Labour Item. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Labour Item. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

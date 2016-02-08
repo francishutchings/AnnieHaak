@@ -5,7 +5,6 @@ namespace AnnieHaak\Model;
 use Zend\Db\ResultSet\ResultSet;
 use Zend\Db\TableGateway\TableGateway;
 use Zend\Db\Sql\Select;
-use Zend\Db\Adapter\Adapter;
 use Zend\Paginator\Adapter\DbSelect;
 use Zend\Paginator\Paginator;
 
@@ -71,9 +70,6 @@ class ProductsTable {
             }
         }
         $select->order($sortBy);
-
-#echo $select->getSqlString();
-#exit();
 
         $resultSetPrototype = new ResultSet();
         $resultSetPrototype->setArrayObjectPrototype(new Products());
@@ -224,13 +220,6 @@ class ProductsTable {
         );
         $id = (int) $products->ProductID;
 
-#dump($id);
-#dump($data);
-#dump($products);
-        #dump($auditingObj);
-        #dump($productAssocData);
-        #exit();
-
         $auditingProducts = clone($auditingObj);
         $auditingRawMaterials = clone($auditingObj);
         $auditingPackaging = clone($auditingObj);
@@ -295,7 +284,7 @@ class ProductsTable {
                 $auditingLabourItems->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not add new Product. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not create new Product. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         } else {
@@ -390,7 +379,7 @@ class ProductsTable {
                 $auditingLabourItems->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not update Product. ERROR: " . $ex->getMessage() . "\n");
+                throw new \Exception("Could not update Product. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         }
@@ -413,7 +402,7 @@ class ProductsTable {
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Collection. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Collection. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

@@ -50,7 +50,7 @@ class SuppliersTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not add new Supplier. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not add new Supplier. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         } else {
@@ -70,7 +70,7 @@ class SuppliersTable {
                 $auditingObj->saveAuditAction();
             } catch (\Exception $ex) {
                 $connectCntrl->rollback();
-                throw new \Exception("Could not update Supplier. ERROR: " . $ex->getMessage());
+                throw new \Exception("Could not update Supplier. " . $ex->getPrevious()->errorInfo[2]);
             }
             $connectCntrl->commit();
         }
@@ -93,7 +93,7 @@ class SuppliersTable {
             $auditingObj->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Collection. ERROR: " . $ex->getMessage());
+            throw new \Exception("Could not delete Collection. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }
