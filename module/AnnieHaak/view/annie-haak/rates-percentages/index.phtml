@@ -1,9 +1,8 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo '<p class="pull-right">' . $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/business-admin/rates-percentages/edit', 'Edit') . '</p>';
+echo $this->partial('annie-haak/partial/reloadButton.phtml');
 ?>
-
-<a href="/business-admin/rates-percentages" class="btn btn-info btn-sm"><span class="glyphicon glyphicon-refresh"></span> Refresh Page</a>
 
 <table class="table table-striped table-responsive table-hover ">
     <thead>

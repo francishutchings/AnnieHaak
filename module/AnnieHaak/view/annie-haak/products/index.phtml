@@ -1,7 +1,7 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/products/add', 'Add new Product');
-echo '<a href="/business-admin/products" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Reload All</a>';
+echo $this->partial('annie-haak/partial/reloadButton.phtml');
 ?>
 <div class="clearfix"></div>
 <p>&nbsp;</p>

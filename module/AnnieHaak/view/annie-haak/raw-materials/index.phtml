@@ -1,7 +1,7 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/raw-materials/add', 'Add new Raw Material');
-echo '<a href="/business-admin/raw-materials" class="btn btn-info btn-sm pull-left"><span class="glyphicon glyphicon-refresh"></span> Refresh Page</a>';
+echo $this->partial('annie-haak/partial/reloadButton.phtml');
 
 #http://www.guriddo.net/demo/bootstrap/
 #http://www.trirand.com/jqgridwiki/doku.php?id=wiki:predefined_formatter
