@@ -95,6 +95,7 @@ class PackagingController extends AbstractActionController {
         try {
             $packaging = $this->getPackagingTable()->getPackaging($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/packaging', array('action' => 'index'));
         }
 

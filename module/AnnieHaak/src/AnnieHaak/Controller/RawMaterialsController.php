@@ -146,6 +146,7 @@ class RawMaterialsController extends AbstractActionController {
         try {
             $rawMaterials = $this->getRawMaterialsTable()->getRawMaterials($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'index'));
         }
 

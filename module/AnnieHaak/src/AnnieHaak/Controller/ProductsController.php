@@ -9,6 +9,7 @@ use AnnieHaak\Form\ProductsForm;
 use AnnieHaak\Model\RatesPercentages;
 use AnnieHaak\Model\Auditing;
 use Zend\View\Model\JsonModel;
+use phpqrcode\qrlib;
 
 class ProductsController extends AbstractActionController {
 
@@ -30,7 +31,6 @@ class ProductsController extends AbstractActionController {
         }
 
         return new ViewModel(array(
-            'products' => $this->getProductsTable()->fetchAll(),
             'productActioned' => $productActioned
         ));
     }
@@ -68,6 +68,7 @@ class ProductsController extends AbstractActionController {
                 $value->DuplicateHTML = '<a class="btn btn-info btn-sm" href="/business-admin/products/duplicate/' . $value->ProductID . '"><span class="glyphicon glyphicon-copy" style="font-size:1.2em;"></span></a>';
                 $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/products/edit/' . $value->ProductID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
                 $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/products/delete/' . $value->ProductID . '"><span class="glyphicon glyphicon-trash"></span></a>';
+                $value->PrintHTML = '<a target="_blank" class="btn btn-info btn-sm" href="/business-admin/products/print/' . $value->ProductID . '"><span class="glyphicon glyphicon-print"></span></a>';
                 $value->CurrentHTML = ($value->Current) ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
                 $rawData[] = $value;
             }
@@ -197,6 +198,7 @@ class ProductsController extends AbstractActionController {
         try {
             $products = $this->getProductsTable()->getProducts($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
 
@@ -249,6 +251,7 @@ class ProductsController extends AbstractActionController {
         try {
             $products = $this->getProductsTable()->getProducts($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
 
@@ -347,6 +350,7 @@ class ProductsController extends AbstractActionController {
         try {
             $products = $this->getProductsTable()->getProducts($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
         $products = (Array) $products;
@@ -362,8 +366,8 @@ class ProductsController extends AbstractActionController {
             $subtotal += $rawMaterials[$key]["SubtotalRM"];
         }
         $subtotals['RawMaterials'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
-        +
-                $labourItems = $labourItems->toArray();
+
+        $labourItems = $labourItems->toArray();
         $subtotal = 0;
         foreach ($labourItems as $key => $value) {
             $labourItems[$key]["LabourUnitCost"] = number_format((float) $value["LabourUnitCost"], $cntrlFloatPos, '.', '');

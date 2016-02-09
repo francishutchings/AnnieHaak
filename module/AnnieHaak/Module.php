@@ -38,9 +38,7 @@ class Module {
             if (array_search($e->getParam('error'), $catchStates)) {
                 $response = $e->getResponse();
                 $response->getHeaders()->addHeaderLine(
-                        'Location', $e->getRouter()->assemble(
-                                array(), array('name' => 'home')
-                        )
+                        'Location', $e->getRouter()->assemble(array(), array('name' => 'home'))
                 );
                 $response->setStatusCode(302);
                 return $response;
@@ -52,6 +50,7 @@ class Module {
             $routeMatch = $e->getRouteMatch();
             $sm = $app->getServiceManager();
             $auth = $sm->get('AuthService');
+            $app->getEventManager()->attach('render', array($this, 'setLayoutTitle'));
 
             if (!$auth->hasIdentity() && strpos($routeMatch->getMatchedRouteName(), 'login') === FALSE) {
                 $response = $e->getResponse();
@@ -189,6 +188,30 @@ class Module {
                 },
             ),
         );
+    }
+
+    public function setLayoutTitle($e) {
+        $matches = $e->getRouteMatch();
+        $action = $matches->getParam('action');
+        $id = $matches->getParam('id');
+        $controller = $matches->getParam('controller');
+        $module = __NAMESPACE__;
+        $siteName = 'Edith Administration';
+
+
+        // Getting the view helper manager from the application service manager
+        $viewHelperManager = $e->getApplication()->getServiceManager()->get('viewHelperManager');
+
+        // Getting the headTitle helper from the view helper manager
+        $headTitleHelper = $viewHelperManager->get('headTitle');
+
+        // Setting a separator string for segments
+        $headTitleHelper->setSeparator(' - ');
+
+        // Setting the action, controller, module and site name as title segments
+        $headTitleHelper->append(strtoupper($action));
+        $headTitleHelper->append($siteName);
+        $headTitleHelper->append($id);
     }
 
     /**

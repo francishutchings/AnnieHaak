@@ -95,6 +95,7 @@ class LabourItemsController extends AbstractActionController {
         try {
             $labourItems = $this->getLabourItemsTable()->getLabourItems($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/labour-items', array('action' => 'index'));
         }
 

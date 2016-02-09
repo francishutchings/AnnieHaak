@@ -62,9 +62,8 @@ class UsersController extends AbstractActionController {
         try {
             $user = $this->getUsersTable()->getUsers($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('user-admin', array(
-                        'action' => 'index'
-            ));
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+            return $this->redirect()->toRoute('user-admin', array('action' => 'index'));
         }
 
         $form = new UsersForm();

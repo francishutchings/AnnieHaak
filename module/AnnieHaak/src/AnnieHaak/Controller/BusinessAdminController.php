@@ -7,6 +7,7 @@ use AnnieHaak\Model\RatesPercentages;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
+use Zend\Db\Sql\Update;
 
 class BusinessAdminController extends AbstractActionController {
 
@@ -19,15 +20,18 @@ class BusinessAdminController extends AbstractActionController {
         return new ViewModel();
     }
 
+    /**
+     * @link /run-financial-calcs Admin functionality not exposed
+     *
+     */
     public function runFinancialCalcAction() {
-        $id = (int) $this->params()->fromRoute('id', 0);
-        $finDataJSON = '';
-        if ($id) {
-
+        $productId = (int) $this->params()->fromRoute('id', 0);
+        if ($productId) {
             try {
-                $products = $this->getProductsTable()->getProducts($id);
+                $products = $this->getProductsTable()->getProducts($productId);
             } catch (\Exception $ex) {
-                return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
+                $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+                return $this->redirect()->toRoute('run-financial-calcs', array('action' => 'runFinancialCalc'));
             }
 
             $sm = $this->getServiceLocator();
@@ -38,9 +42,9 @@ class BusinessAdminController extends AbstractActionController {
                 $ratesPercentagesData[$key] = $value;
             }
 
-            $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByProduct($id);
-            $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($id);
-            $packaging = $this->getPackagingTable()->getPackagingByProduct($id);
+            $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByProduct($productId);
+            $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($productId);
+            $packaging = $this->getPackagingTable()->getPackagingByProduct($productId);
 
             $rawMaterials = $rawMaterials->toArray();
             $subtotal = 0;
@@ -77,12 +81,29 @@ class BusinessAdminController extends AbstractActionController {
             $financialCalculator = new FinancialCalculator($ratesPercentagesData, $subtotals, $product);
 
             $finDataJSON = $financialCalculator->calculateFinancials();
+            $this->updateProductFinancials($productId, $finDataJSON);
+            return $this->redirect()->toRoute('run-financial-calcs', array('action' => 'runFinancialCalc'));
         }
 
-        $result = new ViewModel(array(
-            'finDataJSON' => $finDataJSON
+        return new ViewModel(array(
+            'products' => $this->getProductsTable()->fetchAll()
         ));
-        return $result;
+    }
+
+    private function updateProductFinancials($productId, $finDataJSON) {
+        $sm = $this->getServiceLocator();
+        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+        $statement = $dbAdapter->query('UPDATE products SET FinancialDataJSON = :finDataJSON WHERE ProductID = :ProductID');
+        $data = array(
+            'finDataJSON' => json_encode($finDataJSON),
+            'ProductID' => $productId,
+        );
+        try {
+            $statement->execute($data);
+        } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage('Could not update Product ' . $productId . '. ' . $ex->getMessage());
+            return $this->redirect()->toRoute('run-financial-calcs', array('action' => 'runFinancialCalc'));
+        }
     }
 
     private function getProductsTable() {

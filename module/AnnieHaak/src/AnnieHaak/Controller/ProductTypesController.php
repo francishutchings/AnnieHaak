@@ -55,6 +55,7 @@ class ProductTypesController extends AbstractActionController {
         try {
             $productTypes = $this->getProductTypesTable()->getProductTypes($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'index'));
         }
 

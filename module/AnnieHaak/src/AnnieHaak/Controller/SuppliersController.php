@@ -56,9 +56,8 @@ class SuppliersController extends AbstractActionController {
         try {
             $suppliers = $this->getSuppliersTable()->getSuppliers($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/suppliers', array(
-                        'action' => 'index'
-            ));
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
+            return $this->redirect()->toRoute('business-admin/suppliers', array('action' => 'index'));
         }
 
         $form = new SuppliersForm();

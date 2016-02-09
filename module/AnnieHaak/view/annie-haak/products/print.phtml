@@ -33,14 +33,15 @@
     <script type="text/javascript">
         $(function () {
             $("#FloatPosition").change(function () {
-                window.location = '/business-admin/products/print/2570?FloatPos=' + this.value
+                window.location = '/business-admin/products/print/<?php echo $products['ProductID']; ?>?FloatPos=' + this.value
             });
         });
     </script>
 </div>
 
-
-<h4>Product:</h4>
+<?php
+echo '<h4>Product: ' . $products['ProductID'] . '</h4>'
+?>
 <table class="table table-bordered">
     <tbody>
         <?php

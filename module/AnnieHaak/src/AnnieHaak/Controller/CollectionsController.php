@@ -60,6 +60,7 @@ class CollectionsController extends AbstractActionController {
         try {
             $collections = $this->getCollectionsTable()->getCollections($id);
         } catch (\Exception $ex) {
+            $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
         }
 
