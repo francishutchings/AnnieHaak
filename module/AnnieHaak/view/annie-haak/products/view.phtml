@@ -431,7 +431,6 @@ echo $this->form()->openTag($form)
     <fieldset>
         <legend>Financials</legend>
         <?php echo $this->partial('annie-haak/partial/productsFinancials.phtml'); ?>
-        <?php echo $this->formHidden($form->get('FinancialDataJSON')) ?>
     </fieldset>
 
     <div class="form-group">
@@ -439,7 +438,7 @@ echo $this->form()->openTag($form)
             <a href="/business-admin/products" type="reset" class="btn btn-default margin-right-10">Cancel</a>
             <?php
             if ($form->get('DuplicationID')->getValue() == 0) {
-                echo '<a target="_blank" href="/business-admin/products/print/' . $productId . '" type="text/html" class="btn btn-info margin-right-10">Print View</a>';
+                echo '<button type="button" id="printViewAction" class="btn btn-info margin-right-10">Print View</button>';
                 echo $this->formSubmit($form->get('submit'));
             } else {
                 echo $this->formSubmit($form->get('submit')->setValue('Create Duplicate'));

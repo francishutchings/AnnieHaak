@@ -18,6 +18,7 @@ class Products implements InputFilterAwareInterface {
     public $Description;
     public $DescriptionStatus;
     public $Engraved;
+    public $FinancialDataJSON;
     public $ExcludeFromTrade;
     public $Friendship;
     public $Gold;
@@ -61,6 +62,7 @@ class Products implements InputFilterAwareInterface {
         $this->DescriptionStatus = (!empty($data['DescriptionStatus'])) ? $data['DescriptionStatus'] : 0;
         $this->Engraved = (!empty($data['Engraved'])) ? $data['Engraved'] : 0;
         $this->ExcludeFromTrade = (!empty($data['ExcludeFromTrade'])) ? $data['ExcludeFromTrade'] : 0;
+        $this->FinancialDataJSON = (!empty($data['FinancialDataJSON'])) ? $data['FinancialDataJSON'] : 0;
         $this->Friendship = (!empty($data['Friendship'])) ? $data['Friendship'] : 0;
         $this->Gold = (!empty($data['Gold'])) ? $data['Gold'] : 0;
         $this->ImagePath = (!empty($data['ImagePath'])) ? $data['ImagePath'] : '';
@@ -375,6 +377,22 @@ class Products implements InputFilterAwareInterface {
                         'name' => 'Int',
                         'min' => 0,
                         'max' => 1
+                    ),
+                ),
+            ));
+
+            $inputFilter->add(array(
+                'name' => 'FinancialDataJSON',
+                'required' => false,
+                'filters' => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8'
+                        ),
                     ),
                 ),
             ));

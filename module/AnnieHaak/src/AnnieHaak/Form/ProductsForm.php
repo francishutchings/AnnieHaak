@@ -185,9 +185,9 @@ class ProductsForm extends Form {
             'attributes' => array(
                 'id' => 'RRP',
                 'style' => 'width:60%',
-                'step' => 1,
-                'min' => 1,
-                'value' => 0,
+                'step' => 0.01,
+                'min' => 0.01,
+                'value' => 0.01,
                 'required' => true,
             ),
         ));
@@ -243,6 +243,14 @@ class ProductsForm extends Form {
                 'id' => 'OldURL',
                 'class' => 'form-control',
                 'placeholder' => 'http://'
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'FinancialDataJSON',
+            'type' => 'Hidden',
+            'attributes' => array(
+                'id' => 'FinancialDataJSON'
             ),
         ));
 

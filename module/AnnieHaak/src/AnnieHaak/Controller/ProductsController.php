@@ -179,11 +179,11 @@ class ProductsController extends AbstractActionController {
                 }
             }
         }
-        return array(
+        return new ViewModel(array(
             'form' => $form,
             'ratesPercentages' => $ratesPercentagesData,
             'errorMessage' => $errorMessage
-        );
+        ));
     }
 
     //==================================================================================================================
@@ -326,37 +326,33 @@ class ProductsController extends AbstractActionController {
         }
 
         $form->setAttribute('action', '/business-admin/products/edit/' . $id);
-        return array(
+        return new ViewModel(array(
             'id' => $id,
             'form' => $form,
             'ratesPercentages' => $ratesPercentagesData
-        );
+        ));
     }
 
     //==================================================================================================================
     //==================================================================================================================
     public function printAction() {
-        $request = $this->getRequest();
-        $id = (int) $request->getPost('ProductID');
+        $id = (int) $this->params()->fromRoute('id', 0);
+        $cntrlFloatPos = (int) $this->params()->fromQuery('FloatPos', 4);
+        if ($cntrlFloatPos < 1 || $cntrlFloatPos > 10) {
+            $cntrlFloatPos = 4;
+        }
         if (!$id) {
-            return $this->redirect()->toRoute('business-admin/products', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
         try {
             $products = $this->getProductsTable()->getProducts($id);
         } catch (\Exception $ex) {
-            return $this->redirect()->toRoute('business-admin/products', array(
-                        'action' => 'index'
-            ));
+            return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
         $products = (Array) $products;
         $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByProduct($id);
         $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($id);
         $packaging = $this->getPackagingTable()->getPackagingByProduct($id);
-        $financialCalcSubTotals = (Array) json_decode($request->getPost('financialCalcSubTotals'));
-        $financialCalcSubTotals['RRP'] = (Int) $request->getPost('RRP');
-        $cntrlFloatPos = (Int) $request->getPost('cntrlFloatPos');
 
         $rawMaterials = $rawMaterials->toArray();
         $subtotal = 0;
@@ -366,8 +362,8 @@ class ProductsController extends AbstractActionController {
             $subtotal += $rawMaterials[$key]["SubtotalRM"];
         }
         $subtotals['RawMaterials'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
-
-        $labourItems = $labourItems->toArray();
+        +
+                $labourItems = $labourItems->toArray();
         $subtotal = 0;
         foreach ($labourItems as $key => $value) {
             $labourItems[$key]["LabourUnitCost"] = number_format((float) $value["LabourUnitCost"], $cntrlFloatPos, '.', '');
@@ -385,15 +381,17 @@ class ProductsController extends AbstractActionController {
         }
         $subtotals['Packaging'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
 
+        $financialCalcSubTotals = (Array) json_decode($products['FinancialDataJSON']);
         foreach ($financialCalcSubTotals as $key => $value) {
             if ($key != "SubtotalBoxCostTxt") {
                 $financialCalcSubTotals[$key] = number_format((float) $value, $cntrlFloatPos, '.', '');
             }
         }
+        $products['RRP'] = number_format((float) $products['RRP'], $cntrlFloatPos, '.', '');
 
         $this->layout('layout/print');
 
-        return array(
+        return new ViewModel(array(
             'id' => $id,
             'products' => $products,
             'subtotals' => $subtotals,
@@ -401,7 +399,7 @@ class ProductsController extends AbstractActionController {
             'labourItems' => $labourItems,
             'packaging' => $packaging,
             'financialCalcSubTotals' => $financialCalcSubTotals
-        );
+        ));
     }
 
     //==================================================================================================================
@@ -411,6 +409,7 @@ class ProductsController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
@@ -419,20 +418,20 @@ class ProductsController extends AbstractActionController {
                 $auditingObj = $this->getAuditing();
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
-                    $this->getCollectionsTable()->deleteCollections($id, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Collection - deleted.');
-                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
+                    $this->getProductsTable()->deleteProducts($id, $auditingObj);
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product - deleted.');
+                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
                 } catch (Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
-                    return $this->redirect()->toRoute('business-admin/collections', array('action' => 'delete', 'id' => $id));
+                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'delete', 'id' => $id));
                 }
             }
         }
 
-        return array(
+        return new ViewModel(array(
             'id' => $id,
-            'collections' => $this->getCollectionsTable()->getCollections($id)
-        );
+            'products' => $this->getProductsTable()->getProducts($id)
+        ));
     }
 
     //==================================================================================================================

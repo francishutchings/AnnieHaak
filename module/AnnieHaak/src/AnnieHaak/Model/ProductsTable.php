@@ -91,6 +91,7 @@ class ProductsTable {
             'Description',
             'DescriptionStatus',
             'Engraved',
+            'FinancialDataJSON',
             'ExcludeFromTrade',
             'Friendship',
             'Gold',
@@ -191,6 +192,7 @@ class ProductsTable {
             'Description' => trim($products->Description),
             'DescriptionStatus' => $products->DescriptionStatus,
             'Engraved' => $products->Engraved,
+            'FinancialDataJSON' => $products->FinancialDataJSON,
             'ExcludeFromTrade' => $products->ExcludeFromTrade,
             'Friendship' => $products->Friendship,
             'Gold' => $products->Gold,
@@ -225,15 +227,15 @@ class ProductsTable {
         $auditingPackaging = clone($auditingObj);
         $auditingLabourItems = clone($auditingObj);
 
-// Raw Materials Insert
+        // Raw Materials Insert
         $sql_RMIn = "INSERT INTO RawMaterialPickLists (ProductID, RawMaterialID, RawMaterialQty) VALUES (:ProductID, :RawMaterialID, :RawMaterialQty)";
         $stmt_RMIn = $this->tableGateway->getAdapter()->query($sql_RMIn);
 
-// Packaging Insert
+        // Packaging Insert
         $sql_PIn = "INSERT INTO PackagingPickLists (ProductID, PackagingID, PackagingQty) VALUES (:ProductID, :PackagingID, :PackagingID)";
         $stmt_PIn = $this->tableGateway->getAdapter()->query($sql_PIn);
 
-// Labout Items Insert
+        // Labout Items Insert
         $sql_LIIn = "INSERT INTO LabourTime (ProductID, LabourID, LabourQty) VALUES (:ProductID, :LabourID, :LabourQty)";
         $stmt_LIIn = $this->tableGateway->getAdapter()->query($sql_LIIn);
 
@@ -350,11 +352,14 @@ class ProductsTable {
             $sql_LIDel = "DELETE FROM LabourTime WHERE ProductID = :ProductID";
             $stmt_LIDel = $this->tableGateway->getAdapter()->query($sql_LIDel);
 
-            // SAVE ALL CURRENT DATA
+
+            // RUN DB ACTIONS
             //===========================================
             $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
             $connectCntrl->beginTransaction();
             try {
+                $this->tableGateway->update($data, array('ProductID' => $id));
+
                 //Delete related Product data
                 $stmt_RMDel->execute(array('ProductID' => $id));
                 $stmt_PDel->execute(array('ProductID' => $id));
@@ -370,7 +375,6 @@ class ProductsTable {
                 foreach ($productAssocData['labourItemsData'] as $value) {
                     $stmt_LIIn->execute($value);
                 }
-                $this->tableGateway->update($data, array('ProductID' => $id));
 
                 //Record actions
                 $auditingProducts->saveAuditAction();
@@ -386,23 +390,94 @@ class ProductsTable {
     }
 
     public function deleteProducts($id, Auditing $auditingObj) {
-        $collectionsCurrentData = new Collections();
-        $collectionsCurrentData = $this->getCollections($id);
-        $collectionsCurrentArr = (Array) $collectionsCurrentData;
+        $auditingProducts = clone($auditingObj);
+        $auditingRawMaterials = clone($auditingObj);
+        $auditingPackaging = clone($auditingObj);
+        $auditingLabourItems = clone($auditingObj);
 
-        $auditingObj->Action = 'Delete';
-        $auditingObj->TableName = 'ProductCollections';
-        $auditingObj->TableIndex = $id;
-        $auditingObj->OldDataJSON = json_encode($collectionsCurrentArr);
+        // Product Current
+        //===========================================
+        $productsCurrentData = new Products();
+        $productsCurrentData = $this->getProducts($id);
+        $productsCurrentArr = (Array) $productsCurrentData;
 
+        $auditingProducts->Action = 'Delete';
+        $auditingProducts->TableName = 'Products';
+        $auditingProducts->TableIndex = $id;
+        $auditingProducts->OldDataJSON = json_encode($productsCurrentArr);
+
+        // Raw Materials Current
+        //===========================================
+        $sql_RM = "SELECT ProductID, RawMaterialID, RawMaterialQty FROM RawMaterialPickLists WHERE ProductID = :ProductID";
+        $stmt_RM = $this->tableGateway->getAdapter()->query($sql_RM);
+        $resultSet_RM = $stmt_RM->execute(array('ProductID' => $id));
+        foreach ($resultSet_RM as $value) {
+            $rawMaterialsCurrentArr[] = $value;
+        }
+        $auditingRawMaterials->Action = 'Delete';
+        $auditingRawMaterials->TableName = 'RawMaterialPickLists';
+        $auditingRawMaterials->TableIndex = $id;
+        $auditingRawMaterials->OldDataJSON = json_encode($rawMaterialsCurrentArr);
+
+        // Raw Materials Delete
+        $sql_RMDel = "DELETE FROM RawMaterialPickLists WHERE ProductID = :ProductID";
+        $stmt_RMDel = $this->tableGateway->getAdapter()->query($sql_RMDel);
+
+        // Packaging Current
+        //===========================================
+        $sql_P = "SELECT ProductID, PackagingID, PackagingQty FROM PackagingPickLists WHERE ProductID = :ProductID";
+        $stmt_P = $this->tableGateway->getAdapter()->query($sql_P);
+        $resultSet_P = $stmt_P->execute(array('ProductID' => $id));
+        foreach ($resultSet_P as $value) {
+            $packagingCurrentArr[] = $value;
+        }
+        $auditingPackaging->Action = 'Delete';
+        $auditingPackaging->TableName = 'PackagingPickLists';
+        $auditingPackaging->TableIndex = $id;
+        $auditingPackaging->OldDataJSON = json_encode($packagingCurrentArr);
+
+        // Packaging Delete
+        $sql_PDel = "DELETE FROM PackagingPickLists WHERE ProductID = :ProductID";
+        $stmt_PDel = $this->tableGateway->getAdapter()->query($sql_PDel);
+
+        // Labout Items
+        //===========================================
+        $sql_LI = "SELECT ProductID, LabourID, LabourQty FROM LabourTime WHERE ProductID = :ProductID";
+        $stmt_LI = $this->tableGateway->getAdapter()->query($sql_LI);
+        $resultSet_LI = $stmt_LI->execute(array('ProductID' => $id));
+        foreach ($resultSet_LI as $value) {
+            $labourItemsCurrentArr[] = $value;
+        }
+        $auditingLabourItems->Action = 'Delete';
+        $auditingLabourItems->TableName = 'LabourTime';
+        $auditingLabourItems->TableIndex = $id;
+        $auditingLabourItems->OldDataJSON = json_encode($labourItemsCurrentArr);
+
+        // Labout Items Delete
+        $sql_LIDel = "DELETE FROM LabourTime WHERE ProductID = :ProductID";
+        $stmt_LIDel = $this->tableGateway->getAdapter()->query($sql_LIDel);
+
+
+        // RUN DB ACTIONS
+        //===========================================
         $connectCntrl = $this->tableGateway->getAdapter()->getDriver()->getConnection();
         $connectCntrl->beginTransaction();
         try {
             $this->tableGateway->delete(array('ProductID' => (int) $id));
-            $auditingObj->saveAuditAction();
+
+            //Delete related Product data
+            $stmt_RMDel->execute(array('ProductID' => $id));
+            $stmt_PDel->execute(array('ProductID' => $id));
+            $stmt_LIDel->execute(array('ProductID' => $id));
+
+            //Record actions
+            $auditingProducts->saveAuditAction();
+            $auditingRawMaterials->saveAuditAction();
+            $auditingPackaging->saveAuditAction();
+            $auditingLabourItems->saveAuditAction();
         } catch (\Exception $ex) {
             $connectCntrl->rollback();
-            throw new \Exception("Could not delete Collection. " . $ex->getPrevious()->errorInfo[2]);
+            throw new \Exception("Could not delete Product and/or related entries. " . $ex->getPrevious()->errorInfo[2]);
         }
         $connectCntrl->commit();
     }

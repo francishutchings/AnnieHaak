@@ -57,7 +57,7 @@ var financialCalcIni = function () {
 
 //===========================================================================================
 var updateFinancialSubTots = function () {
-//SUBTOTAL
+    //SUBTOTAL
     temp = 0;
     subTotal = 0;
     RRPPostage = 0;
@@ -108,7 +108,7 @@ var updateFinancialSubTots = function () {
     temp += parseFloat($("#financialCalcSubTotals").data("SubtotalMarkUp"));
     $("#financialCalcSubTotals").data("SubtotalExVAT", temp);
 
-    temp += parseFloat($("#financialCalcSubTotals").data("SubtotalAllX4"));
+    temp = parseFloat($("#financialCalcSubTotals").data("SubtotalAllX4"));
     temp += parseFloat($("#financialCalcSubTotals").data("SubtotalMarkUpX4"));
     $("#financialCalcSubTotals").data("SubtotalExVATX4", temp);
 
@@ -125,12 +125,12 @@ var updateFinancialSubTots = function () {
     $("#financialCalcSubTotals").data("RetailProfit", temp);
     temp = parseFloat($("#financialCalcSubTotals").data("RetailNewRRPLessVAT")) - parseFloat($("#financialCalcSubTotals").data("RetailNewCost"));
     $("#financialCalcSubTotals").data("RetailNewProfit", temp);
-    temp = (parseFloat($("#financialCalcSubTotals").data("RetailProfit")) / parseFloat($("#financialCalcSubTotals").data("RetailRRPLessVAT")) * 100)
+    temp = (parseFloat($("#financialCalcSubTotals").data("RetailProfit")) / parseFloat($("#financialCalcSubTotals").data("RetailRRPLessVAT")) * 100);
     if (temp == Number.POSITIVE_INFINITY || temp == Number.NEGATIVE_INFINITY) {
         temp = 0;
     }
     $("#financialCalcSubTotals").data("RetailActualPerc", temp);
-    temp = (parseFloat($("#financialCalcSubTotals").data("RetailNewProfit")) / parseFloat($("#financialCalcSubTotals").data("RetailNewRRPLessVAT")) * 100)
+    temp = (parseFloat($("#financialCalcSubTotals").data("RetailNewProfit")) / parseFloat($("#financialCalcSubTotals").data("RetailNewRRPLessVAT")) * 100);
     $("#financialCalcSubTotals").data("RetailNewActualPerc", temp);
 
 //TRADE
@@ -152,6 +152,7 @@ var updateFinancialSubTots = function () {
     temp = (parseFloat($("#financialCalcSubTotals").data("TradeProfit")) / parseFloat($("#financialCalcSubTotals").data("TradePrice")) * 100);
     $("#financialCalcSubTotals").data("TradeActual", temp);
 
+    $('#FinancialDataJSON').val(JSON.stringify($("#financialCalcSubTotals").data()));
     updateDisplayFinancialSubTots();
 };
 //===========================================================================================
@@ -262,6 +263,9 @@ $(document).ready(function () {
      return false;
      });
      */
+//    $("#products :input").prop("disabled", true);
+//    $('#cntrlFloatPos').attr('disabled', false);
+
     $('#printViewAction').click(function (event) {
         event.preventDefault();
         var newForm = $('<form>', {

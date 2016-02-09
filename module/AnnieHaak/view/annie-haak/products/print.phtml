@@ -11,7 +11,34 @@
     th{font-weight: bold; font-size: 1.25em;}
 </style>
 
-<button class="btn btn-info hidden-print" onclick="window.print();"><span class="glyphicon glyphicon-print"></span> Print Page</button>
+<div class="col-md-12 hidden-print margin-top-10">
+    <div class="form-group">
+        <label class="col-md-2" for="FloatPosition">Change Float position:</label>
+        <div class="col-md-3">
+            <select name="FloatPosition" id="FloatPosition" class="form-control">
+                <?php
+                for ($x = 0; $x < 10; $x++) {
+                    echo '<option value="' . $x . '">' . $x . '</option>';
+                }
+                ?>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <button class="btn btn-info" onclick="window.print();"><span class="glyphicon glyphicon-print"></span> Print Page</button>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <hr/>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $("#FloatPosition").change(function () {
+                window.location = '/business-admin/products/print/2570?FloatPos=' + this.value
+            });
+        });
+    </script>
+</div>
+
 
 <h4>Product:</h4>
 <table class="table table-bordered">
@@ -275,7 +302,7 @@
         <tr class="text-right">
             <th class="text-right">RRP Initial</th>
             <?php
-            echo '<td>£' . $financialCalcSubTotals['RRP'] . '</td>';
+            echo '<td>£' . $products['RRP'] . '</td>';
             echo '<td>£' . $financialCalcSubTotals['RetailRRPLessVAT'] . '</td>';
             echo '<td>£' . $financialCalcSubTotals['RetailCost'] . '</td>';
             echo '<td>£' . $financialCalcSubTotals['RetailProfit'] . '</td>';

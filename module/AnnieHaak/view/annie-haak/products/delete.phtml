@@ -1,0 +1,30 @@
+<?php
+$url = $this->url('business-admin/products', array('action' => 'delete', 'id' => $this->id,));
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+?>
+
+<div class="well bs-component">
+    <form action="<?php echo $url; ?>" method="post">
+        <fieldset>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h3 class="panel-title bold">Warning!</h3>
+                        </div>
+                        <div class="panel-body">
+                            Are you sure that you want to delete <span class="text-warning bold">"<?php echo $this->escapeHtml($products->ProductName); ?>"</span>?
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" name="id" value="<?php echo (int) $products->ProductID; ?>" />
+            <div class="form-group">
+                <div class="col-md-5 col-md-offset-7">
+                    <a href="/business-admin/products" type="reset" class="btn btn-default">Cancel</a>
+                    <button type="submit" class="btn btn-danger btn-default" name="del" value="Yes">Delete</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>
