@@ -40,7 +40,7 @@ class CollectionsController extends AbstractActionController {
 
                 try {
                     $this->getCollectionsTable()->saveCollections($collections, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $collections->ProductCollectionName . ' - added.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Collection -> ' . $collections->ProductCollectionName . ' -> Added.');
                     return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -77,7 +77,7 @@ class CollectionsController extends AbstractActionController {
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getCollectionsTable()->saveCollections($collections, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('product - ' . $collections->ProductCollectionName . ' - updated.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Collection -> ' . $collections->ProductCollectionName . ' -> Updated.');
                     return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -106,7 +106,7 @@ class CollectionsController extends AbstractActionController {
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getCollectionsTable()->deleteCollections($id, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Collection - deleted.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Collection -> Deleted.');
                     return $this->redirect()->toRoute('business-admin/collections', array('action' => 'index'));
                 } catch (Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -114,7 +114,6 @@ class CollectionsController extends AbstractActionController {
                 }
             }
         }
-
         return array(
             'id' => $id,
             'collections' => $this->getCollectionsTable()->getCollections($id)

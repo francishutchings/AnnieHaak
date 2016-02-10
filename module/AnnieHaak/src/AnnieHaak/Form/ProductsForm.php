@@ -247,14 +247,6 @@ class ProductsForm extends Form {
         ));
 
         $this->add(array(
-            'name' => 'FinancialDataJSON',
-            'type' => 'Hidden',
-            'attributes' => array(
-                'id' => 'FinancialDataJSON'
-            ),
-        ));
-
-        $this->add(array(
             'name' => 'Description',
             'type' => 'Textarea',
             'attributes' => array(

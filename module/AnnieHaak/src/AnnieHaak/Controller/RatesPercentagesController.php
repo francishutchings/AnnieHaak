@@ -16,9 +16,7 @@ class RatesPercentagesController extends AbstractActionController {
     public function indexAction() {
         $sm = $this->getServiceLocator();
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-
         $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
-
         return new ViewModel(array(
             'ratesPercentages' => $this->ratesPercentagesObj->fetchAll(),
         ));
@@ -27,24 +25,19 @@ class RatesPercentagesController extends AbstractActionController {
     public function EditAction() {
         $sm = $this->getServiceLocator();
         $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-
         $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
-
         $form = new RatesPercentagesForm();
         $form->bind($this->ratesPercentagesObj->fetchAll());
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($this->ratesPercentagesObj->getInputFilter());
             $form->setData($request->getPost());
             if ($form->isValid()) {
-
                 $auditingObj = $this->getAuditing();
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
-
                 try {
                     $this->ratesPercentagesObj->saveRatesPercents($this->ratesPercentagesObj, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Rates and Percentages updated.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Rates and Percentages -> Updated.');
                     return $this->redirect()->toRoute('business-admin/rates-percentages', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -52,7 +45,6 @@ class RatesPercentagesController extends AbstractActionController {
                 }
             }
         }
-
         return new ViewModel(array(
             'form' => $form
         ));

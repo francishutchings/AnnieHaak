@@ -59,20 +59,6 @@ return array(
                     )
                 )
             ),
-            'run-financial-calcs' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/run-financial-calcs[/:id]',
-                    'constraints' => array(
-                        'id' => '[0-9]+',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'AnnieHaak\Controller\BusinessAdmin',
-                        'action' => 'runFinancialCalc',
-                    ),
-                ),
-                'may_terminate' => false,
-            ),
             'auth' => array(
                 'type' => 'segment',
                 'options' => array(

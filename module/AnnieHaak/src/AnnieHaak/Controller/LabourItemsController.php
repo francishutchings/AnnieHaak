@@ -61,21 +61,18 @@ class LabourItemsController extends AbstractActionController {
 
     public function addAction() {
         $form = new LabourItemsForm();
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $labourItems = new LabourItems();
             $form->setInputFilter($labourItems->getInputFilter());
             $form->setData($request->getPost());
-
             if ($form->isValid()) {
                 $labourItems->exchangeArray($form->getData());
                 $auditingObj = $this->getAuditing();
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
-
                 try {
                     $this->getLabourItemsTable()->saveLabourItems($labourItems, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item - ' . $labourItems->LabourName . ' - added.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item -> ' . $labourItems->LabourName . ' -> Added.');
                     return $this->redirect()->toRoute('business-admin/labour-items', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -83,7 +80,9 @@ class LabourItemsController extends AbstractActionController {
                 }
             }
         }
-        return array('form' => $form);
+        return array(
+            'form' => $form
+        );
     }
 
     public function editAction() {
@@ -91,29 +90,25 @@ class LabourItemsController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/labour-items', array('action' => 'add'));
         }
-
         try {
             $labourItems = $this->getLabourItemsTable()->getLabourItems($id);
         } catch (\Exception $ex) {
             $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/labour-items', array('action' => 'index'));
         }
-
         $form = new LabourItemsForm();
         $form->bind($labourItems);
         $form->get('submit')->setAttribute('value', 'Update');
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($labourItems->getInputFilter());
             $form->setData($request->getPost());
-
             if ($form->isValid()) {
                 $auditingObj = $this->getAuditing();
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getLabourItemsTable()->saveLabourItems($labourItems, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item - ' . $labourItems->LabourName . ' - updated.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item -> ' . $labourItems->LabourName . ' -> Updated.');
                     return $this->redirect()->toRoute('business-admin/labour-items', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -121,7 +116,6 @@ class LabourItemsController extends AbstractActionController {
                 }
             }
         }
-
         return array(
             'id' => $id,
             'form' => $form,
@@ -133,18 +127,16 @@ class LabourItemsController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/labour-items', array('action' => 'index'));
         }
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
-
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
                 $auditingObj = $this->getAuditing();
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getLabourItemsTable()->deleteLabourItems($id, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item deleted.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Labour Item -> Deleted.');
                     return $this->redirect()->toRoute('business-admin/labour-items', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -152,7 +144,6 @@ class LabourItemsController extends AbstractActionController {
                 }
             }
         }
-
         return array(
             'id' => $id,
             'labourItems' => $this->getLabourItemsTable()->getLabourItems($id)

@@ -9,7 +9,7 @@ use AnnieHaak\Form\ProductsForm;
 use AnnieHaak\Model\RatesPercentages;
 use AnnieHaak\Model\Auditing;
 use Zend\View\Model\JsonModel;
-use phpqrcode\qrlib;
+use AnnieHaak\Model\FinancialCalculator;
 
 class ProductsController extends AbstractActionController {
 
@@ -90,10 +90,7 @@ class ProductsController extends AbstractActionController {
     public function addAction() {
         $form = new ProductsForm();
 
-        $sm = $this->getServiceLocator();
-        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
-        $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
+        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
@@ -167,7 +164,7 @@ class ProductsController extends AbstractActionController {
                 try {
                     $products->exchangeArray($form->getData());
                     $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('New product - ' . $products->ProductName . ' - added.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('New product -> ' . $products->ProductName . ' -> Added.');
                     $_SESSION['AnnieHaak']['storage']['ProductActioned'] = $products->ProductName;
                     return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
                 } catch (\Exception $ex) {
@@ -204,10 +201,7 @@ class ProductsController extends AbstractActionController {
 
         $form = new ProductsForm();
 
-        $sm = $this->getServiceLocator();
-        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
-        $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
+        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
@@ -257,10 +251,7 @@ class ProductsController extends AbstractActionController {
 
         $form = new ProductsForm();
 
-        $sm = $this->getServiceLocator();
-        $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-        $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
-        $ratesPercentages = $this->ratesPercentagesObj->fetchAll();
+        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
@@ -317,9 +308,9 @@ class ProductsController extends AbstractActionController {
 
                 try {
                     $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Product - ' . $products->ProductName . ' - updated.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product -> ' . $products->ProductName . ' -> Updated.');
                     $_SESSION['AnnieHaak']['storage']['ProductActioned'] = $products->ProductName;
-                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
+                    return $this->redirect()->toRoute('business-admin/products', array('action' => 'edit', 'id' => $id));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
                     return $this->redirect()->toRoute('business-admin/products', array('action' => 'edit', 'id' => $id));
@@ -353,10 +344,16 @@ class ProductsController extends AbstractActionController {
             $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
         }
+
         $products = (Array) $products;
         $rawMaterials = $this->getRawMaterialsTable()->fetchMaterialsByProduct($id);
         $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($id);
         $packaging = $this->getPackagingTable()->getPackagingByProduct($id);
+
+        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
+        foreach ($ratesPercentages as $key => $value) {
+            $ratesPercentagesData[$key] = $value;
+        }
 
         $rawMaterials = $rawMaterials->toArray();
         $subtotal = 0;
@@ -378,19 +375,35 @@ class ProductsController extends AbstractActionController {
 
         $packaging = $packaging->toArray();
         $subtotal = 0;
+        $subtotalBag = 0;
+        $subtotalBox = 0;
         foreach ($packaging as $key => $value) {
             $packaging[$key]["PackagingUnitCost"] = number_format((float) $value["PackagingUnitCost"], $cntrlFloatPos, '.', '');
             $packaging[$key]["SubtotalPackaging"] = number_format((float) $value["SubtotalPackaging"], $cntrlFloatPos, '.', '');
             $subtotal += $packaging[$key]["SubtotalPackaging"];
-        }
-        $subtotals['Packaging'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
-
-        $financialCalcSubTotals = (Array) json_decode($products['FinancialDataJSON']);
-        foreach ($financialCalcSubTotals as $key => $value) {
-            if ($key != "SubtotalBoxCostTxt") {
-                $financialCalcSubTotals[$key] = number_format((float) $value, $cntrlFloatPos, '.', '');
+            if ($packaging[$key]["PackagingCode"] == 'SBAG' || $packaging[$key]["PackagingCode"] == 'LBAG') {
+                $subtotalBag += $packaging[$key]["SubtotalPackaging"];
+            }
+            if ($packaging[$key]["PackagingCode"] == 'SBOX' || $packaging[$key]["PackagingCode"] == 'LBOX') {
+                $subtotalBox += $packaging[$key]["SubtotalPackaging"];
             }
         }
+        $subtotals['Packaging']['Total'] = number_format((float) $subtotal, $cntrlFloatPos, '.', '');
+        $subtotals['Packaging']['BAG'] = (float) $subtotalBag;
+        $subtotals['Packaging']['BOX'] = (float) $subtotalBox;
+
+        $products = (Array) $products;
+        $product['RRP'] = $products['RRP'];
+        $product['RequiresAssay'] = $products['RequiresAssay'];
+
+        $financialCalcSubTotals = new FinancialCalculator($ratesPercentagesData, $subtotals, $product);
+        $financialData = $financialCalcSubTotals->calculateFinancials();
+        foreach ($financialData as $key => $value) {
+            if ($key != "SubtotalBoxCostTxt") {
+                $financialData[$key] = number_format((float) $value, $cntrlFloatPos, '.', '');
+            }
+        }
+
         $products['RRP'] = number_format((float) $products['RRP'], $cntrlFloatPos, '.', '');
 
         $this->layout('layout/print');
@@ -402,7 +415,7 @@ class ProductsController extends AbstractActionController {
             'rawMaterials' => $rawMaterials,
             'labourItems' => $labourItems,
             'packaging' => $packaging,
-            'financialCalcSubTotals' => $financialCalcSubTotals
+            'financialCalcSubTotals' => $financialData
         ));
     }
 
@@ -423,7 +436,7 @@ class ProductsController extends AbstractActionController {
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getProductsTable()->deleteProducts($id, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Product - deleted.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product -> deleted.');
                     return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
                 } catch (Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -503,6 +516,15 @@ class ProductsController extends AbstractActionController {
         return $this->packagingTable;
     }
 
+    private function getRatesPercentages() {
+        if (!$this->ratesPercentagesObj) {
+            $sm = $this->getServiceLocator();
+            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+            $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
+        }
+        return $this->ratesPercentagesObj;
+    }
+
     private function getAuditing() {
         if (!$this->auditingObj) {
             $sm = $this->getServiceLocator();
@@ -510,17 +532,6 @@ class ProductsController extends AbstractActionController {
             $this->auditingObj = new Auditing($dbAdapter);
         }
         return $this->auditingObj;
-    }
-
-    private function objectToArray($data) {
-        if (is_array($data) || is_object($data)) {
-            $result = array();
-            foreach ($data as $key => $value) {
-                $result[$key] = $this->objectToArray($value);
-            }
-            return json_encode($result);
-        }
-        return $data;
     }
 
 }

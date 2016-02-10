@@ -192,12 +192,16 @@ class Module {
 
     public function setLayoutTitle($e) {
         $matches = $e->getRouteMatch();
+
         $action = $matches->getParam('action');
+        $routeName = $matches->getMatchedRouteName();
         $id = $matches->getParam('id');
         $controller = $matches->getParam('controller');
         $module = __NAMESPACE__;
         $siteName = 'Edith Administration';
 
+        $routeNameArr = explode('/', $routeName);
+        $routeName = ucwords(str_replace('-', ' ', end($routeNameArr)));
 
         // Getting the view helper manager from the application service manager
         $viewHelperManager = $e->getApplication()->getServiceManager()->get('viewHelperManager');
@@ -209,8 +213,9 @@ class Module {
         $headTitleHelper->setSeparator(' - ');
 
         // Setting the action, controller, module and site name as title segments
-        $headTitleHelper->append(strtoupper($action));
         $headTitleHelper->append($siteName);
+        $headTitleHelper->append($routeName);
+        $headTitleHelper->append(ucwords($action));
         $headTitleHelper->append($id);
     }
 

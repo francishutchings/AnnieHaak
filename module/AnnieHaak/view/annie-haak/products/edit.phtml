@@ -1,4 +1,5 @@
 <?php
+#dump($form->get('ProductName')->getValue());
 #dump($form->getObject());
 #dump($form->get('DuplicationID')->getValue());
 #exit();
@@ -431,7 +432,6 @@ echo $this->form()->openTag($form)
     <fieldset>
         <legend>Financials</legend>
         <?php echo $this->partial('annie-haak/partial/productsFinancials.phtml'); ?>
-        <?php echo $this->formHidden($form->get('FinancialDataJSON')) ?>
     </fieldset>
 
     <div class="form-group">

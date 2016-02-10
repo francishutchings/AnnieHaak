@@ -22,20 +22,18 @@ class ProductTypesController extends AbstractActionController {
 
     public function addAction() {
         $form = new ProductTypesForm();
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $productTypes = new ProductTypes();
             $form->setInputFilter($productTypes->getInputFilter());
             $form->setData($request->getPost());
-
             if ($form->isValid()) {
                 $productTypes->exchangeArray($form->getData());
                 $auditingObj = $this->getAuditing();
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getProductTypesTable()->saveProductTypes($productTypes, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - added.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type -> ' . $productTypes->ProductTypeName . ' -> Added.');
                     return $this->redirect()->toRoute('business-admin/product-types');
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -43,7 +41,9 @@ class ProductTypesController extends AbstractActionController {
                 }
             }
         }
-        return array('form' => $form);
+        return array(
+            'form' => $form
+        );
     }
 
     public function editAction() {
@@ -51,18 +51,15 @@ class ProductTypesController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'add'));
         }
-
         try {
             $productTypes = $this->getProductTypesTable()->getProductTypes($id);
         } catch (\Exception $ex) {
             $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'index'));
         }
-
         $form = new ProductTypesForm();
         $form->bind($productTypes);
         $form->get('submit')->setAttribute('value', 'Update');
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($productTypes->getInputFilter());
@@ -73,7 +70,7 @@ class ProductTypesController extends AbstractActionController {
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getProductTypesTable()->saveProductTypes($productTypes, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type - ' . $productTypes->ProductTypeName . ' - updated.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type -> ' . $productTypes->ProductTypeName . ' -> Updated.');
                     return $this->redirect()->toRoute('business-admin/product-types');
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -81,7 +78,6 @@ class ProductTypesController extends AbstractActionController {
                 }
             }
         }
-
         return array(
             'id' => $id,
             'form' => $form,
@@ -93,7 +89,6 @@ class ProductTypesController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'index'));
         }
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
@@ -104,7 +99,7 @@ class ProductTypesController extends AbstractActionController {
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getProductTypesTable()->deleteProductTypes($id, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type deleted.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Product Type -> Deleted.');
                     return $this->redirect()->toRoute('business-admin/product-types', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -112,7 +107,6 @@ class ProductTypesController extends AbstractActionController {
                 }
             }
         }
-
         return array(
             'id' => $id,
             'productTypes' => $this->getProductTypesTable()->getProductTypes($id)

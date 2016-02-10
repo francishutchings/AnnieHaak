@@ -203,7 +203,7 @@ echo '<h4>Product: ' . $products['ProductID'] . '</h4>'
             echo '<td class="text-right">&pound;' . $value['SubtotalPackaging'] . '</td>';
             echo '</tr>';
         }
-        echo '<tr class="bold"><td colspan="4">&nbsp;</td><td class="text-right">&pound;' . $subtotals['Packaging'] . '</td></tr>';
+        echo '<tr class="bold"><td colspan="4">&nbsp;</td><td class="text-right">&pound;' . $subtotals['Packaging']['Total'] . '</td></tr>';
         ?>
     </tbody>
 </table>

@@ -126,7 +126,7 @@ var updateFinancialSubTots = function () {
     temp = parseFloat($("#financialCalcSubTotals").data("RetailNewRRPLessVAT")) - parseFloat($("#financialCalcSubTotals").data("RetailNewCost"));
     $("#financialCalcSubTotals").data("RetailNewProfit", temp);
     temp = (parseFloat($("#financialCalcSubTotals").data("RetailProfit")) / parseFloat($("#financialCalcSubTotals").data("RetailRRPLessVAT")) * 100);
-    if (temp == Number.POSITIVE_INFINITY || temp == Number.NEGATIVE_INFINITY) {
+    if (temp < 0) {
         temp = 0;
     }
     $("#financialCalcSubTotals").data("RetailActualPerc", temp);
@@ -152,7 +152,6 @@ var updateFinancialSubTots = function () {
     temp = (parseFloat($("#financialCalcSubTotals").data("TradeProfit")) / parseFloat($("#financialCalcSubTotals").data("TradePrice")) * 100);
     $("#financialCalcSubTotals").data("TradeActual", temp);
 
-    $('#FinancialDataJSON').val(JSON.stringify($("#financialCalcSubTotals").data()));
     updateDisplayFinancialSubTots();
 };
 //===========================================================================================
@@ -377,6 +376,7 @@ $(document).ready(function () {
     });
     //=============================================
     $('#ProductName').focus(function () {
+        $("#buildProductNameLabel").text($("#ProductName").val());
         $('#buildProductName').modal('show');
         $('#Name').focus();
     });
@@ -397,35 +397,37 @@ $(document).ready(function () {
     $("#Name").bind('keyup', function () {
         concatProductName();
     });
-    $("#Charm").bind('change', function () {
+    $("#NameCharm").bind('change', function () {
         concatProductName();
     });
-    $("#Chrystal").bind('change', function () {
+    $("#NameCrystal").bind('change', function () {
         concatProductName();
     });
-    $("#Colour").bind('change', function () {
+    $("#NameColour").bind('change', function () {
         concatProductName();
     });
-    $("#Length").bind('change', function () {
+    $("#NameLength").bind('change', function () {
         concatProductName();
     });
     $("#buildProductNameSave").click(function () {
         concatProductName();
     });
     concatProductName = function () {
-        $("#ProductName").val($.trim($("#Name").val()));
+        nameConCat = $.trim($("#Name").val());
         if ($("#NameCharm").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCharm option:selected").text());
+            nameConCat = nameConCat + ' - ' + $("#NameCharm option:selected").text();
         }
         if ($("#NameCrystal").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameCrystal option:selected").text());
+            nameConCat = nameConCat + ' - ' + $("#NameCrystal option:selected").text();
         }
         if ($("#NameColour").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameColour option:selected").text());
+            nameConCat = nameConCat + ' - ' + $("#NameColour option:selected").text();
         }
         if ($("#NameLength").val()) {
-            $("#ProductName").val($("#ProductName").val() + ' - ' + $("#NameLength option:selected").text());
+            nameConCat = nameConCat + ' - ' + $("#NameLength option:selected").text();
         }
+        $("#ProductName").val(nameConCat);
+        $("#buildProductNameLabel").text(nameConCat);
     };
     $('#buildProductName').on('hidden.bs.modal', function () {
         $("#Name").val($.trim($("#Name").val()));

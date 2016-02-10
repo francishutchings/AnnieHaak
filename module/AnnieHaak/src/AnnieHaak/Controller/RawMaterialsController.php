@@ -109,24 +109,21 @@ class RawMaterialsController extends AbstractActionController {
 
     public function addAction() {
         $form = new RawMaterialsForm();
-
         $selectData = $this->popSelectMenus();
         $form->get('RMTypeID')->setValueOptions($selectData['rawMaterialTypesData']);
         $form->get('RMSupplierID')->setValueOptions($selectData['suppliersData']);
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $rawMaterials = new RawMaterials();
             $form->setInputFilter($rawMaterials->getInputFilter());
             $form->setData($request->getPost());
-
             if ($form->isValid()) {
                 $rawMaterials->exchangeArray($form->getData());
                 $auditingObj = $this->getAuditing();
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - added.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material -> ' . $rawMaterials->RawMaterialName . ' -> Added.');
                     return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -142,24 +139,18 @@ class RawMaterialsController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'add'));
         }
-
         try {
             $rawMaterials = $this->getRawMaterialsTable()->getRawMaterials($id);
         } catch (\Exception $ex) {
             $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
             return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'index'));
         }
-
         $form = new RawMaterialsForm();
-
         $selectMenusData = $this->popSelectMenus();
-
         $form->get('RMTypeID')->setValueOptions($selectMenusData['rawMaterialTypesData']);
         $form->get('RMSupplierID')->setValueOptions($selectMenusData['suppliersData']);
-
         $form->bind($rawMaterials);
         $form->get('submit')->setAttribute('value', 'Update');
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($rawMaterials->getInputFilter());
@@ -169,7 +160,7 @@ class RawMaterialsController extends AbstractActionController {
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getRawMaterialsTable()->saveRawMaterials($rawMaterials, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material - ' . $rawMaterials->RawMaterialName . ' - updated.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material -> ' . $rawMaterials->RawMaterialName . ' -> Updated.');
                     return $this->redirect()->toRoute('business-admin/raw-materials');
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -177,9 +168,7 @@ class RawMaterialsController extends AbstractActionController {
                 }
             }
         }
-
         $relatedProducts = $this->getProductsTable()->fetchProductsByMaterial($id);
-
         return array(
             'id' => $id,
             'form' => $form,
@@ -192,7 +181,6 @@ class RawMaterialsController extends AbstractActionController {
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/raw-materials');
         }
-
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
@@ -202,17 +190,14 @@ class RawMaterialsController extends AbstractActionController {
                 $auditingObj->UserName = $_SESSION['AnnieHaak']['storage']['userInfo']['username'];
                 try {
                     $this->getRawMaterialsTable()->deleteRawMaterials($id, $auditingObj);
-                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material deleted.');
+                    $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material -> Deleted.');
                     return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'index'));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
                     return $this->redirect()->toRoute('business-admin/raw-materials', array('action' => 'delete', 'id' => $id));
                 }
             }
-            $this->flashmessenger()->setNamespace('info')->addMessage('Raw Material deleted.');
-            return $this->redirect()->toRoute('business-admin/raw-materials');
         }
-
         return array(
             'id' => $id,
             'rawMaterials' => $this->getRawMaterialsTable()->getRawMaterials($id)
