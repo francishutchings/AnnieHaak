@@ -1,0 +1,41 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+#dump($RRPAndRMsReport);
+#exit();
+?>
+<div class = "col-md-12">
+    <div class = "bs-component">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>SKU</th>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Collection</th>
+                    <th>Trade Pack</th>
+                    <th>RRP</th>
+                    <th>RM Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($RRPAndRMsReport as $value) {
+                    echo '<tr>';
+                    echo '<td>' . $value['SKU'] . '</td>';
+                    echo '<td>' . $value['Name'] . '</td>';
+                    echo '<td>' . $value['Type'] . '</td>';
+                    echo '<td>' . $value['Collection'] . '</td>';
+                    echo '<td class="text-center">' . $value['TradePack'] . '</td>';
+                    echo '<td class="text-right">' . $value['RRP'] . '</td>';
+                    echo '<td class="text-right">' . $value['RMTotal'] . '</td>';
+                    echo '</tr>';
+                }
+                ?>
+            </tbody>
+        </table>
+        <?php
+        echo '<p>' . date('l jS F Y, G:i:s', time()) . '</p>';
+        ?>
+    </div>
+</div>

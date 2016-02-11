@@ -1,0 +1,60 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+#dump($occasionsReport);
+#exit();
+?>
+
+<div class="col-md-12">
+    <div class="bs-component">
+
+        <?php
+        $counter = 2;
+        foreach ($occasionsReport as $value) {
+
+            echo '<table class="table table-condensed"><tbody>';
+
+            echo '<tr><th>SKU</th>';
+            echo '<th>Product</th>';
+            echo '<th>Type</th>';
+            echo '<th>Collection</th>';
+            echo '<th>RRP</th></tr>';
+
+            echo '<tr><td>' . $value['SKU'] . '</td>';
+            echo '<td>' . $value['Product'] . '</td>';
+            echo '<td>' . $value['Type'] . '</td>';
+            echo '<td>' . $value['Collection'] . '</td>';
+            echo '<td>' . $value['RRP'] . '</td></tr>';
+
+            echo '<tr><td colspan="5">';
+
+            echo '<table class="table table-bordered" style="margin-bottom:0;"><tbody>';
+            echo '<tr class="text-center"><th>Trade Pack</th><th>Friendship</th><th>Stacks</th><th>Premium Stacks</th><th>Sterling Silver</th><th>Gold</th><th>Charm</th><th>Weddings</th><th>Birthdays</th><th>Accessories</th><th>Engraved</th></tr>';
+            echo '<tr class="text-center"><td>' . $value['TradePack'] . '</td>';
+            echo '<td>' . $value['Friendship'] . '</td>';
+            echo '<td>' . $value['Stacks'] . '</td>';
+            echo '<td>' . $value['PremiumStacks'] . '</td>';
+            echo '<td>' . $value['SterlingSilver'] . '</td>';
+            echo '<td>' . $value['Gold'] . '</td>';
+            echo '<td>' . $value['Charm'] . '</td>';
+            echo '<td>' . $value['Weddings'] . '</td>';
+            echo '<td>' . $value['Birthdays'] . '</td>';
+            echo '<td>' . $value['Accessories'] . '</td>';
+            echo '<td>' . $value['Engraved'] . '</td></tr>';
+            echo '</tbody></table>';
+
+            echo '</td></tr>';
+
+            echo '</tbody></table>';
+
+            if ($counter == 5) {
+                echo '<div style="page-break-after: always;"></div>';
+                $counter = 0;
+            }
+
+            $counter++;
+        }
+        echo '<p>' . date('l jS F Y, G:i:s', time()) . '</p>';
+        ?>
+    </div>
+</div>

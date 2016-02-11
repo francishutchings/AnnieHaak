@@ -1,9 +1,4 @@
 <?php
-#dump($form->getObject());
-#dump($form->get('DuplicationID')->getValue());
-#exit();
-#echo $this->partial('annie-haak/partial/productsNavbar.phtml');
-
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
 $productId = $form->getObject()->ProductID;

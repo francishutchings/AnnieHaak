@@ -4,17 +4,16 @@ namespace AnnieHaak\Model;
 
 use Zend\Db\Adapter\Adapter;
 
-class CollectionsTypesReport {
+class ReportCollectionsTypes {
 
-    public $reportDataArr;
     protected $dbAdapter;
 
     public function __construct(Adapter $dbAdapter) {
         $this->dbAdapter = $dbAdapter;
-        return $this->getReport();
+        return $this;
     }
 
-    private function getReport() {
+    public function getReport() {
         $sql = <<<SQL
                 SELECT
                     PC.ProductCollectionName
@@ -63,7 +62,7 @@ SQL;
                 $collectContArr[$key] = $arr;
             }
         }
-        $this->reportDataArr[] = $collectContArr;
+        return $collectContArr;
     }
 
 }

@@ -6,7 +6,7 @@ use Zend\Db\Adapter\Adapter;
 use AnnieHaak\Model\RatesPercentages;
 use AnnieHaak\Model\FinancialCalculator;
 
-class MarginsReport {
+class ReportMargins {
 
     protected $dbAdapter;
     protected $ratesPercentages;

@@ -306,6 +306,36 @@ return array(
                             ),
                         ),
                     ),
+                    'products-by-occasions-report' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/products-by-occasions-report',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Reports',
+                                'action' => 'byOccasions'
+                            ),
+                        ),
+                    ),
+                    'rrp-rms-report' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/rrp-rms-report',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Reports',
+                                'action' => 'rrpAndRms'
+                            ),
+                        ),
+                    ),
+                    'trade-pack-rms-time-report' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/trade-pack-rms-time-report',
+                            'defaults' => array(
+                                'controller' => 'AnnieHaak\Controller\Reports',
+                                'action' => 'tradePackRmsTime'
+                            ),
+                        ),
+                    ),
                 ),
             ),
 // The following is a route to simplify getting started creating
@@ -702,45 +732,45 @@ return array(
                 'class' => 'top-level',
                 'pages' => array(
                     array(
-                        'label' => 'All Dynamic Reports',
+                        'label' => '<span class="glyphicon glyphicon-list"></span> All Dynamic Reports',
                         'route' => 'business-reports/dynamic-reports',
                         'contoller' => 'ReportsController',
                         'action' => 'index',
                         'order' => 10,
                     ),
                     array(
-                        'label' => 'Collections & Types Report',
+                        'label' => '<span class="glyphicon glyphicon-print"></span> Collections & Types Report',
                         'route' => 'business-reports/collections-types-report',
                         'contoller' => 'ReportsController',
                         'action' => 'collectionsTypes',
                         'order' => 20,
                     ),
                     array(
-                        'label' => 'Margins Report',
+                        'label' => '<span class="glyphicon glyphicon-print"></span> Margins Report',
                         'route' => 'business-reports/margins-report',
                         'contoller' => 'ReportsController',
                         'action' => 'margins',
                         'order' => 30,
                     ),
                     array(
-                        'label' => 'Products By Occasions',
-                        'route' => 'business-reports/products-by-occasions',
+                        'label' => '<span class="glyphicon glyphicon-print"></span> Products By Occasions',
+                        'route' => 'business-reports/products-by-occasions-report',
                         'contoller' => 'ReportsController',
-                        'action' => 'index',
+                        'action' => 'byOccasions',
                         'order' => 40,
                     ),
                     array(
-                        'label' => 'RRP & RMs',
-                        'route' => 'business-reports/rrp-rms',
+                        'label' => '<span class="glyphicon glyphicon-print"></span> RRP & RMs',
+                        'route' => 'business-reports/rrp-rms-report',
                         'contoller' => 'ReportsController',
-                        'action' => 'index',
+                        'action' => 'rrpAndRms',
                         'order' => 50,
                     ),
                     array(
-                        'label' => 'Trade Pack RMs + Time',
-                        'route' => 'business-reports/trade-pack-rms-time',
+                        'label' => '<span class="glyphicon glyphicon-print"></span> Trade Pack RMs + Time',
+                        'route' => 'business-reports/trade-pack-rms-time-report',
                         'contoller' => 'ReportsController',
-                        'action' => 'index',
+                        'action' => 'tradePackRmsTime',
                         'order' => 60,
                     ),
                 ),

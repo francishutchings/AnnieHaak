@@ -1,0 +1,34 @@
+<?php
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+
+#dump($tradePackRmsTimeReport);
+#exit();
+?>
+<div class = "col-md-12">
+    <div class = "bs-component">
+        <p>
+            Total Build Time: <?php echo $tradePackRmsTimeReport[0]['TotalBuildTime']; ?> Hours
+        </p>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Qty</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach ($tradePackRmsTimeReport as $value) {
+                    echo '<tr>';
+                    echo '<td>' . $value['Qty'] . '</td>';
+                    echo '<td>' . $value['RawMaterialName'] . '</td>';
+                    echo '</tr>';
+                }
+                ?>
+            </tbody>
+        </table>
+        <?php
+        echo '<p>' . date('l jS F Y, G:i:s', time()) . '</p>';
+        ?>
+    </div>
+</div>

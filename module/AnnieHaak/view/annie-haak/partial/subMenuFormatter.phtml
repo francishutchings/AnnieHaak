@@ -1,22 +1,29 @@
 <?php
-
 $currRoute = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
 $subPages = $this->navigation('navigation')->findOneBy('route', $currRoute[1])->getPages();
-
-echo '<div class = "col-md-10"><div class = "page-header"><h1>';
-echo $this->navigation('navigation')->current()->get('label');
-echo '</h1></div></div>';
-
-echo '<div class = "col-md-6">';
-echo '<div class = "panel panel-info">';
-echo '<div class = "panel-heading">';
-echo '<h3 class = "panel-title">Choose a sub-section:</h3>';
-echo '</div>';
-echo '<div class = "panel-body">';
-echo '<div class = "list-group table-of-contents">';
-
-foreach ($subPages as $page) {
-    echo '<a class = "list-group-item" href = "' . $page->get('route') . '">' . $page->get('label') . '</a>';
-}
-
-echo '</div></div></div></div>';
+?>
+<div class="col-md-10">
+    <div class="page-header">
+        <?php echo '<h1>' . $this->navigation('navigation')->current()->get('label') . '</h1>'; ?>
+    </div>
+</div>
+<div class="col-md-6">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <h3 class="panel-title">Choose a sub-section:</h3>
+        </div>
+        <div class="panel-body">
+            <div class="list-group table-of-contents">
+                <?php
+                foreach ($subPages as $page) {
+                    if (strpos($page->get('route'), 'business-reports') !== FALSE) {
+                        echo '<a target="_blank" class="list-group-item" href = "' . $page->get('route') . '">' . $page->get('label') . '  <span class="glyphicon glyphicon-new-window" style="font-size:0.75em;"></span></a>';
+                    } else {
+                        echo '<a class="list-group-item" href = "' . $page->get('route') . '">' . $page->get('label') . '</a>';
+                    }
+                }
+                ?>
+            </div>
+        </div>
+    </div>
+</div>
