@@ -434,14 +434,18 @@ echo $this->form()->openTag($form)
         <?php echo $this->partial('annie-haak/partial/productsFinancials.phtml'); ?>
     </fieldset>
 
+    <!-- /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --->
+
     <div class="form-group">
-        <div class="col-md-4 col-md-offset-8">
-            <a href="/business-admin/products" type="reset" class="btn btn-default margin-right-10">Cancel</a>
+        <div class="pull-right margin-right-20">
             <?php
             if ($form->get('DuplicationID')->getValue() == 0) {
-                echo '<a target="_blank" href="/business-admin/products/print/' . $productId . '" type="text/html" class="btn btn-info margin-right-10">Print View</a>';
+                echo '<a href="/business-admin/products" type="reset" class="btn btn-default margin-right-10">Cancel</a>';
+                echo '<a class="btn btn-info margin-right-10" target="_blank" href="/business-admin/products/print/' . $productId . '" type="text/html">Print View</a>';
+                echo '<a class="btn btn-info margin-right-10" href="/business-admin/products/duplicate/' . $productId . '">Duplicate</a>';
                 echo $this->formSubmit($form->get('submit'));
             } else {
+                echo '<a href="/business-admin/products" type="reset" class="btn btn-default margin-right-10">Cancel</a>';
                 echo $this->formSubmit($form->get('submit')->setValue('Create Duplicate'));
             }
             ?>

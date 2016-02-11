@@ -217,7 +217,7 @@ class ProductsController extends AbstractActionController {
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
 
         $form->bind($products);
-        $form->get('submit')->setAttribute('value', 'Update');
+        $form->get('submit')->setAttribute('value', 'Save Changes');
 
         //Declare New Product
         $form->get('ProductID')->setValue(0);
@@ -267,7 +267,7 @@ class ProductsController extends AbstractActionController {
         $form->get('ProductTypeID')->setValueOptions($selectData['productTypesData']);
 
         $form->bind($products);
-        $form->get('submit')->setAttribute('value', 'Update');
+        $form->get('submit')->setAttribute('value', 'Save Changes');
 
         $request = $this->getRequest();
         if ($request->isPost()) {
