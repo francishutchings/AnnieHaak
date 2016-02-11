@@ -6,9 +6,9 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
 ?>
 <div class = "col-md-12">
     <div class = "bs-component">
-        <table class="table table-striped table-hover">
+        <table class="table table-bordered">
             <thead>
-                <tr class="bg-primary">
+                <tr class="">
                     <th>SKU</th>
                     <th>Name</th>
                     <th>Type</th>
@@ -24,7 +24,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
             </thead>
             <tbody>
                 <?php
-                foreach ($marginsReport->reportDataArr as $value) {
+                foreach ($marginsReport as $value) {
                     echo '<tr>';
                     echo '<td>' . $value['SKU'] . '</td>';
                     echo '<td>' . $value['Name'] . '</td>';
@@ -32,7 +32,7 @@ echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('na
                     echo '<td>' . $value['Collection'] . '</td>';
                     echo '<td>' . $value['Current'] . '</td>';
                     echo '<td>' . $value['TradePack'] . '</td>';
-                    echo '<td>£' . number_format($value['RRP'], 4) . '</td>';
+                    echo '<td>£' . number_format($value['RetailNewRRP'], 4) . '</td>';
                     echo '<td>£' . number_format($value['RetailProfit'], 4) . '</td>';
                     echo '<td>' . round($value['RetailMargin'], 2) . '%</td>';
                     echo '<td>£' . number_format($value['TradeProfit'], 4) . '</td>';

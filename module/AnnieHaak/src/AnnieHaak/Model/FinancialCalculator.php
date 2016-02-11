@@ -8,6 +8,13 @@ class FinancialCalculator {
     public $Subtotals;
     public $Product;
 
+    /**
+     *
+     * @param type $ratesPercentagesData Array of additional production costs.
+     * @param type $subtotals Array of subtotals for product constituent parts.
+     * @param type $product Array of RRP and Assay status.
+     * @return \AnnieHaak\Model\FinancialCalculator
+     */
     public function __construct($ratesPercentagesData, $subtotals, $product) {
         $this->RatesPercentagesData = $ratesPercentagesData;
         $this->Subtotals = $subtotals;
@@ -127,8 +134,12 @@ class FinancialCalculator {
         $data['RetailProfit'] = $data['RetailRRPLessVAT'] - $data['RetailCost'];
         $data['RetailNewProfit'] = $data['RetailNewRRPLessVAT'] - $data['RetailNewCost'];
 
-        $temp = ($data['RetailProfit'] / $data['RetailRRPLessVAT'] * 100);
-        if ($temp < 0) {
+        if ($data['RetailRRPLessVAT'] > 0) {
+            $temp = ($data['RetailProfit'] / $data['RetailRRPLessVAT'] * 100);
+            if ($temp < 0) {
+                $temp = 0;
+            }
+        } else {
             $temp = 0;
         }
         $data['RetailActualPerc'] = $temp;

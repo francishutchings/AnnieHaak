@@ -4,21 +4,23 @@ namespace AnnieHaak\Model;
 
 use Zend\Db\Adapter\Adapter;
 use AnnieHaak\Model\RatesPercentages;
+use AnnieHaak\Model\FinancialCalculator;
 
 class MarginsReport {
 
-    public $reportDataArr;
     protected $dbAdapter;
+    protected $ratesPercentages;
 
-    public function __construct(Adapter $dbAdapter) {
+    public function __construct(Adapter $dbAdapter, RatesPercentages $ratesPercentages) {
         $this->dbAdapter = $dbAdapter;
-        return $this->getReport();
+        $this->ratesPercentages = $ratesPercentages;
+        return $this;
     }
 
-    private function getReport() {
-        $ratePercents = new RatesPercentages($this->dbAdapter);
-        $ratesPercentages = $ratePercents->fetchAll();
-
+    public function getReport() {
+        foreach ($this->ratesPercentages as $key => $value) {
+            $ratesPercentagesArr[$key] = $value;
+        }
         $sql = <<<SQL
 SELECT
     P.ProductID
@@ -33,7 +35,7 @@ SELECT
     ,P.RRP
     ,(
         SELECT
-            SUM(RL2.RawMaterialUnitCost * RMPL2.RawMaterialQty)
+            IFNULL(SUM(RL2.RawMaterialUnitCost * RMPL2.RawMaterialQty), 0)
         FROM
             RawMaterialLookup AS RL2
         INNER JOIN
@@ -45,7 +47,7 @@ SELECT
     ) AS TotalRMCost
     ,(
         SELECT
-            SUM(LLookup.LabourUnitCost * LTime.LabourQty)
+            IFNULL(SUM(LLookup.LabourUnitCost * LTime.LabourQty), 0)
         FROM
             LabourLookup AS LLookup
         INNER JOIN
@@ -57,7 +59,7 @@ SELECT
     ) AS TotalLabourCost
     ,(
         SELECT
-            SUM(PLookup.PackagingUnitCost * PPick.PackagingQty)
+            IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
         FROM
             PackagingLookup AS PLookup
         INNER JOIN
@@ -69,7 +71,7 @@ SELECT
     ) AS TotalPackCost
     ,(
         SELECT
-            SUM(PLookup.PackagingUnitCost * PPick.PackagingQty)
+            IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
         FROM
             PackagingLookup AS PLookup
         INNER JOIN
@@ -80,7 +82,49 @@ SELECT
             PPick.ProductID = P.ProductID
         AND
             PLookup.PackagingType = 1
-    ) AS BoxCost
+    ) AS SBoxCost
+    ,(
+        SELECT
+            IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
+        FROM
+            PackagingLookup AS PLookup
+        INNER JOIN
+            PackagingPicklists AS PPick
+        ON
+            PLookup.PackagingID = PPick.PackagingID
+        WHERE
+            PPick.ProductID = P.ProductID
+        AND
+            PLookup.PackagingType = 2
+    ) AS LBoxCost
+    ,(
+        SELECT
+            IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
+        FROM
+            PackagingLookup AS PLookup
+        INNER JOIN
+            PackagingPicklists AS PPick
+        ON
+            PLookup.PackagingID = PPick.PackagingID
+        WHERE
+            PPick.ProductID = P.ProductID
+        AND
+            PLookup.PackagingType = 3
+    ) AS SBagCost
+    ,(
+        SELECT
+            IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
+        FROM
+            PackagingLookup AS PLookup
+        INNER JOIN
+            PackagingPicklists AS PPick
+        ON
+            PLookup.PackagingID = PPick.PackagingID
+        WHERE
+            PPick.ProductID = P.ProductID
+        AND
+            PLookup.PackagingType = 4
+    ) AS LBagCost
 FROM
     ProductTypes
 INNER JOIN
@@ -103,112 +147,44 @@ SQL;
         $results = $statement->execute();
 
         foreach ($results as $result) {
-            $tempDataArr[] = $result;
-        }
+            #dump($result);
+            #exit();
 
-        #       dump($tempDataArr);
-#        exit();
+            $tempDataArr['ProductId'] = $result['ProductID'];
+            $tempDataArr['SKU'] = $result['SKU'];
+            $tempDataArr['Name'] = $result['ProductName'];
+            $tempDataArr['Type'] = $result['ProductTypeName'];
+            $tempDataArr['Collection'] = $result['ProductCollectionCode'];
+            $tempDataArr['Current'] = ($result['Current']) ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
+            $tempDataArr['TradePack'] = ($result['PartOfTradePack']) ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
 
-        for ($x = 0; $x < count($tempDataArr); $x++) {
+            $subtotals['RawMaterials'] = $result['TotalRMCost'];
+            $subtotals['LabourItems'] = $result['TotalLabourCost'];
+            $subtotals['Packaging'] = array(
+                'BAG' => $result['SBagCost'] + $result['LBoxCost'],
+                'BOX' => $result['SBoxCost'] + $result['LBagCost']
+            );
 
-            #START
-            if ($tempDataArr[$x]['ProductName'] == 'Ankle Silver Charm Bracelet - Butterfly') {
+            $product['RRP'] = $result['RRP'];
+            $product['RequiresAssay'] = $result['RequiresAssay'];
 
-                $tempArr = array();
-                foreach ($tempDataArr[$x] as $key => $value) {
-                    switch ($key) {
-                        case 'SKU':
-                            $tempArr['SKU'] = $value;
-                            break;
-                        case 'ProductName':
-                            $tempArr['Name'] = $value;
-                            break;
-                        case 'ProductTypeName':
-                            $tempArr['Type'] = $value;
-                            break;
-                        case 'ProductCollectionCode':
-                            $tempArr['Collection'] = $value;
-                            break;
-                        case 'Current':
-                            $tempArr['Current'] = ($value) ? 'Yes' : 'No';
-                            break;
-                        case 'PartOfTradePack':
-                            $tempArr['TradePack'] = ($value) ? 'Yes' : 'No';
-                            break;
-                        case 'RRP':
-                            $tempArr['RRP'] = ($value + $ratesPercentages->PostageForProfitUnitCost);
-                            break;
-                    }
+            $financialCalcSubTotals = new FinancialCalculator($ratesPercentagesArr, $subtotals, $product);
+            $financialData = $financialCalcSubTotals->calculateFinancials();
+            foreach ($financialData as $key => $value) {
+                if ($key != "SubtotalBoxCostTxt") {
+                    $financialData[$key] = number_format((float) $value, 4, '.', '');
                 }
-
-                /* Retail Profit =
-                 *  [RRP+Postage-Vat]
-                 * -
-                 *  [ExVatCost]
-                 *      => ([TotalForMarkup]+[TotalPackCost]+[AssTotal]+[MCTotal]+[PostageTotal])
-                 *
-                 * [TotalPackCost] = SQL
-                 * [AssTotal] = IIf([RequiresAssay]=-1,DLookUp("AssayRateUnitCost","AssayRateLookup")*1,0)
-                 * [MCTotal] = (([RRP+Postage])*((DLookUp("MerchantChargePercentage","MerchantChargeLookup")/100)))
-                 * [PostageTotal] = DLookUp("PostageCostUnitCost","PostageCostLookup")
-                 */
-                #[RRP+Postage-Vat]
-                $RRP_Postage = ($tempDataArr[$x]['RRP'] + $ratesPercentages->PostageForProfitUnitCost);
-                $Vat = ($tempDataArr[$x]['RRP'] + $ratesPercentages->PostageForProfitUnitCost) * ($ratesPercentages->VATPercentage / 100);
-
-                dump($RRP_Postage);
-                dump($Vat);
-                dump($tempDataArr[$x]['TotalRMCost']);
-                dump($tempDataArr[$x]['TotalLabourCost']);
-                dump($ratesPercentages->PackageAndDispatchUnitCost);
-
-
-
-                #[TotalForMarkup]
-                #[TotalSoFar]
-                $ExVatCost = ($tempDataArr[$x]['TotalRMCost'] + $tempDataArr[$x]['TotalLabourCost'] + $ratesPercentages->PackageAndDispatchUnitCost);
-                dump($ExVatCost);
-
-                dump($tempDataArr[$x]['TotalRMCost'] * ($ratesPercentages->ImportPercentage / 100));
-
-                #[ImpTotal]
-                $ExVatCost += ($tempDataArr[$x]['TotalRMCost'] * ($ratesPercentages->ImportPercentage / 100));
-
-                dump($ExVatCost);
-
-                exit();
-
-                #[TotalPackCost]
-                $ExVatCost += $tempDataArr[$x]['TotalPackCost'];
-                #[AssTotal]
-                $ExVatCost += ($tempDataArr[$x]['RequiresAssay']) ? $ratesPercentages->AssayRateUnitCost : 0;
-                #[MCTotal]
-                $ExVatCost += ($RRP_Postage * ($ratesPercentages->MerchantChargePercentage / 100));
-                #[PostageTotal]
-                $ExVatCost += $ratesPercentages->PostageCostUnitCost;
-                $tempArr['RetailProfit'] = ($RRP_Postage - $Vat) - $ExVatCost;
-
-                # ['RetailMargin'] = [Retail Profit] / [RRP+Postage-Vat]
-                $tempArr['RetailMargin'] = ($tempArr['RetailProfit'] / ($RRP_Postage - $Vat) * 100);
-
-                /* ['TradeProfit'] = IIf([ExcludeFromTrade]=-1,'N/A',[tradeprofsub]+[addback])
-                 * [tradeprofsub] = [tradeprice]-[ExVatCost]
-                 * [tradeprice] = [RRP+Postage-Vat] * 0.4
-                 * [addback] = IIf([RRP+Postage] > 49, [PDTotal]+[BoxCost]+[MCTotal]+[PostageTotal], [PDTotal]+[MCTotal]+[PostageTotal])
-                 */
-                $tradePrice = (($RRP_Postage - $Vat) * 0.4);
-                $addBack = ($RRP_Postage > 49) ? ($ratesPercentages->PostageCostUnitCost + $tempDataArr[$x]['BoxCost'] + ($RRP_Postage * ($ratesPercentages->MerchantChargePercentage / 100)) + $ratesPercentages->PostageCostUnitCost) : 0;
-                $tempArr['TradeProfit'] = ($tempDataArr[$x]['ExcludeFromTrade']) ? 'N/A' : (($tradePrice - $ExVatCost) + $addBack);
-
-                # ['TradeMargin'] = IIf([ExcludeFromTrade]=-1,'N/A',[Trade Profit] / [TradePrice])
-                $tempArr['TradeMargin'] = ($tempDataArr[$x]['ExcludeFromTrade']) ? 'N/A' : ($tempArr['TradeProfit'] / (($RRP_Postage - $Vat) * 0.4) * 100);
-
-
-
-                exit();
-                $this->reportDataArr[$x] = $tempArr;
             }
-        } #END
+
+            $tempDataArr['RetailNewRRP'] = $financialData['RetailNewRRP'];
+            $tempDataArr['RetailProfit'] = $financialData['RetailNewProfit'];
+            $tempDataArr['RetailMargin'] = $financialData['RetailNewActualPerc'];
+            $tempDataArr['TradeProfit'] = $financialData['TradeProfit'];
+            $tempDataArr['TradeMargin'] = $financialData['TradeActual'];
+
+            $returnArr[] = $tempDataArr;
+        }
+        return $returnArr;
     }
 
 }

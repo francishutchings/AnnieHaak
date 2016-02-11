@@ -14,6 +14,8 @@ use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Model\ProductTypesTable;
 use AnnieHaak\Model\Products;
 use AnnieHaak\Model\ProductsTable;
+use AnnieHaak\Model\RatesPercentages;
+use AnnieHaak\Model\RatesPercentagesTable;
 use AnnieHaak\Model\RawMaterials;
 use AnnieHaak\Model\RawMaterialsTable;
 use AnnieHaak\Model\RawMaterialTypes;
@@ -152,6 +154,17 @@ class Module {
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ProductTypes());
                     return new TableGateway('ProductTypes', $dbAdapter, null, $resultSetPrototype);
+                },
+                'AnnieHaak\Model\RatesPercentagesTable' => function($sm) {
+                    $tableGateway = $sm->get('RatesPercentagesGateway');
+                    $table = new RatesPercentagesTable($tableGateway);
+                    return $table;
+                },
+                'RatesPercentagesGateway' => function ($sm) {
+                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
+                    $resultSetPrototype = new ResultSet();
+                    $resultSetPrototype->setArrayObjectPrototype(new RatesPercentages());
+                    return new TableGateway('RatesPercentages', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\RawMaterialsTable' => function($sm) {
                     $tableGateway = $sm->get('RawMaterialsGateway');

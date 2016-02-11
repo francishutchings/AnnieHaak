@@ -19,7 +19,7 @@ class ProductsController extends AbstractActionController {
     protected $rawMaterialsTable;
     protected $labourItemsTable;
     protected $packagingTable;
-    protected $ratesPercentagesObj;
+    protected $ratesPercentagesTable;
     protected $auditingObj;
 
     public function indexAction() {
@@ -90,7 +90,7 @@ class ProductsController extends AbstractActionController {
     public function addAction() {
         $form = new ProductsForm();
 
-        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
+        $ratesPercentages = $this->getRatesPercentagesTable()->getRatesPercentages(1);
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
@@ -201,7 +201,7 @@ class ProductsController extends AbstractActionController {
 
         $form = new ProductsForm();
 
-        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
+        $ratesPercentages = $this->getRatesPercentagesTable()->getRatesPercentages(1);
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
@@ -251,7 +251,7 @@ class ProductsController extends AbstractActionController {
 
         $form = new ProductsForm();
 
-        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
+        $ratesPercentages = $this->getRatesPercentagesTable()->getRatesPercentages(1);
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
@@ -309,7 +309,6 @@ class ProductsController extends AbstractActionController {
                 try {
                     $this->getProductsTable()->saveProducts($products, $auditingObj, $productAssocData);
                     $this->flashmessenger()->setNamespace('info')->addMessage('Product -> ' . $products->ProductName . ' -> Updated.');
-                    $_SESSION['AnnieHaak']['storage']['ProductActioned'] = $products->ProductName;
                     return $this->redirect()->toRoute('business-admin/products', array('action' => 'edit', 'id' => $id));
                 } catch (\Exception $ex) {
                     $this->flashmessenger()->setNamespace('error')->addMessage($ex->getMessage());
@@ -350,7 +349,7 @@ class ProductsController extends AbstractActionController {
         $labourItems = $this->getLabourItemsTable()->getLabourItemsByProduct($id);
         $packaging = $this->getPackagingTable()->getPackagingByProduct($id);
 
-        $ratesPercentages = $this->getRatesPercentages()->fetchAll();
+        $ratesPercentages = $this->getRatesPercentagesTable()->getRatesPercentages(1);
         foreach ($ratesPercentages as $key => $value) {
             $ratesPercentagesData[$key] = $value;
         }
@@ -407,7 +406,6 @@ class ProductsController extends AbstractActionController {
         $products['RRP'] = number_format((float) $products['RRP'], $cntrlFloatPos, '.', '');
 
         $this->layout('layout/print');
-
         return new ViewModel(array(
             'id' => $id,
             'products' => $products,
@@ -516,13 +514,12 @@ class ProductsController extends AbstractActionController {
         return $this->packagingTable;
     }
 
-    private function getRatesPercentages() {
-        if (!$this->ratesPercentagesObj) {
+    private function getRatesPercentagesTable() {
+        if (!$this->ratesPercentagesTable) {
             $sm = $this->getServiceLocator();
-            $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-            $this->ratesPercentagesObj = new RatesPercentages($dbAdapter);
+            $this->ratesPercentagesTable = $sm->get('AnnieHaak\Model\RatesPercentagesTable');
         }
-        return $this->ratesPercentagesObj;
+        return $this->ratesPercentagesTable;
     }
 
     private function getAuditing() {
