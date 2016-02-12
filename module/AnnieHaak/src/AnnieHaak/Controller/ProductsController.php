@@ -65,7 +65,7 @@ class ProductsController extends AbstractActionController {
 
         if ($paginator->count() > 0) {
             foreach ($paginator->getItemsByPage($currentPage) as $value) {
-                $value->DuplicateHTML = '<a class="btn btn-info btn-sm" href="/business-admin/products/duplicate/' . $value->ProductID . '"><span class="glyphicon glyphicon-copy" style="font-size:1.2em;"></span></a>';
+                $value->DuplicateHTML = '<a class="btn btn-info btn-sm" href="/business-admin/products/duplicate/' . $value->ProductID . '"><span class="glyphicon glyphicon-duplicate" style="font-size:1.2em;"></span></a>';
                 $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/products/edit/' . $value->ProductID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
                 $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/products/delete/' . $value->ProductID . '"><span class="glyphicon glyphicon-trash"></span></a>';
                 $value->PrintHTML = '<a target="_blank" class="btn btn-info btn-sm" href="/business-admin/products/print/' . $value->ProductID . '"><span class="glyphicon glyphicon-print"></span></a>';

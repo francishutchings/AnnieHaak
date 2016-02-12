@@ -579,7 +579,7 @@ return array(
                                 'order' => 40,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-copy"></span> Duplicate Product',
+                                'label' => '<span class="glyphicon glyphicon-duplicate"></span> Duplicate Product',
                                 'route' => 'business-admin/products',
                                 'contoller' => 'ProductsController',
                                 'action' => 'duplicate',
