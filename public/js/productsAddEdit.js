@@ -7,7 +7,7 @@ var financialCalcIni = function () {
     $("#financialCalcSubTotals").data("PostageCostUnitCost", parseFloat(arguments[4]));
     $("#financialCalcSubTotals").data("PostageForProfitUnitCost", parseFloat(arguments[5]));
     $("#financialCalcSubTotals").data("VATPercentage", parseFloat(arguments[6]));
-    $("#financialCalcSubTotals").data("AdjustDecimalPlace", 4);
+    $("#financialCalcSubTotals").data("AdjustDecimalPlace", 2);
 
     $("#financialCalcSubTotals").data("SubtotalRM", 0);
     $("#financialCalcSubTotals").data("SubtotalLabour", 0);

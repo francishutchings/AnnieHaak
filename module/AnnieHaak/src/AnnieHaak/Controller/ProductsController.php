@@ -222,6 +222,7 @@ class ProductsController extends AbstractActionController {
         //Declare New Product
         $form->get('ProductID')->setValue(0);
         $form->get('DuplicationID')->setValue($id);
+        $form->get('SKU')->setValue('');
 
         $form->setAttribute('action', '/business-admin/products/add');
 
@@ -330,9 +331,9 @@ class ProductsController extends AbstractActionController {
     //==================================================================================================================
     public function printAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
-        $cntrlFloatPos = (int) $this->params()->fromQuery('FloatPos', 4);
+        $cntrlFloatPos = (int) $this->params()->fromQuery('FloatPos', 2);
         if ($cntrlFloatPos < 1 || $cntrlFloatPos > 10) {
-            $cntrlFloatPos = 4;
+            $cntrlFloatPos = 2;
         }
         if (!$id) {
             return $this->redirect()->toRoute('business-admin/products', array('action' => 'index'));
