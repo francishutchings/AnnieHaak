@@ -219,10 +219,6 @@ body {
 
 /** jqGrid Overrides **/
 
-.altTableRowBackColour{
-    background-color: #f5f0e5;
-    color: #000000;
-}
 .ui-jqgrid-labels {
     background-color: #c0c0c0;
     color: #000000;

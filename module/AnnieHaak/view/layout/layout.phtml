@@ -14,24 +14,23 @@
         <?php
         $version = 1;
         echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => '/img/favicon.ico'))
-                ->prependStylesheet($this->basePath('css/style.css?v=' . $version), 'all')
-                ->prependStylesheet($this->basePath('css/awesome-bootstrap-checkbox.css?v=' . $version), 'all')
-                ->prependStylesheet($this->basePath('js/jquery-ui/jquery-ui.css?v=' . $version), 'all')
-                ->prependStylesheet($this->basePath('js/jqGrid/css/trirand/ui.jqgrid-bootstrap.css?v=' . $version), 'all')
-                ->prependStylesheet($this->basePath('css/font-awesome.min.css?v=' . $version), 'all')
-                ->prependStylesheet($this->basePath('css/bootstrap.css?v=' . $version), 'all')
+                #->appendStylesheet($this->basePath('bower_components/bootstrap/dist/css/bootstrap.min.css?v=' . $version), 'all')
+                ->appendStylesheet($this->basePath('bower_components/bootswatch-dist/css/bootstrap.min.css?v=' . $version), 'all')
+                ->appendStylesheet($this->basePath('bower_components/jquery-ui/themes/cupertino/jquery-ui.min.css?v=' . $version), 'all')
+                ->appendStylesheet($this->basePath('bower_components/font-awesome/css/font-awesome.min.css?v=' . $version), 'all')
+                ->appendStylesheet($this->basePath('css/awesome-bootstrap-checkbox.css?v=' . $version), 'all')
+                ->appendStylesheet($this->basePath('js/jqGrid/css/trirand/ui.jqgrid-bootstrap.css?v=' . $version), 'all')
+                ->appendStylesheet($this->basePath('css/style.css?v=' . $version), 'all')
         ?>
 
         <!-- Scripts -->
         <?php
         echo $this->headScript()
-                ->prependFile($this->basePath('js/bootstrap.min.js'))
-                ->prependFile($this->basePath('js/jquery-ui/jquery-ui.min.js'))
-                ->prependFile($this->basePath('js/numericInput.min.js'))
-                ->prependFile($this->basePath('js/jquery.min.js'))
-                ->prependFile($this->basePath('js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-                ->prependFile($this->basePath('js/html5shiv.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-        ;
+                ->appendFile($this->basePath('bower_components/jquery/dist/jquery.min.js?v=' . $version))
+                ->appendFile($this->basePath('bower_components/jquery-ui/jquery-ui.min.js?v=' . $version))
+                ->appendFile($this->basePath('bower_components/jquery.pwstrength/jquery.pwstrength.min.js?v=' . $version))
+                ->appendFile($this->basePath('bower_components/bootstrap/dist/js/bootstrap.min.js?v=' . $version))
+                ->appendFile($this->basePath('js/numericInput.min.js?v=' . $version))
         ?>
     </head>
     <body>

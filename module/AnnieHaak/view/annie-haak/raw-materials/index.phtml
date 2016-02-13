@@ -49,6 +49,11 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
             sortname: 'RawMaterialName',
             height: 'auto',
             viewsortcols: [true, 'vertical', true],
+            rownumbers: true,
+            rownumWidth: 20,
+            rowNum: 15,
+            rowList: [15, 30, 50],
+            pager: "#jqGridPager",
             colModel: [
                 {
                     label: 'ID',
@@ -173,12 +178,7 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
                     sortable: false,
                     search: false
                 }
-            ],
-            rownumbers: true,
-            rownumWidth: 20,
-            rowNum: 15,
-            rowList: [15, 30, 50],
-            pager: "#jqGridPager"
+            ]
         });
         $("#jqGrid").navGrid('#jqGridPager',
                 {
