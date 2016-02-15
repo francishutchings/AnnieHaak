@@ -127,46 +127,51 @@ echo $this->form()->openTag($form)
                     <?php echo $this->formRow($form->get('Description')); ?>
                 </div>
                 <div class="col-md-10 col-md-offset-2">
-                    <div class="radio radio-danger pull-left margin-right-5">
-                        <?php if ($form->getObject()->DescriptionStatus == 0) : ?>
-                            <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
-                            <label for="DescRadio1">
-                                <span class="label label-danger">Needs Description</span>
-                            </label>
-                        <?php else: ?>
-                            <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" />
-                            <label for="DescRadio1">
-                                <span class="label label-default">Needs Description</span>
-                            </label>
-                        <?php endif; ?>
+                    <div class="pull-left margin-left-15">
+                        <div class="radio radio-danger">
+                            <?php if ($form->getObject()->DescriptionStatus == 0) : ?>
+                                <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
+                                <label for="DescRadio1">
+                                    <span class="label label-danger">Needs Description</span>
+                                </label>
+                            <?php else: ?>
+                                <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" />
+                                <label for="DescRadio1">
+                                    <span class="label label-default">Needs Description</span>
+                                </label>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="radio radio-warning pull-left margin-right-5">
-                        <?php if ($form->getObject()->DescriptionStatus == 1) : ?>
-                            <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" checked="checked" />
-                            <label for="DescRadio2">
-                                <span class="label label-warning">Pending Approval</span>
-                            </label>
-                        <?php else: ?>
-                            <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
-                            <label for="DescRadio2">
-                                <span class="label label-default">Pending Approval</span>
-                            </label>
-                        <?php endif; ?>
+                    <div class="pull-left margin-left-15">
+                        <div class="radio radio-warning">
+                            <?php if ($form->getObject()->DescriptionStatus == 1) : ?>
+                                <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" checked="checked" />
+                                <label for="DescRadio2">
+                                    <span class="label label-warning">Pending Approval</span>
+                                </label>
+                            <?php else: ?>
+                                <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
+                                <label for="DescRadio2">
+                                    <span class="label label-default">Pending Approval</span>
+                                </label>
+                            <?php endif; ?>
+                        </div>
                     </div>
-                    <div class="radio radio-success pull-left">
-                        <?php if ($form->getObject()->DescriptionStatus == 2) : ?>
-                            <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" checked="checked" />
-                            <label for="DescRadio3">
-                                <span class="label label-success">Approved</span>
-                            </label>
-                        <?php else: ?>
-                            <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
-                            <label for="DescRadio3">
-                                <span class="label label-default">Approved</span>
-                            </label>
-                        <?php endif; ?>
+                    <div class="pull-left margin-left-15">
+                        <div class="radio radio-success">
+                            <?php if ($form->getObject()->DescriptionStatus == 2) : ?>
+                                <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" checked="checked" />
+                                <label for="DescRadio3">
+                                    <span class="label label-success">Approved</span>
+                                </label>
+                            <?php else: ?>
+                                <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
+                                <label for="DescRadio3">
+                                    <span class="label label-default">Approved</span>
+                                </label>
+                            <?php endif; ?>
+                        </div>
                     </div>
-
                 </div>
             </div>
 
