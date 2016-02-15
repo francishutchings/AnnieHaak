@@ -120,7 +120,7 @@
             viewsortcols: [false, 'vertical', false],
             pager: "#rawMaterialGridPager",
             editurl: 'clientArray',
-            width: 950,
+            autowidth: true,
             shrinkToFit: true,
             loadComplete: function (data) {
                 $('#rawMaterialGridPager_center').remove();
@@ -233,6 +233,8 @@
             reloadAfterSubmit: false,
             closeOnEscape: true,
             savekey: [true, 13],
+            jqModal: false,
+            addedrow: 'afterSelected',
             afterShowForm: RawMaterialData,
             afterComplete: afterCompleteRawMaterials,
             errorTextFormat: function (data) {

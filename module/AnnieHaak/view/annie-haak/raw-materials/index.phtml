@@ -52,7 +52,6 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
             rownumbers: true,
             rownumWidth: 20,
             rowNum: 15,
-            rowList: [15, 30, 50],
             pager: "#jqGridPager",
             colModel: [
                 {
@@ -198,5 +197,4 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
         );
     });
 </script>
-<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
-<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
+<?php echo $this->partial('annie-haak/partial/jqGridJS.phtml'); ?>

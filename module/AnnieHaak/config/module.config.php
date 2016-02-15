@@ -278,8 +278,8 @@ return array(
                         'options' => array(
                             'route' => '/dynamic-reports[/:action][/:id]',
                             'defaults' => array(
-                                'controller' => 'AnnieHaak\Controller\DynamicReports',
-                                'action' => 'index'
+                                'controller' => 'AnnieHaak\Controller\Reports',
+                                'action' => 'dynamicReports'
                             ),
                             'constraints' => array(
                                 'id' => '[1-9]\d*'
@@ -402,8 +402,7 @@ return array(
             'AnnieHaak\Controller\RawMaterials' => Controller\RawMaterialsController::class,
             'AnnieHaak\Controller\RawMaterialTypes' => Controller\RawMaterialTypesController::class,
             'AnnieHaak\Controller\Suppliers' => Controller\SuppliersController::class,
-            'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
-            'AnnieHaak\Controller\DynamicReports' => Controller\DynamicReportsController::class
+            'AnnieHaak\Controller\Reports' => Controller\ReportsController::class
         ),
     ),
     'view_manager' => array(
@@ -732,10 +731,10 @@ return array(
                 'class' => 'top-level',
                 'pages' => array(
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> All Dynamic Reports',
+                        'label' => '<span class="glyphicon glyphicon-list"></span> Dynamic Reports',
                         'route' => 'business-reports/dynamic-reports',
                         'contoller' => 'ReportsController',
-                        'action' => 'index',
+                        'action' => 'dynamicReports',
                         'order' => 10,
                     ),
                     array(

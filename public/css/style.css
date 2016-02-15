@@ -30,6 +30,71 @@ body {
     background-position: 4px 4px;
 }
 
+h1, h2 , h3, h4, h5, h6, legend{
+    color: #dc0963;
+}
+
+/* navbar */
+.navbar-inverse {
+    background-color: #F8F8F8;
+    border-color: #E7E7E7;
+}
+/* title */
+.navbar-inverse .navbar-brand {
+    color: #dc0963;
+}
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    color: #522f91;
+}
+/* link */
+.navbar-inverse .navbar-nav > li > a {
+    color: #dc0963;
+}
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+    color: #522f91;
+}
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:hover,
+.navbar-inverse .navbar-nav > .active > a:focus {
+    color: #522f91;
+    background-color: #E7E7E7;
+}
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:hover,
+.navbar-inverse .navbar-nav > .open > a:focus {
+    color: #522f91;
+    background-color: #D5D5D5;
+}
+/* caret */
+.navbar-inverse .navbar-nav > .dropdown > a .caret {
+    border-top-color: #dc0963;
+    border-bottom-color: #dc0963;
+}
+.navbar-inverse .navbar-nav > .dropdown > a:hover .caret,
+.navbar-inverse .navbar-nav > .dropdown > a:focus .caret {
+    border-top-color: #333;
+    border-bottom-color: #333;
+}
+.navbar-inverse .navbar-nav > .open > a .caret,
+.navbar-inverse .navbar-nav > .open > a:hover .caret,
+.navbar-inverse .navbar-nav > .open > a:focus .caret {
+    border-top-color: #555;
+    border-bottom-color: #555;
+}
+/* mobile version */
+.navbar-inverse .navbar-toggle {
+    border-color: #DDD;
+}
+.navbar-inverse .navbar-toggle:hover,
+.navbar-inverse .navbar-toggle:focus {
+    background-color: #DDD;
+}
+.navbar-inverse .navbar-toggle .icon-bar {
+    background-color: #CCC;
+}
+
 /** START HELPER STYLES **/
 
 .block{display: block !important;}
@@ -211,27 +276,36 @@ body {
 
 /** END HELPER STYLES **/
 
-.ui-datepicker-month,
-.ui-datepicker-year{
-    color: black;
-    font-weight: normal;
-}
 
 /** jqGrid Overrides **/
-
 .ui-jqgrid-labels {
-    background-color: #c0c0c0;
-    color: #000000;
+    background-color: #F8F8F8;
+    color: #dc0963;
 }
 
 .ui-jqgrid .loading {
-    background-color: #000000;
+    color:#FFF;
+    background-color: #9c27b0;
 }
+
+.jqgrow{
+    background-color: #fff;
+}
+/** jqGrid Overrides **/
 
 @media (max-width: 767px) {
 
     .nav-pills>li {
         float: none;
+    }
+
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
+        color: #dc0963;
+    }
+
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:hover,
+    .navbar-inverse .navbar-nav .open .dropdown-menu > li > a:focus {
+        color: #522f91;
     }
 
     .footer {

@@ -231,6 +231,16 @@ class ProductsForm extends Form {
         ));
 
         $this->add(array(
+            'name' => 'ImagePath',
+            'type' => 'Url',
+            'attributes' => array(
+                'id' => 'ImagePath',
+                'class' => 'form-control',
+                'placeholder' => 'http://'
+            ),
+        ));
+
+        $this->add(array(
             'name' => 'Description',
             'type' => 'Textarea',
             'attributes' => array(

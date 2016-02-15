@@ -69,7 +69,7 @@ class ProductsController extends AbstractActionController {
                 $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/products/edit/' . $value->ProductID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
                 $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/products/delete/' . $value->ProductID . '"><span class="glyphicon glyphicon-trash"></span></a>';
                 $value->PrintHTML = '<a target="_blank" class="btn btn-info btn-sm" href="/business-admin/products/print/' . $value->ProductID . '"><span class="glyphicon glyphicon-print"></span></a>';
-                $value->CurrentHTML = ($value->Current) ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
+                $value->CurrentHTML = ($value->Current) ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>';
                 $rawData[] = $value;
             }
         } else {

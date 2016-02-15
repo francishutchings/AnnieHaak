@@ -264,37 +264,6 @@ $(document).ready(function () {
      */
 //    $("#products :input").prop("disabled", true);
 //    $('#cntrlFloatPos').attr('disabled', false);
-
-    $('#printViewAction').click(function (event) {
-        event.preventDefault();
-        var newForm = $('<form>', {
-            'action': '/business-admin/products/print',
-            'target': '_blank',
-            'method': 'post'
-        });
-        newForm.append($('<input>', {
-            'name': 'financialCalcSubTotals',
-            'value': JSON.stringify($("#financialCalcSubTotals").data()),
-            'type': 'hidden'
-        }));
-        newForm.append($('<input>', {
-            'name': 'ProductID',
-            'value': $('#ProductID').val(),
-            'type': 'hidden'
-        }));
-        newForm.append($('<input>', {
-            'name': 'RRP',
-            'value': $('#RRP').val(),
-            'type': 'hidden'
-        }));
-        newForm.append($('<input>', {
-            'name': 'cntrlFloatPos',
-            'value': $('#cntrlFloatPos').val(),
-            'type': 'hidden'
-        }));
-        newForm.appendTo(document.body);
-        newForm.submit();
-    });
     //=============================================
     $("#cntrlFloatPos").val($("#financialCalcSubTotals").data("AdjustDecimalPlace"));
     $("#cntrlFloatPos").change(function () {
@@ -434,15 +403,10 @@ $(document).ready(function () {
     })
 
     //=============================================
-    $("#currentUrlThumb").click(function () {
-        $('#currentUlrDisplay').attr("src", $('#CurrentURL').val());
-        $('#currentUlrLabel').text($('#ProductName').val());
-        $('#currentUlrModal').modal('show');
-        return false;
-    });
-    $("#oldUrlThumb").click(function () {
-        $('#currentUlrDisplay').attr("src", $('#OldURL').val());
-        $('#currentUlrModal').modal('show');
+    $("#imageUrlThumb").click(function () {
+        $('#imageUlrDisplay').attr("src", $('#ImagePath').val());
+        $('#imageUlrLabel').text($('#ProductName').val());
+        $('#imageUlrModal').modal('show');
         return false;
     });
 });

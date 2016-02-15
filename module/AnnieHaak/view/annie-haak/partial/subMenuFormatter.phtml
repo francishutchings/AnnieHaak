@@ -16,7 +16,7 @@ $subPages = $this->navigation('navigation')->findOneBy('route', $currRoute[1])->
             <div class="list-group table-of-contents">
                 <?php
                 foreach ($subPages as $page) {
-                    if (strpos($page->get('route'), 'business-reports') !== FALSE) {
+                    if (strpos($page->get('route'), 'business-reports') !== FALSE && strpos($page->get('route'), 'dynamic-reports') === FALSE) {
                         echo '<a target="_blank" class="list-group-item" href = "' . $page->get('route') . '">' . $page->get('label') . '  <span class="glyphicon glyphicon-new-window" style="font-size:0.75em;"></span></a>';
                     } else {
                         echo '<a class="list-group-item" href = "' . $page->get('route') . '">' . $page->get('label') . '</a>';

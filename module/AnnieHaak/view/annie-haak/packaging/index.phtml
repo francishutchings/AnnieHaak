@@ -17,7 +17,7 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
     <tbody>
         <?php foreach ($packaging as $package) : ?>
             <tr>
-                <td>
+                <td class="bold">
                     <?php echo $this->escapeHtml($package->PackagingName); ?>
                 </td>
                 <td>

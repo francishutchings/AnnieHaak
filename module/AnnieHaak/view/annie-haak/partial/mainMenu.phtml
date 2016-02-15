@@ -6,7 +6,7 @@ if (count($crumbs) == 0) {
 }
 ?>
 
-<nav class="navbar navbar-default hidden-print" role="navigation">
+<nav class="navbar navbar-inverse hidden-print" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <a class="navbar-brand" href="/home">
@@ -23,7 +23,7 @@ if (count($crumbs) == 0) {
 
             <?php if ((isset($_SESSION["AnnieHaak"]['storage']['userInfo']['loggedIn']))): ?>
 
-                <ul class="nav nav-pills">
+                <ul class="nav navbar-nav">
 
                     <?php
                     for ($idx = 0; $idx < count($topLevel); $idx++) {

@@ -14,8 +14,7 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
 </div>
 <p>&nbsp;</p>
 
-<script type="application/javascript" src="/js/jqGrid/bootstrap/integrations/amdsupport/js/i18n/grid.locale-en.js?v=1"></script>
-<script type="application/javascript" src="/js/jqGrid/js/trirand/jquery.jqGrid.min.js"></script>
+<?php echo $this->partial('annie-haak/partial/jqGridJS.phtml'); ?>
 <script type="text/javascript">
     $.jgrid.defaults.responsive = true;
     $.jgrid.defaults.styleUI = 'Bootstrap';
@@ -70,7 +69,6 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
             rownumbers: true,
             rownumWidth: 20,
             rowNum: 15,
-            rowList: [15, 30, 50],
             pager: "#jqGridPager"
         });
         $("#jqGrid").navGrid('#jqGridPager', {search: true, view: false, del: false, edit: false, add: false, view: true});

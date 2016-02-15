@@ -51,7 +51,7 @@ echo $this->form()->openTag($form)
         <div class="form-group">
             <label class="col-md-2 control-label" for="Strands">Strands:</label>
             <div class="col-md-10">
-                <?php echo $this->formRow($form->get('Strands')); ?>
+                <?php echo $this->formRow($form->get('Strands')->setValue(1)); ?>
             </div>
         </div>
 
@@ -77,6 +77,18 @@ echo $this->form()->openTag($form)
         </div>
 
         <div class="form-group">
+            <label class="col-md-2 control-label" for="ImagePath">Image URL:</label>
+            <div class="col-md-9">
+                <?php echo $this->formRow($form->get('ImagePath')); ?>
+            </div>
+            <div class="col-md-1">
+                <a href="#" title="View image">
+                    <img src="<?php echo $currentUrl; ?>" id="imageUrlThumb" class="img-thumbnail"  />
+                </a>
+            </div>
+        </div>
+
+        <div class="form-group">
             <label class="col-md-2 control-label" for="CurrentURL">Current URL:</label>
             <div class="col-md-10">
                 <?php echo $this->formRow($form->get('CurrentURL')); ?>
@@ -96,23 +108,29 @@ echo $this->form()->openTag($form)
                 <?php echo $this->formRow($form->get('Description')); ?>
             </div>
             <div class="col-md-10 col-md-offset-2">
-                <div class="radio radio-danger pull-left margin-right-5">
-                    <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
-                    <label for="DescRadio1">
-                        <span class="label label-danger">Needs Description</span>
-                    </label>
+                <div class="pull-left margin-left-10">
+                    <div class="radio radio-danger pull-left">
+                        <input name="DescriptionStatus" id="DescRadio1" value="0" type="radio" checked="checked" />
+                        <label for="DescRadio1">
+                            <span class="label label-danger">Needs Description</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="radio radio-warning pull-left margin-right-5">
-                    <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
-                    <label for="DescRadio2">
-                        <span class="label label-default">Pending Approval</span>
-                    </label>
+                <div class="pull-left margin-left-10">
+                    <div class="radio radio-warning pull-left margin-left-10">
+                        <input name="DescriptionStatus" id="DescRadio2" value="1" type="radio" />
+                        <label for="DescRadio2">
+                            <span class="label label-default">Pending Approval</span>
+                        </label>
+                    </div>
                 </div>
-                <div class="radio radio-success pull-left">
-                    <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
-                    <label for="DescRadio3">
-                        <span class="label label-default">Approved</span>
-                    </label>
+                <div class="pull-left margin-left-10">
+                    <div class="radio radio-success">
+                        <input name="DescriptionStatus" id="DescRadio3" value="2" type="radio" />
+                        <label for="DescRadio3">
+                            <span class="label label-default">Approved</span>
+                        </label>
+                    </div>
                 </div>
 
             </div>

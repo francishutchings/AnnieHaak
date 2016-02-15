@@ -1,0 +1,109 @@
+<?php
+$formName = '';
+if (count($formData)) {
+    switch ($formData['ReportType']) {
+        case 1:
+            $formName = ' - Retail';
+            break;
+        case 2:
+            $formName = ' - Trade Pack';
+            break;
+        case 3:
+            $formName = ' - Trade Allowed';
+            break;
+    }
+}
+
+echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label . $formName);
+
+$form->setAttribute('action', $this->url('business-reports/dynamic-reports', array('action' => 'dynamicReports')));
+$form->setAttributes(array('class' => 'form-horizontal'));
+$form->prepare();
+?>
+<div class="well bs-component">
+
+    <?php if (!count($reportData) && !count($formData)): ?>
+
+        <?php echo $this->form()->openTag($form); ?>
+
+        <fieldset>
+            <legend>Build Reports</legend>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="CollectionID">Collection:</label>
+                <div class="col-md-10">
+                    <?php echo $this->formRow($form->get('CollectionID')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="ProductTypeID">Product Type:</label>
+                <div class="col-md-10">
+                    <?php echo $this->formRow($form->get('ProductTypeID')); ?>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label" for="ReportType">Report Type:</label>
+                <div class="col-md-10">
+                    <?php echo $this->formRow($form->get('ReportType')); ?>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group">
+                <div class="col-md-4 col-md-offset-8">
+                    <button class="btn btn-default" type="reset" value="Reset"><span class='glyphicon glyphicon-refresh'></span> Reset</button>
+                    <button name="submit" class="btn btn-success margin-left-10" formtarget="_blank"><span class='glyphicon glyphicon-print'></span> Build Report <span class='glyphicon glyphicon-new-window'></span></button>
+                </div>
+            </div>
+        </fieldset>
+
+        <?php echo $this->form()->closeTag(); ?>
+
+    <?php else: ?>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr class="">
+                    <th>Name</th>
+                    <th>SKU</th>
+                    <th>Personalisable</th>
+                    <th>RRP</th>
+                    <th>Key Piece</th>
+                    <th>Type</th>
+                    <th>Collection</th>
+                    <th>Current</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                if (count($reportData) > 0) {
+                    foreach ($reportData as $value) {
+                        echo '<tr>';
+                        echo '<td>' . $value['ProductName'] . '</td>';
+                        echo '<td>' . $value['SKU'] . '</td>';
+                        echo '<td>' . $value['Personalisable'] . '</td>';
+                        echo '<td>' . $value['RRP'] . '</td>';
+                        echo '<td>' . $value['KeyPiece'] . '</td>';
+                        echo '<td>' . $value['ProductTypeName'] . '</td>';
+                        echo '<td>' . $value['ProductCollectionName'] . '</td>';
+                        echo ($value['Current']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
+                        echo '</tr>';
+                    }
+                } else {
+                    echo '<tr><td class="text-center" colspan="8">No Results</td></tr>';
+                }
+                ?>
+            </tbody>
+        </table>
+        <?php
+        echo '<p>' . date('l jS F Y, G:i:s', time()) . '</p>';
+        ?>
+
+    <?php endif; ?>
+
+</div>
+
+
