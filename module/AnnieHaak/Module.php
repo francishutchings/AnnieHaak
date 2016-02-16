@@ -56,20 +56,14 @@ class Module {
 
             if (!$auth->hasIdentity() && strpos($routeMatch->getMatchedRouteName(), 'login') === FALSE) {
                 $response = $e->getResponse();
-                $response->getHeaders()->addHeaderLine(
-                        'Location', $e->getRouter()->assemble(
-                                array(), array('name' => 'auth')
-                        )
-                );
+                $response->getHeaders()->addHeaderLine('Location', $e->getRouter()->assemble(array(), array('name' => 'auth')));
                 $response->setStatusCode(302);
                 return $response;
             }
         }, -100);
 
-#dump($eventManager);
-#exit();
-#$this->initAcl($e); //Initialise the ACL
-#$eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl')); //Acl check
+        $this->initAcl($e);
+        $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'checkAcl'));
     }
 
     public function getConfig() {
@@ -235,6 +229,7 @@ class Module {
     /**
      * @description Initialise ACL for all modules/controllers/actions
      * @param MvcEvent $e
+     * @link http://ivangospodinow.com/zend-framework-2-acl-setup-in-5-minutes-tutorial/ Original example
      */
     public function initAcl(MvcEvent $e) {
 
@@ -247,7 +242,6 @@ class Module {
             $acl->addRole($role);
 
             $allResources = array_merge($resources, $allResources);
-
 //Resources
             foreach ($resources as $resource) {
                 if (!$acl->hasResource($resource)) {
@@ -255,11 +249,10 @@ class Module {
                 }
             }
 //Restrictions
-            foreach ($resources as $resource) {
+            foreach ($allResources as $resource) {
                 $acl->allow($role, $resource);
             }
         }
-
 //setting to view
         $e->getViewModel()->acl = $acl;
     }
@@ -293,26 +286,18 @@ class Module {
             $userRole = 'guest';
         }
 
-#$userRole = 'guest';
-#dump($e->getViewModel()->acl);
-#dump($route);
-#dump($userRole);
-#dump($e->getViewModel()->acl->hasResource($route));
-#dump($e->getViewModel()->acl->isAllowed($userRole, $route));
-#exit();
-#dump($e->getViewModel());
-#dump($e->getViewModel()->acl->hasResource($route));
-#dump($e->getViewModel()->acl);
-        /*
-          if (!$e->getViewModel()->acl->hasResource($route) || !$e->getViewModel()->acl->isAllowed($userRole, $route)) {
-          //Naughty trying to get somewhere they shouldn't (Clear there identity force them to login again)
-          $response = $e->getResponse();
-          //location to page or what ever
-          $response->getHeaders()->addHeaderLine('Location', $e->getRequest()->getBaseUrl() . '/403');
-          $response->setStatusCode(403);
-          }
-         *
-         */
+        #dump($route);
+        #dump($userRole);
+        #dump($e->getViewModel()->acl->hasResource($route));
+        #dump($e->getViewModel()->acl->isAllowed($userRole, $route));
+        #exit();
+
+        if (!$e->getViewModel()->acl->hasResource($route) || !$e->getViewModel()->acl->isAllowed($userRole, $route)) {
+            $response = $e->getResponse();
+            $response->setStatusCode(403);
+            $response->setContent('<html><body><h1>403 - Access Denied</h1></body></html>');
+            return $response;
+        }
     }
 
 }

@@ -76,7 +76,11 @@
             </div>
         </footer>
 
-        <?php echo $this->inlineScript() ?>
+        <?php
+        dump($_SESSION["AnnieHaak"]['storage']['userInfo']);
+        dump($this->acl);
+        echo $this->inlineScript()
+        ?>
 
     </body>
 </html>

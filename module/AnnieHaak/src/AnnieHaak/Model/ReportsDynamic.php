@@ -75,6 +75,9 @@ ON
             $sql .= ' AND P.ProductTypeId = ' . $productTypeId;
         }
 
+
+        $sql .= ' ORDER BY P.ProductName';
+
         #dump($sql);
         #exit();
 

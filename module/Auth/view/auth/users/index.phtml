@@ -1,4 +1,6 @@
 <?php
+dump($this->navigation('navigation'));
+dump($this->navigation('navigation')->findActive('navigation')['page']);
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/user-admin/add', 'Add new user');
 ?>

@@ -106,14 +106,10 @@ return array(
                     ),
                 ),
             ),
-            'user-admin' => array(
+            'user-admin/' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/user-admin[/:action][/:id]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
-                    ),
+                    'route' => '/user-admin',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Auth\Controller',
                         'controller' => 'Users',
@@ -129,6 +125,7 @@ return array(
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'id' => '[0-9]+',
                             ),
                             'defaults' => array(),
                         ),

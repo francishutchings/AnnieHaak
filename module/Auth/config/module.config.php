@@ -13,11 +13,7 @@ return array(
             'user-admin' => array(
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/user-admin[/:action][/:id]',
-                    'constraints' => array(
-                        'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                        'id' => '[0-9]+',
-                    ),
+                    'route' => '/user-admin[/]',
                     'defaults' => array(
                         '__NAMESPACE__' => 'Auth\Controller',
                         'controller' => 'Users',
@@ -26,20 +22,41 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
-                    'process' => array(
-                        'type' => 'segment',
+                    'default' => array(
+                        'type' => 'Segment',
                         'options' => array(
-                            'route' => '/[:action]',
+                            'route' => '/[:action][/][:id]',
                             'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
+                                'id' => '[0-9]+',
                             ),
                             'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Users',
+                                'action' => 'index',
                             ),
                         ),
+                        'may_terminate' => true,
                     ),
                 ),
             ),
+            /*
+             *
+             *                         'type' => 'segment',
+              'options' => array(
+              'route' => '/[:action][/]',
+              'constraints' => array(
+              'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+              'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+              'id' => '[0-9]+',
+              ),
+              'defaults' => array(
+              '__NAMESPACE__' => 'Auth\Controller',
+              'controller' => 'Users',
+              'action' => 'index',
+              ),
+              ),
+             */
             'login' => array(
                 'type' => 'Literal',
                 'options' => array(
