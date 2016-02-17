@@ -51,8 +51,20 @@ class RawMaterialTypesController extends AbstractActionController {
 
         if ($paginator->count() > 0) {
             foreach ($paginator->getItemsByPage($currentPage) as $value) {
-                $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-material-types/edit/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
-                $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-material-types/delete/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-trash"></span></a>';
+                switch ($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel']) {
+                    case 1:
+                        $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-material-types/edit/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/raw-material-types/delete/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-trash"></span></a>';
+                        break;
+                    case 2:
+                        $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/raw-material-types/edit/' . $value->RMTypeID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        $value->DeleteHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span></a>';
+                        break;
+                    default:
+                        $value->EditHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span></a>';
+                        $value->DeleteHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span></a>';
+                        break;
+                }
                 $rawData[] = $value;
             }
         } else {

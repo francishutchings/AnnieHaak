@@ -34,16 +34,16 @@ class Module {
         $moduleRouteListener->attach($eventManager);
 
         $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, function($e) {
-            #echo $e->getParam('error');
-            #exit();
-            $catchStates = array('error-router-no-match', 'error-controller-not-found');
-            if (array_search($e->getParam('error'), $catchStates)) {
-                $response = $e->getResponse();
-                $response->getHeaders()->addHeaderLine(
-                        'Location', $e->getRouter()->assemble(array(), array('name' => 'home'))
-                );
-                $response->setStatusCode(302);
-                return $response;
+            if ($_SERVER['SERVER_ADDR'] != '127.0.0.1') {
+                $catchStates = array('error-router-no-match', 'error-controller-not-found');
+                if (array_search($e->getParam('error'), $catchStates)) {
+                    $response = $e->getResponse();
+                    $response->getHeaders()->addHeaderLine(
+                            'Location', $e->getRouter()->assemble(array(), array('name' => 'home'))
+                    );
+                    $response->setStatusCode(302);
+                    return $response;
+                }
             }
         });
 
@@ -276,7 +276,7 @@ class Module {
                     $userRole = 'admin';
                     break;
                 case 2:
-                    $userRole = 'member';
+                    $userRole = 'staff';
                     break;
                 case 3:
                     $userRole = 'guest';

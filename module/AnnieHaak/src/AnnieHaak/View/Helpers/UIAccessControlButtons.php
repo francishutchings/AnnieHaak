@@ -43,7 +43,7 @@ class UIAccessControlButtons extends AbstractHelper {
                     if ($roleLevel < 3) {
                         $returnHTML = '<a class="btn btn-warning btn-sm" href="' . $buttonAction . '"><span class="glyphicon glyphicon-pencil"></span>&nbsp;&nbsp;' . $buttonLabel . '</a>';
                     } else {
-                        $returnHTML = '<a class="btn btn-info btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span>&nbsp;&nbsp;None applicable</a>';
+                        $returnHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span>&nbsp;&nbsp;None</a>';
                     }
                     break;
                 case 'delete':

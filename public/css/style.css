@@ -279,8 +279,9 @@ h1, h2 , h3, h4, h5, h6, legend{
 
 /** jqGrid Overrides **/
 .ui-jqgrid-labels {
-    background-color: #F8F8F8;
-    color: #dc0963;
+    color: #9c27b0;
+    background-color: #ffffff;
+    border-color: #cba4dd;
 }
 
 .ui-jqgrid .loading {
@@ -293,9 +294,30 @@ h1, h2 , h3, h4, h5, h6, legend{
 }
 /** jqGrid Overrides **/
 
+/** Financial Block **/
 .altBackground {
     background-color: #fff;
 }
+
+#financialBlock .row {
+    border-bottom: 1px dotted #c0c0c0;
+}
+#financialBlock .row:nth-child(even) {
+    background-color: #fff;
+}
+
+#financialBlock .currSymbol::before{
+    content: " £";
+}
+
+#financialBlock .percSymbol::after{
+    content: "%";
+}
+
+#financialBlock .multi4::after{
+    content: " (x4)";
+}
+/** Financial Block **/
 
 @media (max-width: 767px) {
 

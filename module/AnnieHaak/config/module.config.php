@@ -6,7 +6,7 @@ return array(
     'router' => array(
         'routes' => array(
             '' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+                'type' => 'Literal',
                 'options' => array(
                     'route' => '/',
                     'defaults' => array(
@@ -19,7 +19,7 @@ return array(
                     'default' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '[:controller[/:action]]',
+                            'route' => '[/:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
@@ -32,8 +32,8 @@ return array(
                     )
                 )
             ),
-            'home' => array(
-                'type' => 'Zend\Mvc\Router\Http\Literal',
+            'home/' => array(
+                'type' => 'Literal',
                 'options' => array(
                     'route' => '/home',
                     'defaults' => array(
@@ -46,7 +46,7 @@ return array(
                     'default' => array(
                         'type' => 'Segment',
                         'options' => array(
-                            'route' => '[:controller[/:action]]',
+                            'route' => '[/:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action' => '[a-zA-Z][a-zA-Z0-9_-]*'
@@ -59,8 +59,61 @@ return array(
                     )
                 )
             ),
+            'user-admin' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/user-admin',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Auth\Controller',
+                        'controller' => 'Users',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'add' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/add',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Users',
+                                'action' => 'add',
+                            ),
+                        ),
+                    ),
+                    'edit' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/edit/:id',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Users',
+                                'action' => 'edit',
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
+                    'delete' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/delete/:id',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Users',
+                                'action' => 'delete',
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
+                ),
+            ),
             'auth' => array(
-                'type' => 'segment',
+                'type' => 'Segment',
                 'options' => array(
                     'route' => '/auth[/:action]',
                     'constraints' => array(
@@ -106,34 +159,8 @@ return array(
                     ),
                 ),
             ),
-            'user-admin/' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/user-admin',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Auth\Controller',
-                        'controller' => 'Users',
-                        'action' => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'process' => array(
-                        'type' => 'segment',
-                        'options' => array(
-                            'route' => '/[:action]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'id' => '[0-9]+',
-                            ),
-                            'defaults' => array(),
-                        ),
-                    ),
-                ),
-            ),
             'business-admin' => array(
-                'type' => 'literal',
+                'type' => 'segment',
                 'options' => array(
                     'route' => '/business-admin',
                     'defaults' => array(
@@ -152,7 +179,7 @@ return array(
                                 'action' => 'index'
                             ),
                             'constraints' => array(
-                                'id' => '[1-9]\d*'
+                                'id' => '[1-9]\d*',
                             )
                         ),
                     ),
@@ -399,7 +426,7 @@ return array(
             'AnnieHaak\Controller\RawMaterials' => Controller\RawMaterialsController::class,
             'AnnieHaak\Controller\RawMaterialTypes' => Controller\RawMaterialTypesController::class,
             'AnnieHaak\Controller\Suppliers' => Controller\SuppliersController::class,
-            'AnnieHaak\Controller\Reports' => Controller\ReportsController::class
+            'AnnieHaak\Controller\Reports' => Controller\ReportsController::class,
         ),
     ),
     'view_manager' => array(
@@ -450,28 +477,28 @@ return array(
                 'class' => 'top-level',
                 'pages' => array(
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Collections',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Collections',
                         'route' => 'business-admin/collections',
                         'contoller' => 'CollectionsController',
                         'action' => 'index',
                         'order' => 10,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Collection',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Collection',
                                 'route' => 'business-admin/collections',
                                 'contoller' => 'CollectionsController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span>  Edit Collection',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Collection',
                                 'route' => 'business-admin/collections',
                                 'contoller' => 'CollectionsController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete this Collection?',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete this Collection?',
                                 'route' => 'business-admin/collections',
                                 'contoller' => 'CollectionsController',
                                 'action' => 'delete',
@@ -480,28 +507,28 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Labour Items',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Labour Items',
                         'route' => 'business-admin/labour-items',
                         'contoller' => 'LabourItemsController',
                         'action' => 'index',
                         'order' => 20,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Labour Item',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Labour Item',
                                 'route' => 'business-admin/labour-items',
                                 'contoller' => 'LabourItemsController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Labour Item',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Labour Item',
                                 'route' => 'business-admin/labour-items',
                                 'contoller' => 'LabourItemsController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete this Labour Item?',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete this Labour Item?',
                                 'route' => 'business-admin/labour-items',
                                 'contoller' => 'LabourItemsController',
                                 'action' => 'delete',
@@ -510,28 +537,28 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Packaging',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Packaging',
                         'route' => 'business-admin/packaging',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 30,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Packaging',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Packaging',
                                 'route' => 'business-admin/packaging',
                                 'contoller' => 'PackagingController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Packaging',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Packaging',
                                 'route' => 'business-admin/packaging',
                                 'contoller' => 'PackagingController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete this Packaging?',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete this Packaging?',
                                 'route' => 'business-admin/packaging',
                                 'contoller' => 'PackagingController',
                                 'action' => 'delete',
@@ -540,42 +567,42 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Products',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Products',
                         'route' => 'business-admin/products',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 40,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Product',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Product',
                                 'route' => 'business-admin/products',
                                 'contoller' => 'ProductsController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Product',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Product',
                                 'route' => 'business-admin/products',
                                 'contoller' => 'ProductsController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete Product',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete Product',
                                 'route' => 'business-admin/products',
                                 'contoller' => 'ProductsController',
                                 'action' => 'delete',
                                 'order' => 30,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-print"></span> Print Product',
+                                'label' => '<span class = "glyphicon glyphicon-print"></span> Print Product',
                                 'route' => 'business-admin/products',
                                 'contoller' => 'ProductsController',
                                 'action' => 'print',
                                 'order' => 40,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-duplicate"></span> Duplicate Product',
+                                'label' => '<span class = "glyphicon glyphicon-duplicate"></span> Duplicate Product',
                                 'route' => 'business-admin/products',
                                 'contoller' => 'ProductsController',
                                 'action' => 'duplicate',
@@ -584,28 +611,28 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Product Types',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Product Types',
                         'route' => 'business-admin/product-types',
                         'contoller' => 'ProductTypesController',
                         'action' => 'index',
                         'order' => 50,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Product Type',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Product Type',
                                 'route' => 'business-admin/product-types',
                                 'contoller' => 'ProductTypesController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Product Type',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Product Type',
                                 'route' => 'business-admin/product-types',
                                 'contoller' => 'ProductTypesController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete this Product Type?',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete this Product Type?',
                                 'route' => 'business-admin/product-types',
                                 'contoller' => 'ProductTypesController',
                                 'action' => 'delete',
@@ -614,14 +641,14 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Rates and Percentages',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Rates and Percentages',
                         'route' => 'business-admin/rates-percentages',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 60,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Rates and Percentages',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Rates and Percentages',
                                 'route' => 'business-admin/rates-percentages',
                                 'contoller' => 'BusinessAdminController',
                                 'action' => 'edit',
@@ -630,28 +657,28 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Raw Materials',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Raw Materials',
                         'route' => 'business-admin/raw-materials',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 70,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Raw Material',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Raw Material',
                                 'route' => 'business-admin/raw-materials',
                                 'contoller' => 'RawMaterialsController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Raw Material',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Raw Material',
                                 'route' => 'business-admin/raw-materials',
                                 'contoller' => 'RawMaterialsController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete this Raw Material?',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete this Raw Material?',
                                 'route' => 'business-admin/raw-materials',
                                 'contoller' => 'RawMaterialsController',
                                 'action' => 'delete',
@@ -660,28 +687,28 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Raw Material Types',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Raw Material Types',
                         'route' => 'business-admin/raw-material-types',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 80,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Raw Material Type',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Raw Material Type',
                                 'route' => 'business-admin/raw-material-types',
                                 'contoller' => 'RawMaterialTypesController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Raw Material Type',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Raw Material Type',
                                 'route' => 'business-admin/raw-material-types',
                                 'contoller' => 'RawMaterialTypesController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete this Raw Material Type?',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete this Raw Material Type?',
                                 'route' => 'business-admin/raw-material-types',
                                 'contoller' => 'RawMaterialTypesController',
                                 'action' => 'delete',
@@ -690,28 +717,28 @@ return array(
                         ),
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Suppliers',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Suppliers',
                         'route' => 'business-admin/suppliers',
                         'contoller' => 'BusinessAdminController',
                         'action' => 'index',
                         'order' => 90,
                         'pages' => array(
                             array(
-                                'label' => '<span class="glyphicon glyphicon-plus"></span> Add new Supplier',
+                                'label' => '<span class = "glyphicon glyphicon-plus"></span> Add new Supplier',
                                 'route' => 'business-admin/suppliers',
                                 'contoller' => 'SuppliersController',
                                 'action' => 'add',
                                 'order' => 10,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-pencil"></span> Edit Supplier',
+                                'label' => '<span class = "glyphicon glyphicon-pencil"></span> Edit Supplier',
                                 'route' => 'business-admin/suppliers',
                                 'contoller' => 'SuppliersController',
                                 'action' => 'edit',
                                 'order' => 20,
                             ),
                             array(
-                                'label' => '<span class="glyphicon glyphicon-trash"></span> Delete this Supplier?',
+                                'label' => '<span class = "glyphicon glyphicon-trash"></span> Delete this Supplier?',
                                 'route' => 'business-admin/suppliers',
                                 'contoller' => 'SuppliersController',
                                 'action' => 'delete',
@@ -728,42 +755,42 @@ return array(
                 'class' => 'top-level',
                 'pages' => array(
                     array(
-                        'label' => '<span class="glyphicon glyphicon-list"></span> Dynamic Reports',
+                        'label' => '<span class = "glyphicon glyphicon-list"></span> Dynamic Reports',
                         'route' => 'business-reports/dynamic-reports',
                         'contoller' => 'ReportsController',
                         'action' => 'dynamicReports',
                         'order' => 10,
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-print"></span> Collections & Types Report',
+                        'label' => '<span class = "glyphicon glyphicon-print"></span> Collections & Types Report',
                         'route' => 'business-reports/collections-types-report',
                         'contoller' => 'ReportsController',
                         'action' => 'collectionsTypes',
                         'order' => 20,
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-print"></span> Margins Report',
+                        'label' => '<span class = "glyphicon glyphicon-print"></span> Margins Report',
                         'route' => 'business-reports/margins-report',
                         'contoller' => 'ReportsController',
                         'action' => 'margins',
                         'order' => 30,
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-print"></span> Products By Occasions',
+                        'label' => '<span class = "glyphicon glyphicon-print"></span> Products By Occasions',
                         'route' => 'business-reports/products-by-occasions-report',
                         'contoller' => 'ReportsController',
                         'action' => 'byOccasions',
                         'order' => 40,
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-print"></span> RRP & RMs',
+                        'label' => '<span class = "glyphicon glyphicon-print"></span> RRP & RMs',
                         'route' => 'business-reports/rrp-rms-report',
                         'contoller' => 'ReportsController',
                         'action' => 'rrpAndRms',
                         'order' => 50,
                     ),
                     array(
-                        'label' => '<span class="glyphicon glyphicon-print"></span> Trade Pack RMs + Time',
+                        'label' => '<span class = "glyphicon glyphicon-print"></span> Trade Pack RMs + Time',
                         'route' => 'business-reports/trade-pack-rms-time-report',
                         'contoller' => 'ReportsController',
                         'action' => 'tradePackRmsTime',
@@ -781,7 +808,7 @@ return array(
                 'label' => 'Logout',
                 'route' => 'auth/logout',
                 'order' => 600,
-                'class' => 'top-level',
+                'class' => 'top-level ',
             ),
         ),
     ),

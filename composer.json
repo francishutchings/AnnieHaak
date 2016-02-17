@@ -13,6 +13,7 @@
         "doctrine/common": ">=2.1",
         "doctrine/orm": ">=2.1",
         "zendframework/zend-authentication": "* 2.5.2",
-        "symfony/var-dumper": "dev-master"
+        "symfony/var-dumper": "dev-master",
+        "radnan/rdn-trailing-slash": "1.*"
     }
 }

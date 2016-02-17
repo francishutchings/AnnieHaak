@@ -1,8 +1,8 @@
 <?php
-echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+echo $this->UIPageTitleFormatter('<span class="glyphicon glyphicon-pencil"></span> Edit User');
 
-$form = $this->form;
-$form->setAttribute('action', $this->url('user-admin', array('action' => 'edit', 'id' => $this->id,)));
+
+$form->setAttribute('action', $this->url(NULL, array('controller' => 'Users', 'action' => 'edit', 'id' => $this->id)));
 $form->setAttributes(array('class' => 'form-horizontal'));
 
 $form->prepare();
@@ -13,43 +13,59 @@ $form->prepare();
     <?php echo $this->form()->openTag($form); ?>
 
     <fieldset>
-        <legend>Edit New User</legend>
 
         <?php echo $this->formHidden($form->get('id')); ?>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="firstname">Firstname:</label><div class="col-lg-10">
+            <label class="col-lg-2 control-label" for="firstname">Firstname:</label>
+            <div class="col-lg-10">
                 <?php echo $this->formRow($form->get('firstname')); ?>
             </div></div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="lastname">Lastname:</label><div class="col-lg-10">
+            <label class="col-lg-2 control-label" for="lastname">Lastname:</label>
+            <div class="col-lg-10">
                 <?php echo $this->formRow($form->get('lastname')); ?>
-            </div></div>
+            </div>
+        </div>
 
         <div class="form-group">
-            <label class="col-lg-2 control-label" for="username">Username:</label><div class="col-lg-10">
+            <label class="col-lg-2 control-label" for="rolelevel">Role Level:</label>
+            <div class="col-lg-10">
+                <?php echo $this->formRow($form->get('rolelevel')); ?>
+            </div
+        </div>
+
+        <div class="form-group">
+            <label class="col-lg-2 control-label" for="username">Username:</label>
+            <div class="col-lg-10">
                 <div class="input-group"><span class="input-group-addon">@</span>
                     <?php echo $this->formRow($form->get('username')); ?>
-                </div></div></div>
+                </div>
+            </div>
+        </div>
 
-        <div class="form-group">
-            <label class="col-lg-2 control-label" for="role_level">Role Level:</label><div class="col-lg-10">
-                <?php echo $this->formRow($form->get('role_level')); ?>
-            </div></div>
-
-        <div id="pwd-container"><div class="form-group">
-                <label class="col-lg-2 control-label" for="password">Password:</label><div class="col-lg-10">
-                    <?php echo $this->formRow($form->get('password')); ?>
-                </div></div>
+        <div id="pwd-container">
+            <div class="form-group">
+                <label class="col-lg-2 control-label" for="password">Password:</label>
+                <div class="col-lg-10">
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                        <?php echo $this->formRow($form->get('password')); ?>
+                    </div>
+                </div>
+            </div>
             <div class="col-sm-6 col-sm-offset-2">
-                <div class="pwstrength_viewport_progress"></div></div></div>
+                <div class="pwstrength_viewport_progress"></div>
+            </div>
+        </div>
 
         <div class="form-group">
             <div class="col-lg-10 col-lg-offset-2">
                 <a href="/user-admin" type="reset" class="btn btn-default margin-right-10">Cancel</a>
                 <?php echo $this->formSubmit($form->get('submit')); ?>
-            </div></div>
+            </div>
+        </div>
 
     </fieldset>
 
@@ -58,7 +74,6 @@ $form->prepare();
 </div>
 
 <?php echo $this->inlineScript()->appendFile('/js/pwstrength-bootstrap.min.js'); ?>
-
 <script>
     jQuery(document).ready(function () {
         "use strict";

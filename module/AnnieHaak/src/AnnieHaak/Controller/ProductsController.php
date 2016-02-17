@@ -65,11 +65,25 @@ class ProductsController extends AbstractActionController {
 
         if ($paginator->count() > 0) {
             foreach ($paginator->getItemsByPage($currentPage) as $value) {
-                $value->DuplicateHTML = '<a class="btn btn-info btn-sm" href="/business-admin/products/duplicate/' . $value->ProductID . '"><span class="glyphicon glyphicon-duplicate" style="font-size:1.2em;"></span></a>';
-                $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/products/edit/' . $value->ProductID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
-                $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/products/delete/' . $value->ProductID . '"><span class="glyphicon glyphicon-trash"></span></a>';
-                $value->PrintHTML = '<a target="_blank" class="btn btn-info btn-sm" href="/business-admin/products/print/' . $value->ProductID . '"><span class="glyphicon glyphicon-print"></span></a>';
                 $value->CurrentHTML = ($value->Current) ? '<span class="glyphicon glyphicon-ok text-success"></span>' : '<span class="glyphicon glyphicon-remove text-danger"></span>';
+                $value->PrintHTML = '<a target="_blank" class="btn btn-info btn-sm" href="/business-admin/products/print/' . $value->ProductID . '"><span class="glyphicon glyphicon-print"></span></a>';
+                switch ($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel']) {
+                    case 1:
+                        $value->DuplicateHTML = '<a class="btn btn-info btn-sm" href="/business-admin/products/duplicate/' . $value->ProductID . '"><span class="glyphicon glyphicon-duplicate" style="font-size:1.2em;"></span></a>';
+                        $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/products/edit/' . $value->ProductID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        $value->DeleteHTML = '<a class="btn btn-danger btn-sm" href="/business-admin/products/delete/' . $value->ProductID . '"><span class="glyphicon glyphicon-trash"></span></a>';
+                        break;
+                    case 2:
+                        $value->DuplicateHTML = '<a class="btn btn-info btn-sm" href="/business-admin/products/duplicate/' . $value->ProductID . '"><span class="glyphicon glyphicon-duplicate" style="font-size:1.2em;"></span></a>';
+                        $value->EditHTML = '<a class="btn btn-warning btn-sm" href="/business-admin/products/edit/' . $value->ProductID . '"><span class="glyphicon glyphicon-pencil"></span></a>';
+                        $value->DeleteHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span></a>';
+                        break;
+                    default:
+                        $value->DuplicateHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span></a>';
+                        $value->EditHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span></a>';
+                        $value->DeleteHTML = '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span></a>';
+                        break;
+                }
                 $rawData[] = $value;
             }
         } else {
@@ -85,8 +99,8 @@ class ProductsController extends AbstractActionController {
         return $result;
     }
 
-    //==================================================================================================================
-    //==================================================================================================================
+//==================================================================================================================
+//==================================================================================================================
     public function addAction() {
         $form = new ProductsForm();
 
@@ -184,8 +198,8 @@ class ProductsController extends AbstractActionController {
         ));
     }
 
-    //==================================================================================================================
-    //==================================================================================================================
+//==================================================================================================================
+//==================================================================================================================
     public function duplicateAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -219,7 +233,7 @@ class ProductsController extends AbstractActionController {
         $form->bind($products);
         $form->get('submit')->setAttribute('value', 'Save Changes');
 
-        //Declare New Product
+//Declare New Product
         $form->get('ProductID')->setValue(0);
         $form->get('DuplicationID')->setValue($id);
         $form->get('SKU')->setValue('');
@@ -235,8 +249,8 @@ class ProductsController extends AbstractActionController {
         return $view;
     }
 
-    //==================================================================================================================
-    //==================================================================================================================
+//==================================================================================================================
+//==================================================================================================================
     public function editAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -327,8 +341,8 @@ class ProductsController extends AbstractActionController {
         ));
     }
 
-    //==================================================================================================================
-    //==================================================================================================================
+//==================================================================================================================
+//==================================================================================================================
     public function printAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         $cntrlFloatPos = (int) $this->params()->fromQuery('FloatPos', 2);
@@ -418,8 +432,8 @@ class ProductsController extends AbstractActionController {
         ));
     }
 
-    //==================================================================================================================
-    //==================================================================================================================
+//==================================================================================================================
+//==================================================================================================================
     public function deleteAction() {
         $id = (int) $this->params()->fromRoute('id', 0);
         if (!$id) {
@@ -450,8 +464,8 @@ class ProductsController extends AbstractActionController {
         ));
     }
 
-    //==================================================================================================================
-    //==================================================================================================================
+//==================================================================================================================
+//==================================================================================================================
     private function popSelectMenus() {
         $collections = $this->getCollectionsTable()->fetchAll();
         $productTypes = $this->getProductTypesTable()->fetchAll();

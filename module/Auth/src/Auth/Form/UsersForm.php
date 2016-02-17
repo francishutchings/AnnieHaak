@@ -49,18 +49,18 @@ class UsersForm extends Form {
             ),
         ));
         $this->add(array(
-            'name' => 'role_level',
+            'name' => 'rolelevel',
             'type' => 'select',
             'options' => array(
                 'empty_option' => 'Please choose user level',
                 'value_options' => array(
                     '1' => 'Admin User - full control',
-                    '2' => 'Standard User - alter only',
+                    '2' => 'Staff User - alter only',
                     '3' => 'Guest User - view only',
                 ),
             ),
             'attributes' => array(
-                'id' => 'role_level',
+                'id' => 'rolelevel',
                 'class' => 'form-control',
                 'required' => true,
             ),

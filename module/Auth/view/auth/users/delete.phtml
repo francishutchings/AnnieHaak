@@ -1,14 +1,12 @@
 <?php
-$url = $this->url('user-admin', array('action' => 'delete', 'id' => $this->id,));
-
-echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
+echo $this->UIPageTitleFormatter('<span class="glyphicon glyphicon-trash"></span> Delete this User?');
+$url = $this->url(NULL, array('action' => 'delete', 'id' => $this->id,));
 ?>
 
 <div class="well bs-component">
     <form action="<?php echo $url; ?>" method="post">
 
         <fieldset>
-            <legend>Delete User?</legend>
 
             <div class="form-group">
                 <div class="col-lg-10">

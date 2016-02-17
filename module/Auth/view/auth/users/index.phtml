@@ -1,6 +1,4 @@
 <?php
-dump($this->navigation('navigation'));
-dump($this->navigation('navigation')->findActive('navigation')['page']);
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/user-admin/add', 'Add new user');
 ?>
@@ -9,6 +7,7 @@ echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']
     <thead>
         <tr class="text-info">
             <th>Full Name</th>
+            <th>Role</th>
             <th colspan="2" style="width: 25%;">Actions</th>
         </tr>
     </thead>
@@ -16,8 +15,12 @@ echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']
         <?php foreach ($users as $user) : ?>
             <tr>
                 <td>
-                    <?php echo $this->escapeHtml($user->firstname . ' ' . $user->lastname); ?>
+                    <?php echo $this->escapeHtml(strtoupper($user->lastname) . ', ' . $user->firstname); ?>
                 </td>
+                <td>
+                    <?php echo $this->escapeHtml($user->rolename); ?>
+                </td>
+
                 <td>
                     <?php echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/user-admin/edit/' . $user->id, 'Edit'); ?>
                 </td>

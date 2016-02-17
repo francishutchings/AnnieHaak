@@ -13,6 +13,8 @@ class Users {
     public $firstname;
     public $lastname;
     public $deleted;
+    public $rolelevel;
+    public $rolename;
     protected $inputFilter;
 
     public function exchangeArray($data) {
@@ -22,7 +24,8 @@ class Users {
         $this->firstname = (!empty($data['firstname'])) ? $data['firstname'] : null;
         $this->lastname = (!empty($data['lastname'])) ? $data['lastname'] : null;
         $this->deleted = (!empty($data['deleted'])) ? $data['deleted'] : null;
-        $this->role_level = (!empty($data['role_level'])) ? $data['role_level'] : null;
+        $this->rolelevel = (!empty($data['rolelevel'])) ? $data['rolelevel'] : null;
+        $this->rolename = (!empty($data['rolename'])) ? $data['rolename'] : null;
     }
 
     public function getArrayCopy() {
@@ -126,7 +129,7 @@ class Users {
             ));
 
             $inputFilter->add(array(
-                'name' => 'role_level',
+                'name' => 'rolelevel',
                 'required' => true,
                 'filters' => array(
                     array('name' => 'Int'),

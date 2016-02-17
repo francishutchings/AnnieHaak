@@ -1,26 +1,11 @@
-<style type="text/css">
-    #financialBlock .row {
-        border-bottom: 1px dotted #c0c0c0;
-    }
-    #financialBlock .currSymbol::before{
-        content: " £";
-    }
-    #financialBlock .percSymbol::after{
-        content: "%";
-    }
-    #financialBlock .multi4::after{
-        content: " (x4)";
-    }
-</style>
-
 <div id="financialBlock">
 
     <div class="row-fluid">
         <div class="col-md-12" id="financialCalcSubTotals">
 
-            <h4>Subtotals:</h4>
+            <h5>Subtotals:</h5>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">
                     <div class="col-md-3">Raw Material Cost</div>
                     <div class="col-md-2 currSymbol" id="subRawMaterialDsp">00:00</div>
@@ -34,7 +19,7 @@
                 </div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">
                     <div class="col-md-3">Packing &AMP; Dispatch</div>
                     <div class="col-md-2 currSymbol" id="subDispatchDsp">00:00</div>
@@ -48,7 +33,7 @@
                 </div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">&nbsp;</div>
             </div>
 
@@ -59,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="row altBackground bold text-primary">
+            <div class="row  bold text-primary">
                 <div class="col-md-12">
                     <div class="col-md-3">Total for Mark Up</div>
                     <div class="col-md-2 currSymbol" id="subMarkUpDsp">00:00</div>
@@ -75,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">
                     <div class="col-md-3">Bag Cost</div>
                     <div class="col-md-2 currSymbol" id="subBagCostDsp">00:00</div>
@@ -91,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">
                     <div class="col-md-3">Merchant Charge (<?php echo $ratesPercentages['MerchantChargePercentage']; ?>%)</div>
                     <div class="col-md-2 currSymbol" id="subMerchChargeDsp">00:00</div>
@@ -107,7 +92,7 @@
                 </div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">
                     <div class="col-md-3">&nbsp;</div>
                     <div class="col-md-2 text-primary bold currSymbol" id="subTotsAllDsp">00:00</div>
@@ -119,7 +104,7 @@
                 <div class="col-md-12">&nbsp;</div>
             </div>
 
-            <div class="row altBackground bold text-primary">
+            <div class="row  bold text-primary">
                 <div class="col-md-12">
                     <div class="col-md-3">Ex VAT Cost</div>
                     <div class="col-md-2 currSymbol" id="subExVATCostDsp">00:00</div>
@@ -133,9 +118,9 @@
     <div class="row-fluid">
         <div class="col-md-12" id="financialCalcRetail">
 
-            <h4>Retail:</h4>
+            <h5>Retail:</h5>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-3 col-md-offset-8 text-right">Budget without post</div>
                 <div class="col-md-1 bold text-primary percSymbol">59.78</div>
             </div>
@@ -144,7 +129,7 @@
                 <div class="col-md-12">&nbsp;</div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-3 ">RRP Initial</div>
                 <div class="col-md-2 currSymbol">
                     <?php echo $this->formRow($form->get('RRP')); ?>
@@ -164,7 +149,7 @@
                 <div class="col-md-1">Actual</div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-3  text-primary bold">New RRP</div>
                 <div class="col-md-2 currSymbol text-primary bold" id="retailNewRRPDsp">00:00</div>
                 <div class="col-md-2 currSymbol" id="retailNewRRPLessVATDsp">00:00</div>
@@ -177,7 +162,7 @@
                 <div class="col-md-12">&nbsp;</div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-9"></div>
                 <div class="col-md-2 text-right">Target</div>
                 <div class="col-md-1 bold text-primary percSymbol">62.00</div>
@@ -189,9 +174,9 @@
     <div class="row-fluid">
         <div class="col-md-12" id="financialCalcTrade">
 
-            <h4>Trade:</h4>
+            <h5>Trade:</h5>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-2">
                     <div class="col-md-12">RRP</div>
                     <div class="col-md-12 currSymbol" id="tradeRRPDsp">00:00</div>
@@ -206,7 +191,7 @@
                 <div class="col-md-12">&nbsp;</div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">60% off:</div>
             </div>
 
@@ -237,7 +222,7 @@
                 </div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">&nbsp;</div>
             </div>
 
@@ -252,7 +237,7 @@
                 <div class="col-md-1 bold text-primary percSymbol">40.00</div>
             </div>
 
-            <div class="row altBackground">
+            <div class="row ">
                 <div class="col-md-12">&nbsp;</div>
             </div>
 

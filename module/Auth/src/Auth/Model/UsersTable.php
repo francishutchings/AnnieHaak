@@ -14,9 +14,13 @@ class UsersTable {
     }
 
     public function fetchAll() {
-        $resultSet = $this->tableGateway->select(function (Select $select) {
-            $select->where('deleted = 0');
-        });
+        $select = new Select();
+        $select->from(array('U' => 'users'));
+        $select->columns(array('id', 'username', 'firstname', 'lastname'));
+        $select->join(array('UR' => 'userroles'), 'UR.UserRoleIdx = U.rolelevel', array('rolename'));
+        $select->where('deleted = 0');
+        $select->order('rolelevel ASC, U.lastname ASC');
+        $resultSet = $this->tableGateway->selectWith($select);
         return $resultSet;
     }
 
@@ -47,7 +51,7 @@ class UsersTable {
             'password' => md5($user->password),
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
-            'role_level' => $user->role_level,
+            'rolelevel' => $user->rolelevel,
         );
 
         $id = (int) $user->id;

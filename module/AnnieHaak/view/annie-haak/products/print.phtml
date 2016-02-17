@@ -40,7 +40,7 @@
 </div>
 
 <?php echo '<h4>Product: ' . $products['ProductID'] . '</h4>'; ?>
-<table class="table table-bordered">
+<table class="table table-condensed">
     <tbody>
         <?php
         echo '<tr>';
@@ -71,6 +71,9 @@
         echo '<th>Sold Last Period</th>';
         echo '<td>' . $products['QtyOrderedLastPeriod'] . '</td>';
         echo '</tr><tr>';
+        echo '<th>Image URL</th>';
+        echo '<td>' . $products['ImagePath'] . '</td>';
+        echo '</tr><tr>';
         echo '<th>Current URL</th>';
         echo '<td>' . $products['CurrentURL'] . '</td>';
         echo '</tr><tr>';
@@ -95,7 +98,7 @@
         echo '</tr><tr>';
         echo '<td colspan="2">';
 
-        echo '<table class="table" style="margin-bottom:0;"><tr>';
+        echo '<table class="table table-bordered" style="margin-bottom:0;"><tr>';
         echo ($products['KeyPiece']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Key Piece</span></td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Key Piece</td>';
         echo ($products['Stacks']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Stacks</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Stacks</td>';
         echo ($products['Gold']) ? '<td><span class="glyphicon glyphicon-check">&nbsp;Gold</td>' : '<td><span class="glyphicon glyphicon-unchecked"></span>&nbsp;Gold</td>';
@@ -122,7 +125,7 @@
 
 <div style="page-break-after:always;"></div>
 <h4>Raw Materials:</h4>
-<table class="table table-bordered">
+<table class="table table-condensed">
     <thead>
         <tr>
             <th style="width:30%;">Name</th>
@@ -153,7 +156,7 @@
 </table>
 
 <h4>Labour:</h4>
-<table class="table table-bordered">
+<table class="table table-condensed">
     <thead>
         <tr>
             <th style="width:40%;">Name</th>
@@ -180,7 +183,7 @@
 </table>
 
 <h4>Packaging:</h4>
-<table class="table table-bordered">
+<table class="table table-condensed">
     <thead>
         <tr>
             <th style="width:40%;">Name</th>
@@ -208,7 +211,7 @@
 
 <div style="page-break-after:always;"></div>
 <h4>Financials:</h4>
-<table class="table table-bordered">
+<table class="table table-condensed">
     <tbody>
         <tr>
             <th colspan="6">Subtotals</th>

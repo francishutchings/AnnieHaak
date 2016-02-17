@@ -3,60 +3,13 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Auth\Controller\Auth' => 'Auth\Controller\AuthController',
-            'Auth\Controller\Success' => 'Auth\Controller\SuccessController',
-            'Auth\Controller\Users' => 'Auth\Controller\UsersController'
+            'Auth\Controller\Auth' => Auth\Controller\AuthController::class,
+            'Auth\Controller\Success' => Auth\Controller\SuccessController::class,
+            'Auth\Controller\Users' => Auth\Controller\UsersController::class,
         ),
     ),
     'router' => array(
         'routes' => array(
-            'user-admin' => array(
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/user-admin[/]',
-                    'defaults' => array(
-                        '__NAMESPACE__' => 'Auth\Controller',
-                        'controller' => 'Users',
-                        'action' => 'index',
-                    ),
-                ),
-                'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type' => 'Segment',
-                        'options' => array(
-                            'route' => '/[:action][/][:id]',
-                            'constraints' => array(
-                                'action' => '[a-zA-Z][a-zA-Z0-9_-]+',
-                                'id' => '[0-9]+',
-                            ),
-                            'defaults' => array(
-                                '__NAMESPACE__' => 'Auth\Controller',
-                                'controller' => 'Users',
-                                'action' => 'index',
-                            ),
-                        ),
-                        'may_terminate' => true,
-                    ),
-                ),
-            ),
-            /*
-             *
-             *                         'type' => 'segment',
-              'options' => array(
-              'route' => '/[:action][/]',
-              'constraints' => array(
-              'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-              'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-              'id' => '[0-9]+',
-              ),
-              'defaults' => array(
-              '__NAMESPACE__' => 'Auth\Controller',
-              'controller' => 'Users',
-              'action' => 'index',
-              ),
-              ),
-             */
             'login' => array(
                 'type' => 'Literal',
                 'options' => array(
@@ -131,6 +84,59 @@ return array(
                             ),
                             'defaults' => array(
                             ),
+                        ),
+                    ),
+                ),
+            ),
+            'user-admin' => array(
+                'type' => 'Literal',
+                'options' => array(
+                    'route' => '/user-admin',
+                    'defaults' => array(
+                        '__NAMESPACE__' => 'Auth\Controller',
+                        'controller' => 'Users',
+                        'action' => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'add' => array(
+                        'type' => 'Segment',
+                        'options' => array(
+                            'route' => '/add',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Users',
+                                'action' => 'add',
+                            ),
+                        ),
+                    ),
+                    'edit' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/edit/:id',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Users',
+                                'action' => 'edit',
+                            ),
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            )
+                        ),
+                    ),
+                    'delete' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route' => '/delete/:id',
+                            'defaults' => array(
+                                '__NAMESPACE__' => 'Auth\Controller',
+                                'controller' => 'Users',
+                                'action' => 'delete',
+                            ),
+                            'constraints' => array(
+                                'id' => '[ 1-9]\d*'
+                            )
                         ),
                     ),
                 ),

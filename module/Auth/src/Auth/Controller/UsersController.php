@@ -47,7 +47,9 @@ class UsersController extends AbstractActionController {
             }
         }
 
-        return array('form' => $form);
+        return array(
+            'form' => $form
+        );
     }
 
     public function editAction() {
