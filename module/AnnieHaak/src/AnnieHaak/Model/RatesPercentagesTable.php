@@ -17,7 +17,7 @@ class RatesPercentagesTable {
         $rowset = $this->tableGateway->select(array('RatesPercentagesIdx' => $id));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Error: No record found.");
         }
         return $row;
     }

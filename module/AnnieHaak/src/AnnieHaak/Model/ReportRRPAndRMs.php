@@ -66,7 +66,7 @@ SQL;
             $tempDataArr['Collection'] = $result['ProductCollectionCode'];
             $tempDataArr['TradePack'] = ($result['PartOfTradePack']) ? '<span class="glyphicon glyphicon-ok"></span>' : '<span class="glyphicon glyphicon-remove"></span>';
             $tempDataArr['RRP'] = '£' . number_format($result['RRP'], 2);
-            $tempDataArr['RMTotal'] = '£' . number_format($result['TotalRMCost'], 4);
+            $tempDataArr['RMTotal'] = '£' . number_format($result['TotalRMCost'], 2);
 
             $RRPAndRMsArr[] = $tempDataArr;
         }

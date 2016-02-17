@@ -38,7 +38,7 @@ class RawMaterialsTable {
         $rowset = $this->tableGateway->selectWith($select);
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Error: No record found.");
         }
         return $row;
     }

@@ -172,7 +172,7 @@ SQL;
             $financialData = $financialCalcSubTotals->calculateFinancials();
             foreach ($financialData as $key => $value) {
                 if ($key != "SubtotalBoxCostTxt") {
-                    $financialData[$key] = number_format((float) $value, 4, '.', '');
+                    $financialData[$key] = number_format((float) $value, 2, '.', '');
                 }
             }
 

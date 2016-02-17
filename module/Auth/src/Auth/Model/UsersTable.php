@@ -16,7 +16,7 @@ class UsersTable {
     public function fetchAll() {
         $select = new Select();
         $select->from(array('U' => 'users'));
-        $select->columns(array('id', 'username', 'firstname', 'lastname'));
+        $select->columns(array('id', 'username', 'firstname', 'lastname', 'rolelevel'));
         $select->join(array('UR' => 'userroles'), 'UR.UserRoleIdx = U.rolelevel', array('rolename'));
         $select->where('deleted = 0');
         $select->order('rolelevel ASC, U.lastname ASC');
@@ -29,7 +29,7 @@ class UsersTable {
         $rowset = $this->tableGateway->select(array('id' => $id));
         $row = $rowset->current();
         if (!$row) {
-            throw new \Exception("Could not find row $id");
+            throw new \Exception("Error: No record found.");
         }
         return $row;
     }
