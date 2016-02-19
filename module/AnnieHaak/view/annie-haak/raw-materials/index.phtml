@@ -2,9 +2,6 @@
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/raw-materials/add', 'Add new Raw Material');
 echo $this->partial('annie-haak/partial/reloadButton.phtml');
-
-#http://www.guriddo.net/demo/bootstrap/
-#http://www.trirand.com/jqgridwiki/doku.php?id=wiki:predefined_formatter
 ?>
 <div class="clearfix"></div>
 <p>&nbsp;</p>
@@ -116,11 +113,24 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
                     sortable: true,
                     width: 150,
                     search: true,
+                    stype: 'select',
                     searchrules: {
                         required: true
                     },
                     searchoptions: {
-                        sopt: ["eq", "cn", "bw", "ew"]
+                        sopt: ["eq"],
+                        dataUrl: '/business-admin/suppliers/jsonAllSuppliers',
+                        buildSelect: function (data) {
+                            var response = jQuery.parseJSON(data);
+                            var s = '<select>';
+                            if (response.suppliers && response.suppliers.length) {
+                                for (var i = 0, l = response.suppliers.length; i < l; i++) {
+                                    var ri = response.suppliers[i];
+                                    s += '<option value="' + ri['id'] + '">' + ri['SupplierName'] + '</option>';
+                                }
+                            }
+                            return s + "</select>";
+                        }
                     }
                 },
                 {

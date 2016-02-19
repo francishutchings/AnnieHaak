@@ -78,42 +78,45 @@ class AuthController extends AbstractActionController {
 
             if ($form->isValid()) {
 
-                //check authentication...
-                $this->getAuthService()
-                        ->getAdapter()->setIdentity($request->getPost('username'))
-                        ->setCredential($request->getPost('password'))
-                        ->getDbSelect()->where('deleted = 0');
+                $username = filter_var($request->getPost('username'), FILTER_VALIDATE_EMAIL);
+                $password = $request->getPost('password');
 
-                $result = $this->getAuthService()->authenticate();
+                if ($username !== false) {
 
-                if ($result->isValid()) {
+                    //check authentication...
+                    $this->getAuthService()
+                            ->getAdapter()->setIdentity($username)
+                            ->setCredential($password)
+                            ->getDbSelect()->where('deleted = 0');
 
-                    foreach ($result->getMessages() as $message) {
-                        $this->flashmessenger()->setNamespace('info')->addMessage($message);
-                    }
+                    $result = $this->getAuthService()->authenticate();
 
-                    $redirect = 'home';
+                    if ($result->isValid()) {
 
-                    if ($request->getPost('rememberme') == 1) {
-                        $this->getSessionStorage()->setRememberMe(1);
-                        $this->getAuthService()->getStorage()->write($result->id);
+                        $redirect = 'home';
 
+                        if ($request->getPost('rememberme') == 1) {
+                            $this->getSessionStorage()->setRememberMe(1);
+                            $this->getAuthService()->getStorage()->write($result->id);
+
+                            $this->getAuthService()->setStorage($this->getSessionStorage());
+                        }
                         $this->getAuthService()->setStorage($this->getSessionStorage());
+
+                        $sm = $this->getServiceLocator();
+                        $this->usersTable = $sm->get('Auth\Model\UsersTable');
+                        $currUser = $this->usersTable->getUsersByUsername($request->getPost('username'));
+                        $this->flashmessenger()->setNamespace('info')->addMessage('Welcome ' . $currUser->firstname . ', you are logged in under a ' . $currUser->rolename . ' account.');
+
+                        $sessionInfo = [
+                            'userInfo' => array(
+                                'loggedIn' => TRUE,
+                                'username' => $request->getPost('username'),
+                                'roleLevel' => $currUser->rolelevel,
+                            ),
+                        ];
+                        $this->getAuthService()->getStorage()->write($sessionInfo);
                     }
-                    $this->getAuthService()->setStorage($this->getSessionStorage());
-
-                    $sm = $this->getServiceLocator();
-                    $this->usersTable = $sm->get('Auth\Model\UsersTable');
-                    $currUser = $this->usersTable->getUsersByUsername($request->getPost('username'));
-
-                    $sessionInfo = [
-                        'userInfo' => array(
-                            'loggedIn' => TRUE,
-                            'username' => $request->getPost('username'),
-                            'roleLevel' => $currUser->rolelevel,
-                        ),
-                    ];
-                    $this->getAuthService()->getStorage()->write($sessionInfo);
                 } else {
                     foreach ($result->getMessages() as $message) {
                         $this->flashmessenger()->setNamespace('error')->addMessage($message);

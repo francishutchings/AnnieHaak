@@ -82,6 +82,14 @@ class RawMaterialsController extends AbstractActionController {
                 $searchTmp[] = $temp;
             }
             $search['rules'] = $searchTmp;
+
+            foreach ($search['rules'] as $key => $rule) {
+                switch ($rule['searchColumn']) {
+                    case 'RMSupplierName':
+                        $search['rules'][$key]['searchColumn'] = 'RM.RMSupplierID';
+                        break;
+                }
+            }
         }
 
         $paginator = $this->getRawMaterialsTable()->fetchFullDataPaginated($sortBy, $search);

@@ -4,6 +4,7 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use AnnieHaak\Model\ProductTypes;
 use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\ProductTypesForm;
@@ -18,6 +19,20 @@ class ProductTypesController extends AbstractActionController {
         return new ViewModel(array(
             'productTypes' => $this->getProductTypesTable()->fetchAll(),
         ));
+    }
+
+    public function jsonAllProductTypesAction() {
+        $productTypes = $this->getProductTypesTable()->fetchAll();
+        foreach ($productTypes->toArray() as $value) {
+            $data[] = array(
+                'id' => $value['ProductTypeId'],
+                'TypeName' => $value['ProductTypeName']
+            );
+        }
+        $result = new JsonModel(array(
+            'productTypes' => $data
+        ));
+        return $result;
     }
 
     public function addAction() {

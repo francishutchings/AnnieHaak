@@ -36,10 +36,18 @@ class UsersTable {
 
     public function getUsersByUsername($un) {
         $un = (string) $un;
-        $rowset = $this->tableGateway->select(array('username' => $un));
-        $row = $rowset->current();
+
+        $select = new Select();
+        $select->from(array('U' => 'users'));
+        $select->columns(array('id', 'username', 'firstname', 'lastname', 'rolelevel'));
+        $select->join(array('UR' => 'userroles'), 'UR.UserRoleIdx = U.rolelevel', array('rolename'));
+        $select->where(array('deleted' => 0, 'username' => $un));
+
+        $resultSet = $this->tableGateway->selectWith($select);
+        $row = $resultSet->current();
+
         if (!$row) {
-            throw new \Exception("Could not find use $un");
+            throw new \Exception("Could not find user?");
         }
         return $row;
     }
@@ -47,7 +55,7 @@ class UsersTable {
     public function saveUsers(Users $user) {
 
         $data = array(
-            'username' => $user->username,
+            'username' => filter_var($user->username, 'FILTER_SANITIZE_EMAIL'),
             'password' => md5($user->password),
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,

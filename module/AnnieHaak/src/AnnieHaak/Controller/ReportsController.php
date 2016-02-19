@@ -40,6 +40,7 @@ class ReportsController extends AbstractActionController {
             $ratesPercentages = $this->getRatesPercentagesTable()->getRatesPercentages(1);
             $reportData = new ReportsDynamic($this->dbAdapter, $ratesPercentages);
             $this->layout('layout/print');
+
             return new ViewModel(array(
                 'form' => $form,
                 'formData' => $formData,

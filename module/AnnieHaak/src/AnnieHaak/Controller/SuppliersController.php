@@ -4,6 +4,7 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use AnnieHaak\Model\Suppliers;
 use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\SuppliersForm;
@@ -18,6 +19,20 @@ class SuppliersController extends AbstractActionController {
         return new ViewModel(array(
             'suppliers' => $this->getSuppliersTable()->fetchAll(),
         ));
+    }
+
+    public function jsonAllSuppliersAction() {
+        $suppliers = $this->getSuppliersTable()->fetchAll();
+        foreach ($suppliers->toArray() as $value) {
+            $data[] = array(
+                'id' => $value['RMSupplierID'],
+                'SupplierName' => $value['RMSupplierName']
+            );
+        }
+        $result = new JsonModel(array(
+            'suppliers' => $data
+        ));
+        return $result;
     }
 
     public function addAction() {

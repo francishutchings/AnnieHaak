@@ -32,9 +32,6 @@ class RawMaterialsTable {
         $select->join(array('RMType' => 'rawmaterialtypelookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
         $select->where(array('RM.RawMaterialID' => array($ids)));
 
-        #echo $select->getSqlString();
-        #exit();
-
         $rowset = $this->tableGateway->selectWith($select);
         $row = $rowset->current();
         if (!$row) {

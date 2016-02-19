@@ -33,13 +33,95 @@ class ReportsDynamic {
 	P.ProductName
 	,P.SKU
 	,P.Personalisable
+	,P.PartOfTradePack
 	,P.RRP
+	,P.RequiresAssay
 	,P.KeyPiece
 	,P.MinsToBuild
 	,P.QtyInTradePack
 	,PT.ProductTypeName
 	,PC.ProductCollectionName
 	,PC.Current
+        ,(
+            SELECT
+                IFNULL(SUM(RL2.RawMaterialUnitCost * RMPL2.RawMaterialQty), 0)
+            FROM
+                RawMaterialLookup AS RL2
+            INNER JOIN
+                RawMaterialPicklists AS RMPL2
+            ON
+                RL2.RawMaterialID = RMPL2.RawMaterialID
+            WHERE
+                RMPL2.ProductID = P.ProductID
+        ) AS TotalRMCost
+        ,(
+            SELECT
+                IFNULL(SUM(LLookup.LabourUnitCost * LTime.LabourQty), 0)
+            FROM
+                LabourLookup AS LLookup
+            INNER JOIN
+                LabourTime AS LTime
+            ON
+                LLookup.LabourID = LTime.LabourID
+            WHERE
+                LTime.ProductID = P.ProductID
+        ) AS TotalLabourCost
+        ,(
+            SELECT
+                IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
+            FROM
+                PackagingLookup AS PLookup
+            INNER JOIN
+                PackagingPicklists AS PPick
+            ON
+                PLookup.PackagingID = PPick.PackagingID
+            WHERE
+                PPick.ProductID = P.ProductID
+            AND
+                PLookup.PackagingType = 1
+        ) AS SBoxCost
+        ,(
+            SELECT
+                IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
+            FROM
+                PackagingLookup AS PLookup
+            INNER JOIN
+                PackagingPicklists AS PPick
+            ON
+                PLookup.PackagingID = PPick.PackagingID
+            WHERE
+                PPick.ProductID = P.ProductID
+            AND
+                PLookup.PackagingType = 2
+        ) AS LBoxCost
+        ,(
+            SELECT
+                IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
+            FROM
+                PackagingLookup AS PLookup
+            INNER JOIN
+                PackagingPicklists AS PPick
+            ON
+                PLookup.PackagingID = PPick.PackagingID
+            WHERE
+                PPick.ProductID = P.ProductID
+            AND
+                PLookup.PackagingType = 3
+        ) AS SBagCost
+        ,(
+            SELECT
+                IFNULL(SUM(PLookup.PackagingUnitCost * PPick.PackagingQty), 0)
+            FROM
+                PackagingLookup AS PLookup
+            INNER JOIN
+                PackagingPicklists AS PPick
+            ON
+                PLookup.PackagingID = PPick.PackagingID
+            WHERE
+                PPick.ProductID = P.ProductID
+            AND
+                PLookup.PackagingType = 4
+        ) AS LBagCost
 FROM
 	products AS P
 
@@ -87,11 +169,29 @@ ON
         #echo $statement->getSql();
 
         $returnArr = array();
-        foreach ($results as $result) {
-            #dump($result);
+        foreach ($results as $key => $result) {
+
+            $subtotals['RawMaterials'] = $result['TotalRMCost'];
+            $subtotals['LabourItems'] = $result['TotalLabourCost'];
+            $subtotals['Packaging'] = array(
+                'BAG' => $result['SBagCost'] + $result['LBoxCost'],
+                'BOX' => $result['SBoxCost'] + $result['LBagCost']
+            );
+
+            $product['RRP'] = $result['RRP'];
+            $product['RequiresAssay'] = $result['RequiresAssay'];
+
+            $financialCalcSubTotals = new FinancialCalculator($ratesPercentagesArr, $subtotals, $product);
+            $financialData = $financialCalcSubTotals->calculateFinancials();
+
+            #dump($result['ProductName']);
+            #dump($result['RRP']);
+            #dump($financialData);
             #exit();
 
-            $returnArr[] = $result;
+            $returnArr[$key] = $result;
+            $returnArr[$key]['TradePrice'] = $financialData['TradePrice'];
+            $returnArr[$key]['RRP'] = $financialData['RetailNewRRP'];
         }
         #dump($returnArr);
         #exit();

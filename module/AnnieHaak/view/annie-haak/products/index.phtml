@@ -80,11 +80,24 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
                     sortable: true,
                     width: 100,
                     search: true,
+                    stype: 'select',
                     searchrules: {
                         required: true
                     },
                     searchoptions: {
-                        sopt: ["eq", "cn", "bw", "ew"]
+                        sopt: ["eq"],
+                        dataUrl: '/business-admin/product-types/jsonAllProductTypes',
+                        buildSelect: function (data) {
+                            var response = jQuery.parseJSON(data);
+                            var s = '<select>';
+                            if (response.productTypes && response.productTypes.length) {
+                                for (var i = 0, l = response.productTypes.length; i < l; i++) {
+                                    var ri = response.productTypes[i];
+                                    s += '<option value="' + ri['id'] + '">' + ri['TypeName'] + '</option>';
+                                }
+                            }
+                            return s + "</select>";
+                        }
                     }
                 },
                 {
@@ -94,11 +107,24 @@ echo $this->partial('annie-haak/partial/reloadButton.phtml');
                     sortable: true,
                     width: 175,
                     search: true,
+                    stype: 'select',
                     searchrules: {
                         required: true
                     },
                     searchoptions: {
-                        sopt: ["eq", "cn", "bw", "ew"]
+                        sopt: ["eq"],
+                        dataUrl: '/business-admin/collections/jsonAllCollections',
+                        buildSelect: function (data) {
+                            var response = jQuery.parseJSON(data);
+                            var s = '<select>';
+                            if (response.collections && response.collections.length) {
+                                for (var i = 0, l = response.collections.length; i < l; i++) {
+                                    var ri = response.collections[i];
+                                    s += '<option value="' + ri['id'] + '">' + ri['CollectionName'] + '</option>';
+                                }
+                            }
+                            return s + "</select>";
+                        }
                     }
                 },
                 {

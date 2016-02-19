@@ -64,46 +64,122 @@ $form->prepare();
 
     <?php else: ?>
 
-        <table class="table table-bordered">
-            <thead>
-                <tr class="">
-                    <th>Name</th>
-                    <th>SKU</th>
-                    <th>Personalisable</th>
-                    <th>RRP</th>
-                    <th>Key Piece</th>
-                    <th>Type</th>
-                    <th>Collection</th>
-                    <th>Current</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                if (count($reportData) > 0) {
-                    foreach ($reportData as $value) {
-                        echo '<tr>';
-                        echo '<td>' . $value['ProductName'] . '</td>';
-                        echo '<td>' . $value['SKU'] . '</td>';
-                        echo ($value['Personalisable']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
-                        echo '<td>£' . number_format($value['RRP'], 2) . '</td>';
-                        echo ($value['KeyPiece']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
-                        echo '<td>' . $value['ProductTypeName'] . '</td>';
-                        echo '<td>' . $value['ProductCollectionName'] . '</td>';
-                        echo ($value['Current']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
-                        echo '</tr>';
+        <!-- RETAIL REPORT -->
+        <?php if ($formData['ReportType'] == 1): ?>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="">
+                        <th>Product Name</th>
+                        <th>SKU</th>
+                        <th>Personalisable</th>
+                        <th>RRP</th>
+                        <th>Key Piece</th>
+                        <th>Type</th>
+                        <th>Collection</th>
+                        <th>Current</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (count($reportData) > 0) {
+                        foreach ($reportData as $value) {
+                            echo '<tr>';
+                            echo '<td>' . $value['ProductName'] . '</td>';
+                            echo '<td>' . $value['SKU'] . '</td>';
+                            echo ($value['Personalisable']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
+                            echo '<td>£' . number_format($value['RRP'], 2) . '</td>';
+                            echo ($value['KeyPiece']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
+                            echo '<td>' . $value['ProductTypeName'] . '</td>';
+                            echo '<td>' . $value['ProductCollectionName'] . '</td>';
+                            echo ($value['Current']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
+                            echo '</tr>';
+                        }
+                    } else {
+                        echo '<tr><td class="text-center" colspan="8">No Results</td></tr>';
                     }
-                } else {
-                    echo '<tr><td class="text-center" colspan="8">No Results</td></tr>';
-                }
-                ?>
-            </tbody>
-        </table>
-        <?php
-        echo '<p>' . date('l jS F Y, G:i:s', time()) . '</p>';
-        ?>
+                    ?>
+                </tbody>
+            </table>
+
+            <?php echo '<p>' . date('l jS F Y, G:i:s', time()) . '</p>'; ?>
+
+            <!-- TRADE PACK REPORT -->
+        <?php elseif ($formData['ReportType'] == 2): ?>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="">
+                        <th>Product Name</th>
+                        <th>Type</th>
+                        <th>Collection</th>
+                        <th>Key Piece</th>
+                        <th>RRP</th>
+                        <th>Trade Price<br>(Ex VAT)</th>
+                        <th>Time to Build<br>(Hours)</th>
+                        <th>Qty in<br>Trade Pack</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (count($reportData) > 0) {
+                        foreach ($reportData as $value) {
+                            echo '<tr>';
+                            echo '<td>' . $value['ProductName'] . '</td>';
+                            echo '<td>' . $value['ProductTypeName'] . '</td>';
+                            echo '<td>' . $value['ProductCollectionName'] . '</td>';
+                            echo ($value['KeyPiece']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
+                            echo '<td>£' . number_format($value['RRP'], 2) . '</td>';
+                            echo '<td>£' . number_format($value['TradePrice'], 2) . '</td>';
+                            echo '<td>' . number_format(($value['MinsToBuild'] / 60), 2) . '</td>';
+                            echo '<td>' . $value['QtyInTradePack'] . '</td>';
+                            echo '</tr>';
+                        }
+                    } else {
+                        echo '<tr><td class="text-center" colspan="8">No Results</td></tr>';
+                    }
+                    ?>
+                </tbody>
+            </table>
+
+            <!-- TRADE ALLOWED REPORT -->
+        <?php elseif ($formData['ReportType'] == 3): ?>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="">
+                        <th>Product Name</th>
+                        <th>Type</th>
+                        <th>Collection</th>
+                        <th>Trade Pack</th>
+                        <th>RRP</th>
+                        <th>Trade Price<br>(Ex-VAT)</th>
+                        <th>Time to Build<br>(Hours)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    if (count($reportData) > 0) {
+                        foreach ($reportData as $value) {
+                            echo '<tr>';
+                            echo '<td>' . $value['ProductName'] . '</td>';
+                            echo '<td>' . $value['ProductTypeName'] . '</td>';
+                            echo '<td>' . $value['ProductCollectionName'] . '</td>';
+                            echo ($value['PartOfTradePack']) ? '<td><span class="glyphicon glyphicon-ok text-success"></span></td>' : '<td><span class="glyphicon glyphicon-remove text-danger"></span></td>';
+                            echo '<td>£' . number_format($value['RRP'], 2) . '</td>';
+                            echo '<td>£' . number_format($value['TradePrice'], 2) . '</td>';
+                            echo '<td>' . number_format(($value['MinsToBuild'] / 60), 2) . '</td>';
+                            echo '</tr>';
+                        }
+                    } else {
+                        echo '<tr><td class="text-center" colspan="8">No Results</td></tr>';
+                    }
+                    ?>
+                </tbody>
+            </table>
+
+        <?php endif; ?>
 
     <?php endif; ?>
 
 </div>
-
-

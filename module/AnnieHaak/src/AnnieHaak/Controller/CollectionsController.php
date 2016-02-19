@@ -4,6 +4,7 @@ namespace AnnieHaak\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use AnnieHaak\Model\Collections;
 use AnnieHaak\Model\Auditing;
 use AnnieHaak\Form\CollectionsForm;
@@ -17,6 +18,22 @@ class CollectionsController extends AbstractActionController {
         return new ViewModel(array(
             'collections' => $this->getCollectionsTable()->fetchAll(),
         ));
+    }
+
+    public function jsonAllCollectionsAction() {
+        $collections = $this->getCollectionsTable()->fetchAll();
+        foreach ($collections->toArray() as $value) {
+            $data[] = array(
+                'id' => $value['ProductCollectionID'],
+                'CollectionCode' => $value['ProductCollectionCode'],
+                'CollectionName' => $value['ProductCollectionName'],
+                'Current' => $value['Current']
+            );
+        }
+        $result = new JsonModel(array(
+            'collections' => $data
+        ));
+        return $result;
     }
 
     public function addAction() {

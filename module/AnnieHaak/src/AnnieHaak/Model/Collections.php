@@ -18,7 +18,7 @@ class Collections implements InputFilterAwareInterface {
         $this->ProductCollectionID = (!empty($data['ProductCollectionID'])) ? $data['ProductCollectionID'] : 0;
         $this->ProductCollectionName = (!empty($data['ProductCollectionName'])) ? $data['ProductCollectionName'] : null;
         $this->ProductCollectionCode = (!empty($data['ProductCollectionCode'])) ? $data['ProductCollectionCode'] : null;
-        $this->Current = (!empty($data['Current'])) ? $data['Current'] : null;
+        $this->Current = (!empty($data['Current'])) ? $data['Current'] : 0;
     }
 
     public function getArrayCopy() {

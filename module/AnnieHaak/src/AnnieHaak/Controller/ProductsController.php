@@ -57,6 +57,17 @@ class ProductsController extends AbstractActionController {
                 $searchTmp[] = $temp;
             }
             $search['rules'] = $searchTmp;
+
+            foreach ($search['rules'] as $key => $rule) {
+                switch ($rule['searchColumn']) {
+                    case 'ProductCollectionName':
+                        $search['rules'][$key]['searchColumn'] = 'P.CollectionID';
+                        break;
+                    case 'ProductTypeName':
+                        $search['rules'][$key]['searchColumn'] = 'P.ProductTypeID';
+                        break;
+                }
+            }
         }
 
         $paginator = $this->getProductsTable()->fetchFullDataPaginated($sortBy, $search);
