@@ -22,7 +22,7 @@ echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']
                 </td>
                 <td>
                     <?php
-                    if ($_SESSION['AnnieHaak']['storage']['userInfo']['username'] == $user->username) {
+                    if ($_SESSION['AnnieHaak']['storage']['userInfo']['username'] == $user->username || $_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'] == 1) {
                         echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'edit', '/user-admin/edit/' . $user->id, 'Edit');
                     } else {
                         echo '<a class="btn btn-default btn-sm" href="#"><span class="glyphicon glyphicon-ban-circle"></span>&nbsp;&nbsp;NONE</a>';
