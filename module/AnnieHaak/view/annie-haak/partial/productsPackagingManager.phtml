@@ -166,12 +166,14 @@
         {
             // EDIT
             editCaption: "Edit this Packaging",
+            width: 750,
             recreateForm: false,
             closeAfterEdit: true,
             viewPagerButtons: false,
             reloadAfterSubmit: false,
             closeOnEscape: true,
             savekey: [true, 13],
+            addedrow: 'afterSelected',
             afterShowForm: PackagingData,
             afterComplete: afterCompletePackaging,
             errorTextFormat: function (data) {
@@ -180,8 +182,15 @@
         },
         {
             // ADD
-            closeAfterAdd: true,
+            addCaption: "Add Packaging Item",
+            width: 750,
             recreateForm: false,
+            closeAfterAdd: true,
+            viewPagerButtons: false,
+            reloadAfterSubmit: false,
+            closeOnEscape: true,
+            savekey: [true, 13],
+            addedrow: 'afterSelected',
             afterShowForm: PackagingData,
             afterComplete: afterCompletePackaging,
             errorTextFormat: function (data) {

@@ -169,8 +169,14 @@
         {
             // ADD
             addCaption: "Add Labour Item",
-            closeAfterAdd: true,
+            width: 750,
             recreateForm: false,
+            closeAfterAdd: true,
+            viewPagerButtons: false,
+            reloadAfterSubmit: false,
+            closeOnEscape: true,
+            savekey: [true, 13],
+            addedrow: 'afterSelected',
             afterShowForm: LabourItemsData,
             afterComplete: afterCompleteLabour,
             errorTextFormat: function (data) {

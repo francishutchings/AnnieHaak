@@ -227,12 +227,14 @@
         {
             // EDIT
             editCaption: "Edit this Raw Material",
+            width: 750,
             recreateForm: false,
             closeAfterEdit: true,
             viewPagerButtons: false,
             reloadAfterSubmit: false,
             closeOnEscape: true,
             savekey: [true, 13],
+            addedrow: 'afterSelected',
             afterShowForm: RawMaterialData,
             afterComplete: afterCompleteRawMaterials,
             errorTextFormat: function (data) {
@@ -241,8 +243,15 @@
         },
         {
             // ADD
-            closeAfterAdd: true,
+            editCaption: "Add Raw Material",
+            width: 750,
             recreateForm: false,
+            closeAfterAdd: true,
+            viewPagerButtons: false,
+            reloadAfterSubmit: false,
+            closeOnEscape: true,
+            savekey: [true, 13],
+            addedrow: 'afterSelected',
             afterShowForm: RawMaterialData,
             afterComplete: afterCompleteRawMaterials,
             errorTextFormat: function (data) {
