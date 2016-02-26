@@ -1,7 +1,7 @@
 <?php
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
-echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/collections/add', 'Add new Collection');
-echo $this->partial('annie-haak/partial/reloadButton.phtml');
+#echo $this->UIAccessControlButtons($_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'], 'add', '/business-admin/collections/add', 'Add new Collection');
+#echo $this->partial('annie-haak/partial/reloadButton.phtml');
 ?>
 
 <table class="table table-striped table-hover ">

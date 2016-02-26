@@ -287,6 +287,7 @@ class Module {
         }
 
         #dump($route);
+        #dump($matches);
         #dump($userRole);
         #dump($e->getViewModel()->acl->hasResource($route));
         #dump($e->getViewModel()->acl->isAllowed($userRole, $route));
