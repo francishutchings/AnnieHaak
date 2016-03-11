@@ -65,7 +65,7 @@ class UsersController extends AbstractActionController {
             return $this->redirect()->toRoute('user-admin', array('action' => 'index'));
         }
 
-        if ($_SESSION['AnnieHaak']['storage']['userInfo']['username'] !== $user->username) {
+        if ($_SESSION['AnnieHaak']['storage']['userInfo']['username'] !== $user->username && $_SESSION['AnnieHaak']['storage']['userInfo']['roleLevel'] != 1) {
             $this->flashmessenger()->setNamespace('error')->addMessage('You do not have permission to edit other accounts.');
             return $this->redirect()->toRoute('user-admin', array('action' => 'index'));
         }

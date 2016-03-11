@@ -55,7 +55,7 @@ class UsersTable {
     public function saveUsers(Users $user) {
 
         $data = array(
-            'username' => filter_var($user->username, 'FILTER_SANITIZE_EMAIL'),
+            'username' => $user->username,
             'password' => md5($user->password),
             'firstname' => $user->firstname,
             'lastname' => $user->lastname,
@@ -89,7 +89,7 @@ class UsersTable {
         #$this->tableGateway->delete(array('id' => (int) $id));
         $data = array(
             'deleted' => '1',
-            'activity_date' => date("Y-m-d H:i:s")
+            'datestamp' => date("Y-m-d H:i:s")
         );
         $this->tableGateway->update($data, array('id' => $id));
     }
