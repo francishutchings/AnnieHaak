@@ -31,7 +31,7 @@ SELECT
 		FROM
 			RawMaterialLookup AS RL2
 		INNER JOIN
-			RawMaterialPicklists AS RMPL2
+			RawMaterialPickLists AS RMPL2
 		ON
 			RL2.RawMaterialID = RMPL2.RawMaterialID
 		WHERE

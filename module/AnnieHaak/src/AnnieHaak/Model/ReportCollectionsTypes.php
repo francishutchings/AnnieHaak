@@ -20,13 +20,13 @@ class ReportCollectionsTypes {
                     ,PT.ProductTypeName
                     ,COUNT(P.ProductID) AS ProductCount
                 FROM
-                    productcollections PC
+                    ProductCollections PC
                 INNER JOIN
-                        products P
+                        Products P
                 ON
                         P.CollectionID = PC.ProductCollectionID
                 INNER JOIN
-                        producttypes PT
+                        ProductTypes PT
                 ON
                         P.ProductTypeID = PT.ProductTypeId
                 GROUP BY

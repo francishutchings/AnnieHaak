@@ -35,7 +35,7 @@ class RawMaterialTypesTable {
 
     public function fetchFullDataPaginated($sortBy, $search) {
         $select = new Select();
-        $select->from('rawmaterialtypelookup');
+        $select->from('RawMaterialTypeLookup');
         $select->columns(array('RMTypeID', 'RMTypeName'));
 
         if (isset($search)) {

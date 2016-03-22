@@ -88,7 +88,7 @@ class Module {
             'factories' => array(
                 'AuthService' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'users', 'username', 'password', 'MD5(?)');
+                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'Users', 'username', 'password', 'MD5(?)');
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbTableAuthAdapter);
                     $authService->setStorage($sm->get('Auth\Model\MyAuthStorage'));
@@ -169,7 +169,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RawMaterials());
-                    return new TableGateway('rawmateriallookup', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('RawMaterialLookup', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\RawMaterialTypesTable' => function($sm) {
                     $tableGateway = $sm->get('RawMaterialTypesGateway');
@@ -191,7 +191,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Suppliers());
-                    return new TableGateway('rawmaterialsupplierlookup', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('RawMaterialSupplierLookup', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

@@ -34,7 +34,7 @@ class PackagingTable {
         $select = new Select();
         $select->from(array('PLU' => 'PackagingLookup'));
         $select->columns(array('PackagingID', 'PackagingName', 'PackagingCode', 'PackagingUnitCost'));
-        $select->join(array('PL' => 'PackagingPicklists'), 'PL.PackagingID = PLU.PackagingID', array('PackagingQty', 'SubtotalPackaging' => 'PackagingQty * PackagingUnitCost'));
+        $select->join(array('PL' => 'PackagingPickLists'), 'PL.PackagingID = PLU.PackagingID', array('PackagingQty', 'SubtotalPackaging' => 'PackagingQty * PackagingUnitCost'));
         $select->where(array('PL.ProductID' => $productId));
         $select->order('PLU.PackagingName');
 

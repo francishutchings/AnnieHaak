@@ -26,10 +26,10 @@ class RawMaterialsTable {
 
     public function getRawMaterials($ids) {
         $select = new Select();
-        $select->from(array('RM' => 'rawmateriallookup'));
+        $select->from(array('RM' => 'RawMaterialLookup'));
         $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RMTypeID', 'RMSupplierID', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
-        $select->join(array('Supp' => 'rawmaterialsupplierlookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
-        $select->join(array('RMType' => 'rawmaterialtypelookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
+        $select->join(array('Supp' => 'RawMaterialSupplierLookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
+        $select->join(array('RMType' => 'RawMaterialTypeLookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
         $select->where(array('RM.RawMaterialID' => array($ids)));
 
         $rowset = $this->tableGateway->selectWith($select);
@@ -42,10 +42,10 @@ class RawMaterialsTable {
 
     public function fetchFullData($paginated = FALSE) {
         $select = new Select();
-        $select->from(array('RM' => 'rawmateriallookup'));
+        $select->from(array('RM' => 'RawMaterialLookup'));
         $select->columns(array('RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
-        $select->join(array('Supp' => 'rawmaterialsupplierlookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
-        $select->join(array('RMType' => 'rawmaterialtypelookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
+        $select->join(array('Supp' => 'RawMaterialSupplierLookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
+        $select->join(array('RMType' => 'RawMaterialTypeLookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
         $select->order('RawMaterialCode ASC');
 
         if ($paginated) {
@@ -63,10 +63,10 @@ class RawMaterialsTable {
     public function fetchFullDataPaginated($sortBy, $search) {
 
         $select = new Select();
-        $select->from(array('RM' => 'rawmateriallookup'));
+        $select->from(array('RM' => 'RawMaterialLookup'));
         $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'DateLastChecked', 'LastInvoiceNumber'));
-        $select->join(array('Supp' => 'rawmaterialsupplierlookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
-        $select->join(array('RMType' => 'rawmaterialtypelookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
+        $select->join(array('Supp' => 'RawMaterialSupplierLookup'), 'Supp.RMSupplierID = RM.RMSupplierID', array('RMSupplierName'));
+        $select->join(array('RMType' => 'RawMaterialTypeLookup'), 'RMType.RMTypeID = RM.RMTypeID', array('RMTypeName'));
 
         if (isset($search)) {
             $orOperator = FALSE;
@@ -194,11 +194,11 @@ class RawMaterialsTable {
 
     public function fetchMaterialsByProduct($productId) {
         $select = new Select();
-        $select->from(array('RML' => 'rawmateriallookup'));
+        $select->from(array('RML' => 'RawMaterialLookup'));
         $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost', 'RMTypeID'));
-        $select->join(array('RMPL' => 'RawMaterialPicklists'), 'RMPL.RawMaterialID = RML.RawMaterialID', array('RawMaterialQty', 'SubtotalRM' => 'RawMaterialQty * RawMaterialUnitCost'));
-        $select->join(array('RMT' => 'rawmaterialtypelookup'), 'RMT.RMTypeID = RML.RMTypeID', array('RMTypeName'));
-        $select->join(array('SUPP' => 'rawmaterialsupplierlookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
+        $select->join(array('RMPL' => 'RawMaterialPickLists'), 'RMPL.RawMaterialID = RML.RawMaterialID', array('RawMaterialQty', 'SubtotalRM' => 'RawMaterialQty * RawMaterialUnitCost'));
+        $select->join(array('RMT' => 'RawMaterialTypeLookup'), 'RMT.RMTypeID = RML.RMTypeID', array('RMTypeName'));
+        $select->join(array('SUPP' => 'RawMaterialSupplierLookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
         $select->where(array('RMPL.ProductID' => $productId));
 
         #echo $select->getSqlString();
@@ -210,9 +210,9 @@ class RawMaterialsTable {
 
     public function fetchMaterialsByType($RawMaterialTypeId) {
         $select = new Select();
-        $select->from(array('RML' => 'rawmateriallookup'));
+        $select->from(array('RML' => 'RawMaterialLookup'));
         $select->columns(array('RawMaterialID', 'RawMaterialCode', 'RawMaterialName', 'RawMaterialUnitCost'));
-        $select->join(array('SUPP' => 'rawmaterialsupplierlookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
+        $select->join(array('SUPP' => 'RawMaterialSupplierLookup'), 'SUPP.RMSupplierID = RML.RMSupplierID', array('RMSupplierName'));
         $select->where(array('RML.RMTypeID' => $RawMaterialTypeId));
 
         #echo $select->getSqlString();

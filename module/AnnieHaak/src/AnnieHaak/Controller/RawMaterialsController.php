@@ -62,7 +62,7 @@ class RawMaterialsController extends AbstractActionController {
 
     public function jsonDataAction() {
         $currentPage = (int) $this->params()->fromQuery('page', 1);
-        $sortColumn = $this->params()->fromQuery('sidx', 'ProductName');
+        $sortColumn = $this->params()->fromQuery('sidx', 'RawMaterialName');
         $sortOrder = $this->params()->fromQuery('sord', 'ASC');
         $rows = (int) $this->params()->fromQuery('rows', 15);
         $filters = $this->params()->fromQuery('filters', NULL);

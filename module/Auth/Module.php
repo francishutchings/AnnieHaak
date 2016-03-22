@@ -38,7 +38,7 @@ class Module implements AutoloaderProviderInterface {
                 },
                 'AuthService' => function ($sm) {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'users', 'username', 'password', 'MD5(?)');
+                    $dbTableAuthAdapter = new DbTableAuthAdapter($dbAdapter, 'Users', 'username', 'password', 'MD5(?)');
                     $authService = new AuthenticationService();
                     $authService->setAdapter($dbTableAuthAdapter);
                     $authService->setStorage($sm->get('Auth\Model\MyAuthStorage'));
@@ -53,7 +53,7 @@ class Module implements AutoloaderProviderInterface {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Users());
-                    return new TableGateway('users', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('Users', $dbAdapter, null, $resultSetPrototype);
                 },
             ),
         );

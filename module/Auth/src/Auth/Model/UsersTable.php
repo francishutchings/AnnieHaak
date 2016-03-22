@@ -15,9 +15,9 @@ class UsersTable {
 
     public function fetchAll() {
         $select = new Select();
-        $select->from(array('U' => 'users'));
+        $select->from(array('U' => 'Users'));
         $select->columns(array('id', 'username', 'firstname', 'lastname', 'rolelevel'));
-        $select->join(array('UR' => 'userroles'), 'UR.UserRoleIdx = U.rolelevel', array('rolename'));
+        $select->join(array('UR' => 'UserRoles'), 'UR.UserRoleIdx = U.rolelevel', array('rolename'));
         $select->where('deleted = 0');
         $select->order('rolelevel ASC, U.lastname ASC');
         $resultSet = $this->tableGateway->selectWith($select);
@@ -38,9 +38,9 @@ class UsersTable {
         $un = (string) $un;
 
         $select = new Select();
-        $select->from(array('U' => 'users'));
+        $select->from(array('U' => 'Users'));
         $select->columns(array('id', 'username', 'firstname', 'lastname', 'rolelevel'));
-        $select->join(array('UR' => 'userroles'), 'UR.UserRoleIdx = U.rolelevel', array('rolename'));
+        $select->join(array('UR' => 'UserRoles'), 'UR.UserRoleIdx = U.rolelevel', array('rolename'));
         $select->where(array('deleted' => 0, 'username' => $un));
 
         $resultSet = $this->tableGateway->selectWith($select);

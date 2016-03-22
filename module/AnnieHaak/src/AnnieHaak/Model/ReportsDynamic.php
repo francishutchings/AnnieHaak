@@ -48,7 +48,7 @@ class ReportsDynamic {
             FROM
                 RawMaterialLookup AS RL2
             INNER JOIN
-                RawMaterialPicklists AS RMPL2
+                RawMaterialPickLists AS RMPL2
             ON
                 RL2.RawMaterialID = RMPL2.RawMaterialID
             WHERE
@@ -72,7 +72,7 @@ class ReportsDynamic {
             FROM
                 PackagingLookup AS PLookup
             INNER JOIN
-                PackagingPicklists AS PPick
+                PackagingPickLists AS PPick
             ON
                 PLookup.PackagingID = PPick.PackagingID
             WHERE
@@ -86,7 +86,7 @@ class ReportsDynamic {
             FROM
                 PackagingLookup AS PLookup
             INNER JOIN
-                PackagingPicklists AS PPick
+                PackagingPickLists AS PPick
             ON
                 PLookup.PackagingID = PPick.PackagingID
             WHERE
@@ -100,7 +100,7 @@ class ReportsDynamic {
             FROM
                 PackagingLookup AS PLookup
             INNER JOIN
-                PackagingPicklists AS PPick
+                PackagingPickLists AS PPick
             ON
                 PLookup.PackagingID = PPick.PackagingID
             WHERE
@@ -114,7 +114,7 @@ class ReportsDynamic {
             FROM
                 PackagingLookup AS PLookup
             INNER JOIN
-                PackagingPicklists AS PPick
+                PackagingPickLists AS PPick
             ON
                 PLookup.PackagingID = PPick.PackagingID
             WHERE
@@ -123,15 +123,15 @@ class ReportsDynamic {
                 PLookup.PackagingType = 4
         ) AS LBagCost
 FROM
-	products AS P
+	Products AS P
 
 INNER JOIN
-	producttypes AS PT
+	ProductTypes AS PT
 ON
 	PT.ProductTypeId = P.ProductTypeID
 
 INNER JOIN
-	productcollections AS PC
+	ProductCollections AS PC
 ON
 	PC.ProductCollectionID = P.CollectionID
 

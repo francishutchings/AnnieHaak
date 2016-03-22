@@ -39,7 +39,7 @@ SELECT
         FROM
             RawMaterialLookup AS RL2
         INNER JOIN
-            RawMaterialPicklists AS RMPL2
+            RawMaterialPickLists AS RMPL2
         ON
             RL2.RawMaterialID = RMPL2.RawMaterialID
         WHERE
@@ -63,7 +63,7 @@ SELECT
         FROM
             PackagingLookup AS PLookup
         INNER JOIN
-            PackagingPicklists AS PPick
+            PackagingPickLists AS PPick
         ON
             PLookup.PackagingID = PPick.PackagingID
         WHERE
@@ -75,7 +75,7 @@ SELECT
         FROM
             PackagingLookup AS PLookup
         INNER JOIN
-            PackagingPicklists AS PPick
+            PackagingPickLists AS PPick
         ON
             PLookup.PackagingID = PPick.PackagingID
         WHERE
@@ -89,7 +89,7 @@ SELECT
         FROM
             PackagingLookup AS PLookup
         INNER JOIN
-            PackagingPicklists AS PPick
+            PackagingPickLists AS PPick
         ON
             PLookup.PackagingID = PPick.PackagingID
         WHERE
@@ -103,7 +103,7 @@ SELECT
         FROM
             PackagingLookup AS PLookup
         INNER JOIN
-            PackagingPicklists AS PPick
+            PackagingPickLists AS PPick
         ON
             PLookup.PackagingID = PPick.PackagingID
         WHERE
@@ -117,7 +117,7 @@ SELECT
         FROM
             PackagingLookup AS PLookup
         INNER JOIN
-            PackagingPicklists AS PPick
+            PackagingPickLists AS PPick
         ON
             PLookup.PackagingID = PPick.PackagingID
         WHERE

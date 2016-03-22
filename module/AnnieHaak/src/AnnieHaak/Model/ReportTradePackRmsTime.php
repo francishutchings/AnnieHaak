@@ -17,7 +17,7 @@ class ReportTradePackRmsTime {
     public function getReport() {
         $sql = <<<SQL
 SELECT
-	SUM(RawMaterialPicklists.RawMaterialQty) AS SumOfRawMaterialQty
+	SUM(RawMaterialPickLists.RawMaterialQty) AS SumOfRawMaterialQty
 	,RawMaterialLookup.RawMaterialName
 	,(
 		SELECT
@@ -33,19 +33,19 @@ INNER JOIN
 (
 	Products
 		INNER JOIN
-			RawMaterialPicklists
+			RawMaterialPickLists
 		ON
-			Products.ProductID = RawMaterialPicklists.ProductID
+			Products.ProductID = RawMaterialPickLists.ProductID
 )
 ON
-	RawMaterialLookup.RawMaterialID = RawMaterialPicklists.RawMaterialID
+	RawMaterialLookup.RawMaterialID = RawMaterialPickLists.RawMaterialID
 WHERE
 	Products.PartOfTradePack = TRUE
 GROUP BY
 	RawMaterialLookup.RawMaterialName,
 	Products.PartOfTradePack
 ORDER BY
-	SUM(RawMaterialPicklists.RawMaterialQty) DESC;
+	SUM(RawMaterialPickLists.RawMaterialQty) DESC;
 SQL;
 
         $statement = $this->dbAdapter->createStatement($sql);
