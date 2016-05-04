@@ -103,7 +103,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Collections());
-                    return new TableGateway('productcollections', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('ProductCollections', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\LabourItemsTable' => function($sm) {
                     $tableGateway = $sm->get('LabourItemsGateway');
@@ -125,7 +125,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Packaging());
-                    return new TableGateway('packaginglookup', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('PackagingLookup', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\ProductsTable' => function($sm) {
                     $tableGateway = $sm->get('ProductsGateway');
@@ -136,7 +136,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new Products());
-                    return new TableGateway('products', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('Products', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\ProductTypesTable' => function($sm) {
                     $tableGateway = $sm->get('ProductTypesGateway');
@@ -147,7 +147,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new ProductTypes());
-                    return new TableGateway('producttypes', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('ProductTypes', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\RatesPercentagesTable' => function($sm) {
                     $tableGateway = $sm->get('RatesPercentagesGateway');
@@ -158,7 +158,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RatesPercentages());
-                    return new TableGateway('ratespercentages', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('RatesPercentages', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\RawMaterialsTable' => function($sm) {
                     $tableGateway = $sm->get('RawMaterialsGateway');
@@ -180,7 +180,7 @@ class Module {
                     $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
                     $resultSetPrototype = new ResultSet();
                     $resultSetPrototype->setArrayObjectPrototype(new RawMaterialTypes());
-                    return new TableGateway('rawmaterialtypelookup', $dbAdapter, null, $resultSetPrototype);
+                    return new TableGateway('RawMaterialTypeLookup', $dbAdapter, null, $resultSetPrototype);
                 },
                 'AnnieHaak\Model\SuppliersTable' => function($sm) {
                     $tableGateway = $sm->get('SuppliersGateway');
