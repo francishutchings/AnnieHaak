@@ -2,10 +2,11 @@
 
 /*
  * Force HTTPS
+
+  if (!isset($_SERVER['HTTPS'])) {
+  header('Location: https://' . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
+  }
  */
-if (!isset($_SERVER['HTTPS'])) {
-    header('Location: https://' . $_SERVER["SERVER_NAME"] . $_SERVER['REQUEST_URI']);
-}
 
 /**
  * Display all errors when APPLICATION_ENV is development.
