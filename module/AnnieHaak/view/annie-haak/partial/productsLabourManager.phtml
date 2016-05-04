@@ -30,9 +30,9 @@
         }();
         function LabourItemsData() {
             $("#LabourQty").unbind('keyup change');
-            $('#LabourQty').numericInput(false, false);
+            //$('#LabourQty').numericInput(false, false);
             $('#LabourQty').on('keyup change', function () {
-                $('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * parseInt($("#LabourQty").val())).toFixed(4)));
+                $('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * $("#LabourQty").val()).toFixed(4)));
             });
             $("#LabourID").bind("change", function (e) {
                 $('#LabourCode').val('');
@@ -54,7 +54,8 @@
                     $('#LabourUnitCost').val(0);
                     $('#LabourCode').val(data.labourItems[0]['LabourCode']);
                     $('#LabourUnitCost').val(data.labourItems[0]['LabourUnitCost']);
-                    $('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * parseInt($("#LabourQty").val())).toFixed(4)));
+                    //$('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * parseInt($("#LabourQty").val())).toFixed(4)));
+                    $('#SubtotalLabour').val(parseFloat((parseFloat($("#LabourUnitCost").val()) * $("#LabourQty").val()).toFixed(4)));
                 }
             });
         }

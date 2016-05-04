@@ -236,7 +236,13 @@ class Products implements InputFilterAwareInterface {
                 'name' => 'RRP',
                 'required' => true,
                 'validators' => array(
-                    array('name' => 'Int'),
+                    array(
+                        'name' => 'Float',
+                        'options' => array(
+                            'min' => 0.01,
+                            'locale' => '<my_locale>'
+                        ),
+                    ),
                 ),
             ));
 
@@ -272,7 +278,22 @@ class Products implements InputFilterAwareInterface {
                 ),
             ));
 
-
+            $inputFilter->add(array(
+                'name' => 'ImagePath',
+                'required' => false,
+                'filters' => array(
+                    array('name' => 'StripTags'),
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8'
+                        ),
+                    ),
+                ),
+            ));
             $inputFilter->add(array(
                 'name' => 'CurrentURL',
                 'required' => false,

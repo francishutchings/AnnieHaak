@@ -3,8 +3,9 @@
 function breadcrumbs() {
 
     $bc = '<ul class="breadcrumb  hidden-print" xmlns:v="http://rdf.data-vocabulary.org/#">';
-    $site = 'http://' . filter_input(INPUT_SERVER, 'HTTP_HOST');
-    $crumbs = array_filter(explode("/", filter_input(INPUT_SERVER, 'REQUEST_URI')));
+    $site = 'http://' . $_SERVER['HTTP_HOST'];
+    $crumbs = array_filter(explode('/', trim($_SERVER['REQUEST_URI'], '/')));
+
     $count = count($crumbs);
     if ($count == 0) {
         $link = 'Home';
@@ -24,7 +25,7 @@ function breadcrumbs() {
         $count = 3;
     }
 
-    for ($i = 1; $i <= $count; $i++) {
+    for ($i = 0; $i < $count; $i++) {
 
         $link = ucwords(str_replace(array(".php", "-", "_", "?", "=", "&"), array("", " ", " ", " - ", " ", " "), $crumbs[$i]));
 
@@ -32,7 +33,7 @@ function breadcrumbs() {
 
             $site .= '/' . $crumbs[$i];
 
-            if ($i == $count) {
+            if ($i == $count - 1) {
                 $bc .= '<li class=""active typeof="v:Breadcrumb">' . $link . '</li>';
             } else {
                 $bc .= '<li typeof="v:Breadcrumb"><a title="' . $link . '" href="' . $site . '" rel="v:url" property="v:title">' . $link . '</a></li>';

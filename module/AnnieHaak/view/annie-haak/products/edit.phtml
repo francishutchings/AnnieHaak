@@ -77,7 +77,7 @@ echo $this->form()->openTag($form)
             <div class="form-group">
                 <label class="col-md-2 control-label" for="IntroDate">Date Introduced:</label>
                 <div class="col-md-10">
-                    <?php echo $this->formRow($form->get('IntroDate')); ?>
+                    <?php echo $this->formRow($form->get('IntroDate')->setValue(date('Y-m-d'))); ?>
                 </div>
             </div>
 
