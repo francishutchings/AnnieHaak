@@ -8,7 +8,7 @@
 echo $this->UIPageTitleFormatter($this->navigation('navigation')->findActive('navigation')['page']->label);
 
 $productId = $form->getObject()->ProductID;
-$currentUrl = ($form->getObject()->CurrentURL) ? $form->getObject()->CurrentURL : '';
+$ImagePath = ($form->getObject()->ImagePath) ? $form->getObject()->ImagePath : '';
 $oldUrl = ($form->getObject()->OldURL) ? $form->getObject()->OldURL : '';
 
 $form->setAttributes(array('class' => 'form-horizontal'));
@@ -102,7 +102,7 @@ echo $this->form()->openTag($form)
                 </div>
                 <div class="col-md-1">
                     <a href="#" title="View image">
-                        <img src="<?php echo $currentUrl; ?>" id="imageUrlThumb" class="img-thumbnail"  />
+                        <img src="<?php echo $ImagePath; ?>" id="imageUrlThumb" class="img-thumbnail"  />
                     </a>
                 </div>
             </div>
