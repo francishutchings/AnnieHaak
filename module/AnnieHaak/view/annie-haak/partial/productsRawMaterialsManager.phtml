@@ -112,6 +112,7 @@
             async: true,
             mtype: "GET",
             datatype: "json",
+            rowNum: 0,
             styleUI: 'Bootstrap',
             responsive: true,
             viewrecords: true,
@@ -124,6 +125,7 @@
             shrinkToFit: true,
             loadComplete: function (data) {
                 $('#rawMaterialGridPager_center').remove();
+                $(this).jqGrid('setGridParam', 'rowNum', data.rows.length);
                 temp = 0;
                 for (var x = 0; x < data.rows.length; x++) {
                     temp += parseFloat(data.rows[x]['SubtotalRM']);
